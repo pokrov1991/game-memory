@@ -1,0 +1,54 @@
+.game-canvas {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  z-index: 1;
+}
+
+.game-canvas__loading {
+  width: 100%;
+  min-height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.game-canvas__loading span {
+  font-size: 32px;
+}
+
+.game-effects-cards {
+  position: relative;
+}
+
+.game-effects-cards-item {
+  position: absolute;
+  opacity: 1;
+  transition: 0.3s;
+  cursor: pointer;
+  pointer-events: none;
+}
+
+.game-effects-cards-item_hover {
+  /* background: url('/game/card-hover.png') no-repeat 0 0;
+  background-size: 100% 100%; */
+  opacity: 1;
+}
+
+.game-effects-cards-item_matched {
+  background-image: url('/game/card-light.png');
+  background-repeat: no-repeat;
+  background-size: 2400% 100%;
+  /* background-size: auto 100%; */
+  animation: effects-cards 1s steps(21) forwards;
+}
+
+@keyframes effects-cards {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 100%;
+  }
+}

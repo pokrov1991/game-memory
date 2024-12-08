@@ -1,0 +1,28 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin: 28px auto;
+  width: calc(100% - 96px);
+  max-width: 976px;
+}
+
+.container {
+  display: flex;
+  gap: 16px;
+}
+
+.navigation {
+  width: 100%;
+  max-width: 280px;
+}
+
+@media (max-width: 1023px) {
+  .container {
+    flex-direction: column;
+  }
+  .navigation {
+    max-width: 100%;
+    padding: 0 36px;
+  }
+}

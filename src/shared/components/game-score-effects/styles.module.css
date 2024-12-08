@@ -1,0 +1,27 @@
+.game-score-effects {
+  position: absolute;
+  width: 150px;
+  height: 150px;
+  left: calc(50% - 75px);
+  top: calc(50% - 75px);
+  background-image: url('/game/score-light.png');
+  background-repeat: no-repeat;
+  background-size: 1700% 100%;
+  animation: effects-cards 1s steps(16) infinite;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 30px;
+  pointer-events: none;
+  z-index: 2;
+}
+
+@keyframes effects-cards {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 100%;
+  }
+}
