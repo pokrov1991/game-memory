@@ -3,8 +3,8 @@ import bgUrl from '@/assets/bg.png'
 import styles from './styles.module.css'
 import { UserInfo } from '@/shared/components/user-info/user-info'
 import { Experience } from '@/shared/components/experience/experience'
-import { useGetUserQuery } from '@/shared/slices/api-slices'
 import { Navigation } from '@/shared/components/navigation/navigation'
+import { useUser } from '@/shared/contexts/UserContext'
 
 const ControlPanel = () => <UserInfo />
 
@@ -21,8 +21,7 @@ const AuthControlPanel = () => {
 }
 
 export const MainPage = () => {
-  // const { currentData } = useGetUserQuery()
-  const currentData = undefined
+  const { user, loading, error } = useUser();
 
   const musicButton = useMusic({
     src: '/music/theme.mp3',
@@ -38,7 +37,7 @@ export const MainPage = () => {
         <Navigation />
       </div>
       <div className={styles.info}>
-        {currentData === undefined ? <ControlPanel /> : <AuthControlPanel />}
+        {user === undefined ? <ControlPanel /> : <AuthControlPanel />}
       </div>
     </div>
   )

@@ -10,6 +10,12 @@ export type TUser = {
   display_name: string
 }
 
+export type TUserTemp = {
+  id: string
+  name: string
+  avatar: string
+}
+
 export type TGetUserInternal = {
   login: string
 }

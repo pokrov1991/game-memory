@@ -1,15 +1,13 @@
 import ReactDOM from 'react-dom/client'
 import { Routes } from './routes'
 import { Providers } from './providers'
+import { UserProvider } from '../../src/shared/contexts/UserContext'
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <Providers>
-    <Routes />
+    <UserProvider>
+      <Routes />
+    </UserProvider>
   </Providers>
 )
 
-if ('serviceWorker' in navigator) {
-  window?.addEventListener('load', () => {
-    navigator.serviceWorker.register('sw.js')
-  })
-}

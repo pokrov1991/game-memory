@@ -1,16 +1,17 @@
 import styles from './styles.module.css'
 import { useNavigate } from 'react-router-dom'
 import { Defs } from './defs'
-import { useGetUserQuery, useLogOutMutation } from '@/shared/slices'
-import { TUser } from '@/types'
+import { useLogOutMutation } from '@/shared/slices'
+import { TUserTemp } from '@/types'
 import { MouseEventHandler } from 'react'
 import { isBrowser } from '@/shared/utils/entry-server'
+import { useUser } from '../../contexts/UserContext'
 
-const Fullname = (currentData: TUser) => {
+const Fullname = (currentData: TUserTemp) => {
   return (
     <>
       <tspan x="15%" y="35%">
-        {currentData.first_name + ' ' + currentData.second_name}
+        {currentData?.name}
       </tspan>
     </>
   )
@@ -87,7 +88,7 @@ const EnterRegisterButton = (
 export const UserInfo = () => {
   const navigate = useNavigate()
   const [logOut] = useLogOutMutation()
-  const { currentData } = useGetUserQuery()
+  const { user, loading, error } = useUser();
 
   const handleRedirectClick = () => navigate('/profile')
   const handleExit = () =>
@@ -144,15 +145,15 @@ export const UserInfo = () => {
       </g>
       <g>
         <text x="50%" y="50%" fontSize={32} fill="#B0F2FF">
-          {currentData === undefined
+          {user === undefined
             ? EnterButton(handleEnter)
-            : Fullname(currentData)}
+            : Fullname(user)}
         </text>
       </g>
-      {currentData !== undefined ? EditButton(handleRedirectClick) : null}
+      {user !== undefined ? EditButton(handleRedirectClick) : null}
       <g>
         <text x="50%" y="80%" fontSize={18} fill="#05C3FF">
-          {currentData === undefined
+          {user === undefined
             ? EnterRegisterButton(handleEnter, handleRegister)
             : LogoutButton(handleExit)}
         </text>
