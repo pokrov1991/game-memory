@@ -13,5 +13,7 @@ export interface IYandexSDK {
     getName: () => string;
     getPhoto: (size: string) => string;
     getMode: () => string;
+    getData: (keys?: any) => any;
+    setData: (data?: any) => any;
   }
   

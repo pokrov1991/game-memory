@@ -6,6 +6,7 @@ import { Box, Typography } from '@mui/material'
 import { mergeObjects, Button, LinkText, LEVELS, LEVELS_INFO } from '@/shared'
 import { useProgress } from '@/shared/hooks'
 import { Item } from './item'
+import { useUser } from '@/shared/contexts/UserContext'
 import svgUrl from '@/assets/maps.svg'
 import styles from './styles.module.css'
 
@@ -13,20 +14,23 @@ export const LevelMap = () => {
   const navigate = useNavigate()
   const [levels, setLevels] = useState(mergeObjects(LEVELS, LEVELS_INFO))
   const [level, setLevel] = useState(levels[0])
+  const { game } = useUser();
   const { completedLevels, selectLevel } = useProgress()
+
+  const cCompletedLevels = completedLevels.length > 1 ? completedLevels : game.completedLevels
 
   useEffect(() => {
     levels.forEach(level => {
-      if (completedLevels.includes(level.id)) {
+      if (cCompletedLevels.includes(level.id)) {
         level.isPassed = true
       }
       level.isCurrent = false
-      if (level.id === completedLevels[completedLevels.length - 1]) {
+      if (level.id === cCompletedLevels[cCompletedLevels.length - 1]) {
         level.isCurrent = true
         setLevel(level)
       }
     })
-  }, [completedLevels])
+  }, [cCompletedLevels])
 
   const handleClickLevel = (levelId: number) => {
     levels.forEach(level => {

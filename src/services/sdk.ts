@@ -21,6 +21,16 @@ export default class SDK {
       throw new Error("Метод authUser() должен быть реализован");
     }
 
+    static async getGameData() {
+      this.ensureInitialized();
+      throw new Error("Метод getGameData() должен быть реализован");
+    }
+
+    static async setGameData() {
+      this.ensureInitialized();
+      throw new Error("Метод setGameData() должен быть реализован");
+    }
+
     static async showAd() {
       this.ensureInitialized();
       throw new Error("Метод showAd() должен быть реализован");

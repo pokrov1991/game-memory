@@ -9,19 +9,16 @@ import { useUser } from '@/shared/contexts/UserContext'
 const ControlPanel = () => <UserInfo />
 
 const AuthControlPanel = () => {
-  const { userScore } = useProgress()
-  const userScorePercent = (userScore / 550) * 100
-
   return (
     <>
-      <Experience value={userScorePercent} />
+      <Experience />
       <UserInfo />
     </>
   )
 }
 
 export const MainPage = () => {
-  const { user, loading, error } = useUser();
+  const { user } = useUser();
 
   const musicButton = useMusic({
     src: '/music/theme.mp3',

@@ -88,7 +88,7 @@ const EnterRegisterButton = (
 export const UserInfo = () => {
   const navigate = useNavigate()
   const [logOut] = useLogOutMutation()
-  const { user, loading, error } = useUser();
+  const { user } = useUser();
 
   const handleRedirectClick = () => navigate('/profile')
   const handleExit = () =>

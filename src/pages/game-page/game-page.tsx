@@ -9,14 +9,15 @@ import {
   ModalExit,
 } from '@/shared/components'
 import { useLevel, useToggle, useProgress, useMusic } from '@/shared/hooks'
-import { useSetLeaderboardMutation, useGetUserQuery } from '@/shared'
+import { useSetLeaderboardMutation } from '@/shared'
 import { IDENTIFIER } from '@/utils'
 import { TypeModal } from '@/shared/components/modal-comps/types'
 import styles from './styles.module.css'
 import { isBrowser } from '@/shared/utils/entry-server'
+import { useUser } from '@/shared/contexts/UserContext'
+import YandexSDK from '@/services/yandexSdk'
 
 // Вычисляем размер UI эдементов относительно высоты экрана
-
 let scalePercent = 0
 
 if (isBrowser) {
@@ -44,22 +45,16 @@ export const GamePage = () => {
     levelUp,
     scoreUp,
   } = useProgress()
+  const { user, game } = useUser();
   const [level, setLevel] = useLevel(selectedLevel)
   const [restartKey, setRestartKey] = useState(0)
   const [score, setScore] = useState(0)
   const [seconds, setSeconds] = useState(level.gameTimer)
   const [resultText, setResultText] = useState('')
   const [setLeader] = useSetLeaderboardMutation()
-  // const { currentData } = useGetUserQuery()
 
   useMusic({ src: '/music/success.mp3', conditional: isOpenModalWin })
   useMusic({ src: '/music/timeout.mp3', conditional: isOpenModalLose })
-
-  // if (!currentData) return null
-  // const { first_name, display_name, avatar } = currentData
-  const first_name = 111;
-  const display_name = 222;
-  const avatar = 333;
 
   const onRestart = (): void => {
     setRestartKey(prevKey => prevKey + 1)
@@ -67,7 +62,7 @@ export const GamePage = () => {
     togglePause(true)
   }
 
-  const onContinue = (): void => {
+  const onContinue = async () => {
     const scoreTotal = score + seconds
     const nextLevel = level.id + 1
     const isFinal = level.id >= 11
@@ -76,11 +71,20 @@ export const GamePage = () => {
     setLevel(nextLevel)
     selectLevel(nextLevel)
 
-    if (!isFinal) levelUp(nextLevel)
-    if (userLevel === level.id) {
+    if (!isFinal && game.userLevel < nextLevel) {
+      levelUp(nextLevel)
+    }
+    if (game.userLevel === level.id) {
       scoreUp(scoreTotal)
       handleSetLeader(userLevel, userScore + scoreTotal)
     }
+    
+    await YandexSDK.setGameData({
+      completedLevels: Array.from(new Set([ ...game.completedLevels, nextLevel ])),
+      selectedLevel: nextLevel,
+      userLevel: !isFinal && game.userLevel < nextLevel ? nextLevel : game.userLevel,
+      userScore: game.userLevel === level.id ? game.userScore + scoreTotal : game.userScore,
+    })
 
     if (!isFinal) {
       onRestart()
@@ -140,9 +144,9 @@ export const GamePage = () => {
     try {
       const leader = {
         data: {
-          avatar: avatar,
-          nickname: display_name,
-          firstname: first_name,
+          avatar: user.avatar,
+          nickname: user.name,
+          firstname: user.name,
           level: level,
           scorePSS: score,
         },
@@ -168,7 +172,7 @@ export const GamePage = () => {
             {isPause ? '▷' : '||'}
           </button>
           <button onClick={onRestart} className={styles['game-page__restart']}>
-            Заного
+            Заново
           </button>
           <GameCountdown
             isPause={isPause}
