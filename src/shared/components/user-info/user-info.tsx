@@ -1,17 +1,16 @@
 import styles from './styles.module.css'
 import { useNavigate } from 'react-router-dom'
 import { Defs } from './defs'
-import { useLogOutMutation } from '@/shared/slices'
-import { TUserTemp } from '@/types'
+import { TUser } from '@/types'
 import { MouseEventHandler } from 'react'
 import { isBrowser } from '@/shared/utils/entry-server'
-import { useUser } from '../../contexts/UserContext'
+import { useUser } from '@/shared/contexts/UserContext'
 
-const Fullname = (currentData: TUserTemp) => {
+const Fullname = (user: TUser) => {
   return (
     <>
       <tspan x="15%" y="35%">
-        {currentData?.name}
+        {user?.name}
       </tspan>
     </>
   )
@@ -52,12 +51,12 @@ const EditButton = (
     </>
   )
 }
-const LogoutButton = (handleExit: MouseEventHandler<SVGTSpanElement>) => {
+const LogoutButton = () => {
   return (
     <>
       <tspan x="15%" y="70%">
         Если вы хотите сменить аккаунт,
-        <tspan fill="#B0F2FF" onClick={handleExit} className={styles.edit}>
+        <tspan fill="#B0F2FF" className={styles.edit}>
           выйдите
         </tspan>{' '}
         из текущего
@@ -87,12 +86,9 @@ const EnterRegisterButton = (
 
 export const UserInfo = () => {
   const navigate = useNavigate()
-  const [logOut] = useLogOutMutation()
   const { user } = useUser();
 
   const handleRedirectClick = () => navigate('/profile')
-  const handleExit = () =>
-    logOut('').then(() => isBrowser && window.location.reload())
   const handleEnter = () => navigate('/sign-in')
   const handleRegister = () => navigate('/sign-up')
 
@@ -155,7 +151,7 @@ export const UserInfo = () => {
         <text x="50%" y="80%" fontSize={18} fill="#05C3FF">
           {user === undefined
             ? EnterRegisterButton(handleEnter, handleRegister)
-            : LogoutButton(handleExit)}
+            : LogoutButton()}
         </text>
       </g>
       <Defs />

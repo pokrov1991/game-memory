@@ -5,7 +5,8 @@ import OutlinePng from '@/assets/images/layout/outer-frame-border-min.png'
 import UserBackgroundPng from '@/assets/images/layout/user-background-min.png'
 import BadgeWebp from '@/assets/images/layout/user-badge.webp'
 import BadgePng from '@/assets/images/layout/user-badge-min.png'
-import { Clock, Score, useGetUserQuery } from '@/shared'
+import { Clock, Score } from '@/shared'
+import { useUser } from '@/shared/contexts/UserContext'
 import { TUser } from '@/types'
 
 interface ILayoutProps {
@@ -13,17 +14,16 @@ interface ILayoutProps {
   title?: string
 }
 
-const Fullname = (currentData: TUser) => {
+const Fullname = (user: TUser) => {
   return (
     <>
-      <div className={styles.userName}>{currentData.first_name}</div>
-      <div className={styles.userNickname}>{currentData.second_name}</div>
+      <div className={styles.userName}>{user?.name}</div>
     </>
   )
 }
 
 export const Layout = ({ children, title }: ILayoutProps) => {
-  const { currentData } = useGetUserQuery()
+  const { user } = useUser();
 
   return (
     <div className={styles.root}>
@@ -41,7 +41,7 @@ export const Layout = ({ children, title }: ILayoutProps) => {
             <div
               className={styles.user}
               style={{ backgroundImage: `url(${UserBackgroundPng})` }}>
-              {currentData !== undefined ? Fullname(currentData) : null}
+              {user !== undefined ? Fullname(user) : null}
             </div>
             <picture>
               <source src={BadgeWebp} type="image/webp" />

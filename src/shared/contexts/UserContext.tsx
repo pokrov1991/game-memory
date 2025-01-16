@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import YandexSDK from '../../services/yandexSdk';
+import YandexSDK from '@/shared/services/sdk/yandexSdk';
 
 interface UserData {
   id: string;

@@ -1,6 +1,6 @@
 import SDK from './sdk';
-import { ensureYsdk } from './decorators/ensureYsdk';
-import { IYandexSDK, IPlayer } from '../types/yandexSdk';
+import { ensureYsdk } from '@/shared/decorators/ensureYsdk';
+import { IYandexSDK, IPlayer } from '@/types';
 
 declare global {
   interface Window {

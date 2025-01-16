@@ -15,7 +15,7 @@ import { TypeModal } from '@/shared/components/modal-comps/types'
 import styles from './styles.module.css'
 import { isBrowser } from '@/shared/utils/entry-server'
 import { useUser } from '@/shared/contexts/UserContext'
-import YandexSDK from '@/services/yandexSdk'
+import YandexSDK from '@/shared/services/sdk/yandexSdk'
 
 // Вычисляем размер UI эдементов относительно высоты экрана
 let scalePercent = 0

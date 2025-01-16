@@ -1,7 +1,7 @@
 import { createTheme } from '@mui/material'
 
 /*
- Здесь кастомизация компонентов и прочегоы
+ Здесь кастомизация компонентов и прочего
 */
 export const theme = createTheme({
   typography: {

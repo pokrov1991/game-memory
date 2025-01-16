@@ -7,19 +7,10 @@ export const enum METHODS {
 
 export const enum ROUTE {
   Main = '/',
-  Auth = '/sing-in',
-  Register = '/sing-up',
 }
 
 export const enum API {
   Base = 'https://ya-praktikum.tech/api/v2',
-  Internal = 'http://localhost:3001/api',
-}
-
-export const enum OAUTH {
-  ServiceId = '/oauth/yandex/service-id',
-  Yandex = '/oauth/yandex',
-  Redirect = 'http://localhost:3000',
 }
 
 export const enum CODE_STATUS {
