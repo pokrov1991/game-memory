@@ -1,5 +1,6 @@
 .root {
   & .bg {
+    object-fit: cover;
     position: fixed;
     left: 0;
     top: 0;
@@ -12,18 +13,21 @@
     position: absolute;
     top: 10%;
     right: 5%;
+
+    @media (max-width: 520px) {
+      position: absolute;
+      top: 60px;
+      right: 0;
+      width: 100%;
+      padding: 0 20px;
+    }  
   }
 
   .info {
     position: absolute;
-    left: 15%;
+    left: 0;
     bottom: 0;
-
-    & > :first-child {
-      position: absolute;
-      bottom: 40%;
-      left: -15%;
-    }
+    width: 100%;
   }
 }
 

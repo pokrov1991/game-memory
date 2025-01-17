@@ -1,7 +1,8 @@
+import styles from './styles.module.css'
 import { useProgress } from '@/shared/hooks'
+import { useUser } from '@/shared/contexts/UserContext'
 import { Defs } from './defs'
 import { LevelInfo } from './level-info'
-import { useUser } from '@/shared/contexts/UserContext'
 
 export const Experience = () => {
   const { game } = useUser()
@@ -13,6 +14,7 @@ export const Experience = () => {
 
   return (
     <svg
+      className={styles.experience}
       width="357"
       height="344"
       viewBox="0 0 357 344"

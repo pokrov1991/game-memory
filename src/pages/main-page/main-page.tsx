@@ -19,6 +19,7 @@ const AuthControlPanel = () => {
 
 export const MainPage = () => {
   const { user } = useUser();
+  const isAuth = user !== null && user.mode !== 'lite';
 
   const musicButton = useMusic({
     src: '/music/theme.mp3',
@@ -29,13 +30,13 @@ export const MainPage = () => {
   return (
     <div className={styles.root}>
       <div className={styles.music}>{musicButton}</div>
-      <img src={bgUrl} className={styles.bg} alt="Background main page" />
       <div className={styles.menu}>
         <Navigation />
       </div>
       <div className={styles.info}>
-        {user === undefined ? <ControlPanel /> : <AuthControlPanel />}
+        {isAuth ? <AuthControlPanel /> : <ControlPanel />}
       </div>
+      <img src={bgUrl} className={styles.bg} alt="Background main page" />
     </div>
   )
 }

@@ -5,6 +5,7 @@ interface UserData {
   id: string;
   name: string;
   avatar: string;
+  mode: string;
 }
 
 interface GameData {

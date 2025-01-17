@@ -1,7 +1,7 @@
-import { useNavigate } from 'react-router-dom'
-import { useProgress } from '@/shared/hooks'
 import styles from './styles.module.css'
 import classNames from 'classnames'
+import { useNavigate } from 'react-router-dom'
+import { useProgress } from '@/shared/hooks'
 import { useUser } from '@/shared/contexts/UserContext'
 
 const Item = ({
@@ -34,7 +34,6 @@ export const Navigation = () => {
     <ul className={styles.root}>
       <Item to="/levels" title={isNewGame ? 'Новая игра' : 'Продолжить'} />
       <Item to="/leader-board" title="Лидеры" />
-      <Item to="/forum" title="Форум" />
     </ul>
   )
 }

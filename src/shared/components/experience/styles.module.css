@@ -1,0 +1,11 @@
+.experience {
+    position: absolute;
+    bottom: 150px;
+    left: 25px;
+
+    @media (max-width: 768px) {
+        bottom: 100px;
+        left: 25px;
+        max-width: 250px;
+    }
+}

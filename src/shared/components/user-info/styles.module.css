@@ -1,6 +1,20 @@
-.edit {
+.user {
+  width: calc(100% - 150px);
+  max-width: 1038px;
+  position: absolute;
+  bottom: 0;
+  left: 150px;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    left: 0;
+  }
+}
+
+.link {
   opacity: 1;
   transition: opacity 100ms linear;
+
   &:hover {
     cursor: pointer;
     opacity: 0.5;
