@@ -51,10 +51,13 @@ const SubTitleGuest = (
 }
 
 export const UserInfo = () => {
-  const { user } = useUser();
+  const { user, setUser, setGame  } = useUser();
   const isAuth = user !== null && user.mode !== 'lite';
 
-  const handleEnter = async () => await YandexSDK.authUser()
+  const handleEnter = () => YandexSDK.authUser().then((res) => {
+    setUser(res.user)
+    setGame(res.game)
+  });
 
   return (
     <svg className={styles.user} width="1038" height="267" fill="none" viewBox="0 0 1038 267">
@@ -87,7 +90,7 @@ export const UserInfo = () => {
       </g>
       <g filter="url(#filter3_di_17_698)">
         <path
-          fill="#010302"
+          fill="url(#imageAvatar)" 
           d="M78.849 92.915H134.573V148.639H78.849z"
           transform="rotate(45 78.85 92.915)"></path>
       </g>
@@ -113,7 +116,7 @@ export const UserInfo = () => {
           {isAuth ? SubTitleAuth() : SubTitleGuest(handleEnter)}
         </text>
       </g>
-      <Defs />
+      <Defs avatar={user?.avatar} />
     </svg>
   )
 }

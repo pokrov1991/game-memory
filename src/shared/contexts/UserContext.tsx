@@ -17,14 +17,18 @@ interface GameData {
 
 interface UserContextType {
   user: UserData | null;
+  setUser: React.Dispatch<React.SetStateAction<UserData | null>>;
   game: GameData | null;
+  setGame: React.Dispatch<React.SetStateAction<GameData | null>>;
   loading: boolean;
   error: string | null;
 }
 
 const UserContext = createContext<UserContextType>({
   user: null,
+  setUser: () => null,
   game: null,
+  setGame: () => null,
   loading: true,
   error: null,
 });
@@ -43,7 +47,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
         console.log("Данные игрока:", userData);
         setUser(userData);
 
-        await YandexSDK.authUser(); // Проверка авторизации
+        // await YandexSDK.authUser(); // Проверка авторизации
 
         const gameData = await YandexSDK.getGameData();
         console.log("Данные игры:", gameData);
@@ -61,7 +65,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, []);
 
   return (
-    <UserContext.Provider value={{ user, game, loading, error }}>
+    <UserContext.Provider value={{ user, setUser, game, setGame, loading, error }}>
       {children}
     </UserContext.Provider>
   );

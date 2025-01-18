@@ -48,11 +48,15 @@ export default class YandexSDK extends SDK {
     static async authUser() {
       try {
         if (this._player.getMode() === 'lite') {
-          this._ysdk.auth.openAuthDialog().then(() => {
-            return this.getUserData()
-          }).catch((error) => {
-            throw error; 
-          });
+          await this._ysdk.auth.openAuthDialog();
+          const updatedUserData = await this.getUserData();
+          const updatedGameData = await this.getGameData();
+          return {
+            user: updatedUserData,
+            game: updatedGameData
+          };
+        } else {
+          throw new Error("Игрок уже авторизован или SDK не инициализирован");
         }
       } catch (error) {
         console.error("Ошибка авторизации пользователя:", error);

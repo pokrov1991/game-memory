@@ -11,17 +11,20 @@ export default class SDK {
       }
     }
   
-    static async getUserData(): Promise<{ id: any; name: any; avatar: any; }> {
+    static async getUserData(): Promise<{ id: string; name: string; avatar: string; }> {
         this.ensureInitialized();
         throw new Error("Метод getUserData() должен быть реализован");
     }
 
-    static async authUser() {
+    static async authUser(): Promise<{ 
+      user: { id: string; name: string; avatar: string; mode: string; },
+      game: { completedLevels: number[]; selectedLevel: number; userLevel: number; userScore: number; }
+    }> {
       this.ensureInitialized();
       throw new Error("Метод authUser() должен быть реализован");
     }
 
-    static async getGameData() {
+    static async getGameData(): Promise<{ completedLevels: number[]; selectedLevel: number; userLevel: number; userScore: number; }> {
       this.ensureInitialized();
       throw new Error("Метод getGameData() должен быть реализован");
     }

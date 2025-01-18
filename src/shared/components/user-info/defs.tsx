@@ -1,5 +1,14 @@
-export const Defs = () => (
+type DefsProps = {
+  avatar: string
+}
+
+export const Defs: React.FC<DefsProps> = ({
+  avatar
+}) => (
   <defs>
+    <pattern id="imageAvatar" patternUnits="userSpaceOnUse" width="78.8" height="78.8">
+      <image href={avatar} x="-10" y="-5" width="78.8" height="78.8" transform="rotate(-45 39.4 39.4)" />
+    </pattern>
     <filter
       id="filter0_d_17_698"
       width="107.388"
