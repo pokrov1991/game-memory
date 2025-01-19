@@ -1,13 +1,11 @@
 import { useState, useEffect } from 'react'
-import { createRoot } from 'react-dom/client'
-import { Navigate, useNavigate } from 'react-router-dom'
-import { ReactSVG } from 'react-svg'
-import { Box, Typography } from '@mui/material'
+import { useNavigate } from 'react-router-dom'
+import { Item } from './item'
 import { mergeObjects, Button, LinkText, LEVELS, LEVELS_INFO } from '@/shared'
 import { useProgress } from '@/shared/hooks'
-import { Item } from './item'
 import { useUser } from '@/shared/contexts/UserContext'
-import svgUrl from '@/assets/maps.svg'
+import bgMapInfo from '@/assets/images/level-map/climb.png'
+import bgMap from '@/assets/images/level-map/map.jpg'
 import styles from './styles.module.css'
 
 export const LevelMap = () => {
@@ -50,32 +48,26 @@ export const LevelMap = () => {
 
   const handleMainPage = () => navigate('/', {})
 
-  const handleAfterInjection = (svg: SVGSVGElement) => {
-    const container = createRoot(svg.getElementById('items'))
-
-    container.render(
-      levels.map(level => {
-        const currentLevel = level as {
-          id: number
-          x: number
-          y: number
-          isCurrent: boolean
-          isPassed: boolean
-        }
-        return (
-          <Item
-            key={currentLevel.id}
-            id={currentLevel.id}
-            x={currentLevel.x}
-            y={currentLevel.y}
-            isCurrent={currentLevel.isCurrent}
-            isPassed={currentLevel.isPassed}
-            onClick={(id: number) => handleClickLevel(id)}
-          />
-        )
-      })
+  const levelPoints = levels.map(level => {
+    const currentLevel = level as {
+      id: number
+      x: number
+      y: number
+      isCurrent: boolean
+      isPassed: boolean
+    }
+    return (
+      <Item
+        key={currentLevel.id}
+        id={currentLevel.id}
+        x={currentLevel.x}
+        y={currentLevel.y}
+        isCurrent={currentLevel.isCurrent}
+        isPassed={currentLevel.isPassed}
+        onClick={(id: number) => handleClickLevel(id)}
+      />
     )
-  }
+  })
 
   const selectedLevel = level as {
     id: number
@@ -85,49 +77,36 @@ export const LevelMap = () => {
   }
 
   return (
-    <div className="level-map">
-      <Box
-        position="fixed"
-        zIndex={100}
-        top={20}
-        left={40}
-        display="inline-flex"
-        flexDirection="column"
-        height="100%">
-        <Box mb={6}>
-          <Typography color="orange" variant="h4">
-            Уровень {selectedLevel.id}
-          </Typography>
-          <Typography color="#B0F2FF" variant="h5">
-            {selectedLevel.title}
-          </Typography>
-        </Box>
-        <Box
-          flexGrow={0.8}
-          gap={6}
-          display="flex"
-          flexDirection="column"
-          alignItems="flex-start">
-          <Typography
-            color="white"
-            maxWidth={320}
-            fontFamily="Roboto"
-            fontSize={18}
-            variant="body1">
-            {selectedLevel.description}
-          </Typography>
+    <div className={styles.levelMap}>
+      <div className={styles.levelMapInfo}>
+        <div className={styles.levelMapInfoWrap}>
+          <div className={styles.levelMapInfoTitle}>
+            <h1>Уровень {selectedLevel.id}</h1>
+            <h2>{selectedLevel.title}</h2>
+          </div>
+          <div className={styles.levelMapInfoDesc}>
+            <p>{selectedLevel.description}</p>
+          </div>
+
           {selectedLevel.isPassed && (
-            <Button onClick={handleStartGame}>Играть</Button>
+            <Button onClick={handleStartGame}>
+              Играть
+            </Button>
           )}
-        </Box>
-        <LinkText onClick={handleMainPage}>Назад в меню</LinkText>
-      </Box>
-      <ReactSVG
-        src={svgUrl}
-        className={styles.root}
-        afterInjection={handleAfterInjection}
-        fallback={() => <Navigate to="/error" />}
-      />
+
+          <div className={styles.levelMapInfoBack}>
+            <LinkText onClick={handleMainPage}>Назад в меню</LinkText>
+          </div>
+        </div>
+        <div className={styles.levelMapInfoBg}>
+          <img src={bgMapInfo} />
+        </div>
+      </div>
+
+      <div className={styles.levelMapBg}>
+        {levelPoints}
+        <img src={bgMap} />
+      </div>
     </div>
   )
 }

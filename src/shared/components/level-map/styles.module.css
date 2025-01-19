@@ -1,9 +1,112 @@
-.root {
-  position: fixed;
-  left: 0;
-  top: 0;
+.levelMap {
+  width: 100%;
+  height: 100vh;
+}
 
-  & * {
-    outline: none;
+.levelMapInfo {
+  position: relative;
+  height: 100%;
+  display: flex;
+  z-index: 2;
+}
+
+.levelMapInfoWrap {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  max-width: 365px;
+  padding: 24px 36px 52px;
+  background: #070707;
+  scrollbar-width: thin;
+  scrollbar-color: #070707 #443e51;
+  overflow-y: auto;
+  z-index: 2;
+
+  button {
+    padding: 0 !important;
+    margin-left: -5px !important;
+    margin-bottom: 60px;
+  }
+}
+
+.levelMapInfoBg {
+  position: relative;
+  height: 100%;
+  z-index: 1;
+
+  img {
+    height: 100%;
+    position: absolute;
+    left: 0;
+  }
+}
+
+.levelMapInfoTitle {
+  position: relative;
+  width: 100%;
+  padding-bottom: 20px;
+  margin-bottom: 40px;
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: -36px;
+    bottom: 0;
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(to right, rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0));
+  }
+  h1 {
+    font-family: 'Alegreya', sans-serif;
+    font-weight: 400;
+    font-size: 38px;
+    line-height: 40px;
+    color: #ffa500;
+    margin: 0;
+  }
+  h2 {
+    font-family: 'Alegreya', sans-serif;
+    font-weight: 400;
+    font-size: 32px;
+    line-height: 40px;
+    color: #B0F2FF;
+    margin: 0;
+  }
+}
+
+.levelMapInfoDesc {
+  width: 100%;
+  margin-bottom: 70px;
+
+  p {
+    font-family: 'Roboto', sans-serif;
+    font-size: 18px;
+    color: #ffffff;
+    margin: 0;
+  }
+}
+
+.levelMapInfoBack {
+  width: 100%;
+  margin-top: auto;
+}
+
+.levelMapBg {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  right: 0;
+
+  & > img {
+    position: relative;
+    object-fit: cover;
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 1;
   }
 }

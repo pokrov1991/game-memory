@@ -36,7 +36,7 @@ export const MainPage = () => {
       <div className={styles.info}>
         {isAuth ? <AuthControlPanel /> : <ControlPanel />}
       </div>
-      <img src={bgUrl} className={styles.bg} alt="Background main page" />
+      <img src={bgUrl} className={styles.bg} />
     </div>
   )
 }

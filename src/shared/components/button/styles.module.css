@@ -1,17 +1,25 @@
-.root {
+.button {
+  width: 255px;
+  height: 116px;
+  min-height: 116px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: url('@/assets/images/button/button-level-play.png') 0 0 / 100% no-repeat;
   transition: all 0.3s linear;
 
-  &:has(:hover, :active) img {
-    opacity: 0.8;
+  &:hover {
+    background: url('@/assets/images/button/button-level-play-hover.png') 0 0 / 100% no-repeat;
+  }
+
+  &:active {
+    background: url('@/assets/images/button/button-level-play-active.png') 0 0 / 100% no-repeat;
   }
 }
 
 .text {
-  --line-height: 1.25rem;
-  position: absolute;
-  top: calc(50% - calc(var(--line-height) / 2));
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 38px;
+  font-size: 32px;
   text-transform: capitalize;
+  color: #fff;
+  margin-bottom: 24px;
 }
