@@ -5,6 +5,13 @@
   width: 340px;
   height: 340px;
   background: url('/game/game-countdown.svg') no-repeat 0 0 / 100%;
+
+  @media (max-width: 767px) {
+    top: 26px;
+    left: 105px;
+    width: 85px;
+    height: 80px;
+  }
 }
 
 .game-countdown p {
@@ -22,6 +29,14 @@
   letter-spacing: 0.02em;
   text-align: left;
   color: rgba(160, 236, 234, 1);
+
+  @media (max-width: 767px) {
+    top: 15px;
+    left: 14px;
+    width: 50px;
+    font-size: 0px;
+    line-height: 0px;
+  }
 }
 
 .game-countdown b {
@@ -33,4 +48,9 @@
   text-align: left;
   color: #fff;
   text-shadow: 0px 6px 0px rgba(4, 60, 111, 1);
+
+  @media (max-width: 767px) {
+    font-size: 34px;
+    line-height: 40px;
+  }
 }

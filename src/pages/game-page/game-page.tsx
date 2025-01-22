@@ -24,10 +24,8 @@ if (isBrowser) {
   scalePercent = window.innerHeight < 1040 ? window.innerHeight / 1040 : 1
 }
 
-const scaleMarginPercent = ((1 - scalePercent) * 100) / 2
 const scaleStyle = {
-  transform: `scale(${scalePercent})`,
-  marginTop: `-${scaleMarginPercent}%`,
+  transform: `scale(${scalePercent})`
 }
 
 export const GamePage = () => {

@@ -2,8 +2,11 @@
   position: relative;
   width: 233px;
   height: 718px;
-  /* transform: scale(0.65);
-  margin-top: -35%; */
+
+  @media (max-width: 767px) {
+    width: 80px;
+    height: 245px;
+  }
 }
 
 .game-score__level {
@@ -17,6 +20,15 @@
   height: 340px;
   background: url('/game/game-countdown.svg') no-repeat 0 0 / 100%;
   z-index: 3;
+
+  @media (max-width: 767px) {
+    bottom: 170px;
+    left: 10px;
+    width: 110px;
+    height: 30px;
+    background: none;
+    transform: rotate(-90deg);
+  }
 }
 
 .game-score__level-wrap {
@@ -24,6 +36,12 @@
   flex-direction: column;
   align-items: center;
   margin: -20px 0 0 -140px;
+
+  @media (max-width: 767px) {
+    flex-direction: row;
+    margin: 0;
+    gap: 5px;
+  }
 }
 
 .game-score__level b {
@@ -43,6 +61,10 @@
   letter-spacing: 0.04em;
   text-shadow: 0px 6px 0px rgba(4, 60, 111, 1);
   color: #fff;
+
+  @media (max-width: 767px) {
+    font-size: 40px;
+  }
 }
 
 .game-score__level i {
@@ -76,6 +98,13 @@
   height: 248px;
   background: url('/game/game-scale-ampula.png') no-repeat 0 0 / 100%;
   z-index: 2;
+
+  @media (max-width: 767px) {
+    bottom: -2px;
+    left: -5px;
+    width: 90px;
+    height: 90px;
+  }
 }
 
 .game-score__line {
@@ -84,6 +113,14 @@
   left: 90px;
   width: 55px;
   height: 544px;
+
+  @media (max-width: 767px) {
+    top: auto;
+    bottom: 55px;
+    left: 24px;
+    width: 30px;
+    height: 180px;
+  }
 }
 
 .game-score__line-wrap {
@@ -103,4 +140,11 @@
   width: 55px;
   height: 544px;
   background: url('/game/game-scale-progress.png') no-repeat 0 0 / 100%;
+
+  @media (max-width: 767px) {
+    bottom: 0px;
+    left: 6px;
+    width: 20px;
+    height: 180px;
+  }
 }
