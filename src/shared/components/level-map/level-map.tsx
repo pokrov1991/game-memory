@@ -7,11 +7,14 @@ import { useUser } from '@/shared/contexts/UserContext'
 import bgMapInfo from '@/assets/images/level-map/climb.png'
 import bgMap from '@/assets/images/level-map/map.jpg'
 import styles from './styles.module.css'
+import classNames from 'classnames'
+import CloseIcon from '@mui/icons-material/Close';
 
 export const LevelMap = () => {
   const navigate = useNavigate()
   const [levels, setLevels] = useState(mergeObjects(LEVELS, LEVELS_INFO))
   const [level, setLevel] = useState(levels[0])
+  const [isSelect, setSelect] = useState(false)
   const { game } = useUser();
   const { completedLevels, selectLevel } = useProgress()
 
@@ -39,7 +42,10 @@ export const LevelMap = () => {
       }
     })
     setLevels(levels)
+    setSelect(true)
   }
+
+  const handleClickClose = () => setSelect(false)
 
   const handleStartGame = () => {
     selectLevel(level.id)
@@ -77,12 +83,21 @@ export const LevelMap = () => {
   }
 
   return (
-    <div className={styles.levelMap}>
+    <div 
+      className={classNames(styles.levelMap, {
+        [styles.levelMapSelect]: isSelect
+      })}
+    >
       <div className={styles.levelMapInfo}>
         <div className={styles.levelMapInfoWrap}>
           <div className={styles.levelMapInfoTitle}>
-            <h1>Уровень {selectedLevel.id}</h1>
-            <h2>{selectedLevel.title}</h2>
+            <div>
+              <h1>Уровень {selectedLevel.id}</h1>
+              <h2>{selectedLevel.title}</h2>
+            </div>
+            <div className={styles.levelMapInfoClose} onClick={handleClickClose}>
+              <CloseIcon />
+            </div>
           </div>
           <div className={styles.levelMapInfoDesc}>
             <p>{selectedLevel.description}</p>
@@ -103,8 +118,11 @@ export const LevelMap = () => {
         </div>
       </div>
 
-      <div className={styles.levelMapBg}>
+      <div className={styles.levelMapPoints}>
         {levelPoints}
+      </div>
+
+      <div className={styles.levelMapBg}>
         <img src={bgMap} />
       </div>
     </div>
