@@ -37,6 +37,16 @@
       opacity: 0.75;    
     }
   }
+
+  @media (max-width: 640px) {
+    position: relative;
+    left: 20% !important;
+    bottom: auto !important;
+
+    &:nth-child(2n) {
+      left: 60% !important;
+    }
+  }
 }
 
 .passed {
