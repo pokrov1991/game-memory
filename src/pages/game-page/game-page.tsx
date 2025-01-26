@@ -13,16 +13,11 @@ import { useSetLeaderboardMutation } from '@/shared'
 import { IDENTIFIER } from '@/utils'
 import { TypeModal } from '@/shared/components/modal-comps/types'
 import styles from './styles.module.css'
-import { isBrowser } from '@/shared/utils/entry-server'
 import { useUser } from '@/shared/contexts/UserContext'
 import YandexSDK from '@/shared/services/sdk/yandexSdk'
 
 // Вычисляем размер UI эдементов относительно высоты экрана
-let scalePercent = 0
-
-if (isBrowser) {
-  scalePercent = window.innerHeight < 1040 ? window.innerHeight / 1040 : 1
-}
+let scalePercent = window.innerHeight < 1040 ? window.innerHeight / 1040 : 1
 
 const scaleStyle = {
   transform: `scale(${scalePercent})`

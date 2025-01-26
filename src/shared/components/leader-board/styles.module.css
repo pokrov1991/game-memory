@@ -142,7 +142,7 @@
   padding: 0 24px;
 }
 
-@media (max-width: 767px) {
+@media (max-width: 768px) {
   .leader-board-item {
     flex-wrap: wrap;
     gap: 16px 0;

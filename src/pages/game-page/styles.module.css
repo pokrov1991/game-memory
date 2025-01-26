@@ -10,7 +10,7 @@
   background: url('/game/game-background.jpg') no-repeat 0 0 / cover;
   overflow: hidden;
 
-  @media (max-width: 767px) {
+  @media (max-width: 768px) {
     flex-direction: column;
     padding: 0 20px;
   }
@@ -26,7 +26,7 @@
   align-items: center;
   z-index: 2;
 
-  @media (max-width: 767px) {
+  @media (max-width: 768px) {
     transform: none !important;
     flex-direction: row;
     width: 320px;
@@ -45,7 +45,7 @@
   min-height: 282px;
   pointer-events: none;
 
-  @media (max-width: 767px) {
+  @media (max-width: 768px) {
     width: 80px;
     height: 80px;
     min-height: 80px;
@@ -74,7 +74,7 @@
   background: url('/game/game-menu.svg') no-repeat 0 0 / 100%;
   border: none;
 
-  @media (max-width: 767px) {
+  @media (max-width: 768px) {
     left: 5px;
     top: -5px;
     width: 70px;
@@ -94,7 +94,7 @@
   font-size: 20px;
   padding: 0 0 7px 0;
 
-  @media (max-width: 767px) {
+  @media (max-width: 768px) {
     left: 40px;
     bottom: -20px;
     width: 70px;
@@ -115,7 +115,7 @@
   letter-spacing: 0.02em;
   color: rgba(160, 236, 234, 1);
 
-  @media (max-width: 767px) {
+  @media (max-width: 768px) {
     /* bottom: 6px;
     right: -108px; */
     display: none;
@@ -127,7 +127,7 @@
   justify-content: space-between;
   pointer-events: none;
 
-  @media (max-width: 767px) {
+  @media (max-width: 768px) {
     transform: rotate(90deg);
   }
 }

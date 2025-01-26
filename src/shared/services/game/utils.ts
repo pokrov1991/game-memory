@@ -1,4 +1,4 @@
-import { isBrowser } from '@/shared/utils/entry-server'
+import { SCREEN_MOBILE_WIDTH } from '@/shared/constants/device'
 
 export const createCardValues = (count: number): string[] => {
   if (count % 2 !== 0) {
@@ -16,10 +16,11 @@ export const computCardRow = (count: number, col: number): number => {
 }
 
 export const computCardWidth = (col: number, row: number, margin: number) => {
-  const canvasMarginLeft = 300
+  const isMobile = window.innerWidth < SCREEN_MOBILE_WIDTH
+  const canvasMarginLeft = isMobile ? 0 : 300
   const canvasMarginTop = 100
-  const windowWidth = !isBrowser ? 0 : window.innerWidth - canvasMarginLeft
-  const windowHeight = !isBrowser ? 0 : window.innerHeight - canvasMarginTop
+  const windowWidth = window.innerWidth - canvasMarginLeft
+  const windowHeight = window.innerHeight - canvasMarginTop
 
   let cardWidth = windowWidth / col - margin
   let cardHeight = cardWidth * 1.5

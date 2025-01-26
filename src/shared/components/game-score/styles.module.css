@@ -3,7 +3,7 @@
   width: 233px;
   height: 718px;
 
-  @media (max-width: 767px) {
+  @media (max-width: 768px) {
     width: 80px;
     height: 245px;
   }
@@ -21,7 +21,7 @@
   background: url('/game/game-countdown.svg') no-repeat 0 0 / 100%;
   z-index: 3;
 
-  @media (max-width: 767px) {
+  @media (max-width: 768px) {
     bottom: 170px;
     left: 10px;
     width: 110px;
@@ -37,7 +37,7 @@
   align-items: center;
   margin: -20px 0 0 -140px;
 
-  @media (max-width: 767px) {
+  @media (max-width: 768px) {
     flex-direction: row;
     margin: 0;
     gap: 5px;
@@ -62,7 +62,7 @@
   text-shadow: 0px 6px 0px rgba(4, 60, 111, 1);
   color: #fff;
 
-  @media (max-width: 767px) {
+  @media (max-width: 768px) {
     font-size: 40px;
   }
 }
@@ -99,7 +99,7 @@
   background: url('/game/game-scale-ampula.png') no-repeat 0 0 / 100%;
   z-index: 2;
 
-  @media (max-width: 767px) {
+  @media (max-width: 768px) {
     bottom: -2px;
     left: -5px;
     width: 90px;
@@ -114,7 +114,7 @@
   width: 55px;
   height: 544px;
 
-  @media (max-width: 767px) {
+  @media (max-width: 768px) {
     top: auto;
     bottom: 55px;
     left: 24px;
@@ -141,7 +141,7 @@
   height: 544px;
   background: url('/game/game-scale-progress.png') no-repeat 0 0 / 100%;
 
-  @media (max-width: 767px) {
+  @media (max-width: 768px) {
     bottom: 0px;
     left: 6px;
     width: 20px;
