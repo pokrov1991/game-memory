@@ -23,6 +23,7 @@ const LEVELS_PARAMS: GameLevelParamsType[] = [
     title: 'Начало пути',
     description:
       'Приветствуем, путник! Вам предстоит пройти игру Memory. Перед вами будет набор карт, с парами одинаковых изображений на одной стороне. Все карты перемешиваются и выкладываются лицевой стороной вниз. Цель игры - найти все пары одинаковых карт, используя как можно меньше ходов. Удачи!',
+    type: 'store',
     gameTimer: 30,
     cardCount: 6,
     cardCol: 3,
@@ -32,6 +33,7 @@ const LEVELS_PARAMS: GameLevelParamsType[] = [
     title: 'Лес Заклинаний',
     description:
       'Таинственный лес, наполненный магией и скрытыми опасностями. Здесь вам предстоит сразиться с лесным мастером карт и найти путь через зачарованные деревья.',
+    type: 'store',
     gameTimer: 25,
     cardCount: 8,
     cardCol: 4,
@@ -41,6 +43,7 @@ const LEVELS_PARAMS: GameLevelParamsType[] = [
     title: 'Мост Стуков',
     description:
       'Старый, покосившийся мост через бурную реку. Легенды говорят, что под мостом живет карточный тролль. Пройдите через это место, чтобы продолжить свой путь.',
+    type: 'store',
     gameTimer: 30,
     cardCount: 10,
     cardCol: 5,
@@ -50,6 +53,7 @@ const LEVELS_PARAMS: GameLevelParamsType[] = [
     title: 'Забытые Руины',
     description:
       'Древние руины, где можно найти ценные артефакты и знания. Однако, они охраняются злобными карточными духами и ловушками.',
+    type: 'battle',
     gameTimer: 20,
     cardCount: 10,
     cardCol: 5,
@@ -59,6 +63,7 @@ const LEVELS_PARAMS: GameLevelParamsType[] = [
     title: 'Туманный Холм',
     description:
       'Вечно окутанный густым туманом холм, где легко потеряться. Лишь самые смелые путешественники осмеливаются пройти через это место.',
+    type: 'store',
     gameTimer: 30,
     cardCount: 12,
     cardCol: 4,
@@ -68,6 +73,7 @@ const LEVELS_PARAMS: GameLevelParamsType[] = [
     title: 'Каменные Пещеры',
     description:
       'Лабиринт из темных пещер, наполненных опасными существами и ловушками. Вам нужно найти путь через этот каменный лабиринт.',
+    type: 'store',
     gameTimer: 20,
     cardCount: 12,
     cardCol: 4,
@@ -77,6 +83,7 @@ const LEVELS_PARAMS: GameLevelParamsType[] = [
     title: 'Горная Тропа',
     description:
       'Узкая тропинка, ведущая через высокие горы. Здесь вам предстоит сражаться с горными зверями и преодолевать крутые склоны.',
+    type: 'store',
     gameTimer: 40,
     cardCount: 16,
     cardCol: 4,
@@ -86,6 +93,7 @@ const LEVELS_PARAMS: GameLevelParamsType[] = [
     title: 'Затерянный Город',
     description:
       'Древний город, давно заброшенный его жителями. Исследуйте его разрушенные улицы и здания, чтобы найти скрытые сокровища и информацию о карточном драконе.',
+    type: 'store',
     gameTimer: 35,
     cardCount: 16,
     cardCol: 4,
@@ -95,6 +103,7 @@ const LEVELS_PARAMS: GameLevelParamsType[] = [
     title: 'Проклятое Болото',
     description:
       'Мрачное болото, полное ядовитых растений и опасных тварей. Легенды гласят, что здесь обитает призрак карточного колдуна.',
+    type: 'store',
     gameTimer: 30,
     cardCount: 16,
     cardCol: 4,
@@ -104,6 +113,7 @@ const LEVELS_PARAMS: GameLevelParamsType[] = [
     title: 'Огненные Поля',
     description:
       'Опасная территория, где земля извергает огонь и лаву. Вам предстоит справиться с жаром и найти безопасный путь через эти земли.',
+    type: 'store',
     gameTimer: 35,
     cardCount: 20,
     cardCol: 5,
@@ -113,6 +123,7 @@ const LEVELS_PARAMS: GameLevelParamsType[] = [
     title: 'Логово Дракона',
     description:
       'Последняя остановка на вашем пути. Логово карточного дракона, где вам предстоит сразиться с главным противником и завершить свое великое приключение.',
+    type: 'store',
     gameTimer: 30,
     cardCount: 20,
     cardCol: 5,

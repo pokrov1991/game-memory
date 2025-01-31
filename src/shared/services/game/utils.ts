@@ -17,7 +17,7 @@ export const computCardRow = (count: number, col: number): number => {
 
 export const computCardWidth = (col: number, row: number, margin: number) => {
   const isMobile = window.innerWidth < SCREEN_MOBILE_WIDTH
-  const canvasMarginLeft = isMobile ? 0 : 300
+  const canvasMarginLeft = isMobile ? 20 : 300
   const canvasMarginTop = 100
   const windowWidth = window.innerWidth - canvasMarginLeft
   const windowHeight = window.innerHeight - canvasMarginTop

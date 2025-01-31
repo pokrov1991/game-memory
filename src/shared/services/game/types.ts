@@ -2,6 +2,7 @@ export type GameLevelType = {
   id: number
   title: string
   description: string
+  type: string
   gameTimer: number
   cardCount: number
   cardCol: number

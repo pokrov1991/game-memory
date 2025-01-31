@@ -49,7 +49,11 @@ export const LevelMap = () => {
 
   const handleStartGame = () => {
     selectLevel(level.id)
-    navigate('/game', {})
+    if (level.type === 'battle') {
+      navigate('/game-battle', {})
+    } else {
+      navigate('/game', {})
+    }
   }
 
   const handleMainPage = () => navigate('/', {})

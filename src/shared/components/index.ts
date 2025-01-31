@@ -1,6 +1,7 @@
 export * from './error-boundary'
 export * from './game-canvas'
 export * from './game-countdown'
+export * from './game-timer-attack'
 export * from './game-score'
 export * from './game-score-effects'
 export * from './leader-board'
