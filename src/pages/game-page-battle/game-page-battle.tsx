@@ -31,6 +31,7 @@ export const GamePageBattle = () => {
   const [isOpenModalWin, setOpenModalWin] = useState(false)
   const [isOpenModalLose, setOpenModalLose] = useState(false)
   const [isOpenModalExit, setOpenModalExit] = useState(false)
+  const [isStun, setStun] = useState(true)
   const [isPause, togglePause] = useToggle(true)
   const {
     completeLevel,
@@ -137,9 +138,16 @@ export const GamePageBattle = () => {
   }
 
   const handleScore = (newScore: number): void => {
+    // Прибавляем очки
     const scoreTotal = score + newScore
     console.log('score', scoreTotal)
     setScore(scoreTotal)
+
+    // Ставим удар по врагу
+    setStun(true)
+    setTimeout(() => {
+      setStun(false)
+    }, 0)
   }
 
   const handleAttackSeconds = (second: number): void => {
@@ -148,6 +156,7 @@ export const GamePageBattle = () => {
 
   const handleAttack = (attack: number): void => {
     console.log('action', attack)
+    // TODO: Уменьшаем шкалу здоровья
   }
 
   const handleSetLeader = async (level: number, score: number) => {
@@ -201,9 +210,11 @@ export const GamePageBattle = () => {
         />
         <GameTimerAttack
           isPause={isPause}
+          isStun={isStun}
           restartKey={restartKey}
           initialSeconds={[5,10,2,2,3]}
           initialAttacks={[10,20,5,5,6]} // Количество урона в % (можно ослабить если есть доспехи)
+          // initialColors={['red','blue','green','black','yellow']} // TODO: Цвета атаки
           onAttack={handleAttack}
           onSeconds={handleAttackSeconds}
         />

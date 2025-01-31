@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react'
+import { STUN_ANIMATION_DELAY } from '@/shared/services/game/constants'
 
 type GameTimerAttackProps = {
   isPause: boolean
+  isStun: boolean
   restartKey: number
   initialSeconds: number[]
   initialAttacks: number[]
@@ -11,6 +13,7 @@ type GameTimerAttackProps = {
 
 export const GameTimerAttack: React.FC<GameTimerAttackProps> = ({
   isPause,
+  isStun,
   restartKey,
   initialSeconds,
   initialAttacks,
@@ -19,6 +22,7 @@ export const GameTimerAttack: React.FC<GameTimerAttackProps> = ({
 }) => {
   const [index, setIndex] = useState(0)
   const [seconds, setSeconds] = useState(initialSeconds[index])
+  const [isStunPause, setStunPause] = useState(false)
 
   useEffect(() => {
     setIndex(0)
@@ -26,8 +30,17 @@ export const GameTimerAttack: React.FC<GameTimerAttackProps> = ({
   }, [restartKey])
 
   useEffect(() => {
+    const stunDelay = STUN_ANIMATION_DELAY + 100 * initialAttacks[index]
+    console.log('stun', stunDelay)
+    setStunPause(true)
+    setTimeout(() => {
+      setStunPause(false)
+    }, stunDelay)
+  }, [isStun])
+
+  useEffect(() => {
     if (seconds > 0) {
-      if (isPause) {
+      if (isPause || isStunPause) {
         return
       }
 
@@ -49,7 +62,7 @@ export const GameTimerAttack: React.FC<GameTimerAttackProps> = ({
       setIndex(indexNext)
       setSeconds(initialSeconds[indexNext])
     }
-  }, [isPause, seconds])
+  }, [isPause, isStunPause, seconds])
 
   return ('')
 }
