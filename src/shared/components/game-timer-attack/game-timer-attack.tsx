@@ -30,12 +30,14 @@ export const GameTimerAttack: React.FC<GameTimerAttackProps> = ({
   }, [restartKey])
 
   useEffect(() => {
-    const stunDelay = STUN_ANIMATION_DELAY + 100 * initialAttacks[index]
-    console.log('stun', stunDelay)
-    setStunPause(true)
-    setTimeout(() => {
-      setStunPause(false)
-    }, stunDelay)
+    if (isStun) {
+      const stunDelay = STUN_ANIMATION_DELAY + 100 * initialAttacks[index]
+      console.log('stun', stunDelay)
+      setStunPause(true)
+      setTimeout(() => {
+        setStunPause(false)
+      }, stunDelay)
+    }
   }, [isStun])
 
   useEffect(() => {

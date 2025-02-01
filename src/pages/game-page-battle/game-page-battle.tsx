@@ -31,7 +31,7 @@ export const GamePageBattle = () => {
   const [isOpenModalWin, setOpenModalWin] = useState(false)
   const [isOpenModalLose, setOpenModalLose] = useState(false)
   const [isOpenModalExit, setOpenModalExit] = useState(false)
-  const [isStun, setStun] = useState(true)
+  const [isStun, setStun] = useState(false)
   const [isPause, togglePause] = useToggle(true)
   const {
     completeLevel,
@@ -144,10 +144,12 @@ export const GamePageBattle = () => {
     setScore(scoreTotal)
 
     // Ставим удар по врагу
-    setStun(true)
-    setTimeout(() => {
-      setStun(false)
-    }, 0)
+    if (newScore > 0) {
+      setStun(true)
+      setTimeout(() => {
+        setStun(false)
+      }, 0)
+    }
   }
 
   const handleAttackSeconds = (second: number): void => {
