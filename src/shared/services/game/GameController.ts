@@ -14,12 +14,14 @@ eventBus.on('game:level', payload => {
 export class GameController {
   model: GameModel
   view: GameView
+  index: number
   flipProgress: number[]
   isAnimating: boolean
 
   constructor(model: GameModel, view: GameView) {
     this.model = model
     this.view = view
+    this.index = 0
     this.flipProgress = new Array(model.cards.length).fill(0)
     this.isAnimating = false
   }
@@ -28,14 +30,14 @@ export class GameController {
     if (this.isAnimating) {
       return
     }
-    const index = this.getCardIndex(x, y)
+    this.index = this.getCardIndex(x, y)
     if (
-      index !== null &&
-      !this.model.flippedCards.includes(index) &&
-      !this.model.matchedCards.includes(index)
+      this.index !== null &&
+      !this.model.flippedCards.includes(this.index) &&
+      !this.model.matchedCards.includes(this.index)
     ) {
-      this.flipCard(index)
-      this.model.flipCard(index)
+      this.flipCard(this.index)
+      this.model.flipCard(this.index)
 
       if (this.model.flippedCards.length === 2) {
         this.isAnimating = true

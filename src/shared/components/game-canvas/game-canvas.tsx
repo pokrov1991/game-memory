@@ -4,13 +4,14 @@ import { GameView } from '@/shared/services/game/GameView'
 import { GameController } from '@/shared/services/game/GameController'
 import { GameLevelType, CardParams} from '@/shared/services/game/types'
 import { GameEffectsCards } from './game-effects-cards'
+import { MAP_CARD_COLORS } from '@/shared/services/game/constants'
 import styles from './styles.module.css'
 
 type GameCanvasProps = {
   isPause: boolean
   restartKey: number
   level: GameLevelType
-  onScore: (score: number) => void
+  onScore: (score: number, color: string) => void
   onPlay: () => void
   onVictory: () => void
 }
@@ -25,6 +26,7 @@ export const GameCanvas: React.FC<GameCanvasProps> = ({
 }) => {
   const [isWin, setIsWin] = useState(false)
   const [score, setScore] = useState(0)
+  const [cardColor, setCardColor] = useState('')
   const [isImagesLoaded, setImagesLoaded] = useState(false)
   const [effectsCardsParams, setEffectsCardsParams] = useState<CardParams[]>([])
   const [effectsCardsMatched, setEffectsCardsMatched] = useState<number[]>([])
@@ -44,7 +46,7 @@ export const GameCanvas: React.FC<GameCanvasProps> = ({
   }, [isWin])
 
   useEffect(() => {
-    onScore(score)
+    onScore(score, cardColor)
   }, [score])
 
   useEffect(() => {
@@ -88,6 +90,11 @@ export const GameCanvas: React.FC<GameCanvasProps> = ({
       const y = e.clientY - rect.top
       gameControllerRef.current.handleCardClick(x, y)
     }
+
+    // Определяем цвет карты
+    const cardKey = gameControllerRef.current.model.cards[gameControllerRef.current.index] as keyof typeof MAP_CARD_COLORS
+    const cardColor = MAP_CARD_COLORS[cardKey]
+    setCardColor(cardColor)
 
     // Задаем отгаданные карты для слоя с эфектами
     setTimeout(() => {

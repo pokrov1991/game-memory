@@ -8,6 +8,19 @@ import {
 } from './utils'
 import { GameLevelParamsType, GameLevelType } from './types'
 
+export const MAP_CARD_COLORS = {
+  'card-1.png': 'blue',
+  'card-2.png': 'black',
+  'card-3.png': 'yellow',
+  'card-4.png': 'green',
+  'card-5.png': 'red',
+  'card-6.png': 'blue',
+  'card-7.png': 'black',
+  'card-8.png': 'yellow',
+  'card-9.png': 'green',
+  'card-10.png': 'red',
+}
+
 export const PATH_SPRITE = '/game'
 export const PATH_SPRITE_CARD = '/game/card.png'
 export const PATH_SPRITE_CARD_HOVER = '/game/card-hover.png'
@@ -17,6 +30,7 @@ export const FRAME_TIMOUT = 500
 export const CARD_MARGIN = 10
 export const CARD_SCORE = 2
 export const STUN_ANIMATION_DELAY = 2000
+export const PARRY_ANIMATION_DELAY = 2000
 
 const LEVELS_PARAMS: GameLevelParamsType[] = [
   {

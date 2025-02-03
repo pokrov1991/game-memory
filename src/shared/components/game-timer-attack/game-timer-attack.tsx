@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react'
-import { STUN_ANIMATION_DELAY } from '@/shared/services/game/constants'
+import { STUN_ANIMATION_DELAY, PARRY_ANIMATION_DELAY } from '@/shared/services/game/constants'
 
 type GameTimerAttackProps = {
   isPause: boolean
   isStun: boolean
   restartKey: number
+  colorCard: string
   initialSeconds: number[]
   initialAttacks: number[]
+  initialColors: string[]
   onAttack: (attack: number) => void
   onSeconds: (seconds: number) => void
 }
@@ -15,8 +17,10 @@ export const GameTimerAttack: React.FC<GameTimerAttackProps> = ({
   isPause,
   isStun,
   restartKey,
+  colorCard,
   initialSeconds,
   initialAttacks,
+  initialColors,
   onAttack,
   onSeconds,
 }) => {
@@ -31,6 +35,15 @@ export const GameTimerAttack: React.FC<GameTimerAttackProps> = ({
 
   useEffect(() => {
     if (isStun) {
+      // Учитываем парирование
+      let parryDelay = 0
+      if (initialColors[index] === colorCard) {
+        console.log('parry')
+        parryDelay = PARRY_ANIMATION_DELAY
+        setSeconds(0)
+      }
+      
+      // Задаем оглушение
       const stunDelay = STUN_ANIMATION_DELAY + 100 * initialAttacks[index]
       console.log('stun', stunDelay)
       setStunPause(true)
@@ -54,7 +67,9 @@ export const GameTimerAttack: React.FC<GameTimerAttackProps> = ({
 
       return () => clearInterval(timerId)
     } else {
-      onAttack(initialAttacks[index])
+      if (initialColors[index] !== colorCard) {
+        onAttack(initialAttacks[index])
+      }
 
       let indexNext = index + 1
       if (index === initialSeconds.length - 1) {

@@ -46,6 +46,7 @@ export const GamePageBattle = () => {
   const [level, setLevel] = useLevel(selectedLevel)
   const [restartKey, setRestartKey] = useState(0)
   const [score, setScore] = useState(0)
+  const [colorCard, setColorCard] = useState('')
   const [hp, setHP] = useState(100)
   const [resultText, setResultText] = useState('')
   const [setLeader] = useSetLeaderboardMutation()
@@ -137,11 +138,15 @@ export const GamePageBattle = () => {
     setOpenModalLose(true)
   }
 
-  const handleScore = (newScore: number): void => {
+  const handleScore = (newScore: number, color: string): void => {
     // Прибавляем очки
     const scoreTotal = score + newScore
     console.log('score', scoreTotal)
     setScore(scoreTotal)
+
+    // Цвет удара
+    console.log('color', color)
+    setColorCard(color)
 
     // Ставим удар по врагу
     if (newScore > 0) {
@@ -214,9 +219,10 @@ export const GamePageBattle = () => {
           isPause={isPause}
           isStun={isStun}
           restartKey={restartKey}
+          colorCard={colorCard}
           initialSeconds={[5,10,2,2,3]}
           initialAttacks={[10,20,5,5,6]} // Количество урона в % (можно ослабить если есть доспехи)
-          // initialColors={['red','blue','green','black','yellow']} // TODO: Цвета атаки
+          initialColors={['red','blue','green','black','yellow']} // Цвета атаки
           onAttack={handleAttack}
           onSeconds={handleAttackSeconds}
         />
