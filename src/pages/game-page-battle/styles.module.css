@@ -116,8 +116,6 @@
   color: rgba(160, 236, 234, 1);
 
   @media (max-width: 768px) {
-    /* bottom: 6px;
-    right: -108px; */
     display: none;
   }
 }
@@ -136,4 +134,66 @@
   position: relative;
   width: 100%;
   z-index: 1;
+}
+
+.game-page__persons {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: auto;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.game-page__person {
+  position: absolute;
+  bottom: 0;
+}
+
+.game-page__person_player {
+  left: 0;
+}
+
+.game-page__person_enemy {
+  right: 0;
+}
+
+.game-page__person-img {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100px;
+  height: 100px;
+  background: #ee00ff;
+  pointer-events: none;
+}
+
+.game-page__person-img-attack {
+  width: 20px;
+  height: 20px;
+  background: #fff;
+}
+
+.game-page__person-info {
+  width: auto;
+}
+
+.game-page__person-name {
+  font-size: 20px;
+  color: #fff;
+}
+
+.game-page__person-hp {
+  height: 20px;
+  width: 100px;
+  border: 1px solid red;
+}
+
+.game-page__person-hp-bar {
+  height: 100%;
+  width: 100%;
+  background: red;
+  transition: 0.3s;
 }

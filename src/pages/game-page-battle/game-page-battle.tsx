@@ -1,3 +1,4 @@
+import classNames from 'classnames'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import {
@@ -47,7 +48,9 @@ export const GamePageBattle = () => {
   const [restartKey, setRestartKey] = useState(0)
   const [score, setScore] = useState(0)
   const [colorCard, setColorCard] = useState('')
+  const [colorAttack, setColorAttack] = useState('')
   const [hp, setHP] = useState(100)
+  const [hpEnemy, setHPEnemy] = useState(100)
   const [resultText, setResultText] = useState('')
   const [setLeader] = useSetLeaderboardMutation()
 
@@ -59,6 +62,8 @@ export const GamePageBattle = () => {
   const onRestart = (): void => {
     setRestartKey(prevKey => prevKey + 1)
     setScore(0)
+    setHP(100)
+    setHPEnemy(100)
     togglePause(true)
   }
 
@@ -141,7 +146,7 @@ export const GamePageBattle = () => {
   const handleScore = (newScore: number, color: string): void => {
     // Прибавляем очки
     const scoreTotal = score + newScore
-    console.log('score', scoreTotal)
+    console.log('score', scoreTotal, newScore)
     setScore(scoreTotal)
 
     // Цвет удара
@@ -150,6 +155,9 @@ export const GamePageBattle = () => {
 
     // Ставим удар по врагу
     if (newScore > 0) {
+      const newHpEnemy = hpEnemy > newScore ? hpEnemy - newScore : 0
+      setHPEnemy(newHpEnemy)
+
       setStun(true)
       setTimeout(() => {
         setStun(false)
@@ -157,13 +165,15 @@ export const GamePageBattle = () => {
     }
   }
 
-  const handleAttackSeconds = (second: number): void => {
-    console.log('action seconds', second)
+  const handleAttackSeconds = (second: number, color: string): void => {
+    console.log('action seconds', second, color)
+    setColorAttack(color)
   }
 
   const handleAttack = (attack: number): void => {
-    console.log('action', attack)
-    // TODO: Уменьшаем шкалу здоровья
+    const newHp = hp > attack ? hp - attack : 0
+    console.log('action', attack, newHp)
+    setHP(newHp)
   }
 
   const handleSetLeader = async (level: number, score: number) => {
@@ -205,6 +215,50 @@ export const GamePageBattle = () => {
           <GameScore score={score} level={level} />
         </div>
       </div>
+
+
+      <div className={styles['game-page__persons']}>
+        <div className={
+          classNames(
+            styles['game-page__person'],
+            { [styles['game-page__person_player']]: true },
+          )
+        }>
+          <div className={styles['game-page__person-img']}>
+            <div className={styles['game-page__person-img-attack']}></div>
+          </div>
+          <div className={styles['game-page__person-info']}>
+            <div className={styles['game-page__person-name']}>Игрок</div>
+            <div className={styles['game-page__person-hp']}>
+              <div
+                className={styles['game-page__person-hp-bar']}
+                style={{ width: `${hp}%` }}></div>
+            </div>
+          </div>
+        </div>
+        <div className={
+          classNames(
+            styles['game-page__person'],
+            { [styles['game-page__person_enemy']]: true },
+          )
+        }>
+          <div className={styles['game-page__person-img']}>
+            <div 
+              className={styles['game-page__person-img-attack']} 
+              style={{ background: `${colorAttack}` }}></div>
+          </div>
+          <div className={styles['game-page__person-info']}>
+            <div className={styles['game-page__person-name']}>Враг</div>
+            <div className={styles['game-page__person-hp']}>
+              <div
+                className={styles['game-page__person-hp-bar']}
+                style={{ width: `${hpEnemy}%` }}></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
       <div className={styles['game-page__canvas']}>
         <GameScoreEffects score={score} />
         <GameCanvas
@@ -221,8 +275,8 @@ export const GamePageBattle = () => {
           restartKey={restartKey}
           colorCard={colorCard}
           initialSeconds={[5,10,2,2,3]}
-          initialAttacks={[10,20,5,5,6]} // Количество урона в % (можно ослабить если есть доспехи)
-          initialColors={['red','blue','green','black','yellow']} // Цвета атаки
+          initialAttacks={[10,20,5,5,6]}
+          initialColors={['red','blue','green','black','yellow']}
           onAttack={handleAttack}
           onSeconds={handleAttackSeconds}
         />

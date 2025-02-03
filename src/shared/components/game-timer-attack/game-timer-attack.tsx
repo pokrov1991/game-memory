@@ -6,11 +6,11 @@ type GameTimerAttackProps = {
   isStun: boolean
   restartKey: number
   colorCard: string
-  initialSeconds: number[]
-  initialAttacks: number[]
-  initialColors: string[]
+  initialSeconds: number[] // Время атаки в секундах
+  initialAttacks: number[] // Количество урона в %
+  initialColors: string[]  // Цвета атаки
   onAttack: (attack: number) => void
-  onSeconds: (seconds: number) => void
+  onSeconds: (seconds: number, color: string) => void
 }
 
 export const GameTimerAttack: React.FC<GameTimerAttackProps> = ({
@@ -63,7 +63,7 @@ export const GameTimerAttack: React.FC<GameTimerAttackProps> = ({
         setSeconds(prevSeconds => prevSeconds - 1)
       }, 1000)
 
-      onSeconds(seconds)
+      onSeconds(seconds, initialColors[index])
 
       return () => clearInterval(timerId)
     } else {
