@@ -11,7 +11,8 @@ type GameCanvasProps = {
   isPause: boolean
   restartKey: number
   level: GameLevelType
-  onScore: (score: number, color: string) => void
+  onScore: (score: number) => void
+  onColor?: (color: string, countFlipped: number) => void
   onPlay: () => void
   onVictory: () => void
 }
@@ -21,12 +22,14 @@ export const GameCanvas: React.FC<GameCanvasProps> = ({
   restartKey,
   level,
   onScore,
+  onColor,
   onPlay,
   onVictory,
 }) => {
   const [isWin, setIsWin] = useState(false)
   const [score, setScore] = useState(0)
   const [cardColor, setCardColor] = useState('')
+  const [cardCountFlipped, setCardCountFlipped] = useState(0)
   const [isImagesLoaded, setImagesLoaded] = useState(false)
   const [effectsCardsParams, setEffectsCardsParams] = useState<CardParams[]>([])
   const [effectsCardsMatched, setEffectsCardsMatched] = useState<number[]>([])
@@ -46,8 +49,13 @@ export const GameCanvas: React.FC<GameCanvasProps> = ({
   }, [isWin])
 
   useEffect(() => {
-    onScore(score, cardColor)
+    onScore(score)
+    onColor(cardColor, cardCountFlipped)
   }, [score])
+
+  useEffect(() => {
+    onColor(cardColor, cardCountFlipped)
+  }, [cardColor])
 
   useEffect(() => {
     if (canvasRef.current) {
@@ -95,6 +103,8 @@ export const GameCanvas: React.FC<GameCanvasProps> = ({
     const cardKey = gameControllerRef.current.model.cards[gameControllerRef.current.index] as keyof typeof MAP_CARD_COLORS
     const cardColor = MAP_CARD_COLORS[cardKey]
     setCardColor(cardColor)
+    // Количество перевернутых карт (0, 1, 2)
+    setCardCountFlipped(gameControllerRef.current.model.flippedCards.length)
 
     // Задаем отгаданные карты для слоя с эфектами
     setTimeout(() => {

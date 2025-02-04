@@ -48,6 +48,7 @@ export const GamePageBattle = () => {
   const [restartKey, setRestartKey] = useState(0)
   const [score, setScore] = useState(0)
   const [colorCard, setColorCard] = useState('')
+  const [colorPlayerPreAttack, setColorPlayerPreAttack] = useState('')
   const [colorAttack, setColorAttack] = useState('')
   const [hp, setHP] = useState(100)
   const [hpEnemy, setHPEnemy] = useState(100)
@@ -64,6 +65,8 @@ export const GamePageBattle = () => {
     setScore(0)
     setHP(100)
     setHPEnemy(100)
+    setColorCard('')
+    setColorPlayerPreAttack('')
     togglePause(true)
   }
 
@@ -143,15 +146,11 @@ export const GamePageBattle = () => {
     setOpenModalLose(true)
   }
 
-  const handleScore = (newScore: number, color: string): void => {
+  const handleScore = (newScore: number): void => {
     // Прибавляем очки
     const scoreTotal = score + newScore
     console.log('score', scoreTotal, newScore)
     setScore(scoreTotal)
-
-    // Цвет удара
-    console.log('color', color)
-    setColorCard(color)
 
     // Ставим удар по врагу
     if (newScore > 0) {
@@ -162,6 +161,18 @@ export const GamePageBattle = () => {
       setTimeout(() => {
         setStun(false)
       }, 0)
+    }
+  }
+
+  const handleColor = (color: string, countFlipped: number): void => {
+    console.log('color', color, countFlipped)
+
+    if (countFlipped === 1) {
+      setColorPlayerPreAttack(color)
+    }
+    if (countFlipped === 2) {
+      setColorPlayerPreAttack('')
+      setColorCard(color)
     }
   }
 
@@ -225,7 +236,9 @@ export const GamePageBattle = () => {
           )
         }>
           <div className={styles['game-page__person-img']}>
-            <div className={styles['game-page__person-img-attack']}></div>
+            <div 
+              className={styles['game-page__person-img-attack']} 
+              style={{ background: `${colorPlayerPreAttack}` }}></div>
           </div>
           <div className={styles['game-page__person-info']}>
             <div className={styles['game-page__person-name']}>Игрок</div>
@@ -266,6 +279,7 @@ export const GamePageBattle = () => {
           restartKey={restartKey}
           level={level}
           onScore={handleScore}
+          onColor={handleColor}
           onPlay={handlePause}
           onVictory={handleChangeCards}
         />
