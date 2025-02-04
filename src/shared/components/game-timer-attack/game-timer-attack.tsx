@@ -5,24 +5,24 @@ type GameTimerAttackProps = {
   isPause: boolean
   isStun: boolean
   restartKey: number
-  colorCard: string
+  colorParry: string
   initialSeconds: number[] // Время атаки в секундах
   initialAttacks: number[] // Количество урона в %
   initialColors: string[]  // Цвета атаки
-  onAttack: (attack: number) => void
-  onSeconds: (seconds: number, color: string) => void
+  onEnemyAttack: (attack: number) => void
+  onTimer: (seconds: number, color: string) => void
 }
 
 export const GameTimerAttack: React.FC<GameTimerAttackProps> = ({
   isPause,
   isStun,
   restartKey,
-  colorCard,
+  colorParry,
   initialSeconds,
   initialAttacks,
   initialColors,
-  onAttack,
-  onSeconds,
+  onEnemyAttack,
+  onTimer,
 }) => {
   const [index, setIndex] = useState(0)
   const [seconds, setSeconds] = useState(initialSeconds[index])
@@ -37,7 +37,7 @@ export const GameTimerAttack: React.FC<GameTimerAttackProps> = ({
     if (isStun) {
       // Учитываем парирование
       let parryDelay = 0
-      if (initialColors[index] === colorCard) {
+      if (initialColors[index] === colorParry) {
         console.log('parry')
         parryDelay = PARRY_ANIMATION_DELAY
         setSeconds(0)
@@ -63,12 +63,12 @@ export const GameTimerAttack: React.FC<GameTimerAttackProps> = ({
         setSeconds(prevSeconds => prevSeconds - 1)
       }, 1000)
 
-      onSeconds(seconds, initialColors[index])
+      onTimer(seconds, initialColors[index])
 
       return () => clearInterval(timerId)
     } else {
-      if (initialColors[index] !== colorCard) {
-        onAttack(initialAttacks[index])
+      if (initialColors[index] !== colorParry) {
+        onEnemyAttack(initialAttacks[index])
       }
 
       let indexNext = index + 1

@@ -47,15 +47,13 @@ export const GamePageBattle = () => {
   const [level, setLevel] = useLevel(selectedLevel)
   const [restartKey, setRestartKey] = useState(0)
   const [score, setScore] = useState(0)
-  const [colorCard, setColorCard] = useState('')
+  const [colorPlayerAttack, setColorPlayerAttack] = useState('')
   const [colorPlayerPreAttack, setColorPlayerPreAttack] = useState('')
-  const [colorAttack, setColorAttack] = useState('')
+  const [colorEnemyAttack, setColorEnemyAttack] = useState('')
   const [hp, setHP] = useState(100)
   const [hpEnemy, setHPEnemy] = useState(100)
   const [resultText, setResultText] = useState('')
   const [setLeader] = useSetLeaderboardMutation()
-
-  console.log('GamePageBattle')
 
   useMusic({ src: '/music/success.mp3', conditional: isOpenModalWin })
   useMusic({ src: '/music/timeout.mp3', conditional: isOpenModalLose })
@@ -65,7 +63,7 @@ export const GamePageBattle = () => {
     setScore(0)
     setHP(100)
     setHPEnemy(100)
-    setColorCard('')
+    setColorPlayerAttack('')
     setColorPlayerPreAttack('')
     togglePause(true)
   }
@@ -149,7 +147,7 @@ export const GamePageBattle = () => {
   const handleScore = (newScore: number): void => {
     // Прибавляем очки
     const scoreTotal = score + newScore
-    console.log('score', scoreTotal, newScore)
+    console.log('attack player', scoreTotal, newScore)
     setScore(scoreTotal)
 
     // Ставим удар по врагу
@@ -165,25 +163,23 @@ export const GamePageBattle = () => {
   }
 
   const handleColor = (color: string, countFlipped: number): void => {
-    console.log('color', color, countFlipped)
-
     if (countFlipped === 1) {
       setColorPlayerPreAttack(color)
     }
     if (countFlipped === 2) {
       setColorPlayerPreAttack('')
-      setColorCard(color)
+      setColorPlayerAttack(color)
     }
   }
 
-  const handleAttackSeconds = (second: number, color: string): void => {
-    console.log('action seconds', second, color)
-    setColorAttack(color)
+  const handleTimerEnemyAttack = (second: number, color: string): void => {
+    console.log('timer', second)
+    setColorEnemyAttack(color)
   }
 
-  const handleAttack = (attack: number): void => {
+  const handleEnemyAttack = (attack: number): void => {
     const newHp = hp > attack ? hp - attack : 0
-    console.log('action', attack, newHp)
+    console.log('attack enemy', attack, newHp)
     setHP(newHp)
   }
 
@@ -258,7 +254,7 @@ export const GamePageBattle = () => {
           <div className={styles['game-page__person-img']}>
             <div 
               className={styles['game-page__person-img-attack']} 
-              style={{ background: `${colorAttack}` }}></div>
+              style={{ background: `${colorEnemyAttack}` }}></div>
           </div>
           <div className={styles['game-page__person-info']}>
             <div className={styles['game-page__person-name']}>Враг</div>
@@ -287,12 +283,12 @@ export const GamePageBattle = () => {
           isPause={isPause}
           isStun={isStun}
           restartKey={restartKey}
-          colorCard={colorCard}
+          colorParry={colorPlayerAttack}
           initialSeconds={[5,10,2,2,3]}
           initialAttacks={[10,20,5,5,6]}
           initialColors={['red','blue','green','black','yellow']}
-          onAttack={handleAttack}
-          onSeconds={handleAttackSeconds}
+          onEnemyAttack={handleEnemyAttack}
+          onTimer={handleTimerEnemyAttack}
         />
       </div>
       <ModalResult
