@@ -13,9 +13,10 @@ import { useLevel, useToggle, useProgress, useMusic } from '@/shared/hooks'
 import { useSetLeaderboardMutation } from '@/shared'
 import { IDENTIFIER } from '@/utils'
 import { TypeModal } from '@/shared/components/modal-comps/types'
-import styles from './styles.module.css'
 import { useUser } from '@/shared/contexts/UserContext'
+import { ATTACK_FACTOR } from '@/shared/services/game/constants'
 import YandexSDK from '@/shared/services/sdk/yandexSdk'
+import styles from './styles.module.css'
 
 // Вычисляем размер UI эдементов относительно высоты экрана
 let scalePercent = window.innerHeight < 1040 ? window.innerHeight / 1040 : 1
@@ -47,6 +48,7 @@ export const GamePageBattle = () => {
   const [level, setLevel] = useLevel(selectedLevel)
   const [restartKey, setRestartKey] = useState(0)
   const [score, setScore] = useState(0)
+  const [scoreSession, setScoreSession] = useState(0)
   const [colorPlayerAttack, setColorPlayerAttack] = useState('')
   const [colorPlayerPreAttack, setColorPlayerPreAttack] = useState('')
   const [colorEnemyAttack, setColorEnemyAttack] = useState('')
@@ -61,6 +63,7 @@ export const GamePageBattle = () => {
   const onRestart = (): void => {
     setRestartKey(prevKey => prevKey + 1)
     setScore(0)
+    setScoreSession(0)
     setHP(100)
     setHPEnemy(100)
     setColorPlayerAttack('')
@@ -146,13 +149,16 @@ export const GamePageBattle = () => {
 
   const handleScore = (newScore: number): void => {
     // Прибавляем очки
-    const scoreTotal = score + newScore
-    console.log('attack player', scoreTotal, newScore)
-    setScore(scoreTotal)
+    const currentScore = newScore - scoreSession > 0 ? newScore - scoreSession : 0
+    const totalScore = currentScore + score
+    console.log('attack player', currentScore, `(${newScore} ${totalScore})`)
+    setScoreSession(newScore)
+    setScore(totalScore)
 
     // Ставим удар по врагу
     if (newScore > 0) {
-      const newHpEnemy = hpEnemy > newScore ? hpEnemy - newScore : 0
+      const attack = Math.floor(currentScore * ATTACK_FACTOR)
+      const newHpEnemy = hpEnemy > attack ? hpEnemy - attack : 0
       setHPEnemy(newHpEnemy)
 
       setStun(true)
@@ -269,7 +275,7 @@ export const GamePageBattle = () => {
 
 
       <div className={styles['game-page__canvas']}>
-        <GameScoreEffects score={score} />
+        <GameScoreEffects score={scoreSession} />
         <GameCanvas
           isPause={isPause}
           restartKey={restartKey}

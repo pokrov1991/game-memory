@@ -45,7 +45,7 @@ export const GameTimerAttack: React.FC<GameTimerAttackProps> = ({
       
       // Задаем оглушение
       const stunDelay = STUN_ANIMATION_DELAY + 100 * initialAttacks[index]
-      console.log('stun', stunDelay)
+      console.log('stun', stunDelay/1000)
       setStunPause(true)
       setTimeout(() => {
         setStunPause(false)

@@ -28,9 +28,10 @@ export const PATH_SPRITE_CARD_LIGHT = '/game/card-light.png'
 
 export const FRAME_TIMOUT = 500
 export const CARD_MARGIN = 10
-export const CARD_SCORE = 2
-export const STUN_ANIMATION_DELAY = 2000
-export const PARRY_ANIMATION_DELAY = 2000
+export const CARD_SCORE = 2 // Очки за отгаданную пару карт
+export const ATTACK_FACTOR = 2 // Множитель урона от атаки
+export const STUN_ANIMATION_DELAY = 2000 // Задержка анимации оглушения
+export const PARRY_ANIMATION_DELAY = 2000 // Задержка анимации парирования
 
 const LEVELS_PARAMS: GameLevelParamsType[] = [
   {
