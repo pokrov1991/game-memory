@@ -186,6 +186,7 @@ export const GamePage = () => {
           restartKey={restartKey}
           level={level}
           onScore={handleScore}
+          onColor={() => {}}
           onPlay={handlePause}
           onVictory={handleGameWin}
         />

@@ -1,5 +1,5 @@
 import classNames from 'classnames'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import {
   GameCanvas,
@@ -59,6 +59,15 @@ export const GamePageBattle = () => {
 
   useMusic({ src: '/music/success.mp3', conditional: isOpenModalWin })
   useMusic({ src: '/music/timeout.mp3', conditional: isOpenModalLose })
+
+  useEffect(() => {
+    if (hp <= 0) {
+      handleGameOver()
+    }
+    if (hpEnemy <= 0) {
+      handleGameWin()
+    }
+  }, [hp, hpEnemy])
 
   const onRestart = (): void => {
     setRestartKey(prevKey => prevKey + 1)
@@ -131,19 +140,14 @@ export const GamePageBattle = () => {
   const handleGameWin = (): void => {
     handlePause()
     setTimeout(() => {
-      setResultText(
-        `Поздравляем! Вы прошли уровень «${level.title}» и получили опыт: ${
-          score
-        } exp`
-      )
+      setResultText(`Поздравляем! Вы прошли уровень «${level.title}» и получили опыт: ${score} exp`)
       setOpenModalWin(true)
     }, delayGameEffects)
   }
 
   const handleGameOver = (): void => {
-    setResultText(
-      `Не унывай! Попробуй еще раз пройти уровень. У тебя получится )`
-    )
+    handlePause()
+    setResultText(`Не унывай! Попробуй еще раз пройти уровень. У тебя получится )`)
     setOpenModalLose(true)
   }
 
@@ -291,7 +295,7 @@ export const GamePageBattle = () => {
           restartKey={restartKey}
           colorParry={colorPlayerAttack}
           initialSeconds={[5,10,2,2,3]}
-          initialAttacks={[10,20,5,5,6]}
+          initialAttacks={[20,40,10,10,12]}
           initialColors={['red','blue','green','black','yellow']}
           onEnemyAttack={handleEnemyAttack}
           onTimer={handleTimerEnemyAttack}

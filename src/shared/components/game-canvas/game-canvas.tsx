@@ -12,7 +12,7 @@ type GameCanvasProps = {
   restartKey: number
   level: GameLevelType
   onScore: (score: number) => void
-  onColor?: (color: string, countFlipped: number) => void
+  onColor: (color: string, countFlipped: number) => void
   onPlay: () => void
   onVictory: () => void
 }
