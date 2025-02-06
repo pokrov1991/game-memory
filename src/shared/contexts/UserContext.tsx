@@ -9,10 +9,12 @@ interface UserData {
 }
 
 interface GameData {
-    completedLevels: number[];
-    selectedLevel: number;
-    userLevel: number;
-    userScore: number;
+  completedLevels: number[];
+  selectedLevel: number;
+  userLevel: number;
+  userScore: number;
+  userCoins: number;
+  userHelmet: number;
 }
 
 interface UserContextType {

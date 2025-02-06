@@ -1,4 +1,36 @@
-export type GameLevelType = {
+export type GameLevelStateType = {
+  id: number
+  x: number
+  y: number
+  title: string
+  description: string
+  type: string
+  cardCount: number
+  cardCol: number
+  cardRow: number
+  initialSeconds: number[],
+  initialAttacks: number[],
+  initialColors: string[],
+  isPassed: boolean,
+  isCurrent: boolean,
+  cardValues: string[]
+  cardWidth: number
+  cardHeight: number
+  canvasWidth: number
+  canvasHeight: number
+}
+
+export type GameLevelStateSimpleType = Omit<
+  GameLevelStateType,
+  | 'cardRow'
+  | 'cardValues'
+  | 'cardWidth'
+  | 'cardHeight'
+  | 'canvasWidth'
+  | 'canvasHeight'
+>
+
+export type GameLevelStoreType = {
   id: number
   title: string
   description: string
@@ -14,8 +46,8 @@ export type GameLevelType = {
   canvasHeight: number
 }
 
-export type GameLevelParamsType = Omit<
-  GameLevelType,
+export type GameLevelStoreSimpleType = Omit<
+  GameLevelStoreType,
   | 'cardRow'
   | 'cardValues'
   | 'cardWidth'

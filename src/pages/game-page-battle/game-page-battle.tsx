@@ -11,9 +11,9 @@ import {
 } from '@/shared/components'
 import { useLevel, useToggle, useProgress, useMusic } from '@/shared/hooks'
 import { useSetLeaderboardMutation } from '@/shared'
-import { IDENTIFIER } from '@/utils'
-import { TypeModal } from '@/shared/components/modal-comps/types'
 import { useUser } from '@/shared/contexts/UserContext'
+import { TypeModal } from '@/shared/components/modal-comps/types'
+import { GameLevelStateType } from '@/shared/services/game/types'
 import { ATTACK_FACTOR } from '@/shared/services/game/constants'
 import YandexSDK from '@/shared/services/sdk/yandexSdk'
 import styles from './styles.module.css'
@@ -45,7 +45,7 @@ export const GamePageBattle = () => {
     scoreUp,
   } = useProgress()
   const { user, game } = useUser();
-  const [level, setLevel] = useLevel(selectedLevel)
+  const [level, setLevel] = useLevel<GameLevelStateType>(selectedLevel, 'battle')
   const [restartKey, setRestartKey] = useState(0)
   const [score, setScore] = useState(0)
   const [scoreSession, setScoreSession] = useState(0)
@@ -203,8 +203,8 @@ export const GamePageBattle = () => {
           level: level,
           scorePSS: score,
         },
-        ratingFieldName: IDENTIFIER.LeaderboardRatingFieldName,
-        teamName: IDENTIFIER.TeamName,
+        ratingFieldName: '',
+        teamName: '',
       }
       await setLeader(leader)
     } catch (error: unknown) {
@@ -294,7 +294,7 @@ export const GamePageBattle = () => {
           isStun={isStun}
           restartKey={restartKey}
           colorParry={colorPlayerAttack}
-          initialSeconds={[5,10,2,2,3]}
+          initialSeconds={level.initialSeconds}
           initialAttacks={[20,40,10,10,12]}
           initialColors={['red','blue','green','black','yellow']}
           onEnemyAttack={handleEnemyAttack}

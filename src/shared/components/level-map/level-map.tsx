@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Item } from './item'
-import { mergeObjects, Button, LinkText, LEVELS, LEVELS_INFO } from '@/shared'
+import { Button, LinkText, LEVELS, LEVELS_STATE } from '@/shared'
 import { useProgress } from '@/shared/hooks'
 import { useUser } from '@/shared/contexts/UserContext'
 import bgMapInfo from '@/assets/images/level-map/climb.png'
@@ -12,7 +12,7 @@ import CloseIcon from '@mui/icons-material/Close';
 
 export const LevelMap = () => {
   const navigate = useNavigate()
-  const [levels, setLevels] = useState(mergeObjects(LEVELS, LEVELS_INFO))
+  const [levels, setLevels] = useState(LEVELS_STATE)
   const [level, setLevel] = useState(levels[0])
   const [isSelect, setSelect] = useState(false)
   const { game } = useUser();
@@ -59,21 +59,14 @@ export const LevelMap = () => {
   const handleMainPage = () => navigate('/', {})
 
   const levelPoints = levels.map(level => {
-    const currentLevel = level as {
-      id: number
-      x: number
-      y: number
-      isCurrent: boolean
-      isPassed: boolean
-    }
     return (
       <Item
-        key={currentLevel.id}
-        id={currentLevel.id}
-        x={currentLevel.x}
-        y={currentLevel.y}
-        isCurrent={currentLevel.isCurrent}
-        isPassed={currentLevel.isPassed}
+        key={level.id}
+        id={level.id}
+        x={level.x}
+        y={level.y}
+        isCurrent={level.isCurrent}
+        isPassed={level.isPassed}
         onClick={(id: number) => handleClickLevel(id)}
       />
     )

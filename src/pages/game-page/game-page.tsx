@@ -10,11 +10,12 @@ import {
 } from '@/shared/components'
 import { useLevel, useToggle, useProgress, useMusic } from '@/shared/hooks'
 import { useSetLeaderboardMutation } from '@/shared'
-import { IDENTIFIER } from '@/utils'
-import { TypeModal } from '@/shared/components/modal-comps/types'
-import styles from './styles.module.css'
 import { useUser } from '@/shared/contexts/UserContext'
+import { TypeModal } from '@/shared/components/modal-comps/types'
+import { GameLevelStoreType } from '@/shared/services/game/types'
 import YandexSDK from '@/shared/services/sdk/yandexSdk'
+import styles from './styles.module.css'
+
 
 // Вычисляем размер UI эдементов относительно высоты экрана
 let scalePercent = window.innerHeight < 1040 ? window.innerHeight / 1040 : 1
@@ -39,7 +40,7 @@ export const GamePage = () => {
     scoreUp,
   } = useProgress()
   const { user, game } = useUser();
-  const [level, setLevel] = useLevel(selectedLevel)
+  const [level, setLevel] = useLevel<GameLevelStoreType>(selectedLevel, 'store')
   const [restartKey, setRestartKey] = useState(0)
   const [score, setScore] = useState(0)
   const [seconds, setSeconds] = useState(level.gameTimer)
@@ -143,8 +144,8 @@ export const GamePage = () => {
           level: level,
           scorePSS: score,
         },
-        ratingFieldName: IDENTIFIER.LeaderboardRatingFieldName,
-        teamName: IDENTIFIER.TeamName,
+        ratingFieldName: '',
+        teamName: '',
       }
       await setLeader(leader)
     } catch (error: unknown) {

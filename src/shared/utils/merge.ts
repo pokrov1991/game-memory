@@ -3,6 +3,7 @@ interface Item {
   [key: string]: unknown
 }
 
+// TODO: не используется
 export function mergeObjects(array1: Item[], array2: Item[]): Item[] {
   const mergedArray: Item[] = []
   const map: Map<number, Item> = new Map()

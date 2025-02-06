@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from 'react'
 import { GameModel } from '@/shared/services/game/GameModel'
 import { GameView } from '@/shared/services/game/GameView'
 import { GameController } from '@/shared/services/game/GameController'
-import { GameLevelType, CardParams} from '@/shared/services/game/types'
+import { GameLevelStateType, GameLevelStoreType, CardParams} from '@/shared/services/game/types'
 import { GameEffectsCards } from './game-effects-cards'
 import { MAP_CARD_COLORS } from '@/shared/services/game/constants'
 import styles from './styles.module.css'
@@ -10,7 +10,7 @@ import styles from './styles.module.css'
 type GameCanvasProps = {
   isPause: boolean
   restartKey: number
-  level: GameLevelType
+  level: GameLevelStateType | GameLevelStoreType
   onScore: (score: number) => void
   onColor: (color: string, countFlipped: number) => void
   onPlay: () => void

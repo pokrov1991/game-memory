@@ -1,9 +1,9 @@
 import Mediator from '@/shared/controllers/mediator'
-import { GameLevelType, CardParams } from '@/shared/services/game/types'
+import { GameLevelStateType, GameLevelStoreType, CardParams } from '@/shared/services/game/types'
 import { CARD_MARGIN, PATH_SPRITE, PATH_SPRITE_CARD } from './constants'
 
 const eventBus = new Mediator()
-let level: GameLevelType | any = {}
+let level: GameLevelStateType | GameLevelStoreType | any = {}
 
 eventBus.on('game:level', payload => {
   level = payload

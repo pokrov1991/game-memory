@@ -1,12 +1,12 @@
 import React from 'react'
 import { CARD_SCORE } from '@/shared/services/game/constants'
-import { GameLevelType } from '@/shared/services/game/types'
+import { GameLevelStateType, GameLevelStoreType } from '@/shared/services/game/types'
 import { useProgress } from '@/shared/hooks'
 import styles from './styles.module.css'
 
 type GameScoreProps = {
   score: number
-  level: GameLevelType
+  level: GameLevelStateType | GameLevelStoreType
 }
 
 export const GameScore: React.FC<GameScoreProps> = ({ score, level }) => {
