@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Item } from './item'
-import { Button, LinkText, LEVELS, LEVELS_STATE } from '@/shared'
+import { Button, LinkText, LEVELS_STATE } from '@/shared'
 import { useProgress } from '@/shared/hooks'
 import { useUser } from '@/shared/contexts/UserContext'
 import bgMapInfo from '@/assets/images/level-map/climb.png'
@@ -51,8 +51,12 @@ export const LevelMap = () => {
     selectLevel(level.id)
     if (level.type === 'battle') {
       navigate('/game-battle', {})
-    } else {
+    }
+    if (level.type === 'store') {
       navigate('/game', {})
+    }
+    if (level.type === 'tavern') {
+      navigate('/tavern', {})
     }
   }
 

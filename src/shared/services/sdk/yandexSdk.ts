@@ -76,6 +76,8 @@ export default class YandexSDK extends SDK {
           selectedLevel: 1,
           userLevel: 1,
           userScore: 0,
+          userCoins: 0,
+          userHelmet: 0
         }
         await this.setGameData(gameData);
         return gameData;

@@ -50,10 +50,16 @@ export const GamePage = () => {
   useMusic({ src: '/music/success.mp3', conditional: isOpenModalWin })
   useMusic({ src: '/music/timeout.mp3', conditional: isOpenModalLose })
 
-  const onRestart = (): void => {
+  const onRestart = async () => {
     setRestartKey(prevKey => prevKey + 1)
     setScore(0)
     togglePause(true)
+
+    // TODO: Обработать все вычитания монет при рестарте или выходе
+    await YandexSDK.setGameData({
+      ...game,
+      userCoins: game.userCoins > level.coin ? game.userCoins - level.coin : 0
+    })
   }
 
   const onContinue = async () => {
@@ -74,14 +80,13 @@ export const GamePage = () => {
     }
     
     await YandexSDK.setGameData({
-      completedLevels: Array.from(new Set([ ...game.completedLevels, nextLevel ])),
-      selectedLevel: nextLevel,
-      userLevel: !isFinal && game.userLevel < nextLevel ? nextLevel : game.userLevel,
-      userScore: game.userLevel === level.id ? game.userScore + scoreTotal : game.userScore,
+      ...game,
+      userScore: game.userScore + scoreTotal,
+      userCoins: game.userCoins + level.coin
     })
 
     if (!isFinal) {
-      onRestart()
+      navigate('/tavern')
     } else {
       navigate('/levels')
     }
@@ -95,7 +100,7 @@ export const GamePage = () => {
   }
 
   const onExit = (): void => {
-    navigate('/levels')
+    navigate('/tavern')
   }
 
   const handleMenu = (): void => {

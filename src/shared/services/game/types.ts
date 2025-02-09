@@ -39,6 +39,7 @@ export type GameLevelStoreType = {
   cardCount: number
   cardCol: number
   cardRow: number
+  coin: number
   cardValues: string[]
   cardWidth: number
   cardHeight: number

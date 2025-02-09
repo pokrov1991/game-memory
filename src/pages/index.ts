@@ -1,5 +1,6 @@
 export * from './game-page'
 export * from './game-page-battle'
+export * from './tavern-page'
 export * from './leader-board-page'
 export * from './main-page'
 export * from './not-found-page'

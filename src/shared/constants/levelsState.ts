@@ -164,5 +164,20 @@ export const LEVELS_STATE_CONFIG = [
         isPassed: false,
         isCurrent: false,
     },
+    {
+        id: 1001,
+        x: 80,
+        y: 10,
+        title: 'Таверна',
+        description: 'Можно сыграть за монетки',
+        type: 'tavern',
+        cardCount: 0,
+        cardCol: 0,
+        initialSeconds: [],
+        initialAttacks: [],
+        initialColors: [],
+        isPassed: true,
+        isCurrent: false,
+    },
   ]
   
