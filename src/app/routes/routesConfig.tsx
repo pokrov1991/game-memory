@@ -2,7 +2,8 @@ import { App } from '@/shared/components/app'
 import { ChooseLevelPage } from '@/pages/choose-level-page/choose-level-page'
 import { ErrorPage } from '@/pages/error-page/error-page'
 import { GamePage } from '@/pages/game-page/game-page'
-import { GamePageBattle } from '@/pages/game-page-battle/game-page-battle'
+import { GameBattlePage } from '@/pages/game-battle-page/game-battle-page'
+import { GameStorePage } from '@/pages/game-store-page/game-store-page'
 import { TavernPage } from '@/pages/tavern-page/tavern-page'
 import { LeaderBoardPage } from '@/pages/leader-board-page/leader-board-page'
 import { MainPage } from '@/pages/main-page/main-page'
@@ -24,7 +25,11 @@ export const routesConfig: RouteObject[] = [
       },
       {
         path: '/game-battle',
-        Component: GamePageBattle,
+        Component: GameBattlePage,
+      },
+      {
+        path: '/game-store',
+        Component: GameStorePage,
       },
       {
         path: '/tavern',

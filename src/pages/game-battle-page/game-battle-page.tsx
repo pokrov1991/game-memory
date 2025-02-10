@@ -28,7 +28,7 @@ const scaleStyle = {
 // Задержка что бы показать все анимации
 const delayGameEffects = 1000
 
-export const GamePageBattle = () => {
+export const GameBattlePage = () => {
   const navigate = useNavigate()
   const [isOpenModalWin, setOpenModalWin] = useState(false)
   const [isOpenModalLose, setOpenModalLose] = useState(false)

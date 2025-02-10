@@ -42,7 +42,7 @@ export const TavernPage = () => {
   const handleStartGame = (level: GameLevelStoreType) => {
     selectLevel(level.id)
     if (level.type === 'store') {
-      navigate('/game', {})
+      navigate('/game-store', {})
     }
   }
 

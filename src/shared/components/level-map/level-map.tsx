@@ -52,9 +52,6 @@ export const LevelMap = () => {
     if (level.type === 'battle') {
       navigate('/game-battle', {})
     }
-    if (level.type === 'store') {
-      navigate('/game', {})
-    }
     if (level.type === 'tavern') {
       navigate('/tavern', {})
     }
@@ -106,7 +103,7 @@ export const LevelMap = () => {
 
           {selectedLevel.isPassed && (
             <Button onClick={handleStartGame}>
-              Играть
+              {level.type === 'tavern' ? 'Зайти' : 'Играть'}
             </Button>
           )}
 

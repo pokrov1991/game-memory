@@ -24,7 +24,7 @@ const scaleStyle = {
   transform: `scale(${scalePercent})`
 }
 
-export const GamePage = () => {
+export const GameStorePage = () => {
   const navigate = useNavigate()
   const [isOpenModalWin, setOpenModalWin] = useState(false)
   const [isOpenModalLose, setOpenModalLose] = useState(false)
@@ -50,22 +50,32 @@ export const GamePage = () => {
   useMusic({ src: '/music/success.mp3', conditional: isOpenModalWin })
   useMusic({ src: '/music/timeout.mp3', conditional: isOpenModalLose })
 
-  const onRestart = (): void => {
-    setRestartKey(prevKey => prevKey + 1)
-    setScore(0)
-    togglePause(true)
+  const setGameDataWin = async () => {
+    const scoreTotal = score + seconds
+    await YandexSDK.setGameData({
+      ...game,
+      userScore: game.userScore + scoreTotal,
+      userCoins: game.userCoins + level.coin
+    })
+  }
+
+  const setGameDataLose = async () => {
+    await YandexSDK.setGameData({
+      ...game,
+      userCoins: game.userCoins > level.coin ? game.userCoins - level.coin : 0
+    })
+
   }
 
   const onContinue = async () => {
     const scoreTotal = score + seconds
     const nextLevel = level.id + 1
-    const isFinal = level.id >= 11
 
     completeLevel(nextLevel)
     setLevel(nextLevel)
     selectLevel(nextLevel)
 
-    if (!isFinal && game.userLevel < nextLevel) {
+    if (game.userLevel < nextLevel) {
       levelUp(nextLevel)
     }
     if (game.userLevel === level.id) {
@@ -73,29 +83,21 @@ export const GamePage = () => {
       handleSetLeader(userLevel, userScore + scoreTotal)
     }
     
-    await YandexSDK.setGameData({
-      completedLevels: Array.from(new Set([ ...game.completedLevels, nextLevel ])),
-      selectedLevel: nextLevel,
-      userLevel: !isFinal && game.userLevel < nextLevel ? nextLevel : game.userLevel,
-      userScore: game.userLevel === level.id ? game.userScore + scoreTotal : game.userScore,
-    })
-
-    if (!isFinal) {
-      onRestart()
-    } else {
-      navigate('/levels')
-    }
-
+    setGameDataWin()
     setOpenModalWin(false)
+    navigate('/tavern')
   }
 
-  const onGameOver = (): void => {
-    onRestart()
+  const onGameOver = async () => {
+    setGameDataLose()
     setOpenModalLose(false)
+    navigate('/tavern')
   }
 
   const onExit = (): void => {
-    navigate('/levels')
+    setGameDataLose()
+    setOpenModalExit(false)
+    navigate('/tavern')
   }
 
   const handleMenu = (): void => {
@@ -164,9 +166,6 @@ export const GamePage = () => {
             className={styles['game-page__menu']}></button>
           <button onClick={handlePause} className={styles['game-page__pause']}>
             {isPause ? '▷' : '||'}
-          </button>
-          <button onClick={onRestart} className={styles['game-page__restart']}>
-            Заново
           </button>
           <GameCountdown
             isPause={isPause}
