@@ -3,6 +3,7 @@ import { useProgress } from '@/shared/hooks'
 import { useUser } from '@/shared/contexts/UserContext'
 import { Defs } from './defs'
 import { LevelInfo } from './level-info'
+import { LEVELS_USER_CONFIG } from '@/shared'
 
 export const Experience = () => {
   const { game } = useUser()
@@ -10,7 +11,9 @@ export const Experience = () => {
 
   const cUserLevel = userLevel > 1 ? userLevel : game?.userLevel
   const cScore = userScore > 0 ? userScore : game?.userScore
-  const userScorePercent = !isNaN(cScore) ? (cScore / 550) * 100 : 0
+
+  const scoreLevel = LEVELS_USER_CONFIG[userLevel-1].score
+  const scorePercent = !isNaN(cScore) ? (cScore / scoreLevel) * 100 : 0
 
   return (
     <svg
@@ -54,7 +57,7 @@ export const Experience = () => {
           <rect
             width="70%"
             height="100%"
-            transform={`rotate(-45) scale(${userScorePercent / 550})`}
+            transform={`rotate(-45) scale(${scorePercent / scoreLevel})`}
             style={{
               transformOrigin: 'left center',
               transformBox: 'view-box',
@@ -64,10 +67,10 @@ export const Experience = () => {
         </clipPath>
       </g>
       <LevelInfo
-        value={userScorePercent}
+        value={scorePercent}
         currentScore={cScore}
         level={cUserLevel}
-        maxLevel={550}
+        maxLevel={scoreLevel}
       />
       <Defs />
     </svg>

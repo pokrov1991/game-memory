@@ -27,7 +27,7 @@ export const TavernPage = () => {
       >
         title: {level.title}
         id: {level.id}
-        coin: {level.coin}
+        coins: {level.coins}
         timer: {level.gameTimer}
         count: {level.cardCount}
       </div>

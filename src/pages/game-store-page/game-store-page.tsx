@@ -4,12 +4,10 @@ import {
   GameCanvas,
   GameCountdown,
   GameScore,
-  GameScoreEffects,
   ModalResult,
   ModalExit,
 } from '@/shared/components'
 import { useLevel, useToggle, useProgress, useMusic } from '@/shared/hooks'
-import { useSetLeaderboardMutation } from '@/shared'
 import { useUser } from '@/shared/contexts/UserContext'
 import { TypeModal } from '@/shared/components/modal-comps/types'
 import { GameLevelStoreType } from '@/shared/services/game/types'
@@ -24,6 +22,9 @@ const scaleStyle = {
   transform: `scale(${scalePercent})`
 }
 
+// Задержка что бы показать все анимации
+const delayGameEffects = 1000
+
 export const GameStorePage = () => {
   const navigate = useNavigate()
   const [isOpenModalWin, setOpenModalWin] = useState(false)
@@ -31,58 +32,42 @@ export const GameStorePage = () => {
   const [isOpenModalExit, setOpenModalExit] = useState(false)
   const [isPause, togglePause] = useToggle(true)
   const {
-    completeLevel,
     selectedLevel,
-    selectLevel,
-    userLevel,
-    userScore,
-    levelUp,
-    scoreUp,
+    userCoins,
+    coinsUp,
   } = useProgress()
-  const { user, game } = useUser();
+  const { game } = useUser();
   const [level, setLevel] = useLevel<GameLevelStoreType>(selectedLevel, 'store')
   const [restartKey, setRestartKey] = useState(0)
-  const [score, setScore] = useState(0)
+  const [score, setScore] = useState(game.userScore)
+  const [coins, setCoins] = useState(game.userCoins)
   const [seconds, setSeconds] = useState(level.gameTimer)
   const [resultText, setResultText] = useState('')
-  const [setLeader] = useSetLeaderboardMutation()
+
+  const cCoins = userCoins > 0 ? userCoins : coins
 
   useMusic({ src: '/music/success.mp3', conditional: isOpenModalWin })
   useMusic({ src: '/music/timeout.mp3', conditional: isOpenModalLose })
 
   const setGameDataWin = async () => {
-    const scoreTotal = score + seconds
+    const currentCoins = cCoins + level.coins
+    coinsUp(currentCoins)
     await YandexSDK.setGameData({
       ...game,
-      userScore: game.userScore + scoreTotal,
-      userCoins: game.userCoins + level.coin
+      userCoins: currentCoins
     })
   }
 
   const setGameDataLose = async () => {
+    const currentCoins = cCoins > level.coins ? cCoins - level.coins : 0
+    coinsUp(currentCoins)
     await YandexSDK.setGameData({
       ...game,
-      userCoins: game.userCoins > level.coin ? game.userCoins - level.coin : 0
+      userCoins: currentCoins
     })
-
   }
 
   const onContinue = async () => {
-    const scoreTotal = score + seconds
-    const nextLevel = level.id + 1
-
-    completeLevel(nextLevel)
-    setLevel(nextLevel)
-    selectLevel(nextLevel)
-
-    if (game.userLevel < nextLevel) {
-      levelUp(nextLevel)
-    }
-    if (game.userLevel === level.id) {
-      scoreUp(scoreTotal)
-      handleSetLeader(userLevel, userScore + scoreTotal)
-    }
-    
     setGameDataWin()
     setOpenModalWin(false)
     navigate('/tavern')
@@ -112,49 +97,18 @@ export const GameStorePage = () => {
   const handleGameWin = (): void => {
     handlePause()
     setTimeout(() => {
-      setResultText(
-        `Поздравляем! Вы прошли уровень «${level.title}» и получили опыт: ${
-          score + seconds
-        } exp`
-      )
+      setResultText(`Поздравляем! Обыграли «${level.title}» и получили: ${level.coins} монет.`)
       setOpenModalWin(true)
-    }, 1000) // Задержка что бы показать все анимации
+    }, delayGameEffects)
   }
 
   const handleGameOver = (): void => {
-    setResultText(
-      `Не унывай! Попробуй еще раз пройти уровень. У тебя получится )`
-    )
+    setResultText(`Вы проиграли! Вас обыграл «${level.title}» и вы потеряли: ${level.coins} монет.`)
     setOpenModalLose(true)
-  }
-
-  const handleScore = (newScore: number): void => {
-    setScore(newScore)
   }
 
   const handleSeconds = (reSeconds: number): void => {
     setSeconds(reSeconds)
-  }
-
-  const handleSetLeader = async (level: number, score: number) => {
-    try {
-      const leader = {
-        data: {
-          avatar: user.avatar,
-          nickname: user.name,
-          firstname: user.name,
-          level: level,
-          scorePSS: score,
-        },
-        ratingFieldName: '',
-        teamName: '',
-      }
-      await setLeader(leader)
-    } catch (error: unknown) {
-      if (error instanceof Error) {
-        console.log(`Не удалось добавить лидера: ${error.message}`)
-      }
-    }
   }
 
   return (
@@ -180,12 +134,11 @@ export const GameStorePage = () => {
         </div>
       </div>
       <div className={styles['game-page__canvas']}>
-        <GameScoreEffects score={score} />
         <GameCanvas
           isPause={isPause}
           restartKey={restartKey}
           level={level}
-          onScore={handleScore}
+          onScore={() => {}}
           onColor={() => {}}
           onPlay={handlePause}
           onVictory={handleGameWin}

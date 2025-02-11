@@ -5,6 +5,7 @@ interface ProgressState {
   selectedLevel: number
   userLevel: number
   userScore: number
+  userCoins: number
 }
 
 const initialState: ProgressState = {
@@ -12,6 +13,7 @@ const initialState: ProgressState = {
   selectedLevel: 1,
   userLevel: 1,
   userScore: 0,
+  userCoins: 0
 }
 
 export const progressSlice = createSlice({
@@ -23,6 +25,7 @@ export const progressSlice = createSlice({
       state.selectedLevel = 1
       state.userLevel = 1
       state.userScore = 0
+      state.userCoins = 0
     },
     completeLevel: (state, action: PayloadAction<number>) => {
       state.completedLevels.push(action.payload)
@@ -34,10 +37,13 @@ export const progressSlice = createSlice({
       state.userLevel = action.payload
     },
     scoreUp: (state, action: PayloadAction<number>) => {
-      state.userScore += action.payload
+      state.userScore = action.payload
+    },
+    coinsUp: (state, action: PayloadAction<number>) => {
+      state.userCoins = action.payload
     },
   },
 })
 
-export const { resetProgress, completeLevel, selectLevel, levelUp, scoreUp } =
+export const { resetProgress, completeLevel, selectLevel, levelUp, scoreUp, coinsUp } =
   progressSlice.actions

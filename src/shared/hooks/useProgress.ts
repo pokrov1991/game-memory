@@ -6,6 +6,7 @@ import {
   selectLevel,
   levelUp,
   scoreUp,
+  coinsUp
 } from '@/shared/slices'
 
 export const useProgress = () => {
@@ -19,6 +20,7 @@ export const useProgress = () => {
   )
   const userLevel = useSelector((state: RootState) => state.progress.userLevel)
   const userScore = useSelector((state: RootState) => state.progress.userScore)
+  const userCoins = useSelector((state: RootState) => state.progress.userCoins)
 
   const handleResetProgress = () => {
     dispatch(resetProgress())
@@ -40,15 +42,21 @@ export const useProgress = () => {
     dispatch(scoreUp(score))
   }
 
+  const handleCoinsUp = (coins: number) => {
+    dispatch(coinsUp(coins))
+  }
+
   return {
     completedLevels,
     selectedLevel,
     userLevel,
     userScore,
+    userCoins,
     resetProgress: handleResetProgress,
     completeLevel: handleCompleteLevel,
     selectLevel: handleSelectLevel,
     levelUp: handleLevelUp,
     scoreUp: handleScoreUp,
+    coinsUp: handleCoinsUp
   }
 }

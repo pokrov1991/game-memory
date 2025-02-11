@@ -7,7 +7,7 @@ export const LEVELS_STORE_CONFIG = [
         gameTimer: 30,
         cardCount: 6,
         cardCol: 3,
-        coin: 5,
+        coins: 5,
     },
     {
         id: 2,
@@ -17,7 +17,7 @@ export const LEVELS_STORE_CONFIG = [
         gameTimer: 25,
         cardCount: 8,
         cardCol: 4,
-        coin: 10,
+        coins: 10,
     },
     {
         id: 3,
@@ -27,7 +27,7 @@ export const LEVELS_STORE_CONFIG = [
         gameTimer: 30,
         cardCount: 10,
         cardCol: 5,
-        coin: 20,
+        coins: 20,
     },
     {
         id: 4,
@@ -37,7 +37,7 @@ export const LEVELS_STORE_CONFIG = [
         gameTimer: 20,
         cardCount: 10,
         cardCol: 5,
-        coin: 50,
+        coins: 50,
     },
     {
         id: 5,
@@ -47,7 +47,7 @@ export const LEVELS_STORE_CONFIG = [
         gameTimer: 30,
         cardCount: 12,
         cardCol: 4,
-        coin: 100,
+        coins: 100,
     },
     {
         id: 6,
@@ -57,7 +57,7 @@ export const LEVELS_STORE_CONFIG = [
         gameTimer: 20,
         cardCount: 12,
         cardCol: 4,
-        coin: 200,
+        coins: 200,
     },
     {
         id: 7,
@@ -67,7 +67,7 @@ export const LEVELS_STORE_CONFIG = [
         gameTimer: 40,
         cardCount: 16,
         cardCol: 4,
-        coin: 500,
+        coins: 500,
     },
     {
         id: 8,
@@ -77,7 +77,7 @@ export const LEVELS_STORE_CONFIG = [
         gameTimer: 35,
         cardCount: 16,
         cardCol: 4,
-        coin: 700,
+        coins: 700,
     },
     {
         id: 9,
@@ -87,7 +87,7 @@ export const LEVELS_STORE_CONFIG = [
         gameTimer: 30,
         cardCount: 16,
         cardCol: 4,
-        coin: 1000,
+        coins: 1000,
     },
     {
         id: 10,
@@ -97,7 +97,7 @@ export const LEVELS_STORE_CONFIG = [
         gameTimer: 35,
         cardCount: 20,
         cardCol: 5,
-        coin: 1500,
+        coins: 1500,
     },
     {
         id: 11,
@@ -107,7 +107,7 @@ export const LEVELS_STORE_CONFIG = [
         gameTimer: 30,
         cardCount: 20,
         cardCol: 5,
-        coin: 2000,
+        coins: 2000,
     },
 ]
   

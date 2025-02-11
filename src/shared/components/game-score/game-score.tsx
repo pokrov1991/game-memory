@@ -1,5 +1,5 @@
 import React from 'react'
-import { CARD_SCORE } from '@/shared/services/game/constants'
+import { LEVELS_USER_CONFIG } from '@/shared'
 import { GameLevelStateType, GameLevelStoreType } from '@/shared/services/game/types'
 import { useProgress } from '@/shared/hooks'
 import styles from './styles.module.css'
@@ -10,11 +10,8 @@ type GameScoreProps = {
 }
 
 export const GameScore: React.FC<GameScoreProps> = ({ score, level }) => {
-  const { selectedLevel } = useProgress()
-  // Скколько карт, столько и очков
-  // const scoreLevel = (level.cardCount * CARD_SCORE) / 2
-  // Максимальное кол-во очков, с учетом умножений
-  const scoreLevel = CARD_SCORE * ((level.cardCount / 2) * ((level.cardCount/2) + 1)) / 2
+  const { userLevel } = useProgress()
+  const scoreLevel = LEVELS_USER_CONFIG[userLevel-1].score
   const scorePercent = (score / scoreLevel) * 100
 
   return (
@@ -22,7 +19,7 @@ export const GameScore: React.FC<GameScoreProps> = ({ score, level }) => {
       <div className={styles['game-score__level']}>
         <div className={styles['game-score__level-wrap']}>
           <b>Ур.</b>
-          <strong>{selectedLevel}</strong>
+          <strong>{userLevel}</strong>
           <i>
             {score}
             <span>/{scoreLevel}</span>

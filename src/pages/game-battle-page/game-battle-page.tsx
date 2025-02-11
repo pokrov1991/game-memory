@@ -15,6 +15,7 @@ import { useUser } from '@/shared/contexts/UserContext'
 import { TypeModal } from '@/shared/components/modal-comps/types'
 import { GameLevelStateType } from '@/shared/services/game/types'
 import { ATTACK_FACTOR } from '@/shared/services/game/constants'
+import { LEVELS_USER_CONFIG } from '@/shared'
 import YandexSDK from '@/shared/services/sdk/yandexSdk'
 import styles from './styles.module.css'
 
@@ -47,7 +48,7 @@ export const GameBattlePage = () => {
   const { user, game } = useUser();
   const [level, setLevel] = useLevel<GameLevelStateType>(selectedLevel, 'battle')
   const [restartKey, setRestartKey] = useState(0)
-  const [score, setScore] = useState(0)
+  const [score, setScore] = useState(game.userScore)
   const [scoreSession, setScoreSession] = useState(0)
   const [colorPlayerAttack, setColorPlayerAttack] = useState('')
   const [colorPlayerPreAttack, setColorPlayerPreAttack] = useState('')
@@ -56,6 +57,8 @@ export const GameBattlePage = () => {
   const [hpEnemy, setHPEnemy] = useState(100)
   const [resultText, setResultText] = useState('')
   const [setLeader] = useSetLeaderboardMutation()
+
+  // TODO: cScore и сохранение очков когда выходишь
 
   useMusic({ src: '/music/success.mp3', conditional: isOpenModalWin })
   useMusic({ src: '/music/timeout.mp3', conditional: isOpenModalLose })
@@ -71,7 +74,6 @@ export const GameBattlePage = () => {
 
   const onRestart = (): void => {
     setRestartKey(prevKey => prevKey + 1)
-    setScore(0)
     setScoreSession(0)
     setHP(100)
     setHPEnemy(100)
@@ -81,41 +83,28 @@ export const GameBattlePage = () => {
   }
 
   const onContinue = async () => {
-    const scoreTotal = score
     const nextLevel = level.id + 1
-    const isFinal = level.id >= 11
 
     completeLevel(nextLevel)
-    setLevel(nextLevel)
     selectLevel(nextLevel)
-
-    if (!isFinal && game.userLevel < nextLevel) {
-      levelUp(nextLevel)
-    }
-    if (game.userLevel === level.id) {
-      scoreUp(scoreTotal)
-      handleSetLeader(userLevel, userScore + scoreTotal)
-    }
     
     await YandexSDK.setGameData({
+      ...game,
       completedLevels: Array.from(new Set([ ...game.completedLevels, nextLevel ])),
       selectedLevel: nextLevel,
-      userLevel: !isFinal && game.userLevel < nextLevel ? nextLevel : game.userLevel,
-      userScore: game.userLevel === level.id ? game.userScore + scoreTotal : game.userScore,
+      userLevel: userLevel,
+      userScore: userScore,
     })
 
-    if (!isFinal) {
-      onRestart()
-    } else {
-      navigate('/levels')
-    }
+    handleSetLeader(userLevel, userScore)
 
     setOpenModalWin(false)
+    navigate('/levels')
   }
 
   const onGameOver = (): void => {
-    onRestart()
     setOpenModalLose(false)
+    onRestart()
   }
 
   const onExit = (): void => {
@@ -158,6 +147,14 @@ export const GameBattlePage = () => {
     console.log('attack player', currentScore, `(${newScore} ${totalScore})`)
     setScoreSession(newScore)
     setScore(totalScore)
+    scoreUp(totalScore)
+
+    // Проверяем уровень
+    LEVELS_USER_CONFIG.forEach((lvl, _index) => {
+      if (lvl.score <= totalScore && lvl.id > userLevel) {
+        levelUp(level.id)
+      }
+    })
 
     // Ставим удар по врагу
     if (newScore > 0) {

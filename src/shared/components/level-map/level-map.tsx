@@ -8,14 +8,14 @@ import bgMapInfo from '@/assets/images/level-map/climb.png'
 import bgMap from '@/assets/images/level-map/map.jpg'
 import styles from './styles.module.css'
 import classNames from 'classnames'
-import CloseIcon from '@mui/icons-material/Close';
+import CloseIcon from '@mui/icons-material/Close'
 
 export const LevelMap = () => {
   const navigate = useNavigate()
   const [levels, setLevels] = useState(LEVELS_STATE)
   const [level, setLevel] = useState(levels[0])
   const [isSelect, setSelect] = useState(false)
-  const { game } = useUser();
+  const { game } = useUser()
   const { completedLevels, selectLevel } = useProgress()
 
   const cCompletedLevels = completedLevels.length > 1 ? completedLevels : game.completedLevels
