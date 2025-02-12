@@ -45,10 +45,11 @@ export const GameBattlePage = () => {
     levelUp,
     scoreUp,
   } = useProgress()
-  const { user, game } = useUser();
-  const [level, setLevel] = useLevel<GameLevelStateType>(selectedLevel, 'battle')
+  const { user, game } = useUser()
   const [restartKey, setRestartKey] = useState(0)
-  const [score, setScore] = useState(game.userScore)
+  const [gameLevel, _setGameLevel] = useLevel<GameLevelStateType>(selectedLevel, 'battle')
+  const [level, setLevel] = useState(userLevel > 0 ? userLevel : game.userLevel)
+  const [score, setScore] = useState(userScore > 0 ? userScore : game.userScore)
   const [scoreSession, setScoreSession] = useState(0)
   const [colorPlayerAttack, setColorPlayerAttack] = useState('')
   const [colorPlayerPreAttack, setColorPlayerPreAttack] = useState('')
@@ -58,10 +59,26 @@ export const GameBattlePage = () => {
   const [resultText, setResultText] = useState('')
   const [setLeader] = useSetLeaderboardMutation()
 
-  // TODO: cScore и сохранение очков когда выходишь
-
   useMusic({ src: '/music/success.mp3', conditional: isOpenModalWin })
   useMusic({ src: '/music/timeout.mp3', conditional: isOpenModalLose })
+
+  const setGameDataWin = async (nextLevel: number) => {
+    await YandexSDK.setGameData({
+      ...game,
+      completedLevels: Array.from(new Set([ ...game.completedLevels, nextLevel ])),
+      selectedLevel: nextLevel,
+      userLevel: level,
+      userScore: score,
+    })
+  }
+  
+  const setGameDataLose = async () => {
+    await YandexSDK.setGameData({
+      ...game,
+      userLevel: level,
+      userScore: score,
+    })
+  }
 
   useEffect(() => {
     if (hp <= 0) {
@@ -83,31 +100,26 @@ export const GameBattlePage = () => {
   }
 
   const onContinue = async () => {
-    const nextLevel = level.id + 1
+    const nextLevel = gameLevel.id + 1
 
     completeLevel(nextLevel)
     selectLevel(nextLevel)
     
-    await YandexSDK.setGameData({
-      ...game,
-      completedLevels: Array.from(new Set([ ...game.completedLevels, nextLevel ])),
-      selectedLevel: nextLevel,
-      userLevel: userLevel,
-      userScore: userScore,
-    })
-
-    handleSetLeader(userLevel, userScore)
+    setGameDataWin(nextLevel)
+    // handleSetLeader(level, score)
 
     setOpenModalWin(false)
     navigate('/levels')
   }
 
   const onGameOver = (): void => {
+    setGameDataLose()
     setOpenModalLose(false)
     onRestart()
   }
 
   const onExit = (): void => {
+    setGameDataLose()
     navigate('/levels')
   }
 
@@ -129,7 +141,7 @@ export const GameBattlePage = () => {
   const handleGameWin = (): void => {
     handlePause()
     setTimeout(() => {
-      setResultText(`Поздравляем! Вы прошли уровень «${level.title}» и получили опыт: ${score} exp`)
+      setResultText(`Поздравляем! Вы прошли уровень «${gameLevel.title}» и получили опыт: ${scoreSession} exp`)
       setOpenModalWin(true)
     }, delayGameEffects)
   }
@@ -151,8 +163,9 @@ export const GameBattlePage = () => {
 
     // Проверяем уровень
     LEVELS_USER_CONFIG.forEach((lvl, _index) => {
-      if (lvl.score <= totalScore && lvl.id > userLevel) {
-        levelUp(level.id)
+      if (lvl.score <= totalScore && lvl.id === level) {
+        setLevel(level + 1)
+        levelUp(level + 1)
       }
     })
 
@@ -226,7 +239,7 @@ export const GameBattlePage = () => {
           </button>
         </div>
         <div className={styles['game-page__info']}>
-          <GameScore score={score} level={level} />
+          <GameScore score={score} />
         </div>
       </div>
 
@@ -280,7 +293,7 @@ export const GameBattlePage = () => {
         <GameCanvas
           isPause={isPause}
           restartKey={restartKey}
-          level={level}
+          level={gameLevel}
           onScore={handleScore}
           onColor={handleColor}
           onPlay={handlePause}
@@ -291,7 +304,7 @@ export const GameBattlePage = () => {
           isStun={isStun}
           restartKey={restartKey}
           colorParry={colorPlayerAttack}
-          initialSeconds={level.initialSeconds}
+          initialSeconds={gameLevel.initialSeconds}
           initialAttacks={[20,40,10,10,12]}
           initialColors={['red','blue','green','black','yellow']}
           onEnemyAttack={handleEnemyAttack}
@@ -314,7 +327,7 @@ export const GameBattlePage = () => {
         onContinue={onExit}
         onExit={() => setOpenModalExit(false)}
         lvlName=""
-        lvlNumber={level.id}
+        lvlNumber={gameLevel.id}
         isOpened={isOpenModalExit}
       />
     </main>

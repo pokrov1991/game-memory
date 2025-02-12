@@ -39,11 +39,11 @@ export const GamePage = () => {
     levelUp,
     scoreUp,
   } = useProgress()
-  const { user, game } = useUser();
-  const [level, setLevel] = useLevel<GameLevelStoreType>(selectedLevel, 'store')
+  const { user, game } = useUser()
   const [restartKey, setRestartKey] = useState(0)
+  const [gameLevel, setGameLevel] = useLevel<GameLevelStoreType>(selectedLevel, 'store')
   const [score, setScore] = useState(0)
-  const [seconds, setSeconds] = useState(level.gameTimer)
+  const [seconds, setSeconds] = useState(gameLevel.gameTimer)
   const [resultText, setResultText] = useState('')
   const [setLeader] = useSetLeaderboardMutation()
 
@@ -58,26 +58,26 @@ export const GamePage = () => {
 
   const onContinue = async () => {
     const scoreTotal = score + seconds
-    const nextLevel = level.id + 1
-    const isFinal = level.id >= 11
+    const nextLevel = gameLevel.id + 1
+    const isFinal = gameLevel.id >= 11
 
     completeLevel(nextLevel)
-    setLevel(nextLevel)
+    setGameLevel(nextLevel)
     selectLevel(nextLevel)
 
     if (!isFinal && game.userLevel < nextLevel) {
       levelUp(nextLevel)
     }
-    if (game.userLevel === level.id) {
+    if (game.userLevel === gameLevel.id) {
       scoreUp(scoreTotal)
-      handleSetLeader(userLevel, userScore + scoreTotal)
+      // handleSetLeader(userLevel, userScore + scoreTotal)
     }
     
     await YandexSDK.setGameData({
       completedLevels: Array.from(new Set([ ...game.completedLevels, nextLevel ])),
       selectedLevel: nextLevel,
       userLevel: !isFinal && game.userLevel < nextLevel ? nextLevel : game.userLevel,
-      userScore: game.userLevel === level.id ? game.userScore + scoreTotal : game.userScore,
+      userScore: game.userLevel === gameLevel.id ? game.userScore + scoreTotal : game.userScore,
     })
 
     if (!isFinal) {
@@ -111,7 +111,7 @@ export const GamePage = () => {
     handlePause()
     setTimeout(() => {
       setResultText(
-        `Поздравляем! Вы прошли уровень «${level.title}» и получили опыт: ${
+        `Поздравляем! Вы прошли уровень «${gameLevel.title}» и получили опыт: ${
           score + seconds
         } exp`
       )
@@ -171,13 +171,13 @@ export const GamePage = () => {
           <GameCountdown
             isPause={isPause}
             restartKey={restartKey}
-            initialSeconds={level.gameTimer}
+            initialSeconds={gameLevel.gameTimer}
             onComplete={handleGameOver}
             onSeconds={handleSeconds}
           />
         </div>
         <div className={styles['game-page__info']}>
-          <GameScore score={score} level={level} />
+          <GameScore score={score} />
         </div>
       </div>
       <div className={styles['game-page__canvas']}>
@@ -185,7 +185,7 @@ export const GamePage = () => {
         <GameCanvas
           isPause={isPause}
           restartKey={restartKey}
-          level={level}
+          level={gameLevel}
           onScore={handleScore}
           onColor={() => {}}
           onPlay={handlePause}
@@ -208,7 +208,7 @@ export const GamePage = () => {
         onContinue={onExit}
         onExit={() => setOpenModalExit(false)}
         lvlName=""
-        lvlNumber={level.id}
+        lvlNumber={gameLevel.id}
         isOpened={isOpenModalExit}
       />
     </main>

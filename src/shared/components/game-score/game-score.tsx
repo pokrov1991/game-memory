@@ -1,15 +1,13 @@
 import React from 'react'
-import { LEVELS_USER_CONFIG } from '@/shared'
-import { GameLevelStateType, GameLevelStoreType } from '@/shared/services/game/types'
 import { useProgress } from '@/shared/hooks'
+import { LEVELS_USER_CONFIG } from '@/shared'
 import styles from './styles.module.css'
 
 type GameScoreProps = {
   score: number
-  level: GameLevelStateType | GameLevelStoreType
 }
 
-export const GameScore: React.FC<GameScoreProps> = ({ score, level }) => {
+export const GameScore: React.FC<GameScoreProps> = ({ score }) => {
   const { userLevel } = useProgress()
   const scoreLevel = LEVELS_USER_CONFIG[userLevel-1].score
   const scorePercent = (score / scoreLevel) * 100

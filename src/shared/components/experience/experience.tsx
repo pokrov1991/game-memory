@@ -12,8 +12,11 @@ export const Experience = () => {
   const cUserLevel = userLevel > 1 ? userLevel : game?.userLevel
   const cScore = userScore > 0 ? userScore : game?.userScore
 
-  const scoreLevel = LEVELS_USER_CONFIG[userLevel-1].score
+  const scoreLevel = LEVELS_USER_CONFIG[userLevel].score
   const scorePercent = !isNaN(cScore) ? (cScore / scoreLevel) * 100 : 0
+
+  // TODO: Все комутеды (cStore) заменить на const [score, setScore] = useState(userScore > 0 ? userScore : game.userScore)
+  // Высчитывать шкалу с вычетом общегго количества очков (что бы шкала всегда с нуля считалась)
 
   return (
     <svg

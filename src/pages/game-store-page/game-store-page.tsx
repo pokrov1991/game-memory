@@ -36,12 +36,12 @@ export const GameStorePage = () => {
     userCoins,
     coinsUp,
   } = useProgress()
-  const { game } = useUser();
-  const [level, setLevel] = useLevel<GameLevelStoreType>(selectedLevel, 'store')
-  const [restartKey, setRestartKey] = useState(0)
-  const [score, setScore] = useState(game.userScore)
-  const [coins, setCoins] = useState(game.userCoins)
-  const [seconds, setSeconds] = useState(level.gameTimer)
+  const { game } = useUser()
+  const [restartKey, _setRestartKey] = useState(0)
+  const [gameLevel, _setGameLevel] = useLevel<GameLevelStoreType>(selectedLevel, 'store')
+  const [score, _setScore] = useState(game.userScore)
+  const [coins, _setCoins] = useState(game.userCoins)
+  const [_seconds, setSeconds] = useState(gameLevel.gameTimer)
   const [resultText, setResultText] = useState('')
 
   const cCoins = userCoins > 0 ? userCoins : coins
@@ -50,7 +50,7 @@ export const GameStorePage = () => {
   useMusic({ src: '/music/timeout.mp3', conditional: isOpenModalLose })
 
   const setGameDataWin = async () => {
-    const currentCoins = cCoins + level.coins
+    const currentCoins = cCoins + gameLevel.coins
     coinsUp(currentCoins)
     await YandexSDK.setGameData({
       ...game,
@@ -59,7 +59,7 @@ export const GameStorePage = () => {
   }
 
   const setGameDataLose = async () => {
-    const currentCoins = cCoins > level.coins ? cCoins - level.coins : 0
+    const currentCoins = cCoins > gameLevel.coins ? cCoins - gameLevel.coins : 0
     coinsUp(currentCoins)
     await YandexSDK.setGameData({
       ...game,
@@ -97,13 +97,13 @@ export const GameStorePage = () => {
   const handleGameWin = (): void => {
     handlePause()
     setTimeout(() => {
-      setResultText(`Поздравляем! Обыграли «${level.title}» и получили: ${level.coins} монет.`)
+      setResultText(`Поздравляем! Обыграли «${gameLevel.title}» и получили: ${gameLevel.coins} монет.`)
       setOpenModalWin(true)
     }, delayGameEffects)
   }
 
   const handleGameOver = (): void => {
-    setResultText(`Вы проиграли! Вас обыграл «${level.title}» и вы потеряли: ${level.coins} монет.`)
+    setResultText(`Вы проиграли! Вас обыграл «${gameLevel.title}» и вы потеряли: ${gameLevel.coins} монет.`)
     setOpenModalLose(true)
   }
 
@@ -124,20 +124,20 @@ export const GameStorePage = () => {
           <GameCountdown
             isPause={isPause}
             restartKey={restartKey}
-            initialSeconds={level.gameTimer}
+            initialSeconds={gameLevel.gameTimer}
             onComplete={handleGameOver}
             onSeconds={handleSeconds}
           />
         </div>
         <div className={styles['game-page__info']}>
-          <GameScore score={score} level={level} />
+          <GameScore score={score} />
         </div>
       </div>
       <div className={styles['game-page__canvas']}>
         <GameCanvas
           isPause={isPause}
           restartKey={restartKey}
-          level={level}
+          level={gameLevel}
           onScore={() => {}}
           onColor={() => {}}
           onPlay={handlePause}
@@ -160,7 +160,7 @@ export const GameStorePage = () => {
         onContinue={onExit}
         onExit={() => setOpenModalExit(false)}
         lvlName=""
-        lvlNumber={level.id}
+        lvlNumber={gameLevel.id}
         isOpened={isOpenModalExit}
       />
     </main>
