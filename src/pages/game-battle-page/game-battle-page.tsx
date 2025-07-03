@@ -1,5 +1,5 @@
 import classNames from 'classnames'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import {
   GameCanvas,
@@ -13,13 +13,14 @@ import { useLevel, useToggle, useProgress, useMusic } from '@/shared/hooks'
 import { useSetLeaderboardMutation } from '@/shared'
 import { useUser } from '@/shared/contexts/UserContext'
 import { TypeModal } from '@/shared/components/modal-comps/types'
-import { GameLevelStateType } from '@/shared/services/game/types'
+import { EnemyState, GameLevelStateType } from '@/shared/services/game/types'
 import { ATTACK_FACTOR } from '@/shared/services/game/constants'
 import { LEVELS_USER_CONFIG } from '@/shared'
 import YandexSDK from '@/shared/services/sdk/yandexSdk'
 import styles from './styles.module.css'
+import { EnemyService } from '@/shared/services/game/EnemyService'
 
-// Вычисляем размер UI эдементов относительно высоты экрана
+// Вычисляем размер UI элементов относительно высоты экрана
 let scalePercent = window.innerHeight < 1040 ? window.innerHeight / 1040 : 1
 
 const scaleStyle = {
@@ -59,6 +60,22 @@ export const GameBattlePage = () => {
   const [resultText, setResultText] = useState('')
   const [setLeader] = useSetLeaderboardMutation()
 
+  const [enemyState, setEnemyState] = useState('default');
+  const enemyRef = useRef<EnemyService | null>(null);
+
+  function getEnemySpriteModifierClass() {
+    switch (enemyState) {
+      case EnemyState.START:
+        return styles['game-page__person-img-enemy-attack-sprite_start'];
+      case EnemyState.RUN:
+        return styles['game-page__person-img-enemy-attack-sprite_run'];
+      case EnemyState.ATTACK:
+        return styles['game-page__person-img-enemy-attack-sprite_attack'];
+      default:
+        return '';
+    }
+  }
+
   useMusic({ src: '/music/success.mp3', conditional: isOpenModalWin })
   useMusic({ src: '/music/timeout.mp3', conditional: isOpenModalLose })
 
@@ -81,6 +98,12 @@ export const GameBattlePage = () => {
   }
 
   useEffect(() => {
+    if (!enemyRef.current) {
+      enemyRef.current = new EnemyService(gameLevel.enemyStateDurations, setEnemyState);
+    }
+  }, []);
+
+  useEffect(() => {
     if (hp <= 0) {
       handleGameOver()
     }
@@ -97,6 +120,7 @@ export const GameBattlePage = () => {
     setColorPlayerAttack('')
     setColorPlayerPreAttack('')
     togglePause(true)
+    enemyRef.current.resetState()
   }
 
   const onContinue = async () => {
@@ -192,15 +216,21 @@ export const GameBattlePage = () => {
     }
   }
 
-  const handleTimerEnemyAttack = (second: number, color: string): void => {
-    console.log('timer', second)
-    setColorEnemyAttack(color)
+  const handleTickEnemyAttack = (seconds: number, attackNumber: number): void => {
+    console.log('handleTickEnemyAttack', seconds);
+    
+    setColorEnemyAttack(gameLevel.initialColors[attackNumber])
+    if (seconds === gameLevel.initialSeconds[attackNumber]) {
+      enemyRef.current.setStartState()
+    } else if (enemyRef.current.state !== EnemyState.RUN) {
+      enemyRef.current.setRunState()
+    }
   }
 
-  const handleEnemyAttack = (attack: number): void => {
-    const newHp = hp > attack ? hp - attack : 0
-    console.log('attack enemy', attack, newHp)
-    setHP(newHp)
+  const handleEnemyAttack = (damage: number): void => {
+    const newHp = hp > damage ? hp - damage : 0
+    setTimeout(() => setHP(newHp), gameLevel.enemyStateDurations.ATTACK)
+    enemyRef.current.setAttackState()
   }
 
   const handleSetLeader = async (level: number, score: number) => {
@@ -272,9 +302,12 @@ export const GameBattlePage = () => {
           )
         }>
           <div className={styles['game-page__person-img']}>
-            <div 
-              className={styles['game-page__person-img-attack']} 
-              style={{ background: `${colorEnemyAttack}` }}></div>
+            <div
+              className={classNames(
+                styles['game-page__person-img-enemy-attack-sprite'],
+                getEnemySpriteModifierClass()
+              )}
+            ></div>
           </div>
           <div className={styles['game-page__person-info']}>
             <div className={styles['game-page__person-name']}>Враг</div>
@@ -305,10 +338,10 @@ export const GameBattlePage = () => {
           restartKey={restartKey}
           colorParry={colorPlayerAttack}
           initialSeconds={gameLevel.initialSeconds}
-          initialAttacks={[20,40,10,10,12]}
-          initialColors={['red','blue','green','black','yellow']}
+          initialAttacks={gameLevel.initialAttacks}
+          initialColors={gameLevel.initialColors}
           onEnemyAttack={handleEnemyAttack}
-          onTimer={handleTimerEnemyAttack}
+          onTick={handleTickEnemyAttack}
         />
       </div>
       <ModalResult

@@ -36,8 +36,8 @@ export const PARRY_ANIMATION_DELAY = 2000 // Задержка анимации �
 
 export const LEVELS_STATE: GameLevelStateType[] = LEVELS_STATE_CONFIG.map(
   (level: GameLevelStateSimpleType) => {
-    const cardRow = computCardRow(level.cardCount, level.cardCol)
-    const cardValues = createCardValues(level.cardCount)
+    const cardRow = computCardRow(level.cardCount, level.cardCol) // количество строк
+    const cardValues = createCardValues(level.cardCount) // массив карточек для запоминания
     const cardWidth = computCardWidth(level.cardCol, cardRow, CARD_MARGIN)
     const cardHeight = computCardHeight(cardWidth)
     const canvasWidth = computCanvasWidth(cardWidth, level.cardCol, CARD_MARGIN)
