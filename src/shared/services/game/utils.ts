@@ -5,7 +5,6 @@ export const createCardValues = (count: number): string[] => {
     throw new Error('Число карт CARD_COUNT должно быть четным')
   }
 
-  // TODO: поправить, нельзя сделать больше 20 карточек
   const cardImages: string[] = Array.from(
     { length: 10 },
     (_, i) => `card-${i + 1}.png`

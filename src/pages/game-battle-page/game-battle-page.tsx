@@ -216,10 +216,9 @@ export const GameBattlePage = () => {
     }
   }
 
-  const handleTickEnemyAttack = (seconds: number, attackNumber: number): void => {
-    console.log('handleTickEnemyAttack', seconds);
-    
+  const handleTickEnemyAttack = (seconds: number, attackNumber: number): void => {    
     setColorEnemyAttack(gameLevel.initialColors[attackNumber])
+
     if (seconds === gameLevel.initialSeconds[attackNumber]) {
       enemyRef.current.setStartState()
     } else if (enemyRef.current.state !== EnemyState.RUN) {
@@ -301,7 +300,10 @@ export const GameBattlePage = () => {
             { [styles['game-page__person_enemy']]: true },
           )
         }>
-          <div className={styles['game-page__person-img']}>
+          <div
+            className={styles['game-page__person-img']}
+            style={{ background: `${colorEnemyAttack}` }}
+          >
             <div
               className={classNames(
                 styles['game-page__person-img-enemy-attack-sprite'],

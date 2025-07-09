@@ -63,6 +63,7 @@ export const GameTimerAttack: React.FC<GameTimerAttackProps> = ({
         setSeconds(prevSeconds => prevSeconds - 1)
       }, 1000)
 
+      console.log('tick', seconds)
       onTick(seconds, attackNumber)
 
       return () => clearInterval(timerId)
