@@ -4,6 +4,7 @@ export const createCardValues = (count: number): string[] => {
   if (count % 2 !== 0) {
     throw new Error('Число карт CARD_COUNT должно быть четным')
   }
+
   const cardImages: string[] = Array.from(
     { length: 10 },
     (_, i) => `card-${i + 1}.png`

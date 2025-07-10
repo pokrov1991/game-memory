@@ -9,8 +9,8 @@ type GameTimerAttackProps = {
   initialSeconds: number[] // Время атаки в секундах
   initialAttacks: number[] // Количество урона в %
   initialColors: string[]  // Цвета атаки
-  onEnemyAttack: (attack: number) => void
-  onTimer: (seconds: number, color: string) => void
+  onEnemyAttack: (damage: number) => void
+  onTick: (seconds: number, attackNumber: number) => void
 }
 
 export const GameTimerAttack: React.FC<GameTimerAttackProps> = ({
@@ -22,14 +22,14 @@ export const GameTimerAttack: React.FC<GameTimerAttackProps> = ({
   initialAttacks,
   initialColors,
   onEnemyAttack,
-  onTimer,
+  onTick,
 }) => {
-  const [index, setIndex] = useState(0)
-  const [seconds, setSeconds] = useState(initialSeconds[index])
+  const [attackNumber, setAttackNumber] = useState(0)
+  const [seconds, setSeconds] = useState(initialSeconds[attackNumber])
   const [isStunPause, setStunPause] = useState(false)
 
   useEffect(() => {
-    setIndex(0)
+    setAttackNumber(0)
     setSeconds(initialSeconds[0])
   }, [restartKey])
 
@@ -37,14 +37,14 @@ export const GameTimerAttack: React.FC<GameTimerAttackProps> = ({
     if (isStun) {
       // Учитываем парирование
       let parryDelay = 0
-      if (initialColors[index] === colorParry) {
+      if (initialColors[attackNumber] === colorParry) {
         console.log('parry')
         parryDelay = PARRY_ANIMATION_DELAY
         setSeconds(0)
       }
       
       // Задаем оглушение
-      const stunDelay = STUN_ANIMATION_DELAY + 100 * initialAttacks[index]
+      const stunDelay = STUN_ANIMATION_DELAY + 100 * initialAttacks[attackNumber]
       console.log('stun', stunDelay/1000)
       setStunPause(true)
       setTimeout(() => {
@@ -63,23 +63,24 @@ export const GameTimerAttack: React.FC<GameTimerAttackProps> = ({
         setSeconds(prevSeconds => prevSeconds - 1)
       }, 1000)
 
-      onTimer(seconds, initialColors[index])
+      console.log('tick', seconds)
+      onTick(seconds, attackNumber)
 
       return () => clearInterval(timerId)
     } else {
-      if (initialColors[index] !== colorParry) {
-        onEnemyAttack(initialAttacks[index])
+      if (initialColors[attackNumber] !== colorParry) {
+        onEnemyAttack(initialAttacks[attackNumber])
       }
 
-      let indexNext = index + 1
-      if (index === initialSeconds.length - 1) {
-        indexNext = 0
+      let nextAttackNumber = attackNumber + 1
+      if (attackNumber === initialSeconds.length - 1) {
+        nextAttackNumber = 0
       }
 
-      setIndex(indexNext)
-      setSeconds(initialSeconds[indexNext])
+      setAttackNumber(nextAttackNumber)
+      setSeconds(initialSeconds[nextAttackNumber])
     }
   }, [isPause, isStunPause, seconds])
 
-  return ('')
+  return <></>
 }

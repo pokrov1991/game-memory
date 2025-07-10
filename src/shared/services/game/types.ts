@@ -11,6 +11,7 @@ export type GameLevelStateType = {
   initialSeconds: number[],
   initialAttacks: number[],
   initialColors: string[],
+  enemyStateDurations: Record<EnemyState, number>
   isPassed: boolean,
   isCurrent: boolean,
   cardValues: string[]
@@ -62,4 +63,15 @@ export type CardParams = {
   y: number
   width: number
   height: number
+}
+
+export enum EnemyState {
+  DEFAULT = 'DEFAULT',
+  
+  START = 'START',
+  RUN = 'RUN',
+  ATTACK = 'ATTACK',
+  
+  HIT = 'HIT',
+  DEAD = 'DEAD',
 }
