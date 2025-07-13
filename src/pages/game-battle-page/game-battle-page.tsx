@@ -71,6 +71,10 @@ export const GameBattlePage = () => {
         return styles['game-page__person-img-enemy-attack-sprite_run'];
       case EnemyState.ATTACK:
         return styles['game-page__person-img-enemy-attack-sprite_attack'];
+      case EnemyState.HIT:
+        return styles['game-page__person-img-enemy-attack-sprite_hit'];
+      case EnemyState.DEAD:
+        return styles['game-page__person-img-enemy-attack-sprite_dead'];
       default:
         return '';
     }
@@ -108,6 +112,7 @@ export const GameBattlePage = () => {
       handleGameOver()
     }
     if (hpEnemy <= 0) {
+      enemyRef.current.setDeadState()
       handleGameWin()
     }
   }, [hp, hpEnemy])
@@ -198,6 +203,7 @@ export const GameBattlePage = () => {
       const attack = Math.floor(currentScore * ATTACK_FACTOR)
       const newHpEnemy = hpEnemy > attack ? hpEnemy - attack : 0
       setHPEnemy(newHpEnemy)
+      enemyRef.current.setHitState()
 
       setStun(true)
       setTimeout(() => {
