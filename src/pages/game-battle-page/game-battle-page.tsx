@@ -112,7 +112,6 @@ export const GameBattlePage = () => {
       handleGameOver()
     }
     if (hpEnemy <= 0) {
-      enemyRef.current.setDeadState()
       handleGameWin()
     }
   }, [hp, hpEnemy])
@@ -168,6 +167,7 @@ export const GameBattlePage = () => {
   }
 
   const handleGameWin = (): void => {
+    enemyRef.current.setDeadState()
     handlePause()
     setTimeout(() => {
       setResultText(`Поздравляем! Вы прошли уровень «${gameLevel.title}» и получили опыт: ${scoreSession} exp`)
