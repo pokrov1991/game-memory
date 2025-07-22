@@ -19,6 +19,7 @@ import { LEVELS_USER_CONFIG } from '@/shared'
 import YandexSDK from '@/shared/services/sdk/yandexSdk'
 import styles from './styles.module.css'
 import { EnemyService } from '@/shared/services/game/EnemyService'
+import { io, Socket } from "socket.io-client";
 
 // Вычисляем размер UI элементов относительно высоты экрана
 let scalePercent = window.innerHeight < 1040 ? window.innerHeight / 1040 : 1
@@ -32,6 +33,9 @@ const delayGameEffects = 1000
 
 export const GameBattlePage = () => {
   const navigate = useNavigate()
+  const [gameMode, setGameMode] = useState<'bot' | 'online'>('bot');
+  const [roomHash, setRoomHash] = useState('');
+  const [opponentName, setOpponentName] = useState('Враг');
   const [isOpenModalWin, setOpenModalWin] = useState(false)
   const [isOpenModalLose, setOpenModalLose] = useState(false)
   const [isOpenModalExit, setOpenModalExit] = useState(false)
@@ -59,6 +63,8 @@ export const GameBattlePage = () => {
   const [hpEnemy, setHPEnemy] = useState(100)
   const [resultText, setResultText] = useState('')
   const [setLeader] = useSetLeaderboardMutation()
+
+  const socketRef = useRef<Socket>(null);
 
   const [enemyState, setEnemyState] = useState('default');
   const enemyRef = useRef<EnemyService | null>(null);
@@ -104,9 +110,38 @@ export const GameBattlePage = () => {
   }
 
   useEffect(() => {
+    const roomHash = window.location.pathname.split('/').pop()
+    // Если есть хеш комнаты (и это не обычная страница битвы), меняем режим на онлайн
+    if (!roomHash.includes('game-battle')) {
+      setGameMode('online');
+      setRoomHash(roomHash)
+      
+      socketRef.current = io("http://localhost:3000")
+      socketRef.current.emit("join-room", roomHash, user.name);
+
+      socketRef.current.on('game-started', (data) => {
+        setOpponentName(data.opponentName)
+      })
+
+      socketRef.current.on('opponent-preattack', ({color}) => {
+        setColorEnemyAttack(color)
+      })
+
+      socketRef.current.on('opponent-attack', ({attack}) => {
+        handleEnemyAttack(attack)
+      })
+    }
+    
     if (!enemyRef.current) {
       enemyRef.current = new EnemyService(gameLevel.enemyStateDurations, setEnemyState);
     }
+
+    return () => {
+      if (socketRef.current) {
+        socketRef.current.disconnect();
+        socketRef.current = null;
+      }
+    };
   }, []);
 
   useEffect(() => {
@@ -183,7 +218,7 @@ export const GameBattlePage = () => {
     setOpenModalLose(true)
   }
 
-  const handleScore = (newScore: number): void => {
+  const handleScore = (newScore: number): void => {    
     // Прибавляем очки
     const currentScore = newScore - scoreSession > 0 ? newScore - scoreSession : 0
     const totalScore = currentScore + score
@@ -206,6 +241,7 @@ export const GameBattlePage = () => {
       const newHpEnemy = hpEnemy > attack ? hpEnemy - attack : 0
       setHPEnemy(newHpEnemy)
       enemyRef.current.setHitState()
+      socketRef.current?.emit('attack', attack)
 
       setStun(true)
       enemyRef.current.setStunState()
@@ -219,6 +255,7 @@ export const GameBattlePage = () => {
   const handleColor = (color: string, countFlipped: number): void => {
     if (countFlipped === 1) {
       setColorPlayerPreAttack(color)
+      socketRef.current?.emit('preattack', color)
     }
     if (countFlipped === 2) {
       setColorPlayerPreAttack('')
@@ -241,8 +278,9 @@ export const GameBattlePage = () => {
   }
 
   const handleEnemyAttack = (damage: number): void => {
-    const newHp = hp > damage ? hp - damage : 0
-    setTimeout(() => setHP(newHp), gameLevel.enemyStateDurations.ATTACK)
+    setTimeout(() => setHP((oldHP) => {
+      return oldHP > damage ? oldHP - damage : 0
+    }), gameLevel.enemyStateDurations.ATTACK)
     enemyRef.current.setAttackState()
   }
 
@@ -282,7 +320,8 @@ export const GameBattlePage = () => {
           </button>
         </div>
         <div className={styles['game-page__info']}>
-          <GameScore score={score} />
+          { gameMode === 'bot' && <GameScore score={score} />}
+          { gameMode === 'online' && <h2 style={{color: 'white'}}>{roomHash}</h2>}
         </div>
       </div>
 
@@ -300,11 +339,13 @@ export const GameBattlePage = () => {
               style={{ background: `${colorPlayerPreAttack}` }}></div>
           </div>
           <div className={styles['game-page__person-info']}>
-            <div className={styles['game-page__person-name']}>Игрок</div>
+            <div className={styles['game-page__person-name']}>
+              {gameMode === 'online' ? user.name : 'Игрок'}
+            </div>
             <div className={styles['game-page__person-hp']}>
               <div
                 className={styles['game-page__person-hp-bar']}
-                style={{ width: `${hp}%` }}></div>
+                style={{ width: `${hp}%` }}>{hp}%</div>
             </div>
           </div>
         </div>
@@ -326,11 +367,11 @@ export const GameBattlePage = () => {
             ></div>
           </div>
           <div className={styles['game-page__person-info']}>
-            <div className={styles['game-page__person-name']}>Враг</div>
+            <div className={styles['game-page__person-name']}>{opponentName}</div>
             <div className={styles['game-page__person-hp']}>
               <div
                 className={styles['game-page__person-hp-bar']}
-                style={{ width: `${hpEnemy}%` }}></div>
+                style={{ width: `${hpEnemy}%` }}>{hpEnemy}%</div>
             </div>
           </div>
         </div>
@@ -348,17 +389,20 @@ export const GameBattlePage = () => {
           onPlay={handlePause}
           onVictory={handleChangeCards}
         />
-        <GameTimerAttack
-          isPause={isPause}
-          isStun={isStun}
-          restartKey={restartKey}
-          colorParry={colorPlayerAttack}
-          initialSeconds={gameLevel.initialSeconds}
-          initialAttacks={gameLevel.initialAttacks}
-          initialColors={gameLevel.initialColors}
-          onEnemyAttack={handleEnemyAttack}
-          onTick={handleTickEnemyAttack}
-        />
+        {
+          gameMode === 'bot' &&
+          <GameTimerAttack
+            isPause={isPause}
+            isStun={isStun}
+            restartKey={restartKey}
+            colorParry={colorPlayerAttack}
+            initialSeconds={gameLevel.initialSeconds}
+            initialAttacks={gameLevel.initialAttacks}
+            initialColors={gameLevel.initialColors}
+            onEnemyAttack={handleEnemyAttack}
+            onTick={handleTickEnemyAttack}
+          />
+        }
       </div>
       <ModalResult
         onContinue={onContinue}

@@ -28,6 +28,10 @@ export const routesConfig: RouteObject[] = [
         Component: GameBattlePage,
       },
       {
+        path: '/game-battle/:id',
+        Component: GameBattlePage,
+      },
+      {
         path: '/game-store',
         Component: GameStorePage,
       },
