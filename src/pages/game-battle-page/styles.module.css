@@ -215,6 +215,19 @@
   animation: spriteAnimAttack 1.1s steps(11);
 }
 
+.game-page__person-img-enemy-attack-sprite_stun {
+  background-image: url('/game/enemy/enemy-default.webp');
+}
+
+.game-page__person-img-enemy-attack-sprite_hit {
+  background-image: url('/game/enemy/enemy-hit.webp');
+}
+
+.game-page__person-img-enemy-attack-sprite_dead {
+  background-image: url('/game/enemy/enemy-dead-sprite.png');
+  animation: spriteAnimDead 0.7s steps(7);
+}
+
 @keyframes spriteAnimStart {
   from {
     background-position: 0 0;
@@ -239,6 +252,15 @@
   }
   to {
     background-position: -5500px 0;
+  }
+}
+
+@keyframes spriteAnimDead {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: -3500px 0;
   }
 }
 

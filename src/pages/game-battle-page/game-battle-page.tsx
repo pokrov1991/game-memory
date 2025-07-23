@@ -71,6 +71,12 @@ export const GameBattlePage = () => {
         return styles['game-page__person-img-enemy-attack-sprite_run'];
       case EnemyState.ATTACK:
         return styles['game-page__person-img-enemy-attack-sprite_attack'];
+        case EnemyState.STUN:
+        return styles['game-page__person-img-enemy-attack-sprite_stun'];
+      case EnemyState.HIT:
+        return styles['game-page__person-img-enemy-attack-sprite_hit'];
+      case EnemyState.DEAD:
+        return styles['game-page__person-img-enemy-attack-sprite_dead'];
       default:
         return '';
     }
@@ -163,6 +169,7 @@ export const GameBattlePage = () => {
   }
 
   const handleGameWin = (): void => {
+    enemyRef.current.setDeadState()
     handlePause()
     setTimeout(() => {
       setResultText(`Поздравляем! Вы прошли уровень «${gameLevel.title}» и получили опыт: ${scoreSession} exp`)
@@ -198,8 +205,11 @@ export const GameBattlePage = () => {
       const attack = Math.floor(currentScore * ATTACK_FACTOR)
       const newHpEnemy = hpEnemy > attack ? hpEnemy - attack : 0
       setHPEnemy(newHpEnemy)
+      enemyRef.current.setHitState()
 
       setStun(true)
+      enemyRef.current.setStunState()
+      
       setTimeout(() => {
         setStun(false)
       }, 0)
@@ -217,7 +227,11 @@ export const GameBattlePage = () => {
   }
 
   const handleTickEnemyAttack = (seconds: number, attackNumber: number): void => {    
-    setColorEnemyAttack(gameLevel.initialColors[attackNumber])
+    if (enemyRef.current.state === EnemyState.ATTACK) {
+      setTimeout(() => setColorEnemyAttack(gameLevel.initialColors[attackNumber]), gameLevel.enemyStateDurations.ATTACK)
+    } else {
+      setColorEnemyAttack(gameLevel.initialColors[attackNumber])
+    }
 
     if (seconds === gameLevel.initialSeconds[attackNumber]) {
       enemyRef.current.setStartState()
