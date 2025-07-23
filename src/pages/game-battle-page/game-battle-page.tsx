@@ -174,7 +174,7 @@ export const GameBattlePage = () => {
     setTimeout(() => {
       setResultText(`Поздравляем! Вы прошли уровень «${gameLevel.title}» и получили опыт: ${scoreSession} exp`)
       setOpenModalWin(true)
-    }, delayGameEffects)
+    }, delayGameEffects + gameLevel.enemyStateDurations.DEAD)
   }
 
   const handleGameOver = (): void => {

@@ -7,7 +7,7 @@ const enemyStateDurations = {
     [EnemyState.ATTACK]: 1100,
     [EnemyState.STUN]: 0,
     [EnemyState.HIT]: 400,
-    [EnemyState.DEAD]: 700,
+    [EnemyState.DEAD]: 600,
 }
 
 export const LEVELS_STATE_CONFIG: GameLevelStateSimpleType[] = [

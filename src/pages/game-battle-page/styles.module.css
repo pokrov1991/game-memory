@@ -225,7 +225,7 @@
 
 .game-page__person-img-enemy-attack-sprite_dead {
   background-image: url('/game/enemy/enemy-dead-sprite.png');
-  animation: spriteAnimDead 0.7s steps(7);
+  animation: spriteAnimDead 0.6s steps(6) forwards;
 }
 
 @keyframes spriteAnimStart {
@@ -260,7 +260,7 @@
     background-position: 0 0;
   }
   to {
-    background-position: -3500px 0;
+    background-position: -3000px 0;
   }
 }
 
