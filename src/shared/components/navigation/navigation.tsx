@@ -18,11 +18,7 @@ const Item = ({
   const navigate = useNavigate()
   
   const handleClick = () => {
-    if (onClick) {
-      onClick()
-    } else {
-      navigate(to)
-    }
+    onClick ? onClick() : navigate(to)
   }
   
   return (

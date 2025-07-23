@@ -120,23 +120,6 @@
   }
 }
 
-/* .game-page__copy-link {
-  bottom: 00px;
-  right: 65px;
-  background: none;
-  border: none;
-  font-family: 'Roboto', sans-serif;
-  font-size: 18px;
-  font-weight: 400;
-  line-height: 21.09px;
-  letter-spacing: 0.02em;
-  color: rgba(160, 236, 234, 1);
-
-  @media (max-width: 768px) {
-    display: none;
-  }
-} */
-
 .game-page__info {
   display: flex;
   justify-content: space-between;

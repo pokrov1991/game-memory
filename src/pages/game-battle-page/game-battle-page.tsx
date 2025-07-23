@@ -9,7 +9,7 @@ import {
   ModalResult,
   ModalExit,
 } from '@/shared/components'
-import { useLevel, useToggle, useProgress, useMusic } from '@/shared/hooks'
+import { useLevel, useToggle, useProgress, useMusic, useWebSocket } from '@/shared/hooks'
 import { useSetLeaderboardMutation } from '@/shared'
 import { useUser } from '@/shared/contexts/UserContext'
 import { TypeModal } from '@/shared/components/modal-comps/types'
@@ -19,7 +19,6 @@ import { LEVELS_USER_CONFIG } from '@/shared'
 import YandexSDK from '@/shared/services/sdk/yandexSdk'
 import styles from './styles.module.css'
 import { EnemyService } from '@/shared/services/game/EnemyService'
-import { io, Socket } from "socket.io-client";
 
 // Вычисляем размер UI элементов относительно высоты экрана
 let scalePercent = window.innerHeight < 1040 ? window.innerHeight / 1040 : 1
@@ -64,8 +63,6 @@ export const GameBattlePage = () => {
   const [resultText, setResultText] = useState('')
   const [setLeader] = useSetLeaderboardMutation()
 
-  const socketRef = useRef<Socket>(null);
-
   const [enemyState, setEnemyState] = useState('default');
   const enemyRef = useRef<EnemyService | null>(null);
 
@@ -109,40 +106,31 @@ export const GameBattlePage = () => {
     })
   }
 
+  const roomHashFromUrl = window.location.pathname.split('/').pop()
+  const isOnlineMode = roomHashFromUrl && !roomHashFromUrl.includes('game-battle')
+  
+  const { subscribe: socketSubscribe, emit: socketEmit } = useWebSocket(
+    "http://localhost:3000",
+    roomHashFromUrl || '',
+    user.name
+  )
+
   useEffect(() => {
-    const roomHash = window.location.pathname.split('/').pop()
-    // Если есть хеш комнаты (и это не обычная страница битвы), меняем режим на онлайн
-    if (!roomHash.includes('game-battle')) {
+    if (isOnlineMode) {
       setGameMode('online');
-      setRoomHash(roomHash)
-      
-      socketRef.current = io("http://localhost:3000")
-      socketRef.current.emit("join-room", roomHash, user.name);
+      setRoomHash(roomHashFromUrl)
 
-      socketRef.current.on('game-started', (data) => {
-        setOpponentName(data.opponentName)
-      })
-
-      socketRef.current.on('opponent-preattack', ({color}) => {
-        setColorEnemyAttack(color)
-      })
-
-      socketRef.current.on('opponent-attack', ({attack}) => {
-        handleEnemyAttack(attack)
+      socketSubscribe({
+        'game-started': (opponentName: string) => setOpponentName(opponentName),
+        'opponent-preattack': (color: string) => setColorEnemyAttack(color),
+        'opponent-attack': (attack: number) => handleEnemyAttack(attack)
       })
     }
     
     if (!enemyRef.current) {
       enemyRef.current = new EnemyService(gameLevel.enemyStateDurations, setEnemyState);
     }
-
-    return () => {
-      if (socketRef.current) {
-        socketRef.current.disconnect();
-        socketRef.current = null;
-      }
-    };
-  }, []);
+  }, [isOnlineMode, roomHashFromUrl, socketSubscribe]);
 
   useEffect(() => {
     if (hp <= 0) {
@@ -241,7 +229,7 @@ export const GameBattlePage = () => {
       const newHpEnemy = hpEnemy > attack ? hpEnemy - attack : 0
       setHPEnemy(newHpEnemy)
       enemyRef.current.setHitState()
-      socketRef.current?.emit('attack', attack)
+      socketEmit('attack', attack)
 
       setStun(true)
       enemyRef.current.setStunState()
@@ -255,7 +243,7 @@ export const GameBattlePage = () => {
   const handleColor = (color: string, countFlipped: number): void => {
     if (countFlipped === 1) {
       setColorPlayerPreAttack(color)
-      socketRef.current?.emit('preattack', color)
+      socketEmit('preattack', color)
     }
     if (countFlipped === 2) {
       setColorPlayerPreAttack('')
