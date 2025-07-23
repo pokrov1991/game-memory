@@ -71,6 +71,7 @@ export enum EnemyState {
   START = 'START',
   RUN = 'RUN',
   ATTACK = 'ATTACK',
+  STUN = 'STUN',
   
   HIT = 'HIT',
   DEAD = 'DEAD',

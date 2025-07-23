@@ -44,6 +44,9 @@ export class EnemyService {
     this.enqueue(EnemyState.ATTACK, this.durations.ATTACK)
     this.resetState()
   }
+  setStunState() {
+    this.enqueue(EnemyState.STUN, this.durations.STUN)
+  }
   setHitState() {
     this.enqueue(EnemyState.HIT, this.durations.HIT)
   }
