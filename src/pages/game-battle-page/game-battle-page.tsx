@@ -9,7 +9,7 @@ import {
   ModalResult,
   ModalExit,
 } from '@/shared/components'
-import { useLevel, useToggle, useProgress, useMusic } from '@/shared/hooks'
+import { useLevel, useToggle, useProgress, useMusic, useWebSocket } from '@/shared/hooks'
 import { useSetLeaderboardMutation } from '@/shared'
 import { useUser } from '@/shared/contexts/UserContext'
 import { TypeModal } from '@/shared/components/modal-comps/types'
@@ -32,6 +32,9 @@ const delayGameEffects = 1000
 
 export const GameBattlePage = () => {
   const navigate = useNavigate()
+  const [gameMode, setGameMode] = useState<'bot' | 'online'>('bot');
+  const [roomHash, setRoomHash] = useState('');
+  const [opponentName, setOpponentName] = useState('Враг');
   const [isOpenModalWin, setOpenModalWin] = useState(false)
   const [isOpenModalLose, setOpenModalLose] = useState(false)
   const [isOpenModalExit, setOpenModalExit] = useState(false)
@@ -103,11 +106,31 @@ export const GameBattlePage = () => {
     })
   }
 
+  const roomHashFromUrl = window.location.pathname.split('/').pop()
+  const isOnlineMode = roomHashFromUrl && !roomHashFromUrl.includes('game-battle')
+  
+  const { subscribe: socketSubscribe, emit: socketEmit } = useWebSocket(
+    "http://localhost:3000",
+    roomHashFromUrl || '',
+    user.name
+  )
+
   useEffect(() => {
+    if (isOnlineMode) {
+      setGameMode('online');
+      setRoomHash(roomHashFromUrl)
+
+      socketSubscribe({
+        'game-started': (opponentName: string) => setOpponentName(opponentName),
+        'opponent-preattack': (color: string) => setColorEnemyAttack(color),
+        'opponent-attack': (attack: number) => handleEnemyAttack(attack)
+      })
+    }
+    
     if (!enemyRef.current) {
       enemyRef.current = new EnemyService(gameLevel.enemyStateDurations, setEnemyState);
     }
-  }, []);
+  }, [isOnlineMode, roomHashFromUrl, socketSubscribe]);
 
   useEffect(() => {
     if (hp <= 0) {
@@ -183,7 +206,7 @@ export const GameBattlePage = () => {
     setOpenModalLose(true)
   }
 
-  const handleScore = (newScore: number): void => {
+  const handleScore = (newScore: number): void => {    
     // Прибавляем очки
     const currentScore = newScore - scoreSession > 0 ? newScore - scoreSession : 0
     const totalScore = currentScore + score
@@ -206,6 +229,7 @@ export const GameBattlePage = () => {
       const newHpEnemy = hpEnemy > attack ? hpEnemy - attack : 0
       setHPEnemy(newHpEnemy)
       enemyRef.current.setHitState()
+      socketEmit('attack', attack)
 
       setStun(true)
       enemyRef.current.setStunState()
@@ -219,6 +243,7 @@ export const GameBattlePage = () => {
   const handleColor = (color: string, countFlipped: number): void => {
     if (countFlipped === 1) {
       setColorPlayerPreAttack(color)
+      socketEmit('preattack', color)
     }
     if (countFlipped === 2) {
       setColorPlayerPreAttack('')
@@ -241,8 +266,9 @@ export const GameBattlePage = () => {
   }
 
   const handleEnemyAttack = (damage: number): void => {
-    const newHp = hp > damage ? hp - damage : 0
-    setTimeout(() => setHP(newHp), gameLevel.enemyStateDurations.ATTACK)
+    setTimeout(() => setHP((oldHP) => {
+      return oldHP > damage ? oldHP - damage : 0
+    }), gameLevel.enemyStateDurations.ATTACK)
     enemyRef.current.setAttackState()
   }
 
@@ -282,7 +308,8 @@ export const GameBattlePage = () => {
           </button>
         </div>
         <div className={styles['game-page__info']}>
-          <GameScore score={score} />
+          { gameMode === 'bot' && <GameScore score={score} />}
+          { gameMode === 'online' && <h2 style={{color: 'white'}}>{roomHash}</h2>}
         </div>
       </div>
 
@@ -300,11 +327,13 @@ export const GameBattlePage = () => {
               style={{ background: `${colorPlayerPreAttack}` }}></div>
           </div>
           <div className={styles['game-page__person-info']}>
-            <div className={styles['game-page__person-name']}>Игрок</div>
+            <div className={styles['game-page__person-name']}>
+              {gameMode === 'online' ? user.name : 'Игрок'}
+            </div>
             <div className={styles['game-page__person-hp']}>
               <div
                 className={styles['game-page__person-hp-bar']}
-                style={{ width: `${hp}%` }}></div>
+                style={{ width: `${hp}%` }}>{hp}%</div>
             </div>
           </div>
         </div>
@@ -326,11 +355,11 @@ export const GameBattlePage = () => {
             ></div>
           </div>
           <div className={styles['game-page__person-info']}>
-            <div className={styles['game-page__person-name']}>Враг</div>
+            <div className={styles['game-page__person-name']}>{opponentName}</div>
             <div className={styles['game-page__person-hp']}>
               <div
                 className={styles['game-page__person-hp-bar']}
-                style={{ width: `${hpEnemy}%` }}></div>
+                style={{ width: `${hpEnemy}%` }}>{hpEnemy}%</div>
             </div>
           </div>
         </div>
@@ -348,17 +377,20 @@ export const GameBattlePage = () => {
           onPlay={handlePause}
           onVictory={handleChangeCards}
         />
-        <GameTimerAttack
-          isPause={isPause}
-          isStun={isStun}
-          restartKey={restartKey}
-          colorParry={colorPlayerAttack}
-          initialSeconds={gameLevel.initialSeconds}
-          initialAttacks={gameLevel.initialAttacks}
-          initialColors={gameLevel.initialColors}
-          onEnemyAttack={handleEnemyAttack}
-          onTick={handleTickEnemyAttack}
-        />
+        {
+          gameMode === 'bot' &&
+          <GameTimerAttack
+            isPause={isPause}
+            isStun={isStun}
+            restartKey={restartKey}
+            colorParry={colorPlayerAttack}
+            initialSeconds={gameLevel.initialSeconds}
+            initialAttacks={gameLevel.initialAttacks}
+            initialColors={gameLevel.initialColors}
+            onEnemyAttack={handleEnemyAttack}
+            onTick={handleTickEnemyAttack}
+          />
+        }
       </div>
       <ModalResult
         onContinue={onContinue}
