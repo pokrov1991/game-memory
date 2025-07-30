@@ -3,6 +3,8 @@ import { ChooseLevelPage } from '@/pages/choose-level-page/choose-level-page'
 import { ErrorPage } from '@/pages/error-page/error-page'
 import { GamePage } from '@/pages/game-page/game-page'
 import { GameBattlePage } from '@/pages/game-battle-page/game-battle-page'
+import { GameOnlinePage } from '@/pages/game-online-page/game-online-page'
+import { LobbyPage } from '@/pages/lobby-page/lobby-page'
 import { GameStorePage } from '@/pages/game-store-page/game-store-page'
 import { TavernPage } from '@/pages/tavern-page/tavern-page'
 import { LeaderBoardPage } from '@/pages/leader-board-page/leader-board-page'
@@ -28,8 +30,12 @@ export const routesConfig: RouteObject[] = [
         Component: GameBattlePage,
       },
       {
-        path: '/game-battle/:id',
-        Component: GameBattlePage,
+        path: '/lobby',
+        Component: LobbyPage,
+      },
+      {
+        path: '/game-online/:id',
+        Component: GameOnlinePage,
       },
       {
         path: '/game-store',
