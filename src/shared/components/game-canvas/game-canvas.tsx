@@ -54,10 +54,6 @@ export const GameCanvas: React.FC<GameCanvasProps> = ({
   }, [score])
 
   useEffect(() => {
-    onColor(cardColor, cardCountFlipped)
-  }, [cardColor])
-
-  useEffect(() => {
     if (canvasRef.current) {
       const model = new GameModel(
         level.cardValues,
@@ -79,7 +75,7 @@ export const GameCanvas: React.FC<GameCanvasProps> = ({
       const controller = new GameController(model, view)
       gameControllerRef.current = controller
 
-      // Задаем параметры по картам (координаты, рамеры) для слоя с эфектами
+      // Задаем параметры по картам (координаты, размеры) для слоя с эффектами
       setTimeout(() => {
         if (gameViewRef.current?.cardsParams) {
           setEffectsCardsParams(gameViewRef.current.cardsParams)
@@ -92,6 +88,7 @@ export const GameCanvas: React.FC<GameCanvasProps> = ({
     if (isPause) {
       onPlay()
     }
+
     if (gameControllerRef.current && canvasRef.current) {
       const rect = canvasRef.current.getBoundingClientRect()
       const x = e.clientX - rect.left
@@ -106,7 +103,11 @@ export const GameCanvas: React.FC<GameCanvasProps> = ({
     // Количество перевернутых карт (0, 1, 2)
     setCardCountFlipped(gameControllerRef.current.model.flippedCards.length)
 
-    // Задаем отгаданные карты для слоя с эфектами
+    if (gameControllerRef.current.model.flippedCards.length === 1) {
+      onColor(cardColor, gameControllerRef.current.model.flippedCards.length)
+    }
+
+    // Задаем отгаданные карты для слоя с эффектами
     setTimeout(() => {
       if (gameModelRef.current?.matchedCards) {
         setEffectsCardsMatched([...gameModelRef.current?.matchedCards])

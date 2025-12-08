@@ -14,6 +14,7 @@ const Item = ({
   isActive?: boolean
 }) => {
   const navigate = useNavigate()
+  
   return (
     <li
       className={classNames('', { [styles.active]: isActive })}
@@ -34,6 +35,7 @@ export const Navigation = () => {
     <ul className={styles.root}>
       <Item to="/levels" title={isNewGame ? 'Новая игра' : 'Продолжить'} />
       <Item to="/leader-board" title="Лидеры" />
+      <Item to={`/lobby`} title="Играть онлайн" />
     </ul>
   )
 }
