@@ -48,6 +48,7 @@ export class EnemyService {
     this.enqueue(EnemyState.STUN, this.durations.STUN)
   }
   setHitState() {
+    // Не импользуем, т.к. удар показываем миганием в CSS
     this.enqueue(EnemyState.HIT, this.durations.HIT)
   }
   setDeadState() {

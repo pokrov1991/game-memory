@@ -11,7 +11,7 @@ type GameCanvasProps = {
   isPause: boolean
   restartKey: number
   level: GameLevelStateType | GameLevelStoreType
-  onScore: (score: number) => void
+  onScore: (score: number, colorParry: string) => void
   onColor: (color: string, countFlipped: number) => void
   onPlay: () => void
   onVictory: () => void
@@ -49,8 +49,8 @@ export const GameCanvas: React.FC<GameCanvasProps> = ({
   }, [isWin])
 
   useEffect(() => {
-    onScore(score)
     onColor(cardColor, cardCountFlipped)
+    onScore(score, cardColor)
   }, [score])
 
   useEffect(() => {

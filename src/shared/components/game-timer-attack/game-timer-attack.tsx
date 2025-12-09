@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { STUN_ANIMATION_DELAY, PARRY_ANIMATION_DELAY } from '@/shared/services/game/constants'
+import { STUN_ANIMATION_DELAY } from '@/shared/services/game/constants'
 
 type GameTimerAttackProps = {
   isPause: boolean
@@ -35,17 +35,10 @@ export const GameTimerAttack: React.FC<GameTimerAttackProps> = ({
 
   useEffect(() => {
     if (isStun) {
-      // Учитываем парирование
-      let parryDelay = 0
-      if (initialColors[attackNumber] === colorParry) {
-        console.log('parry')
-        parryDelay = PARRY_ANIMATION_DELAY
-        setSeconds(0)
-      }
-      
       // Задаем оглушение
-      const stunDelay = (STUN_ANIMATION_DELAY + 100 * initialAttacks[attackNumber]) / 1000
+      const stunDelay = (STUN_ANIMATION_DELAY) / 1000
       console.log('stun', stunDelay)
+
       let stunSeconds = 1
       const timerStunId = setInterval(() => {
         console.log('stun tick', stunSeconds++)
@@ -55,6 +48,9 @@ export const GameTimerAttack: React.FC<GameTimerAttackProps> = ({
           clearInterval(timerStunId)
         }
       }, 1000)
+
+      // Начинаем следующую атаку
+      setSeconds(0)
     }
   }, [isStun])
 

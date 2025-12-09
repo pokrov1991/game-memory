@@ -5,8 +5,8 @@ const enemyStateDurations = {
     [EnemyState.START]: 500,
     [EnemyState.RUN]: 600,
     [EnemyState.ATTACK]: 1100,
-    [EnemyState.STUN]: 0,
-    [EnemyState.HIT]: 400,
+    [EnemyState.STUN]: 400, // TODO: Для оглушения их нужно обЪеденить или нарисовать новую
+    [EnemyState.HIT]: 0, // Не используется
     [EnemyState.DEAD]: 600,
 }
 

@@ -14,11 +14,11 @@ import { useSetLeaderboardMutation } from '@/shared'
 import { useUser } from '@/shared/contexts/UserContext'
 import { TypeModal } from '@/shared/components/modal-comps/types'
 import { EnemyState, GameLevelStateType } from '@/shared/services/game/types'
-import { ATTACK_FACTOR } from '@/shared/services/game/constants'
+import { EnemyService } from '@/shared/services/game/EnemyService'
+import { ATTACK_FACTOR, STUN_ANIMATION_DELAY } from '@/shared/services/game/constants'
 import { LEVELS_USER_CONFIG } from '@/shared'
 import YandexSDK from '@/shared/services/sdk/yandexSdk'
 import styles from './styles.module.css'
-import { EnemyService } from '@/shared/services/game/EnemyService'
 
 // Вычисляем размер UI элементов относительно высоты экрана
 let scalePercent = window.innerHeight < 1040 ? window.innerHeight / 1040 : 1
@@ -59,28 +59,9 @@ export const GameBattlePage = () => {
   const [hpEnemy, setHPEnemy] = useState(100)
   const [resultText, setResultText] = useState('')
   const [setLeader] = useSetLeaderboardMutation()
-
-  const [enemyState, setEnemyState] = useState('default');
-  const enemyRef = useRef<EnemyService | null>(null);
-
-  function getEnemySpriteModifierClass() {
-    switch (enemyState) {
-      case EnemyState.START:
-        return styles['game-page__person-img-enemy-attack-sprite_start'];
-      case EnemyState.RUN:
-        return styles['game-page__person-img-enemy-attack-sprite_run'];
-      case EnemyState.ATTACK:
-        return styles['game-page__person-img-enemy-attack-sprite_attack'];
-        case EnemyState.STUN:
-        return styles['game-page__person-img-enemy-attack-sprite_stun'];
-      case EnemyState.HIT:
-        return styles['game-page__person-img-enemy-attack-sprite_hit'];
-      case EnemyState.DEAD:
-        return styles['game-page__person-img-enemy-attack-sprite_dead'];
-      default:
-        return '';
-    }
-  }
+  const [enemyState, setEnemyState] = useState('default')
+  const [enemyHit, setEnemyHit] = useState(false)
+  const enemyRef = useRef<EnemyService | null>(null)
 
   useMusic({ src: '/music/success.mp3', conditional: isOpenModalWin })
   useMusic({ src: '/music/timeout.mp3', conditional: isOpenModalLose })
@@ -103,11 +84,30 @@ export const GameBattlePage = () => {
     })
   }
 
+  const setEnemySpriteClass = () => {
+    switch (enemyState) {
+      case EnemyState.START:
+        return styles['game-page__person-img-enemy_start']
+      case EnemyState.RUN:
+        return styles['game-page__person-img-enemy_run']
+      case EnemyState.ATTACK:
+        return styles['game-page__person-img-enemy_attack']
+        case EnemyState.STUN:
+        return styles['game-page__person-img-enemy_stun']
+      // case EnemyState.HIT:
+      //   return styles['game-page__person-img-enemy_hit']
+      case EnemyState.DEAD:
+        return styles['game-page__person-img-enemy_dead']
+      default:
+        return ''
+    }
+  }
+
   useEffect(() => {
     if (!enemyRef.current) {
-      enemyRef.current = new EnemyService(gameLevel.enemyStateDurations, setEnemyState);
+      enemyRef.current = new EnemyService(gameLevel.enemyStateDurations, setEnemyState)
     }
-  }, []);
+  }, [])
 
   useEffect(() => {
     if (hp <= 0) {
@@ -183,7 +183,7 @@ export const GameBattlePage = () => {
     setOpenModalLose(true)
   }
 
-  const handleScore = (newScore: number): void => {
+  const handleScore = (newScore: number, colorParry: string): void => {
     // Прибавляем очки
     const currentScore = newScore - scoreSession > 0 ? newScore - scoreSession : 0
     const totalScore = currentScore + score
@@ -205,14 +205,15 @@ export const GameBattlePage = () => {
       const attack = Math.floor(currentScore * ATTACK_FACTOR)
       const newHpEnemy = hpEnemy > attack ? hpEnemy - attack : 0
       setHPEnemy(newHpEnemy)
-      enemyRef.current.setHitState()
 
-      setStun(true)
-      enemyRef.current.setStunState()
-      
-      setTimeout(() => {
-        setStun(false)
-      }, 0)
+      setEnemyHit(true)
+      setTimeout(() => setEnemyHit(false), 200)
+
+      if (colorParry === colorEnemyAttack) {
+        setStun(true)
+        enemyRef.current.setStunState()
+        setTimeout(() => setStun(false), STUN_ANIMATION_DELAY / 1000)
+      } 
     }
   }
 
@@ -227,23 +228,22 @@ export const GameBattlePage = () => {
   }
 
   const handleTickEnemyAttack = (seconds: number, attackNumber: number): void => {    
-    if (enemyRef.current.state === EnemyState.ATTACK) {
-      setTimeout(() => setColorEnemyAttack(gameLevel.initialColors[attackNumber]), gameLevel.enemyStateDurations.ATTACK)
-    } else {
-      setColorEnemyAttack(gameLevel.initialColors[attackNumber])
-    }
-
-    if (seconds === gameLevel.initialSeconds[attackNumber]) {
+    if (seconds === Math.floor(gameLevel.enemyStateDurations.ATTACK / 1000)) {
+      enemyRef.current.setAttackState()
+    } else if (isStun) {
+      enemyRef.current.setStunState()
+    } else if (seconds === gameLevel.initialSeconds[attackNumber]) {
       enemyRef.current.setStartState()
     } else if (enemyRef.current.state !== EnemyState.RUN) {
       enemyRef.current.setRunState()
     }
+
+    setColorEnemyAttack(gameLevel.initialColors[attackNumber])
   }
 
   const handleEnemyAttack = (damage: number): void => {
     const newHp = hp > damage ? hp - damage : 0
-    setTimeout(() => setHP(newHp), gameLevel.enemyStateDurations.ATTACK)
-    enemyRef.current.setAttackState()
+    setHP(newHp)
   }
 
   const handleSetLeader = async (level: number, score: number) => {
@@ -320,8 +320,9 @@ export const GameBattlePage = () => {
           >
             <div
               className={classNames(
-                styles['game-page__person-img-enemy-attack-sprite'],
-                getEnemySpriteModifierClass()
+                styles['game-page__person-img-enemy'],
+                { [styles['game-page__person-img-enemy_hit']]: enemyHit },
+                setEnemySpriteClass()
               )}
             ></div>
           </div>
