@@ -204,12 +204,14 @@
 }
 
 .game-page__person-img-enemy_stun {
-  /* TODO: Для оглушения их нужно обЪеденить или нарисовать новую */
-  /* background-image: url('/game/enemy/enemy-hit.webp'); */
-  background-image: url('/game/enemy/enemy-default.webp');
+  background-image: url('/game/enemy/enemy-stun.webp');
 }
 
 .game-page__person-img-enemy_hit {
+  background-image: url('/game/enemy/enemy-hit.webp');
+}
+
+.game-page__person-img-enemy_hit-flash {
   animation: enemy-hit-flash 0.2s linear;
 }
 
