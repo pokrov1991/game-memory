@@ -94,8 +94,8 @@ export const GameBattlePage = () => {
         return styles['game-page__person-img-enemy_attack']
         case EnemyState.STUN:
         return styles['game-page__person-img-enemy_stun']
-      // case EnemyState.HIT:
-      //   return styles['game-page__person-img-enemy_hit']
+      case EnemyState.HIT:
+        return styles['game-page__person-img-enemy_hit']
       case EnemyState.DEAD:
         return styles['game-page__person-img-enemy_dead']
       default:
@@ -211,7 +211,8 @@ export const GameBattlePage = () => {
 
       if (colorParry === colorEnemyAttack) {
         setStun(true)
-        enemyRef.current.setStunState()
+        enemyRef.current.setHitState()
+        // enemyRef.current.setStunState() // можно оставить, но главное isStun
         setTimeout(() => setStun(false), STUN_ANIMATION_DELAY / 1000)
       } 
     }
@@ -321,7 +322,7 @@ export const GameBattlePage = () => {
             <div
               className={classNames(
                 styles['game-page__person-img-enemy'],
-                { [styles['game-page__person-img-enemy_hit']]: enemyHit },
+                { [styles['game-page__person-img-enemy_hit-flash']]: enemyHit },
                 setEnemySpriteClass()
               )}
             ></div>
