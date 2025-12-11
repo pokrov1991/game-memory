@@ -84,14 +84,14 @@ export const GameBattlePage = () => {
     })
   }
 
-  const setEnemySpriteClass = () => {
+  const setEnemySpriteClass = (color: string) => {
     switch (enemyState) {
       case EnemyState.START:
-        return styles['game-page__person-img-enemy_start']
+        return styles[`game-page__person-img-enemy_start-${color}`]
       case EnemyState.RUN:
-        return styles['game-page__person-img-enemy_run']
+        return styles[`game-page__person-img-enemy_run-${color}`]
       case EnemyState.ATTACK:
-        return styles['game-page__person-img-enemy_attack']
+        return styles[`game-page__person-img-enemy_attack-${color}`]
         case EnemyState.STUN:
         return styles['game-page__person-img-enemy_stun']
       case EnemyState.HIT:
@@ -323,7 +323,7 @@ export const GameBattlePage = () => {
               className={classNames(
                 styles['game-page__person-img-enemy'],
                 { [styles['game-page__person-img-enemy_hit-flash']]: enemyHit },
-                setEnemySpriteClass()
+                setEnemySpriteClass(colorEnemyAttack)
               )}
             ></div>
           </div>
