@@ -11,6 +11,8 @@ export type GameLevelStateType = {
   initialSeconds: number[],
   initialAttacks: number[],
   initialColors: string[],
+  enemyId: number,
+  enemyName: string,
   enemyStateDurations: Record<EnemyState, number>
   isPassed: boolean,
   isCurrent: boolean,

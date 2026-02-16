@@ -77,7 +77,22 @@ export default class YandexSDK extends SDK {
           userLevel: 1,
           userScore: 0,
           userCoins: 0,
-          userHelmet: 0
+          userHelmet: 0,
+          inventory: {
+            helmetId: {
+              id: 0,
+              hp: 20
+            },
+            plastronId: {
+              id: 0,
+              hp: 30
+            },
+            healthCount: 0,
+            enemyOrgans: {
+              1: { name: 'Зуб щитомордника', count: 0 },
+              2: { name: 'Шкура голема', count: 0 }
+            }
+          },
         }
         await this.setGameData(gameData);
         return gameData;

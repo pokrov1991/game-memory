@@ -1,0 +1,161 @@
+.game-page__person_player .game-page__person-img {
+  width: 250px;
+  height: 250px;
+
+  @media (max-width: 768px) {
+    width: 200px;
+    height: 200px;
+  }
+}
+
+.game-page__person_player .game-page__person-name {
+  text-align: right;
+}
+
+.game-page__person-img-player {
+  width: 500px;
+  height: 500px;
+  transform: scale(0.5);
+  transform-origin: top left;
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  @media (max-width: 768px) {
+    transform: scale(0.4);
+  }
+}
+
+.game-page__person-img-player-pack {
+  position: absolute;
+  width: 98px;
+  height: 161px;
+  background: url('game/player/z1-a1-pack.png') 0 0 / contain no-repeat;
+  bottom: 235px;
+  left: 120px;
+  animation: a1 2s infinite;
+}
+
+.game-page__person-img-player-legs {
+  position: absolute;
+  width: 182px;
+  height: 242px;
+  background: url('game/player/z2-legs.png') 0 0 / contain no-repeat;
+  bottom: 20px;
+  left: 110px;
+}
+
+.game-page__person-img-player-body {
+  position: absolute;
+  width: 168px;
+  height: 174px;
+  background: url('game/player/z3-a1-body.png') 0 0 / contain no-repeat;
+  bottom: 240px;
+  left: 150px;
+  animation: a1 2s infinite;
+}
+
+.game-page__person-img-player-arm {
+  position: absolute;
+  width: 120px;
+  height: 120px;
+  background: url('game/player/z4-a1-a2-arm.png') 0 0 / contain no-repeat;
+  left: 129px;
+  bottom: 244px;
+  animation: a1 2s infinite;
+}
+
+.game-page__person-img-player-arm_active {
+  animation: a1 2s infinite, a2 0.3s linear;
+}
+
+.game-page__person-img-player-head {
+  position: absolute;
+  width: 100px;
+  height: 152px;
+  background: url('game/player/z5-a1-head.webp') 0 0 / contain no-repeat;
+  bottom: 352px;
+  left: 176px;
+  animation: a1 2s infinite;
+}
+
+.game-page__person-img-player-head_stun {
+   background-image: url('game/player/z5-a1-head-stun.webp');
+}
+
+.game-page__person-img-player-head_alarm {
+   background-image: url('game/player/z5-a1-head-alarm.webp');
+}
+
+
+.game-page__person-img-player-tablet {
+  position: absolute;
+  width: 121px;
+  height: 132px;
+  background: url('game/player/z6-a1-tablet-default.png') 0 0 / contain no-repeat;
+  bottom: 195px;
+  left: 225px;
+  animation: a1 2s infinite;
+}
+
+.game-page__person-img-player-tablet_red {
+  background-image: url('game/player/z6-a1-tablet-red.png');
+}
+
+.game-page__person-img-player-tablet_blue {
+  background-image: url('game/player/z6-a1-tablet-blue.png');
+}
+
+.game-page__person-img-player-tablet_green {
+  background-image: url('game/player/z6-a1-tablet-green.png');
+}
+
+.game-page__person-img-player-tablet_yellow {
+  background-image: url('game/player/z6-a1-tablet-yellow.png');
+}
+
+.game-page__person-img-player-tablet_black {
+  background-image: url('game/player/z6-a1-tablet-black.png');
+}
+
+.game-page__person-img-player_hit-flash {
+  animation: playerHitFlash 0.2s linear;
+}
+
+@keyframes playerHitFlash {
+  0%   { filter: brightness(3) saturate(3) hue-rotate(-20deg); }
+  20%  { filter: none; }
+  40%  { filter: brightness(3) saturate(3) hue-rotate(-20deg); }
+  60%  { filter: none; }
+  80%  { filter: brightness(3) saturate(3) hue-rotate(-20deg); }
+  100% { filter: none; }
+}
+
+@keyframes a1 {
+  0%   { transform: translateY(0%); }
+  10%  { transform: translateY(0%); }
+  20%  { transform: translateY(1%); }
+  30%  { transform: translateY(2%); }
+  40%  { transform: translateY(3%); }
+  50%  { transform: translateY(4%) }
+  56%  { transform: translateY(5%) }
+  70%  { transform: translateY(4%) }
+  80%  { transform: translateY(3%) }
+  90%  { transform: translateY(2%) }
+  100% { transform: translateY(1%) }
+}
+
+@keyframes a2 {
+  0% { 
+    transform: rotate(0deg);
+    transform-origin: top left;
+  }
+  50% { 
+    transform: rotate(-6deg);
+    transform-origin: top left;
+  }
+  100% { 
+    transform: rotate(0deg);
+    transform-origin: top left;
+  }
+}

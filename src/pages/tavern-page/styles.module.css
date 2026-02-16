@@ -4,18 +4,322 @@
   justify-content: center;
   flex-direction: column;
   width: 100%;
+  height: 100vh;
+  background: url('/tavern/bg.jpg') no-repeat center 0 / cover;
+}
+
+.tavern-page__wrap {
+  position: relative;
+  width: 100%;
   height: 100%;
+  max-width: 1100px;
+  padding: 90px 20px;
+
+  .navigation {
+    position: relative;
+    z-index: 3;
+  }
+}
+
+/* .tavern-page__wrap_main {
+  padding-top: 200px;
+} */
+
+.tavern-page__wrap_levels {
+  .navigation {
+    margin-bottom: 45px;
+  }
+}
+
+.tavern-page__wrap_store {
+  .navigation {
+    margin-bottom: 45px;
+  }
+}
+
+.tavern-page__barman {
+  height: 70%;
+  position: absolute;
+  bottom: 17%;
+  right: 0;
+  z-index: 1;
+
+  img {
+    position: relative;
+    display: block;
+    height: 100%;
+    z-index: 2;
+  }
+  p {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: start;
+    bottom: 10%;
+    right: 50%;
+    width: 100%;
+    height: 110px;
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, #FFFFFF 100%);
+    font-family: 'Alegreya';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 38px;
+    line-height: 46px;
+    color: #FFFFFF;
+    z-index: 1;
+
+    strong {
+      margin-bottom: 5px;
+      font-family: 'Alegreya';
+      font-style: normal;
+      font-weight: 700;
+      font-size: 24px;
+      line-height: 28px;
+      color: #FFFFFF;
+    }
+    span {
+      margin-bottom: 5px;
+      font-family: 'Roboto';
+      font-style: italic;
+      font-weight: 700;
+      font-size: 16px;
+      line-height: 20px;
+      color: #FF8D28;
+    }
+    b {
+      display: flex;
+      flex-wrap: wrap;
+      width: 60%;
+
+      i {
+        padding-right: 25px;
+        font-style: normal;
+        font-family: 'Roboto';
+        font-style: italic;
+        font-weight: 700;
+        font-size: 16px;
+        line-height: 20px;
+        color: #3CD3FC;
+      }
+    }
+  }
 }
 
 .tavern-page__levels {
+  position: relative;
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 4px;
+  width: 480px;
+  height: 340px;
+  overflow: auto;
+  z-index: 2;
 }
 
 .tavern-page__levels-item {
-  padding: 10px;
-  border: 1px solid white;
-  color: white;
+  position: relative;
+  gap: 6px;
   cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 64px;
+  padding: 8px 20px 8px 70px;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.5) 53.02%, rgba(0, 0, 0, 0.185) 100%);
+  border-radius: 10px;
+  transition: 0.3s;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 12px;
+    left: 16px;
+    width: 30px;
+    height: 42px;
+    background: url('/tavern/card.png') no-repeat center / contain;
+  }
+
+  b {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    font-family: 'Roboto';
+    font-style: italic;
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 21px;
+    letter-spacing: -0.02em;
+    color: #FFFFFF;
+
+    span {
+      &:last-child {
+        opacity: 0.75;
+      }
+    }
+  }
+  p {
+    width: 100%;
+    margin: 0;
+    display: flex;
+    justify-content: space-between;
+    font-family: 'Roboto';
+    font-style: italic;
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 16px;
+    color: #3CD3FC;
+
+    span {
+      &:last-child {
+        opacity: 0.75;
+      }
+    }
+  }
+
+  &:hover {
+    background: linear-gradient(180deg, rgba(29, 170, 231, 0.5) 53.02%, rgba(29, 170, 231, 0.185) 100%);
+  }
+}
+
+.tavern-page__store {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  width: 450px;
+  height: 230px;
+  gap: 15px;
+  z-index: 2;
+}
+
+.tavern-page__store-item {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  background: rgba(0, 0, 0, 0.8);
+  border-radius: 4px;
+  cursor: pointer;
+
+  span {
+    position: absolute;
+    left: 10%;
+    bottom: 5%;
+    font-family: 'Roboto';
+    font-style: italic;
+    font-weight: 500;
+    font-size: 26px;
+    line-height: 30px;
+    color: #E9E1D1;
+    text-shadow: 0px 0px 11px rgba(0, 0, 0, 0.8);
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    width: 94px;
+    height: 94px;
+    box-sizing: border-box;
+    position: absolute;
+    left: 3px;
+    top: 3px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 2px;
+    transition: 0.3s;
+  }
+
+  &:hover {
+    &::after {
+      border: 1px solid #E2DED3;
+      box-shadow: 0px 0px 12px 1px rgba(227, 227, 200, 0.8), inset 0px 0px 7px 3px rgba(246, 231, 152, 0.5);
+    }
+  }
+}
+
+.tavern-page__store-item_active {
+  &::before {
+    content: '';
+    position: absolute;
+    top: 6px;
+    left: 6px;
+    width: 0;
+    height: 0;
+    border-top: 20px solid #E2DED3;
+    border-right: 20px solid transparent;
+  }
+  &::after {
+    border: 1px solid #E2DED3;
+    box-shadow: 0px 0px 12px 1px rgba(227, 227, 200, 0.8), inset 0px 0px 7px 3px rgba(246, 231, 152, 0.5);
+  }
+}
+
+.navigation {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  width: 470px;
+  display: grid;
+  row-gap: 6px;
+  transform-origin: center;
+  transform-box: border-box;
+
+  @media (max-width: 520px) {
+    width: 100%;
+  }
+
+  & li {
+    position: relative;
+    padding-left: 24px;
+    height: 56px;
+    display: inline-flex;
+    align-items: center;
+    background: linear-gradient(
+      to right,
+      rgba(0, 70, 214, 0.18) 0%,
+      rgba(0, 70, 214, 0) 100%
+    );
+    border: 1px solid transparent;
+    border-image: linear-gradient(to right, rgba(24, 150, 235, 0.3) 10%, transparent 90%);
+    border-image-slice: 1;
+    border-right: none;
+    transition: all 0.3s ease;
+    font-family: 'Alegreya';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 38px;
+    line-height: 52px;
+    letter-spacing: -0.04em;
+    color: #fff;
+    text-decoration: none;
+
+    &::before {
+      content: '';
+      position: absolute;
+      left: -4px;
+      top: 0;
+      width: 2px;
+      height: 100%;
+      background: #004a8b;
+      transition: all 0.3s ease;
+    }
+
+    &:is(:hover, .active) {
+      cursor: pointer;
+      text-shadow: 4px 3px rgba(0, 0, 0, 0.35);
+      transform: scale(1.0025) translateX(-5px);
+      background: linear-gradient(
+        to right,
+        rgba(29, 170, 231, 0.56) 0%,
+        rgba(29, 170, 231, 0) 100%
+      );
+
+      &::before {
+        width: 3px;
+        background: #fff;
+        box-shadow: 0px 0px 10px 0px rgba(255, 255, 255, 0.75);
+      }
+    }
+  }
 }

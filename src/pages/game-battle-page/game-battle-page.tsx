@@ -35,8 +35,11 @@ export const GameBattlePage = () => {
   const [isOpenModalWin, setOpenModalWin] = useState(false)
   const [isOpenModalLose, setOpenModalLose] = useState(false)
   const [isOpenModalExit, setOpenModalExit] = useState(false)
-  const [isStun, setStun] = useState(false)
+  const [isStunEnemy, setStunEnemy] = useState(false)
+  const [isStunPlayer, setStunPlayer] = useState(false)
+  const [isAlarmPlayer, setAlarmPlayer] = useState(false)
   const [isPause, togglePause] = useToggle(true)
+  const [isClickCard, setIsClickCard] = useState(false)
   const {
     completeLevel,
     selectedLevel,
@@ -61,6 +64,7 @@ export const GameBattlePage = () => {
   const [setLeader] = useSetLeaderboardMutation()
   const [enemyState, setEnemyState] = useState('default')
   const [enemyHit, setEnemyHit] = useState(false)
+  const [playerHit, setPlayerHit] = useState(false)
   const enemyRef = useRef<EnemyService | null>(null)
 
   useMusic({ src: '/music/success.mp3', conditional: isOpenModalWin })
@@ -84,20 +88,24 @@ export const GameBattlePage = () => {
     })
   }
 
-  const setEnemySpriteClass = (color: string) => {
+  const setPlayerSpriteClass = (color: string) => {
+    return color ? styles[`game-page__person-img-player-tablet_${color}`] : ''
+  }
+
+  const setEnemySpriteClass = (color: string, enemyId: number) => {
     switch (enemyState) {
       case EnemyState.START:
-        return styles[`game-page__person-img-enemy_start-${color}`]
+        return styles[`game-page__person-img-enemy-${enemyId}_start-${color}`]
       case EnemyState.RUN:
-        return styles[`game-page__person-img-enemy_run-${color}`]
+        return styles[`game-page__person-img-enemy-${enemyId}_run-${color}`]
       case EnemyState.ATTACK:
-        return styles[`game-page__person-img-enemy_attack-${color}`]
+        return styles[`game-page__person-img-enemy-${enemyId}_attack-${color}`]
         case EnemyState.STUN:
-        return styles['game-page__person-img-enemy_stun']
+        return styles[`game-page__person-img-enemy-${enemyId}_stun`]
       case EnemyState.HIT:
-        return styles['game-page__person-img-enemy_hit']
+        return styles[`game-page__person-img-enemy-${enemyId}_hit`]
       case EnemyState.DEAD:
-        return styles['game-page__person-img-enemy_dead']
+        return styles[`game-page__person-img-enemy-${enemyId}_dead`]
       default:
         return ''
     }
@@ -123,6 +131,7 @@ export const GameBattlePage = () => {
     setScoreSession(0)
     setHP(100)
     setHPEnemy(100)
+    setAlarmPlayer(false)
     setColorPlayerAttack('')
     setColorPlayerPreAttack('')
     togglePause(true)
@@ -210,10 +219,10 @@ export const GameBattlePage = () => {
       setTimeout(() => setEnemyHit(false), 200)
 
       if (colorParry === colorEnemyAttack) {
-        setStun(true)
+        setStunEnemy(true)
         enemyRef.current.setHitState()
-        // enemyRef.current.setStunState() // можно оставить, но главное isStun
-        setTimeout(() => setStun(false), STUN_ANIMATION_DELAY / 1000)
+        // enemyRef.current.setStunState() // можно оставить, но главное isStunEnemy
+        setTimeout(() => setStunEnemy(false), STUN_ANIMATION_DELAY / 1000)
       } 
     }
   }
@@ -226,12 +235,15 @@ export const GameBattlePage = () => {
       setColorPlayerPreAttack('')
       setColorPlayerAttack(color)
     }
+    // Фиксируем клик по карте для анимации нажатия
+    setIsClickCard(true)
+    setTimeout(() => setIsClickCard(false), 300) 
   }
 
   const handleTickEnemyAttack = (seconds: number, attackNumber: number): void => {    
     if (seconds === Math.floor(gameLevel.enemyStateDurations.ATTACK / 1000)) {
       enemyRef.current.setAttackState()
-    } else if (isStun) {
+    } else if (isStunEnemy) {
       enemyRef.current.setStunState()
     } else if (seconds === gameLevel.initialSeconds[attackNumber]) {
       enemyRef.current.setStartState()
@@ -243,8 +255,19 @@ export const GameBattlePage = () => {
   }
 
   const handleEnemyAttack = (damage: number): void => {
+    console.log('attack enemy', damage)
     const newHp = hp > damage ? hp - damage : 0
     setHP(newHp)
+
+    newHp < 30 ? setAlarmPlayer(true) : setAlarmPlayer(false)
+
+    setPlayerHit(true)
+    setTimeout(() => setPlayerHit(false), 200)
+
+    if (colorPlayerPreAttack === colorEnemyAttack) {
+      setStunPlayer(true)
+      setTimeout(() => setStunPlayer(false), STUN_ANIMATION_DELAY)
+    }
   }
 
   const handleSetLeader = async (level: number, score: number) => {
@@ -269,7 +292,13 @@ export const GameBattlePage = () => {
   }
 
   return (
-    <main className={styles['game-page']}>
+    <main className={classNames(
+      styles['game-page'],
+      { 
+        [styles['game-page_player-hit']]: playerHit,
+        [styles['game-page_enemy-hit']]: enemyHit,
+      }
+    )}>
       <div className={styles['game-page__bar']} style={scaleStyle}>
         <div className={styles['game-page__control']}>
           <button
@@ -289,16 +318,34 @@ export const GameBattlePage = () => {
 
 
       <div className={styles['game-page__persons']}>
-        <div className={
-          classNames(
+        <div className={classNames(
             styles['game-page__person'],
-            { [styles['game-page__person_player']]: true },
-          )
-        }>
-          <div className={styles['game-page__person-img']}>
-            <div 
-              className={styles['game-page__person-img-attack']} 
-              style={{ background: `${colorPlayerPreAttack}` }}></div>
+            styles['game-page__person_player']
+          )}>
+          <div className={classNames(
+            styles['game-page__person-img'], 
+            { [styles['game-page__person-img-player_hit-flash']]: playerHit }
+          )}>
+            <div className={styles['game-page__person-img-player']}>
+              <div className={styles['game-page__person-img-player-pack']}></div>
+              <div className={styles['game-page__person-img-player-legs']}></div>
+              <div className={styles['game-page__person-img-player-body']}></div>
+              <div className={classNames(
+                styles['game-page__person-img-player-arm'],
+                { [styles['game-page__person-img-player-arm_active']]: isClickCard }
+              )}></div>
+              <div className={classNames(
+                styles['game-page__person-img-player-head'],
+                { 
+                  [styles['game-page__person-img-player-head_stun']]: isStunPlayer,
+                  [styles['game-page__person-img-player-head_alarm']]: isAlarmPlayer
+                }
+              )}></div>
+              <div className={classNames(
+                styles['game-page__person-img-player-tablet'],
+                setPlayerSpriteClass(colorPlayerPreAttack)
+              )}></div>
+            </div>
           </div>
           <div className={styles['game-page__person-info']}>
             <div className={styles['game-page__person-name']}>Игрок</div>
@@ -309,26 +356,20 @@ export const GameBattlePage = () => {
             </div>
           </div>
         </div>
-        <div className={
-          classNames(
-            styles['game-page__person'],
-            { [styles['game-page__person_enemy']]: true },
-          )
-        }>
-          <div
-            className={styles['game-page__person-img']}
-            style={{ background: `${colorEnemyAttack}` }}
-          >
-            <div
-              className={classNames(
-                styles['game-page__person-img-enemy'],
-                { [styles['game-page__person-img-enemy_hit-flash']]: enemyHit },
-                setEnemySpriteClass(colorEnemyAttack)
-              )}
-            ></div>
+        <div className={classNames(
+          styles['game-page__person'],
+          styles['game-page__person_enemy']
+        )}>
+          <div className={styles['game-page__person-img']}>
+            <div className={classNames(
+              styles['game-page__person-img-enemy'],
+              styles[`game-page__person-img-enemy-${gameLevel.enemyId}`],
+              { [styles['game-page__person-img-enemy_hit-flash']]: enemyHit },
+              setEnemySpriteClass(colorEnemyAttack, gameLevel.enemyId)
+            )}></div>
           </div>
           <div className={styles['game-page__person-info']}>
-            <div className={styles['game-page__person-name']}>Враг</div>
+            <div className={styles['game-page__person-name']}>{gameLevel.enemyName}</div>
             <div className={styles['game-page__person-hp']}>
               <div
                 className={styles['game-page__person-hp-bar']}
@@ -339,7 +380,10 @@ export const GameBattlePage = () => {
       </div>
 
 
-      <div className={styles['game-page__canvas']}>
+      <div className={classNames(
+        styles['game-page__canvas'], 
+        { [styles['game-page__canvas_stun']]: isStunPlayer }
+      )}>
         <GameScoreEffects score={scoreSession} />
         <GameCanvas
           isPause={isPause}
@@ -352,7 +396,7 @@ export const GameBattlePage = () => {
         />
         <GameTimerAttack
           isPause={isPause}
-          isStun={isStun}
+          isStun={isStunEnemy}
           restartKey={restartKey}
           colorParry={colorPlayerAttack}
           initialSeconds={gameLevel.initialSeconds}

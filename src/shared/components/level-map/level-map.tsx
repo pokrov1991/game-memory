@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Item } from './item'
 import { Button, LinkText, LEVELS_STATE } from '@/shared'
@@ -6,11 +6,15 @@ import { useProgress } from '@/shared/hooks'
 import { useUser } from '@/shared/contexts/UserContext'
 import bgMapInfo from '@/assets/images/level-map/climb.png'
 import bgMap from '@/assets/images/level-map/map.jpg'
+import cloudOne from '@/assets/images/level-map/cloud-1.png'
+import cloudTwo from '@/assets/images/level-map/cloud-2.png'
+import cloudThree from '@/assets/images/level-map/cloud-3.png'
 import styles from './styles.module.css'
 import classNames from 'classnames'
 import CloseIcon from '@mui/icons-material/Close'
 
 export const LevelMap = () => {
+  const scrollRef = useRef(null)
   const navigate = useNavigate()
   const [levels, setLevels] = useState(LEVELS_STATE)
   const [level, setLevel] = useState(levels[0])
@@ -33,6 +37,13 @@ export const LevelMap = () => {
     })
   }, [cCompletedLevels])
 
+  const handleMapLoad = () => {
+    const el = scrollRef.current
+    if (el) {
+      el.scrollTop = el.scrollHeight
+    }
+  }
+
   const handleClickLevel = (levelId: number) => {
     levels.forEach(level => {
       level.isCurrent = false
@@ -45,6 +56,8 @@ export const LevelMap = () => {
     setSelect(true)
   }
 
+  const handleMainPage = () => navigate('/', {})
+
   const handleClickClose = () => setSelect(false)
 
   const handleStartGame = () => {
@@ -56,8 +69,6 @@ export const LevelMap = () => {
       navigate('/tavern', {})
     }
   }
-
-  const handleMainPage = () => navigate('/', {})
 
   const levelPoints = levels.map(level => {
     return (
@@ -116,13 +127,21 @@ export const LevelMap = () => {
         </div>
       </div>
 
-      <div className={styles.levelMapPoints}>
-        {levelPoints}
-      </div>
+      <div className={styles.levelMapPoints} ref={scrollRef}>
+        <div className={styles.levelMapPointsWrap}>
+          <div className={styles.levelMapClouds}>
+            <img src={cloudOne} className={styles.levelMapCloudOne} />
+            <img src={cloudTwo} className={styles.levelMapCloudTwo} />
+            <img src={cloudThree} className={styles.levelMapCloudThree} />
+          </div>
+          {levelPoints}
 
-      <div className={styles.levelMapBg}>
-        <img src={bgMap} />
+          <div className={styles.levelMapBg}>
+            <img src={bgMap} onLoad={handleMapLoad} />
+          </div>       
+        </div>
       </div>
+      
     </div>
   )
 }

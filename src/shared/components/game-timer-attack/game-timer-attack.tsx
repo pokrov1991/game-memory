@@ -69,7 +69,11 @@ export const GameTimerAttack: React.FC<GameTimerAttackProps> = ({
 
       return () => clearInterval(timerId)
     } else {
-      if (initialColors[attackNumber] !== colorParry) {
+      // if (initialColors[attackNumber] !== colorParry) {
+        // onEnemyAttack(initialAttacks[attackNumber])
+      // }
+
+      if (!isStun) {
         onEnemyAttack(initialAttacks[attackNumber])
       }
 

@@ -1,3 +1,7 @@
+@import 'styles.player.css';
+@import 'styles.enemy1.css';
+@import 'styles.enemy2.css';
+
 .game-page {
   display: flex;
   align-items: center;
@@ -14,6 +18,36 @@
     flex-direction: column;
     padding: 0 20px;
   }
+}
+
+.game-page_player-hit {
+  animation: screenPlayerHit 0.3s ease;
+}
+
+@keyframes screenPlayerHit {
+  0%   { transform: translate(0, 0); }
+  10%  { transform: translate(-10px, -5px); }
+  20%  { transform: translate(10px, 5px); }
+  30%  { transform: translate(-8px, 6px); }
+  40%  { transform: translate(8px, -6px); }
+  50%  { transform: translate(-6px, 4px); }
+  60%  { transform: translate(6px, -4px); }
+  70%  { transform: translate(-4px, 2px); }
+  80%  { transform: translate(4px, -2px); }
+  90%  { transform: translate(-2px, 1px); }
+  100% { transform: translate(0, 0); }
+}
+
+.game-page_enemy-hit {
+  animation: screenEnemyHit 0.3s ease;
+}
+
+@keyframes screenEnemyHit {
+  0%   { transform: translate(0, 0); }
+  25%  { transform: translate(8px, 0); }
+  50%  { transform: translate(-4px, 0); }
+  75%  { transform: translate(2px, 0); }
+  100% { transform: translate(0, 0); }
 }
 
 .game-page__bar {
@@ -134,16 +168,29 @@
   position: relative;
   width: 100%;
   z-index: 1;
+
+  @media (max-width: 480px) {
+    margin-top: 20%;
+  }
+}
+
+.game-page__canvas_stun {
+  opacity: 0.5;
+  pointer-events: none;
 }
 
 .game-page__persons {
   position: absolute;
   bottom: 0;
-  left: 0;
-  width: 100%;
+  right: 0;
+  width: calc(100% - 250px);
   height: auto;
   pointer-events: none;
   z-index: 3;
+
+  @media (max-width: 768px) {
+    width: 100%;
+  }
 }
 
 .game-page__person {
@@ -164,117 +211,41 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 100px;
-  height: 100px;
-  background: #ee00ff;
+  width: 250px;
+  height: 250px;
+  z-index: 1;
   pointer-events: none;
 }
 
 .game-page__person_enemy .game-page__person-img {
-  background: none !important;
   width: 250px;
   height: 250px;
-}
 
-.game-page__person-img-attack {
-  width: 20px;
-  height: 20px;
-  background: #fff;
+  @media (max-width: 768px) {
+    width: 200px;
+    height: 200px;
+  }
 }
 
 .game-page__person-img-enemy {
   width: 500px;
   height: 500px;
-  background-image: url('/game/enemy/enemy-default.webp');
-  background-repeat: no-repeat;
   transform: scale(0.5);
   transform-origin: top left;
   position: absolute;
   top: 0;
   left: 0;
-}
 
-.game-page__person-img-enemy_start-black {
-  background-image: url('/game/enemy/enemy-start-sprite-black.png');
-  animation: spriteAnimStart 0.5s steps(5);
-}
-.game-page__person-img-enemy_start-blue {
-  background-image: url('/game/enemy/enemy-start-sprite-blue.png');
-  animation: spriteAnimStart 0.5s steps(5);
-}
-.game-page__person-img-enemy_start-green {
-  background-image: url('/game/enemy/enemy-start-sprite-green.png');
-  animation: spriteAnimStart 0.5s steps(5);
-}
-.game-page__person-img-enemy_start-red {
-  background-image: url('/game/enemy/enemy-start-sprite-red.png');
-  animation: spriteAnimStart 0.5s steps(5);
-}
-.game-page__person-img-enemy_start-yellow {
-  background-image: url('/game/enemy/enemy-start-sprite-yellow.png');
-  animation: spriteAnimStart 0.5s steps(5);
-}
-
-.game-page__person-img-enemy_run-black {
-  background-image: url('/game/enemy/enemy-run-sprite-black.png');
-  animation: spriteAnimRun 0.6s steps(6) infinite;
-}
-.game-page__person-img-enemy_run-blue {
-  background-image: url('/game/enemy/enemy-run-sprite-blue.png');
-  animation: spriteAnimRun 0.6s steps(6) infinite;
-}
-.game-page__person-img-enemy_run-green {
-  background-image: url('/game/enemy/enemy-run-sprite-green.png');
-  animation: spriteAnimRun 0.6s steps(6) infinite;
-}
-.game-page__person-img-enemy_run-red {
-  background-image: url('/game/enemy/enemy-run-sprite-red.png');
-  animation: spriteAnimRun 0.6s steps(6) infinite;
-}
-.game-page__person-img-enemy_run-yellow {
-  background-image: url('/game/enemy/enemy-run-sprite-yellow.png');
-  animation: spriteAnimRun 0.6s steps(6) infinite;
-}
-
-.game-page__person-img-enemy_attack-black {
-  background-image: url('/game/enemy/enemy-attack-sprite-black.png');
-  animation: spriteAnimAttack 1.1s steps(11);
-}
-.game-page__person-img-enemy_attack-blue {
-  background-image: url('/game/enemy/enemy-attack-sprite-blue.png');
-  animation: spriteAnimAttack 1.1s steps(11);
-}
-.game-page__person-img-enemy_attack-green {
-  background-image: url('/game/enemy/enemy-attack-sprite-green.png');
-  animation: spriteAnimAttack 1.1s steps(11);
-}
-.game-page__person-img-enemy_attack-red {
-  background-image: url('/game/enemy/enemy-attack-sprite-red.png');
-  animation: spriteAnimAttack 1.1s steps(11);
-}
-.game-page__person-img-enemy_attack-yellow {
-  background-image: url('/game/enemy/enemy-attack-sprite-yellow.png');
-  animation: spriteAnimAttack 1.1s steps(11);
-}
-
-.game-page__person-img-enemy_stun {
-  background-image: url('/game/enemy/enemy-stun.webp');
-}
-
-.game-page__person-img-enemy_hit {
-  background-image: url('/game/enemy/enemy-hit.webp');
+  @media (max-width: 768px) {
+    transform: scale(0.4);
+  }
 }
 
 .game-page__person-img-enemy_hit-flash {
-  animation: enemy-hit-flash 0.2s linear;
+  animation: enemyHitFlash 0.2s linear;
 }
 
-.game-page__person-img-enemy_dead {
-  background-image: url('/game/enemy/enemy-dead-sprite.png');
-  animation: spriteAnimDead 0.6s steps(6) forwards;
-}
-
-@keyframes enemy-hit-flash {
+@keyframes enemyHitFlash {
   0%   { filter: brightness(3) saturate(3) hue-rotate(-20deg); }
   20%  { filter: none; }
   40%  { filter: brightness(3) saturate(3) hue-rotate(-20deg); }
@@ -283,60 +254,31 @@
   100% { filter: none; }
 }
 
-@keyframes spriteAnimStart {
-  from {
-    background-position: 0 0;
-  }
-  to {
-    background-position: -2500px 0;
-  }
-}
-
-@keyframes spriteAnimRun {
-  from {
-    background-position: 0 0;
-  }
-  to {
-    background-position: -3000px 0;
-  }
-}
-
-@keyframes spriteAnimAttack {
-  from {
-    background-position: 0 0;
-  }
-  to {
-    background-position: -5500px 0;
-  }
-}
-
-@keyframes spriteAnimDead {
-  from {
-    background-position: 0 0;
-  }
-  to {
-    background-position: -3000px 0;
-  }
-}
-
 .game-page__person-info {
-  width: auto;
+  position: relative;
+  width: 100%;
+  padding: 0 20px 20px;
+  margin: -30px 0 0;
+  z-index: 1;
 }
 
 .game-page__person-name {
   font-size: 20px;
+  font-weight: bold;
   color: #fff;
+  width: 100%;
+  text-align: left;
 }
 
 .game-page__person-hp {
   height: 20px;
-  width: 100px;
-  border: 1px solid red;
+  width: 100%;
+  border: 1px solid #fff;
 }
 
 .game-page__person-hp-bar {
   height: 100%;
   width: 100%;
-  background: red;
+  background: #ff3633;
   transition: 0.3s;
 }

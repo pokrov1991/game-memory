@@ -55,7 +55,7 @@ export const GameCanvas: React.FC<GameCanvasProps> = ({
 
   useEffect(() => {
     onColor(cardColor, cardCountFlipped)
-  }, [cardColor])
+  }, [cardColor, cardCountFlipped])
 
   useEffect(() => {
     if (canvasRef.current) {
