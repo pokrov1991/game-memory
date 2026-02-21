@@ -6,6 +6,7 @@ import {
   completeLevel,
   selectLevel,
   levelUp,
+  levelParamsUp,
   scoreUp,
   coinsUp,
   potionsUp,
@@ -21,6 +22,7 @@ export const useProgress = () => {
   const completedLevels = useSelector((state: RootState) => state.progress.completedLevels)
   const selectedLevel = useSelector((state: RootState) => state.progress.selectedLevel)
   const userLevel = useSelector((state: RootState) => state.progress.userLevel)
+  const userLevelParams = useSelector((state: RootState) => state.progress.userLevelParams)
   const userScore = useSelector((state: RootState) => state.progress.userScore)
   const userCoins = useSelector((state: RootState) => state.progress.userCoins)
   const userPotions = useSelector((state: RootState) => state.progress.userPotions)
@@ -46,6 +48,10 @@ export const useProgress = () => {
 
   const handleLevelUp = (level: number) => {
     dispatch(levelUp(level))
+  }
+
+  const handleLevelParamsUp = (params: { hp: number; guard: number; attack: number }) => {
+    dispatch(levelParamsUp(params))
   }
 
   const handleScoreUp = (score: number) => {
@@ -77,6 +83,7 @@ export const useProgress = () => {
     completedLevels,
     selectedLevel,
     userLevel,
+    userLevelParams,
     userScore,
     userCoins,
     userPotions,
@@ -88,6 +95,7 @@ export const useProgress = () => {
     completeLevel: handleCompleteLevel,
     selectLevel: handleSelectLevel,
     levelUp: handleLevelUp,
+    levelParamsUp: handleLevelParamsUp,
     scoreUp: handleScoreUp,
     coinsUp: handleCoinsUp,
     potionsUp: handlePotionsUp,

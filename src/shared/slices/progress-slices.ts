@@ -4,6 +4,11 @@ interface ProgressState {
   completedLevels: number[]
   selectedLevel: number
   userLevel: number
+  userLevelParams: {
+    hp: number
+    guard: number
+    attack: number
+  };
   userScore: number
   userCoins: number
   userPotions: number
@@ -35,6 +40,11 @@ const initialState: ProgressState = {
   completedLevels: [1],
   selectedLevel: 1,
   userLevel: 1,
+  userLevelParams: {
+    hp: 0,
+    guard: 0,
+    attack: 0,
+  },
   userScore: 0,
   userCoins: 0,
   userPotions: 0,
@@ -81,6 +91,11 @@ export const progressSlice = createSlice({
       state.completedLevels = [1]
       state.selectedLevel = 1
       state.userLevel = 1
+      state.userLevelParams = {
+        hp: 0,
+        guard: 0,
+        attack: 0,    
+      }
       state.userScore = 0
       state.userCoins = 0
       state.userPotions = 0
@@ -130,6 +145,12 @@ export const progressSlice = createSlice({
     levelUp: (state, action: PayloadAction<number>) => {
       state.userLevel = action.payload
     },
+    levelParamsUp: (state, action: PayloadAction<{ hp: number; guard: number; attack: number }>) => {
+      const { hp, guard, attack } = action.payload
+      state.userLevelParams.hp = hp
+      state.userLevelParams.guard = guard
+      state.userLevelParams.attack = attack
+    },
     scoreUp: (state, action: PayloadAction<number>) => {
       state.userScore = action.payload
     },
@@ -162,7 +183,8 @@ export const {
   setProgress,
   completeLevel,
   selectLevel, 
-  levelUp, 
+  levelUp,
+  levelParamsUp,
   scoreUp, 
   coinsUp, 
   potionsUp, 

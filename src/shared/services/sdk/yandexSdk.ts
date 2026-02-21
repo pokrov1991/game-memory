@@ -75,6 +75,11 @@ export default class YandexSDK extends SDK {
           completedLevels: [1],
           selectedLevel: 1,
           userLevel: 1,
+          userLevelParams: {
+            hp: 0,
+            guard: 0,
+            attack: 0,    
+          },
           userScore: 0,
           userCoins: 10000,
           userPotions: 0,

@@ -2,7 +2,7 @@ import { useProgress } from '@/shared/hooks'
 import styles from './styles.module.css'
 
 export const UserTreasures = () => {
-  const { userCoins, userPotions, userOrgans } = useProgress()
+  const { userLevel, userCoins, userPotions, userOrgans } = useProgress()
 
   return (
     <div className={styles['user-treasures']}>
@@ -12,6 +12,9 @@ export const UserTreasures = () => {
         <div className={styles['user-treasures__player-arm']}></div>
       </div>
       <div className={styles['user-treasures__info']}>
+        <span>
+          Уровень: {userLevel},
+        </span>
         <span>
           Монеты: {userCoins},
         </span>

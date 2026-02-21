@@ -13,6 +13,11 @@ interface GameData {
   completedLevels: number[];
   selectedLevel: number;
   userLevel: number;
+  userLevelParams: {
+    hp: number;
+    guard: number;
+    attack: number;
+  };
   userScore: number;
   userCoins: number;
   userPotions: number;

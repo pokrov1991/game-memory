@@ -3,19 +3,20 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { LEVELS_STORE, INVENTORY_STORE_CONFIG } from '@/shared'
 import { useProgress } from '@/shared/hooks'
-import { Button, UserTreasures, ModalDefault } from '@/shared/components'
+import { Button, UserTreasures, XpManager, ModalDefault } from '@/shared/components'
 import { GameLevelStoreType } from '@/shared/services/game/types'
 import YandexSDK from '@/shared/services/sdk/yandexSdk'
 import imgBarmanDefault from '/tavern/default.webp'
 import imgBarmanTalk from '/tavern/talk.webp'
 import styles from './styles.module.css'
 
-type MenuMode = 'main' | 'levels' | 'store'
+type MenuMode = 'main' | 'levels' | 'store' | 'xp'
 type MenuItem = { to: string; title: string; isActive?: boolean }
 
 const MENU: Array<MenuItem> = [
   { to: 'levels', title: 'Игра на монеты' },
   { to: 'store', title: 'Купить товары' },
+  { to: 'xp', title: 'Очки опыта' },
   { to: '/levels', title: 'Выход' }
 ]
 
@@ -101,12 +102,15 @@ export const TavernPage = () => {
 
   const handleDress = async () => {
     const updateStoreInventory = userInventory.map(item => {
-      if (item.type === storeInventoryItem.type) {
+      if (item.type === storeInventoryItem.type && item.id !== storeInventoryItem.id) {
         return { ...item, isDressed: false }
+      }
+      if (item.id === storeInventoryItem.id) {
+        return { ...item, isDressed: true }
       }
       return item
     })
-    updateInventory([...updateStoreInventory, { ...storeInventoryItem, isDressed: true }])
+    updateInventory([...updateStoreInventory])
   }
 
   const storeInventoryPreviews = storeInventory.map(item => {
@@ -180,6 +184,13 @@ export const TavernPage = () => {
           { to: 'main', title: 'Назад' }
         ])
       },
+      xp: () => {
+        setMode('xp')
+        setMenu([
+          { to: 'xp', title: 'Очки опыта', isActive: true },
+          { to: 'main', title: 'Назад' }
+        ])
+      },
       main: () => {
         setMode('main')
         setMenu(MENU)
@@ -238,6 +249,10 @@ export const TavernPage = () => {
               Надеть
             </Button>}
           </div>
+        </div> }
+
+        { mode === 'xp' && <div className={styles['tavern-page__xp']}>
+          <XpManager/>
         </div> }
 
         <div className={styles['tavern-page__barman']}>

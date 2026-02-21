@@ -1,0 +1,112 @@
+import { useState, useEffect } from 'react'
+import { useProgress } from '@/shared/hooks'
+import YandexSDK from '@/shared/services/sdk/yandexSdk'
+import styles from './styles.module.css'
+
+const UNIT_HP = 5
+const UNIT_GUARD = 1
+const UNIT_ATTACK = 1
+const USER_PARAMS_DEFAULT = {
+  hp: 100,
+  guard: 1,
+  attack: 1
+}
+
+export const XpManager = () => {
+  const { progress, userLevel, userLevelParams, userParams, paramsUp, levelParamsUp } = useProgress()
+  const [countLevel, setCountLevel] = useState(userLevel - userLevelParams.hp - userLevelParams.guard - userLevelParams.attack)
+  const [countHp, setCountHp] = useState(userLevelParams.hp)
+  const [countGuard, setCountGuard] = useState(userLevelParams.guard)
+  const [countAttack, setCountAttack] = useState(userLevelParams.attack)
+  const [hp, setHp] = useState(userParams.hp)
+  const [guard, setGuard] = useState(userParams.guard)
+  const [attack, setAttack] = useState(userParams.attack)
+
+  const syncProgress = async () => {
+    await YandexSDK.setGameData({...progress, userParams, userLevelParams})
+  }
+
+  useEffect(() => {
+    setHp(USER_PARAMS_DEFAULT.hp + countHp * UNIT_HP)
+  }, [countHp])
+
+  useEffect(() => {
+    setGuard(USER_PARAMS_DEFAULT.guard + countGuard * UNIT_GUARD)
+  }, [countGuard])
+
+  useEffect(() => {
+    setAttack(USER_PARAMS_DEFAULT.attack + countAttack * UNIT_ATTACK)
+  }, [countAttack])
+
+  useEffect(() => {
+    syncProgress()
+  }, [userParams])
+
+  return (
+    <div className={styles['xp-manager']}>
+      <div className={styles['xp-manager__info']}>
+        <div className={styles['xp-manager__info-level']}>Уровень: {countLevel}</div>
+        <div className={styles['xp-manager__info-params']}>
+          <span>Здоровье: {hp}</span>
+          <span>Защита: {guard}</span>
+          <span>Атака: {attack}</span>
+        </div>
+        <div className={styles['xp-manager__info-actions']}>
+          <button onClick={() => {
+            levelParamsUp({ hp: countHp, guard: countGuard, attack: countAttack })
+            paramsUp({ hp: hp, guard: guard, attack: attack })
+          }}>Сохранить</button>
+        </div>
+      </div>
+      <div className={styles['xp-manager__control']}>
+        <div className={styles['xp-manager__counter xp-manager__counter_hp']}>
+          <div className={styles['xp-manager__counter-name']}>Здоровье</div>
+          <div className={styles['xp-manager__counter-controls']}>
+            <button onClick={() => {
+              setCountHp(countHp - 1)
+              setCountLevel(countLevel + 1)
+            }} disabled={countHp <= 0}>-</button>
+            <span>{countHp}</span>
+            <button onClick={() => {
+              setCountHp(countHp + 1)
+              setCountLevel(countLevel - 1)
+            }} disabled={countLevel <= 0}>+</button>
+          </div>
+          <div className={styles['xp-manager__counter-units']}>+{UNIT_HP} ед.</div>
+        </div>
+
+        <div className={styles['xp-manager__counter xp-manager__counter_guard']}>
+          <div className={styles['xp-manager__counter-name']}>Защита</div>
+          <div className={styles['xp-manager__counter-controls']}>
+            <button onClick={() => {
+              setCountGuard(countGuard - 1)
+              setCountLevel(countLevel + 1)
+            }} disabled={countGuard <= 0}>-</button>
+            <span>{countGuard}</span>
+            <button onClick={() => {
+              setCountGuard(countGuard + 1)
+              setCountLevel(countLevel - 1)
+            }} disabled={countLevel <= 0}>+</button>
+          </div>
+          <div className={styles['xp-manager__counter-units']}>+{UNIT_GUARD} ед.</div>
+        </div>
+
+        <div className={styles['xp-manager__counter xp-manager__counter_attack']}>
+          <div className={styles['xp-manager__counter-name']}>Атака</div>
+          <div className={styles['xp-manager__counter-controls']}>
+            <button onClick={() => {
+              setCountAttack(countAttack - 1)
+              setCountLevel(countLevel + 1)
+            }} disabled={countAttack <= 0}>-</button>
+            <span>{countAttack}</span>
+            <button onClick={() => {
+              setCountAttack(countAttack + 1)
+              setCountLevel(countLevel - 1)
+            }} disabled={countLevel <= 0}>+</button>
+          </div>
+          <div className={styles['xp-manager__counter-units']}>+{UNIT_ATTACK} ед.</div>
+        </div>
+      </div>
+    </div>
+  )
+}
