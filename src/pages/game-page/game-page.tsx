@@ -6,7 +6,7 @@ import {
   GameScore,
   GameScoreEffects,
   ModalResult,
-  ModalExit,
+  ModalDefault,
 } from '@/shared/components'
 import { useLevel, useToggle, useProgress, useMusic } from '@/shared/hooks'
 import { useSetLeaderboardMutation } from '@/shared'
@@ -28,7 +28,7 @@ export const GamePage = () => {
   const navigate = useNavigate()
   const [isOpenModalWin, setOpenModalWin] = useState(false)
   const [isOpenModalLose, setOpenModalLose] = useState(false)
-  const [isOpenModalExit, setOpenModalExit] = useState(false)
+  const [isOpenModalDefault, setOpenModalDefault] = useState(false)
   const [isPause, togglePause] = useToggle(true)
   const {
     completeLevel,
@@ -100,7 +100,7 @@ export const GamePage = () => {
 
   const handleMenu = (): void => {
     togglePause(true)
-    setOpenModalExit(true)
+    setOpenModalDefault(true)
   }
 
   const handlePause = (): void => {
@@ -194,22 +194,22 @@ export const GamePage = () => {
       </div>
       <ModalResult
         onContinue={onContinue}
-        lvlName={resultText}
+        levelName={resultText}
         isOpened={isOpenModalWin}
         type={TypeModal.Win}
       />
       <ModalResult
         onContinue={onGameOver}
-        lvlName={resultText}
+        levelName={resultText}
         isOpened={isOpenModalLose}
         type={TypeModal.Lose}
       />
-      <ModalExit
+      <ModalDefault
         onContinue={onExit}
-        onExit={() => setOpenModalExit(false)}
-        lvlName=""
-        lvlNumber={gameLevel.id}
-        isOpened={isOpenModalExit}
+        onExit={() => setOpenModalDefault(false)}
+        title=""
+        subtitle={gameLevel.id}
+        isOpened={isOpenModalDefault}
       />
     </main>
   )

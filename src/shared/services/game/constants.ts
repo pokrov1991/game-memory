@@ -29,8 +29,7 @@ export const PATH_SPRITE_CARD_LIGHT = '/game/card-light.png'
 
 export const FRAME_TIMOUT = 500
 export const CARD_MARGIN = 10
-export const CARD_SCORE = 2 // Очки за отгаданную пару карт (или процент атаки)
-export const ATTACK_FACTOR = 2 // Множитель урона от атаки
+export const CARD_SCORE = 2 // Очки за отгаданную пару карт (или урон от атаки)
 export const STUN_ANIMATION_DELAY = 5000 // Задержка анимации оглушения
 
 export const LEVELS_STATE: GameLevelStateType[] = LEVELS_STATE_CONFIG.map(

@@ -1,23 +1,23 @@
 export const LEVELS_USER_CONFIG = [
     {
         id: 1,
-        score: 200,
+        score: 0,
     },
     {
         id: 2,
-        score: 300,
+        score: 100,
     },
     {
         id: 3,
-        score: 400,
+        score: 200,
     },
     {
         id: 4,
-        score: 500,
+        score: 250,
     },
     {
         id: 5,
-        score: 600,
+        score: 500,
     },
     {
         id: 6,

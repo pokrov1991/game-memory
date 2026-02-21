@@ -5,7 +5,7 @@ import {
   GameCountdown,
   GameScore,
   ModalResult,
-  ModalExit,
+  ModalDefault,
 } from '@/shared/components'
 import { useLevel, useToggle, useProgress, useMusic } from '@/shared/hooks'
 import { useUser } from '@/shared/contexts/UserContext'
@@ -29,7 +29,7 @@ export const GameStorePage = () => {
   const navigate = useNavigate()
   const [isOpenModalWin, setOpenModalWin] = useState(false)
   const [isOpenModalLose, setOpenModalLose] = useState(false)
-  const [isOpenModalExit, setOpenModalExit] = useState(false)
+  const [isOpenModalDefault, setOpenModalDefault] = useState(false)
   const [isPause, togglePause] = useToggle(true)
   const {
     selectedLevel,
@@ -81,13 +81,13 @@ export const GameStorePage = () => {
 
   const onExit = (): void => {
     setGameDataLose()
-    setOpenModalExit(false)
+    setOpenModalDefault(false)
     navigate('/tavern')
   }
 
   const handleMenu = (): void => {
     togglePause(true)
-    setOpenModalExit(true)
+    setOpenModalDefault(true)
   }
 
   const handlePause = (): void => {
@@ -146,22 +146,23 @@ export const GameStorePage = () => {
       </div>
       <ModalResult
         onContinue={onContinue}
-        lvlName={resultText}
+        levelName={resultText}
         isOpened={isOpenModalWin}
         type={TypeModal.Win}
       />
       <ModalResult
         onContinue={onGameOver}
-        lvlName={resultText}
+        levelName={resultText}
         isOpened={isOpenModalLose}
         type={TypeModal.Lose}
       />
-      <ModalExit
+      <ModalDefault
         onContinue={onExit}
-        onExit={() => setOpenModalExit(false)}
-        lvlName=""
-        lvlNumber={gameLevel.id}
-        isOpened={isOpenModalExit}
+        onExit={() => setOpenModalDefault(false)}
+        title={gameLevel.title}
+        subtitle={`При выходе вы потеряете ${gameLevel.coins} монет!`}
+        info="Вы желаете выйти из игры?"
+        isOpened={isOpenModalDefault}
       />
     </main>
   )

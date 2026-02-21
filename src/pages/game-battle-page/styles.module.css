@@ -280,5 +280,13 @@
   height: 100%;
   width: 100%;
   background: #ff3633;
+  display: flex;
+  align-items: center;
   transition: 0.3s;
+
+  span {
+    margin: 0 0 0 5px;
+    color: #fff;
+    font-size: 14px;
+  }
 }

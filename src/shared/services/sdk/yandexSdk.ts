@@ -76,23 +76,41 @@ export default class YandexSDK extends SDK {
           selectedLevel: 1,
           userLevel: 1,
           userScore: 0,
-          userCoins: 0,
-          userHelmet: 0,
-          inventory: {
-            helmetId: {
-              id: 0,
-              hp: 20
-            },
-            plastronId: {
-              id: 0,
-              hp: 30
-            },
-            healthCount: 0,
-            enemyOrgans: {
-              1: { name: 'Зуб щитомордника', count: 0 },
-              2: { name: 'Шкура голема', count: 0 }
-            }
+          userCoins: 10000,
+          userPotions: 0,
+          userParams: {
+            hp: 100,
+            guard: 1,
+            attack: 1,
           },
+          userInventory: [
+            {
+              id: 1,
+              type: 'helmet',
+              name: 'Шлем астронавта',
+              desc: 'Обеспечивает базовую защиту.',
+              price: 0,
+              organs: [],
+              hp: 0,
+              isPaid: true,
+              isDressed: true
+            },
+            {
+              id: 2,
+              type: 'plastron',
+              name: 'Скафандр астронавта',
+              desc: 'Обеспечивает базовую защиту.',
+              price: 0,
+              organs: [],
+              hp: 0,
+              isPaid: true,
+              isDressed: true
+            },
+          ],
+          userOrgans: {
+            1: { name: 'Зуб щитомордника', count: 1000 },
+            2: { name: 'Шкура голема', count: 1000 }
+          }
         }
         await this.setGameData(gameData);
         return gameData;

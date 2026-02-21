@@ -13,7 +13,7 @@ interface IProps extends TModalNonType {
 
 export const ModalResult = ({
   onContinue,
-  lvlName,
+  levelName,
   isOpened,
   type,
 }: IProps) => {
@@ -28,7 +28,7 @@ export const ModalResult = ({
           {type === TypeModal.Win ? 'Победа!' : 'Поражение!'}
         </Typography>
         <Typography fontSize="24px" marginBottom="60px" color="#BAB8BB">
-          {lvlName}
+          {levelName}
         </Typography>
       </div>
 

@@ -10,7 +10,13 @@ export type TModal = {
 }
 
 export type TModalAction = TModal & {
-  lvlName: string
+  levelName?: string,
+  level?: number,
+  title?: string | number,
+  subtitle?: string | number,
+  info?: string,
+  onContinue(e?: React.MouseEvent<HTMLButtonElement>): void,
+  onExit?(): void
 }
 
 export type TModalNonType = Omit<TModalAction, 'type'>

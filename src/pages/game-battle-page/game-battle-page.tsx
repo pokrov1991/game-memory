@@ -7,7 +7,8 @@ import {
   GameScoreEffects,
   GameTimerAttack,
   ModalResult,
-  ModalExit,
+  ModalDefault,
+  ModalLevelUp
 } from '@/shared/components'
 import { useLevel, useToggle, useProgress, useMusic } from '@/shared/hooks'
 import { useSetLeaderboardMutation } from '@/shared'
@@ -15,7 +16,7 @@ import { useUser } from '@/shared/contexts/UserContext'
 import { TypeModal } from '@/shared/components/modal-comps/types'
 import { EnemyState, GameLevelStateType } from '@/shared/services/game/types'
 import { EnemyService } from '@/shared/services/game/EnemyService'
-import { ATTACK_FACTOR, STUN_ANIMATION_DELAY } from '@/shared/services/game/constants'
+import { STUN_ANIMATION_DELAY } from '@/shared/services/game/constants'
 import { LEVELS_USER_CONFIG } from '@/shared'
 import YandexSDK from '@/shared/services/sdk/yandexSdk'
 import styles from './styles.module.css'
@@ -34,7 +35,8 @@ export const GameBattlePage = () => {
   const navigate = useNavigate()
   const [isOpenModalWin, setOpenModalWin] = useState(false)
   const [isOpenModalLose, setOpenModalLose] = useState(false)
-  const [isOpenModalExit, setOpenModalExit] = useState(false)
+  const [isOpenModalDefault, setOpenModalDefault] = useState(false)
+  const [isOpenModalLevelUp, setOpenModalLevelUp] = useState(false)
   const [isStunEnemy, setStunEnemy] = useState(false)
   const [isStunPlayer, setStunPlayer] = useState(false)
   const [isAlarmPlayer, setAlarmPlayer] = useState(false)
@@ -58,14 +60,20 @@ export const GameBattlePage = () => {
   const [colorPlayerAttack, setColorPlayerAttack] = useState('')
   const [colorPlayerPreAttack, setColorPlayerPreAttack] = useState('')
   const [colorEnemyAttack, setColorEnemyAttack] = useState('')
-  const [hp, setHP] = useState(100)
-  const [hpEnemy, setHPEnemy] = useState(100)
   const [resultText, setResultText] = useState('')
   const [setLeader] = useSetLeaderboardMutation()
   const [enemyState, setEnemyState] = useState('default')
   const [enemyHit, setEnemyHit] = useState(false)
   const [playerHit, setPlayerHit] = useState(false)
   const enemyRef = useRef<EnemyService | null>(null)
+
+  const hpGuard = game.userInventory
+                    .filter(item => item.type === 'helmet' && item.isDressed || item.type === 'plastron' && item.isDressed)
+                    .reduce((sum, item) => sum + item.hp, 0)
+  const hpInitial = game.userParams.hp + hpGuard
+  const hpEnemyInitial = gameLevel.enemyHp
+  const [hp, setHP] = useState(hpInitial)
+  const [hpEnemy, setHPEnemy] = useState(hpEnemyInitial)
 
   useMusic({ src: '/music/success.mp3', conditional: isOpenModalWin })
   useMusic({ src: '/music/timeout.mp3', conditional: isOpenModalLose })
@@ -129,8 +137,8 @@ export const GameBattlePage = () => {
   const onRestart = (): void => {
     setRestartKey(prevKey => prevKey + 1)
     setScoreSession(0)
-    setHP(100)
-    setHPEnemy(100)
+    setHP(hpInitial)
+    setHPEnemy(gameLevel.enemyHp)
     setAlarmPlayer(false)
     setColorPlayerAttack('')
     setColorPlayerPreAttack('')
@@ -164,7 +172,7 @@ export const GameBattlePage = () => {
 
   const handleMenu = (): void => {
     togglePause(true)
-    setOpenModalExit(true)
+    setOpenModalDefault(true)
   }
 
   const handleChangeCards = (): void => {
@@ -202,16 +210,18 @@ export const GameBattlePage = () => {
     scoreUp(totalScore)
 
     // Проверяем уровень
-    LEVELS_USER_CONFIG.forEach((lvl, _index) => {
-      if (lvl.score <= totalScore && lvl.id === level) {
-        setLevel(level + 1)
-        levelUp(level + 1)
-      }
-    })
+    const currentLevel = LEVELS_USER_CONFIG.findLast(lvl => totalScore >= lvl.score)?.id
+    if (currentLevel > level) {
+      setLevel(currentLevel)
+      levelUp(currentLevel)
+
+      togglePause(true)
+      setOpenModalLevelUp(true)
+    }
 
     // Ставим удар по врагу
     if (newScore > 0) {
-      const attack = Math.floor(currentScore * ATTACK_FACTOR)
+      const attack = Math.floor(currentScore + currentScore * game.userParams.attack / 100)
       const newHpEnemy = hpEnemy > attack ? hpEnemy - attack : 0
       setHPEnemy(newHpEnemy)
 
@@ -256,7 +266,8 @@ export const GameBattlePage = () => {
 
   const handleEnemyAttack = (damage: number): void => {
     console.log('attack enemy', damage)
-    const newHp = hp > damage ? hp - damage : 0
+    const damageWithGuard = Math.floor(damage - damage * game.userParams.guard / 100)
+    const newHp = hp > damageWithGuard ? hp - damageWithGuard : 0
     setHP(newHp)
 
     newHp < 30 ? setAlarmPlayer(true) : setAlarmPlayer(false)
@@ -352,7 +363,9 @@ export const GameBattlePage = () => {
             <div className={styles['game-page__person-hp']}>
               <div
                 className={styles['game-page__person-hp-bar']}
-                style={{ width: `${hp}%` }}></div>
+                style={{ width: `${(hp / hpInitial * 100)}%` }}>
+                  <span>{hp}</span>
+              </div>
             </div>
           </div>
         </div>
@@ -373,7 +386,9 @@ export const GameBattlePage = () => {
             <div className={styles['game-page__person-hp']}>
               <div
                 className={styles['game-page__person-hp-bar']}
-                style={{ width: `${hpEnemy}%` }}></div>
+                style={{ width: `${(hpEnemy / hpEnemyInitial * 100)}%` }}>
+                  <span>{hpEnemy}</span>
+              </div>
             </div>
           </div>
         </div>
@@ -406,24 +421,30 @@ export const GameBattlePage = () => {
           onTick={handleTickEnemyAttack}
         />
       </div>
+      <ModalLevelUp
+        onContinue={() => setOpenModalLevelUp(false)}
+        level={level}
+        isOpened={isOpenModalLevelUp}
+      />
       <ModalResult
         onContinue={onContinue}
-        lvlName={resultText}
+        levelName={resultText}
         isOpened={isOpenModalWin}
         type={TypeModal.Win}
       />
       <ModalResult
         onContinue={onGameOver}
-        lvlName={resultText}
+        levelName={resultText}
         isOpened={isOpenModalLose}
         type={TypeModal.Lose}
       />
-      <ModalExit
+      <ModalDefault
         onContinue={onExit}
-        onExit={() => setOpenModalExit(false)}
-        lvlName=""
-        lvlNumber={gameLevel.id}
-        isOpened={isOpenModalExit}
+        onExit={() => setOpenModalDefault(false)}
+        title={`Уровень ${gameLevel.id}`}
+        subtitle={gameLevel.title}
+        info="Вы желаете выйти из игры?"
+        isOpened={isOpenModalDefault}
       />
     </main>
   )

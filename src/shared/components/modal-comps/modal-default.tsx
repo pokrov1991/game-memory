@@ -1,51 +1,44 @@
 import { Modal } from '.'
-import cls from './modal-content.module.css'
 import { Button, Typography } from '@mui/material'
-import { MouseEvent } from 'react'
 import { TModalNonType, TypeModal } from './types'
+import style from './modal-content.module.css'
 
-// Компонент модалки для выхода k
-interface IProps extends TModalNonType {
-  onExit(e?: MouseEvent<HTMLButtonElement>): void
-  onContinue(e?: MouseEvent<HTMLButtonElement>): void
-  lvlNumber: number
-}
-
-export const ModalExit = ({
+export const ModalDefault = ({
   onExit,
   onContinue,
-  lvlName,
+  title,
+  subtitle,
   isOpened,
-  lvlNumber,
-}: IProps) => {
+  info
+}: TModalNonType) => {
   return (
     <Modal isOpened={isOpened} type={TypeModal.Exit}>
-      <div className={cls['exit']}>
+      <div className={style['exit']}>
         <Typography marginBottom="8px" fontSize="22px" color="white">
-          Уровень {lvlNumber}
+          {title}
         </Typography>
         <Typography marginBottom="40px" fontSize="22px" color="#BAB8BB">
-          {lvlName}
+          {subtitle}
         </Typography>
         <Typography marginBottom="50px" fontSize="22px" color="white">
-          Вы желаете выйти из игры?
+          {info}
         </Typography>
       </div>
-      <div className={cls['actions']}>
-        <div className={cls['approve-wrapper']}>
+      <div className={style['actions']}>
+        <div className={style['approve-wrapper']}>
           <Button
             size="large"
             color="inherit"
-            className={cls['approve']}
+            className={style['approve']}
             onClick={onContinue}>
             <span>Да</span>
           </Button>
         </div>
-        <div className={cls['approve-dark-wrapper']}>
+        <div className={style['approve-dark-wrapper']}>
           <Button
             size="large"
             color="inherit"
-            className={cls['approve-dark']}
+            className={style['approve-dark']}
             onClick={onExit}>
             <span>Нет</span>
           </Button>

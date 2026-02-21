@@ -13,6 +13,7 @@ export type GameLevelStateType = {
   initialColors: string[],
   enemyId: number,
   enemyName: string,
+  enemyHp: number,
   enemyStateDurations: Record<EnemyState, number>
   isPassed: boolean,
   isCurrent: boolean,

@@ -3,6 +3,7 @@ import { createPortal } from 'react-dom'
 
 const Portal = ({ children }: { children: ReactNode }) => {
   const [container] = useState(() => document.createElement('div'))
+  container.id = 'modal-root'
 
   useEffect(() => {
     document.body.appendChild(container)

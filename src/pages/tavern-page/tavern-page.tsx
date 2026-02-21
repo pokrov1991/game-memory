@@ -1,9 +1,11 @@
 import classNames from 'classnames'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { LEVELS_STORE, INVENTORY_STORE_CONFIG } from '@/shared'
 import { useProgress } from '@/shared/hooks'
+import { Button, UserTreasures, ModalDefault } from '@/shared/components'
 import { GameLevelStoreType } from '@/shared/services/game/types'
+import YandexSDK from '@/shared/services/sdk/yandexSdk'
 import imgBarmanDefault from '/tavern/default.webp'
 import imgBarmanTalk from '/tavern/talk.webp'
 import styles from './styles.module.css'
@@ -13,19 +15,116 @@ type MenuItem = { to: string; title: string; isActive?: boolean }
 
 const MENU: Array<MenuItem> = [
   { to: 'levels', title: 'Игра на монеты' },
-  { to: 'store', title: 'Купить товыры' },
+  { to: 'store', title: 'Купить товары' },
   { to: '/levels', title: 'Выход' }
 ]
 
 export const TavernPage = () => {
   const navigate = useNavigate()
   const [levels, setLevels] = useState(LEVELS_STORE)
-  const [inventories, setInventories] = useState(INVENTORY_STORE_CONFIG)
-  const [inventoryInfo, setInventoryInfo] = useState(inventories[0])
+  const [level, setLevel] = useState(LEVELS_STORE[0])
+  const [storeInventory, setStoreInventory] = useState(INVENTORY_STORE_CONFIG)
+  const [storeInventoryItem, setStoreInventoryItem] = useState(storeInventory[0])
+  const [isOpenModalDefault, setOpenModalDefault] = useState(false)
+  const [isButtonPay, setIsButtonPay] = useState(true)
+  const [isButtonPayDisabled, setIsButtonPayDisabled] = useState(true)
   const [menu, setMenu] = useState(MENU)
   const [mode, setMode] = useState('main')
   const [talk, setTalk] = useState(false)
-  const { selectLevel } = useProgress()
+  const { progress, selectLevel, userCoins, userPotions, userOrgans, userInventory, coinsUp, potionsUp, updateOrgan, updateInventory } = useProgress()
+  
+  const syncProgress = async () => {
+    await YandexSDK.setGameData(progress)
+  }
+
+  useEffect(() => {
+    // Мержим конфиг и прогресс юзера по инвентарю, что бы отображать актуальное состояние
+    const inventoryMap = new Map(userInventory.map(item => [item.id, item]))
+    const merged = INVENTORY_STORE_CONFIG.map(item => ({
+      ...item,
+      ...inventoryMap.get(item.id)
+    }))
+    setStoreInventory(merged)
+  }, [userInventory])
+
+  useEffect(() => {
+    // Оновляем выбранный айтем в магазине при изменении инвентаря
+    handleClickStore(storeInventoryItem.id)
+    // Синхронизируем прогресс с сервером при изменении инвентаря
+    syncProgress()
+  }, [storeInventory])
+
+  useEffect(() => {
+    // Оновляем выбранный айтем в магазине при изменении кол-ва зелий
+    handleClickStore(storeInventoryItem.id)
+    syncProgress()
+  }, [userPotions])
+
+  const handleClickStore = (inventoryId: number) => {
+    const inventory = storeInventory.find(item => item.id === inventoryId)
+    setStoreInventoryItem(inventory)
+
+    setIsButtonPay(true)
+    setIsButtonPayDisabled(false)
+    if (userCoins < inventory.price) {
+      setIsButtonPayDisabled(true)
+    }
+    if (inventory.organs) {
+      inventory.organs.forEach(item => {
+        if (userOrgans[item.id]?.count < item.count) {
+          setIsButtonPayDisabled(true)
+        }
+      })
+    }
+    if (inventory.isPaid) {
+      setIsButtonPay(false)
+    }
+  }
+
+  const handlePay = async () => {
+    const type = storeInventoryItem.type
+    const coins = userCoins - storeInventoryItem.price
+    if (type === 'potion') {
+      potionsUp(userPotions + 1)
+    }
+    if (type === 'helmet' || type === 'plastron') {
+      storeInventoryItem.organs.forEach(item => {
+        const userOrgan = userOrgans[item.id]
+        if (userOrgan) {
+          updateOrgan({ organId: item.id, count: userOrgan.count - item.count })
+        }
+      })
+      updateInventory([...userInventory, { ...storeInventoryItem, isPaid: true }])
+    }
+    coinsUp(coins)
+  }
+
+  const handleDress = async () => {
+    const updateStoreInventory = userInventory.map(item => {
+      if (item.type === storeInventoryItem.type) {
+        return { ...item, isDressed: false }
+      }
+      return item
+    })
+    updateInventory([...updateStoreInventory, { ...storeInventoryItem, isDressed: true }])
+  }
+
+  const storeInventoryPreviews = storeInventory.map(item => {
+    return (
+      <div className={classNames(
+          styles['tavern-page__store-item'], 
+          {
+            [styles['tavern-page__store-item_active']]: storeInventoryItem?.id === item.id,
+            [styles['tavern-page__store-item_dressed']]: userInventory.find(i => i.id === item.id && i.isDressed),
+            [styles['tavern-page__store-item_paid']]: userInventory.find(i => i.id === item.id && i.isPaid)
+          }
+        )}
+        onClick={() => handleClickStore(item.id)}
+        key={item.id}>
+        <span>{item.price}</span>
+      </div>
+    )
+  })
 
   const handleClickLevel = (levelId: number) => {
     const level = {...levels[levelId - 1]}
@@ -40,9 +139,11 @@ export const TavernPage = () => {
     return (
       <div 
         className={styles['tavern-page__levels-item']} 
-        onClick={() => handleClickLevel(level.id)} 
-        key={level.id}
-      >
+        onClick={() => {
+          setLevel(level)
+          setOpenModalDefault(true)
+        }} 
+        key={level.id}>
         <b>
           <span>{level.title}</span>
           <span>{level.cardCount}</span>
@@ -51,25 +152,6 @@ export const TavernPage = () => {
           <span>{level.coins} монет</span>
           <span>{level.gameTimer} секунд</span>
         </p>
-      </div>
-    )
-  })
-
-  const handleClickStore = (inventoryId: number) => {
-    setInventoryInfo(inventories.find(item => item.id === inventoryId))
-  }
-
-  const inventoryPreviews = inventories.map(item => {
-    return (
-      <div 
-        className={classNames(
-          styles['tavern-page__store-item'], 
-          { [styles['tavern-page__store-item_active']]: inventoryInfo?.id === item.id })
-        }
-        onClick={() => handleClickStore(item.id)}
-        key={item.id}
-      >
-        <span>{item.hp}</span>
       </div>
     )
   })
@@ -138,30 +220,74 @@ export const TavernPage = () => {
         styles[`tavern-page__wrap_${mode}`],
       )}>
         <Navigation/>
+
         { mode === 'levels' && <div className={styles['tavern-page__levels']}>
           {levelPreviews}
         </div> }
+
         { mode === 'store' && <div className={styles['tavern-page__store']}>
-          {inventoryPreviews}
+          <div className={styles['tavern-page__store-items']}>
+            {storeInventoryPreviews}
+          </div>
+          <div className={styles['tavern-page__store-action']}>
+            {isButtonPay ? 
+            <Button disabled={isButtonPayDisabled} onClick={() => handlePay()}>
+              Купить
+            </Button> : 
+            <Button onClick={() => handleDress()}>
+              Надеть
+            </Button>}
+          </div>
         </div> }
+
         <div className={styles['tavern-page__barman']}>
           <img src={talk ? imgBarmanTalk : imgBarmanDefault} />
+
           {mode === 'main' && 
-            <p className={styles['tavern-page__barman-text-main']}>Здравствуй путник!<br/>Чего желаешь?</p>}
-          {mode === 'store' && inventoryInfo && 
-          <p className={styles['tavern-page__barman-text-store']}>
-            <strong>{inventoryInfo.name}</strong>
-            <span>{inventoryInfo.desc}</span>
-            <b>
-              <i>Монет: {inventoryInfo.price}.</i>
-              {inventoryInfo.enemyOrgans && inventoryInfo.enemyOrgans.map((item, index) => (
-                <i key={index}>{item.name}: {item.count}.</i>
-              ))}
-            </b>
-          </p>
-          }
+            <p className={styles['tavern-page__barman-text-main']}>
+              Здравствуй путник!<br/>Чего желаешь?
+            </p>}
+
+          {mode === 'levels' && 
+            <p className={styles['tavern-page__barman-text-baloon']}>
+              Выбери соперника, который тебе по зубам. Если победишь - получаешь монетки, если проиграешь - теряешь их. Что скажешь?
+            </p>}
+
+          {mode === 'store' && storeInventoryItem && 
+            <p className={styles['tavern-page__barman-text-baloon']}>
+              <strong>{storeInventoryItem.name}</strong>
+              <span>{storeInventoryItem.desc}</span>
+              <b>
+                <i className={classNames(
+                    styles['barman-text-item'],
+                    {[styles['barman-text-item_disabled']]: userCoins < storeInventoryItem.price}
+                )}>
+                  Монет: {storeInventoryItem.price}.
+                </i>
+                {storeInventoryItem.organs && storeInventoryItem.organs.map((item, index) => (
+                  <i className={classNames(
+                    styles['barman-text-item'],
+                    styles[`barman-text-item_${index}`],
+                    {[styles['barman-text-item_disabled']]: userOrgans[item.id]?.count < item.count}
+                  )} key={index}>
+                    {item.name}: {item.count}.
+                  </i>
+                ))}
+              </b>
+            </p>}
         </div>
+
+        <UserTreasures/>
       </div>
+
+      <ModalDefault
+        onContinue={() => handleClickLevel(level.id)}
+        onExit={() => setOpenModalDefault(false)}
+        title={level.title}
+        subtitle={`На кону ${level.coins} монет! В случае победы, вы получите их, а в случае поражения - потеряете.`}
+        info={`Вы желаете сразиться с ${level.title}?`}
+        isOpened={isOpenModalDefault}
+      />
     </main>
   )
 }

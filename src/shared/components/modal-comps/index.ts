@@ -1,3 +1,4 @@
 export * from './modal'
-export * from './modal-exit'
+export * from './modal-default'
+export * from './modal-levelup'
 export * from './modal-result'

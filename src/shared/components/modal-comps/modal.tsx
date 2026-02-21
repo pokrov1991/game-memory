@@ -1,8 +1,8 @@
 import { PropsWithChildren } from 'react'
-import cls from './modal.module.css'
-import topbar from '@/assets/modal-topbar.svg'
-import Portal from './portal'
 import { TModal } from './types'
+import Portal from './portal'
+import style from './modal.module.css'
+import topbar from '@/assets/modal-topbar.svg'
 
 export const Modal = ({
   isOpened,
@@ -13,12 +13,12 @@ export const Modal = ({
 
   return (
     <Portal>
-      <div className={cls['root']}>
-        <div className={cls['overlay']}></div>
-        <div className={cls['wrapper']}>
-          <div className={`${cls['content']} ${cls[`content--${type}`]}`}>
-            <div className={cls['topbar']}>
-              <img src={topbar} alt="Topbar" />
+      <div className={style['modal']}>
+        <div className={style['modal__overlay']}></div>
+        <div className={style['modal__wrapper']}>
+          <div className={`${style['modal__content']} ${style[`modal__content_${type}`]}`}>
+            <div className={style['modal__topbar']}>
+              <img src={topbar} alt="!" />
             </div>
             {children}
           </div>

@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { useProgress } from '@/shared/hooks/useProgress';
 import YandexSDK from '@/shared/services/sdk/yandexSdk';
 
 interface UserData {
@@ -14,7 +15,31 @@ interface GameData {
   userLevel: number;
   userScore: number;
   userCoins: number;
-  userHelmet: number;
+  userPotions: number;
+  userParams: {
+    hp: number;      // Здоровье игрока
+    guard: number;   // Процент уменьшения урона от врага
+    attack: number;  // Процент увеличения атаки от экипировки
+  };
+  userInventory: [
+    {
+      id: number;
+      type: string;
+      name: string;
+      desc: string;
+      price: number;
+      organs: Array<{ id: number; name: string; count: number }>;
+      hp: number;
+      isPaid: boolean;
+      isDressed: boolean;
+    }
+  ];
+  userOrgans: {
+    [key: number]: {
+      name: string;
+      count: number;
+    };
+  };
 }
 
 interface UserContextType {
@@ -40,6 +65,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [game, setGame] = useState<GameData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const { setProgress } = useProgress()
 
   useEffect(() => {
     async function fetchUser() {
@@ -54,6 +80,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
         const gameData = await YandexSDK.getGameData();
         console.log("Данные игры:", gameData);
         setGame(gameData);
+        setProgress(gameData);
 
         // await YandexSDK.showAd(); // Показ рекламы
       } catch (err: any) {
