@@ -55,6 +55,14 @@
   animation: a1 2s infinite;
 }
 
+.game-page__person-img-player-body_4 {
+  filter: hue-rotate(90deg) saturate(150%);
+}
+
+.game-page__person-img-player-body_6 {
+  filter: hue-rotate(180deg);
+}
+
 .game-page__person-img-player-arm {
   position: absolute;
   width: 120px;
@@ -77,6 +85,14 @@
   bottom: 352px;
   left: 176px;
   animation: a1 2s infinite;
+}
+
+.game-page__person-img-player-head_3 {
+  filter: hue-rotate(90deg) saturate(150%);
+}
+
+.game-page__person-img-player-head_5 {
+  filter: hue-rotate(180deg);
 }
 
 .game-page__person-img-player-head_stun {

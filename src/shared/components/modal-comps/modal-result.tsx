@@ -1,10 +1,8 @@
 import { Modal } from '.'
-import cls from './modal-content.module.css'
-import { Button, Typography } from '@mui/material'
 import { MouseEvent } from 'react'
+import { Button, Typography } from '@mui/material'
 import { TModalNonType, TypeModal } from './types'
-
-// Компонент модалки победы или поражения
+import style from './modal-content.module.css'
 
 interface IProps extends TModalNonType {
   type: TypeModal.Win | TypeModal.Lose
@@ -19,7 +17,7 @@ export const ModalResult = ({
 }: IProps) => {
   return (
     <Modal isOpened={isOpened} type={type}>
-      <div className={cls['result']}>
+      <div className={style['result']}>
         <Typography
           marginBottom="10px"
           fontSize="60px"
@@ -32,10 +30,10 @@ export const ModalResult = ({
         </Typography>
       </div>
 
-      <div className={cls['actions']}>
-        <div className={cls['approve-wrapper']}>
+      <div className={style['actions']}>
+        <div className={style['approve-wrapper']}>
           <Button
-            className={cls['approve']}
+            className={style['approve']}
             size="large"
             color="inherit"
             onClick={onContinue}>

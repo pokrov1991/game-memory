@@ -48,6 +48,10 @@ export const GameBattlePage = () => {
     selectLevel,
     userLevel,
     userScore,
+    userInventory,
+    userParams,
+    userOrgans,
+    updateOrgan,
     levelUp,
     scoreUp,
   } = useProgress()
@@ -66,11 +70,14 @@ export const GameBattlePage = () => {
   const [enemyHit, setEnemyHit] = useState(false)
   const [playerHit, setPlayerHit] = useState(false)
   const enemyRef = useRef<EnemyService | null>(null)
+  const enemyOrgan = userOrgans[gameLevel.id]
+  const userHelmetId = userInventory.find((item) => item.type === 'helmet' && item.isDressed).id
+  const userPlastronId = userInventory.find((item) => item.type === 'plastron' && item.isDressed).id
 
-  const hpGuard = game.userInventory
+  const hpGuard = userInventory
                     .filter(item => item.type === 'helmet' && item.isDressed || item.type === 'plastron' && item.isDressed)
                     .reduce((sum, item) => sum + item.hp, 0)
-  const hpInitial = game.userParams.hp + hpGuard
+  const hpInitial = userParams.hp + hpGuard
   const hpEnemyInitial = gameLevel.enemyHp
   const [hp, setHP] = useState(hpInitial)
   const [hpEnemy, setHPEnemy] = useState(hpEnemyInitial)
@@ -85,6 +92,7 @@ export const GameBattlePage = () => {
       selectedLevel: nextLevel,
       userLevel: level,
       userScore: score,
+      userOrgans: userOrgans
     })
   }
   
@@ -189,7 +197,8 @@ export const GameBattlePage = () => {
     enemyRef.current.setDeadState()
     handlePause()
     setTimeout(() => {
-      setResultText(`Поздравляем! Вы прошли уровень «${gameLevel.title}» и получили опыт: ${scoreSession} exp`)
+      updateOrgan({ organId: gameLevel.id, count: enemyOrgan.count + 1 })
+      setResultText(`Поздравляем! Вы прошли уровень «${gameLevel.title}» и получили: Опыт - ${scoreSession} ед. и ${enemyOrgan.name} - 1 шт.`)
       setOpenModalWin(true)
     }, delayGameEffects + gameLevel.enemyStateDurations.DEAD)
   }
@@ -221,7 +230,7 @@ export const GameBattlePage = () => {
 
     // Ставим удар по врагу
     if (newScore > 0) {
-      const attack = Math.floor(currentScore + currentScore * game.userParams.attack / 100)
+      const attack = Math.floor(currentScore + currentScore * userParams.attack / 100)
       const newHpEnemy = hpEnemy > attack ? hpEnemy - attack : 0
       setHPEnemy(newHpEnemy)
 
@@ -266,7 +275,7 @@ export const GameBattlePage = () => {
 
   const handleEnemyAttack = (damage: number): void => {
     console.log('attack enemy', damage)
-    const damageWithGuard = Math.floor(damage - damage * game.userParams.guard / 100)
+    const damageWithGuard = Math.floor(damage - damage * userParams.guard / 100)
     const newHp = hp > damageWithGuard ? hp - damageWithGuard : 0
     setHP(newHp)
 
@@ -340,13 +349,17 @@ export const GameBattlePage = () => {
             <div className={styles['game-page__person-img-player']}>
               <div className={styles['game-page__person-img-player-pack']}></div>
               <div className={styles['game-page__person-img-player-legs']}></div>
-              <div className={styles['game-page__person-img-player-body']}></div>
+              <div className={classNames(
+                styles['game-page__person-img-player-body'],
+                styles[`game-page__person-img-player-body_${userPlastronId}`],
+              )}></div>
               <div className={classNames(
                 styles['game-page__person-img-player-arm'],
                 { [styles['game-page__person-img-player-arm_active']]: isClickCard }
               )}></div>
               <div className={classNames(
                 styles['game-page__person-img-player-head'],
+                styles[`game-page__person-img-player-head_${userHelmetId}`],
                 { 
                   [styles['game-page__person-img-player-head_stun']]: isStunPlayer,
                   [styles['game-page__person-img-player-head_alarm']]: isAlarmPlayer
