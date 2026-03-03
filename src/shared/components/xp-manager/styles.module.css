@@ -1,3 +1,36 @@
 .xp-manager {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
   color: #fff;
+}
+
+.xp-manager__info {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.xp-manager__info-level {
+  width: 100px;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: url('game/game-scale-ampula.png') center / cover;
+  border-radius: 50px;
+}
+
+.xp-manager__info-params {
+  display: flex;
+  flex-direction: column;
+}
+
+.xp-manager__info-actions {
+  display: block;
+}
+
+.xp-manager__control {
+  display: flex;
+  gap: 20px;
 }

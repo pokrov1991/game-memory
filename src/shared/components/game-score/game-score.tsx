@@ -9,9 +9,11 @@ type GameScoreProps = {
 
 export const GameScore: React.FC<GameScoreProps> = ({ score }) => {
   const { userLevel } = useProgress()
-  const scoreLevel = LEVELS_USER_CONFIG[userLevel].score
-  const scoreProgress = LEVELS_USER_CONFIG[userLevel + 1].score - scoreLevel
-  const scorePercent = 100 -((scoreLevel - score) / scoreProgress) * 100
+  const scoreEnd = LEVELS_USER_CONFIG[userLevel].score
+  const scoreStart = userLevel > 1 ? scoreEnd - LEVELS_USER_CONFIG[userLevel - 1].score : 0
+  const scoreLevel = scoreEnd - scoreStart
+  const scoreCurrent = score - scoreStart
+  const scorePercent = (scoreCurrent / scoreLevel) * 100
 
   return (
     <div className={styles['game-score']}>
@@ -21,7 +23,7 @@ export const GameScore: React.FC<GameScoreProps> = ({ score }) => {
           <strong>{userLevel}</strong>
           <i>
             {score}
-            <span>/{scoreLevel}</span>
+            <span>/{scoreEnd}</span>
           </i>
         </div>
       </div>

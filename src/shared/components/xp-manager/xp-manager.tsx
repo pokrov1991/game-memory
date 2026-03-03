@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useProgress } from '@/shared/hooks'
+import { Button } from '@/shared/components'
 import YandexSDK from '@/shared/services/sdk/yandexSdk'
 import styles from './styles.module.css'
 
@@ -52,10 +53,10 @@ export const XpManager = () => {
           <span>Атака: {attack}</span>
         </div>
         <div className={styles['xp-manager__info-actions']}>
-          <button onClick={() => {
+          <Button onClick={() => {
             levelParamsUp({ hp: countHp, guard: countGuard, attack: countAttack })
             paramsUp({ hp: hp, guard: guard, attack: attack })
-          }}>Сохранить</button>
+          }}>Сохранить</Button>
         </div>
       </div>
       <div className={styles['xp-manager__control']}>
