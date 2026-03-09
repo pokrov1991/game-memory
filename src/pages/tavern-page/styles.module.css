@@ -119,25 +119,59 @@
     font-weight: 700;
     font-size: 16px;
     line-height: 20px;
-    color: #d7512a;
+    color: #006aa5;
   }
   b {
     display: flex;
-    flex-direction: column;
-    gap: 1px;
+    gap: 16px;
+    padding-top: 12px;
+    margin-top: 7px;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
     width: 100%;
   }
 }
 
 .barman-text-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
   font-style: normal;
   font-family: 'Roboto';
   font-style: italic;
   font-weight: 700;
-  font-size: 16px;
+  font-size: 18px;
   line-height: 20px;
-  color: #006aa5;
+  color: #010101;
+
+  &::before {
+    content: '';
+    display: block;
+    width: 30px;
+    height: 30px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+  }
 }
+
+.barman-text-item_money {
+  &::before {
+    background-image: url('tavern/treasures/0-2.png');
+  }
+}
+
+.barman-text-item_1 {
+  &::before {
+    background-image: url('tavern/treasures/1.png');
+  }
+}
+
+.barman-text-item_2 {
+  &::before {
+    background-image: url('tavern/treasures/2.png');
+  }
+}
+
 
 .barman-text-item_disabled {
   color: #a50000;
@@ -149,9 +183,68 @@
   flex-wrap: wrap;
   gap: 4px;
   width: 480px;
-  height: 340px;
-  overflow: auto;
+  height: 320px;
+  /* overflow: auto; */
   z-index: 2;
+}
+
+.tavern-page__levels-scroll {
+  height: 320px;
+  overflow-y: auto;
+  width: 100%;
+  padding-right: 20px;
+
+  &::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: rgba(29, 170, 231, 0.25);
+    border-radius: 0;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 0;
+    transition: 0.3s;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.75);
+  }
+}
+
+.tavern-page__levels-up {
+  position: absolute;
+  top: -8px;
+  right: -16px;
+  width: 40px;
+  height: 28px;
+  background: url('ui/arrow.png') no-repeat center / contain;
+  border: none;
+  cursor: pointer;
+  z-index: 3;
+
+  &:hover {
+    background-image: url('ui/arrow-active.png');
+  }
+}
+
+.tavern-page__levels-down {
+  position: absolute;
+  bottom: -8px;
+  right: -16px;
+  width: 40px;
+  height: 28px;
+  background: url('ui/arrow.png') no-repeat center / contain;
+  border: none;
+  cursor: pointer;
+  transform: rotate(180deg);
+  z-index: 3;
+
+  &:hover {
+    background-image: url('ui/arrow-active.png');
+  }
 }
 
 .tavern-page__levels-item {
@@ -254,7 +347,10 @@
   position: relative;
   width: 100px;
   height: 100px;
-  background: rgba(0, 0, 0, 0.8);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 75%;
+  background-color: rgba(0, 0, 0, 0.8);
   border-radius: 4px;
   cursor: pointer;
 
@@ -265,7 +361,7 @@
     font-family: 'Roboto';
     font-style: italic;
     font-weight: 500;
-    font-size: 26px;
+    font-size: 22px;
     line-height: 30px;
     color: #E9E1D1;
     text-shadow: 0px 0px 11px rgba(0, 0, 0, 0.8);
@@ -294,6 +390,34 @@
   }
 }
 
+.tavern-page__store-item_1 {
+  background-image: url('tavern/store/body-1.png');
+}
+
+.tavern-page__store-item_2 {
+  background-image: url('tavern/store/head-1.png');
+}
+
+.tavern-page__store-item_3 {
+  background-image: url('tavern/store/body-2.png');
+}
+
+.tavern-page__store-item_4 {
+  background-image: url('tavern/store/head-2.png');
+}
+
+.tavern-page__store-item_5 {
+  background-image: url('tavern/store/body-3.png');
+}
+
+.tavern-page__store-item_6 {
+  background-image: url('tavern/store/head-3.png');
+}
+
+.tavern-page__store-item_7 {
+  background-image: url('tavern/store/hp-1.png');
+}
+
 .tavern-page__store-item_active {
   &::before {
     content: '';
@@ -307,12 +431,13 @@
   }
   &::after {
     border: 1px solid #E2DED3;
-    box-shadow: 0px 0px 12px 1px rgba(227, 227, 200, 0.8), inset 0px 0px 7px 3px rgba(246, 231, 152, 0.5);
+    box-shadow: 0px 0px 12px 1px rgba(227, 227, 200, 0.4), inset 0px 0px 7px 3px rgba(246, 231, 152, 0.25);
   }
 }
 
 .tavern-page__store-item_dressed {
-  background-color: #e2ded340;
+  /* background-color: rgba(226, 222, 211, 0.25); */
+  background-color: rgba(29, 170, 231, 0.25);
 }
 
 .tavern-page__store-item_paid {
@@ -391,4 +516,11 @@
       }
     }
   }
+}
+
+.tavern-page__xp {
+  position: relative;
+  max-width: 480px;
+  margin-top: 40px;
+  z-index: 2;
 }

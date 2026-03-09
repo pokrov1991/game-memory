@@ -37,6 +37,23 @@
   position: relative;
   border: 3px solid #00081d;
   color: #fff;
+
+  i[data-icon^='organ-'] {
+    display: inline-block;
+    margin: 0 4px -8px 4px;
+    width: 32px;
+    height: 32px;
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+  }
+
+  i[data-icon='organ-1'] {
+    background-image: url('tavern/treasures/1.png');
+  }
+  i[data-icon='organ-2'] {
+    background-image: url('tavern/treasures/2.png');
+  }
 }
 
 .modal__content::before {

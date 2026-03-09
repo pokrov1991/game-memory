@@ -48,14 +48,57 @@
 
 .user-treasures__info {
   display: flex;
-  gap: 10px;
+  gap: 20px;
+}
 
-  span {
-    font-family: 'Roboto';
-    font-style: italic;
-    font-weight: 700;
-    font-size: 16px;
-    line-height: 20px;
-    color: #006aa5;
+.user-treasures__info-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-family: 'Roboto';
+  font-style: italic;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 20px;
+  color: #010101;
+
+  &::before {
+    content: '';
+    width: 32px;
+    height: 32px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain
+  }
+}
+
+.user-treasures__info-item_level {
+  &::before {
+    background-image: url('tavern/treasures/0-1.png');
+  }
+}
+
+.user-treasures__info-item_coin {
+  &::before {
+    background-image: url('tavern/treasures/0-2.png');
+  }
+}
+
+.user-treasures__info-item_potion {
+  &::before {
+    background-image: url('tavern/treasures/0-3.png');
+  }
+}
+
+.user-treasures__info-item_0 {
+  &::before {
+    background-image: url('tavern/treasures/1.png');
+  }
+}
+
+.user-treasures__info-item_1 {
+  &::before {
+    background-image: url('tavern/treasures/2.png');
   }
 }

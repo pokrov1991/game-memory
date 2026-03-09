@@ -9,28 +9,160 @@
   display: flex;
   align-items: center;
   gap: 15px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.25);
+  padding-bottom: 15px;
 }
 
 .xp-manager__info-level {
-  width: 100px;
-  height: 100px;
+  width: 120px;
+  height: 120px;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: url('game/game-scale-ampula.png') center / cover;
+  text-align: center;
+  background: url(tavern/ampula.png) center / cover;
   border-radius: 50px;
+  font-family: 'Roboto';
+  font-size: 14px;
+  line-height: 24px;
+  padding-top: 20px;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+
+  b {
+    font-weight: 700;
+    font-size: 26px;
+  }
 }
 
 .xp-manager__info-params {
   display: flex;
   flex-direction: column;
+  gap: 4px;
+
+  span {
+    font-family: 'Roboto';
+    font-size: 18px;
+    line-height: 24px;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+
+    &:nth-child(1) {
+      b {
+        color: #6afa86;
+      }
+    }
+    &:nth-child(2) {
+      b {
+        color: #eece20;
+      }
+    }
+    &:nth-child(3) {
+      b {
+        color: #fe5758;
+      }
+    }
+  }
 }
 
 .xp-manager__info-actions {
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 10px;
+
+  button {
+    width: 200px;
+    min-height: 94px;
+    height: 94px;
+
+    span {
+      font-size: 22px;
+      margin-bottom: 20px;
+    }
+  }
 }
 
 .xp-manager__control {
   display: flex;
-  gap: 20px;
+  gap: 30px;
+}
+
+.xp-manager__counter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 15px;
+
+  &_hp {
+    .xp-manager__counter-name {
+      background: url(tavern/sphere-red.png) center / cover;
+    }
+  }
+}
+
+.xp-manager__counter_hp {
+  .xp-manager__counter-name {
+    background: url(tavern/sphere-green.png) center / cover;
+  }
+}
+
+.xp-manager__counter_guard {
+  .xp-manager__counter-name {
+    background: url(tavern/sphere-yellow.png) center / cover;
+  }
+}
+
+.xp-manager__counter_attack {
+  .xp-manager__counter-name {
+    background: url(tavern/sphere-red.png) center / cover;
+  }
+}
+
+.xp-manager__counter-name {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100px;
+  height: 92px;
+  background: url(tavern/sphere-black.png) center / cover;
+  font-family: 'Roboto';
+  font-size: 14px;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.xp-manager__counter-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  
+  button {
+    width: 40px;
+    height: 28px;
+    background: url('ui/arrow-active.png') no-repeat center / contain;
+    border: none;
+    cursor: pointer;
+    transform: rotate(-90deg);
+
+    &:last-child {
+      transform: rotate(90deg);
+    }
+
+    &[disabled] {
+      cursor: default;
+      background-image: url('ui/arrow.png');
+    }
+  }
+  span {
+    font-family: 'Roboto';
+    font-weight: 700;
+    font-size: 18px;
+  }
+}
+
+.xp-manager__counter-units {
+  font-family: Alegreya, Roboto, sans-serif;
+  font-size: 18px;
+  opacity: 0.75;
 }

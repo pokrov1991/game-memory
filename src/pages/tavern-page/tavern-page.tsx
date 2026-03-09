@@ -1,5 +1,5 @@
 import classNames from 'classnames'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { LEVELS_STORE, INVENTORY_STORE_CONFIG } from '@/shared'
 import { useProgress } from '@/shared/hooks'
@@ -33,6 +33,7 @@ export const TavernPage = () => {
   const [mode, setMode] = useState('main')
   const [talk, setTalk] = useState(false)
   const { progress, selectLevel, userCoins, userPotions, userOrgans, userInventory, coinsUp, potionsUp, updateOrgan, updateInventory } = useProgress()
+  const scrollRef = useRef(null);
   
   const syncProgress = async () => {
     await YandexSDK.setGameData(progress)
@@ -80,6 +81,9 @@ export const TavernPage = () => {
     if (inventory.isPaid) {
       setIsButtonPay(false)
     }
+
+    setTalk(true)
+    setTimeout(() => setTalk(false), 1000)
   }
 
   const handlePay = async () => {
@@ -116,7 +120,8 @@ export const TavernPage = () => {
   const storeInventoryPreviews = storeInventory.map(item => {
     return (
       <div className={classNames(
-          styles['tavern-page__store-item'], 
+          styles['tavern-page__store-item'],
+          styles[`tavern-page__store-item_${item.id}`], 
           {
             [styles['tavern-page__store-item_active']]: storeInventoryItem?.id === item.id,
             [styles['tavern-page__store-item_dressed']]: userInventory.find(i => i.id === item.id && i.isDressed),
@@ -223,6 +228,20 @@ export const TavernPage = () => {
       </ul>
     )
   }
+
+  const scrollUp = () => {
+    scrollRef.current.scrollBy({
+      top: -64,
+      behavior: "smooth"
+    })
+  }
+
+  const scrollDown = () => {
+    scrollRef.current.scrollBy({
+      top: 64,
+      behavior: "smooth"
+    })
+  }
     
   return (
     <main className={styles['tavern-page']}>
@@ -233,7 +252,11 @@ export const TavernPage = () => {
         <Navigation/>
 
         { mode === 'levels' && <div className={styles['tavern-page__levels']}>
-          {levelPreviews}
+          <button className={styles['tavern-page__levels-up']} onClick={scrollUp}></button>
+          <div className={styles['tavern-page__levels-scroll']} ref={scrollRef}>
+            {levelPreviews}
+          </div>
+          <button className={styles['tavern-page__levels-down']} onClick={scrollDown}></button>
         </div> }
 
         { mode === 'store' && <div className={styles['tavern-page__store']}>
@@ -274,21 +297,27 @@ export const TavernPage = () => {
               <span>{storeInventoryItem.desc}</span>
               <b>
                 <i className={classNames(
-                    styles['barman-text-item'],
-                    {[styles['barman-text-item_disabled']]: userCoins < storeInventoryItem.price}
+                  styles['barman-text-item'],
+                  styles['barman-text-item_money'],
+                  {[styles['barman-text-item_disabled']]: userCoins < storeInventoryItem.price}
                 )}>
-                  Монет: {storeInventoryItem.price}.
+                  {storeInventoryItem.price}
                 </i>
                 {storeInventoryItem.organs && storeInventoryItem.organs.map((item, index) => (
                   <i className={classNames(
                     styles['barman-text-item'],
-                    styles[`barman-text-item_${index}`],
+                    styles[`barman-text-item_${item.id}`],
                     {[styles['barman-text-item_disabled']]: userOrgans[item.id]?.count < item.count}
-                  )} key={index}>
-                    {item.name}: {item.count}.
+                  )} key={index} title={item.name}>
+                    {item.count}
                   </i>
                 ))}
               </b>
+            </p>}
+
+          {mode === 'xp' && 
+            <p className={styles['tavern-page__barman-text-baloon']}>
+              У теебя есть сферы опыта, которые ты можешь потратить на улучшение своих характеристик. Чем выше уровень, тем больше сфер для распределения. На что хочешь потратить свои сферы?
             </p>}
         </div>
 

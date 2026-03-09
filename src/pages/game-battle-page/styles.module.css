@@ -1,6 +1,7 @@
 @import 'styles.player.css';
 @import 'styles.enemy1.css';
 @import 'styles.enemy2.css';
+@import 'styles.enemy3.css';
 
 .game-page {
   display: flex;

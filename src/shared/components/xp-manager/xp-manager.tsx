@@ -1,3 +1,4 @@
+import classNames from 'classnames'
 import { useState, useEffect } from 'react'
 import { useProgress } from '@/shared/hooks'
 import { Button } from '@/shared/components'
@@ -46,11 +47,11 @@ export const XpManager = () => {
   return (
     <div className={styles['xp-manager']}>
       <div className={styles['xp-manager__info']}>
-        <div className={styles['xp-manager__info-level']}>Уровень: {countLevel}</div>
+        <div className={styles['xp-manager__info-level']}>Сферы:<b>{countLevel}</b></div>
         <div className={styles['xp-manager__info-params']}>
-          <span>Здоровье: {hp}</span>
-          <span>Защита: {guard}</span>
-          <span>Атака: {attack}</span>
+          <span>Здоровье: <b>{hp}</b></span>
+          <span>Защита: <b>{guard}</b></span>
+          <span>Атака: <b>{attack}</b></span>
         </div>
         <div className={styles['xp-manager__info-actions']}>
           <Button onClick={() => {
@@ -60,7 +61,7 @@ export const XpManager = () => {
         </div>
       </div>
       <div className={styles['xp-manager__control']}>
-        <div className={styles['xp-manager__counter xp-manager__counter_hp']}>
+        <div className={classNames(styles['xp-manager__counter'], styles['xp-manager__counter_hp'])}>
           <div className={styles['xp-manager__counter-name']}>Здоровье</div>
           <div className={styles['xp-manager__counter-controls']}>
             <button onClick={() => {
@@ -76,7 +77,7 @@ export const XpManager = () => {
           <div className={styles['xp-manager__counter-units']}>+{UNIT_HP} ед.</div>
         </div>
 
-        <div className={styles['xp-manager__counter xp-manager__counter_guard']}>
+        <div className={classNames(styles['xp-manager__counter'], styles['xp-manager__counter_guard'])}>
           <div className={styles['xp-manager__counter-name']}>Защита</div>
           <div className={styles['xp-manager__counter-controls']}>
             <button onClick={() => {
@@ -92,7 +93,7 @@ export const XpManager = () => {
           <div className={styles['xp-manager__counter-units']}>+{UNIT_GUARD} ед.</div>
         </div>
 
-        <div className={styles['xp-manager__counter xp-manager__counter_attack']}>
+        <div className={classNames(styles['xp-manager__counter'], styles['xp-manager__counter_attack'])}>
           <div className={styles['xp-manager__counter-name']}>Атака</div>
           <div className={styles['xp-manager__counter-controls']}>
             <button onClick={() => {

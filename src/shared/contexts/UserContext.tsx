@@ -41,6 +41,7 @@ interface GameData {
   ];
   userOrgans: {
     [key: number]: {
+      id: number;
       name: string;
       count: number;
     };

@@ -1,3 +1,5 @@
+import { ReactNode } from "react";
+
 export enum TypeModal {
   Lose = 'lose',
   Win = 'win',
@@ -10,7 +12,7 @@ export type TModal = {
 }
 
 export type TModalAction = TModal & {
-  levelName?: string,
+  levelName?: string | ReactNode,
   level?: number,
   title?: string | number,
   subtitle?: string | number,

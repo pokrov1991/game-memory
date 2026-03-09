@@ -64,7 +64,7 @@ export const GameBattlePage = () => {
   const [colorPlayerAttack, setColorPlayerAttack] = useState('')
   const [colorPlayerPreAttack, setColorPlayerPreAttack] = useState('')
   const [colorEnemyAttack, setColorEnemyAttack] = useState('')
-  const [resultText, setResultText] = useState('')
+  const [resultText, setResultText] = useState(<></>)
   const [setLeader] = useSetLeaderboardMutation()
   const [enemyState, setEnemyState] = useState('default')
   const [enemyHit, setEnemyHit] = useState(false)
@@ -198,14 +198,14 @@ export const GameBattlePage = () => {
     handlePause()
     setTimeout(() => {
       updateOrgan({ organId: gameLevel.id, count: enemyOrgan.count + 1 })
-      setResultText(`Поздравляем! Вы прошли уровень «${gameLevel.title}» и получили: Опыт - ${scoreSession} ед. и ${enemyOrgan.name} - 1 шт.`)
+      setResultText(<>Поздравляем! Вы прошли уровень «{gameLevel.title}» и получили: Опыт - {scoreSession} ед. и {enemyOrgan.name} <i data-icon={`organ-${enemyOrgan.id}`}></i> - 1 шт.</>)
       setOpenModalWin(true)
     }, delayGameEffects + gameLevel.enemyStateDurations.DEAD)
   }
 
   const handleGameOver = (): void => {
     handlePause()
-    setResultText(`Не унывай! Попробуй еще раз пройти уровень. У тебя получится )`)
+    setResultText(<>Не унывай! Попробуй еще раз пройти уровень. У тебя получится!</>)
     setOpenModalLose(true)
   }
 
@@ -447,7 +447,7 @@ export const GameBattlePage = () => {
       />
       <ModalResult
         onContinue={onGameOver}
-        levelName={resultText}
+        levelName={<>{resultText}</>}
         isOpened={isOpenModalLose}
         type={TypeModal.Lose}
       />

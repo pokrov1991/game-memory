@@ -113,8 +113,8 @@ export default class YandexSDK extends SDK {
             },
           ],
           userOrgans: {
-            1: { name: 'Зуб щитомордника', count: 1000 },
-            2: { name: 'Шкура голема', count: 1000 }
+            1: { id: 1, name: 'Зуб щитомордника', count: 1000 },
+            2: { id: 2, name: 'Шкура голема', count: 1000 }
           }
         }
         await this.setGameData(gameData);

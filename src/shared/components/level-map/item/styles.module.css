@@ -79,12 +79,25 @@
 }
 .item_3 {
   &::after {
-    background-image: url(/game/enemy/enemy-1-default.webp);
+    top: -35px;
+    width: 90px;
+    height: 90px;
+    background-image: url(/game/enemy/enemy-3-default.webp);
   }
 }
 .item_4 {
   &::after {
     background-image: url(/game/enemy/enemy-2-default.webp);
+  }
+}
+
+.item_101 {
+  b {
+    display: none;
+  }
+  &::after {
+    background-image: url(/map/tavern.png);
+    top: -10px;
   }
 }
 

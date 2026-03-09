@@ -30,8 +30,9 @@ interface ProgressState {
   }>;
   userOrgans: {
     [key: number]: {
-      name: string
-      count: number
+      id: number;
+      name: string;
+      count: number;
     };
   };
 }
@@ -78,8 +79,8 @@ const initialState: ProgressState = {
     },
   ],
   userOrgans: {
-    1: { name: 'Зуб щитомордника', count: 0 },
-    2: { name: 'Шкура голема', count: 0 }
+    1: { id: 1, name: 'Зуб щитомордника', count: 0 },
+    2: { id: 2, name: 'Шкура голема', count: 0 }
   },
 }
 
@@ -129,8 +130,8 @@ export const progressSlice = createSlice({
         },
       ]
       state.userOrgans = {
-        1: { name: 'Зуб щитомордника', count: 0 },
-        2: { name: 'Шкура голема', count: 0 }
+        1: { id: 1, name: 'Зуб щитомордника', count: 0 },
+        2: { id: 2, name: 'Шкура голема', count: 0 }
       }
     },
     setProgress: (state, action: PayloadAction<ProgressState>) => {
