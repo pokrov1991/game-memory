@@ -12,13 +12,25 @@
   position: absolute;
   top: 0;
   left: 0;
-  background: url('/game/game-background.jpg') no-repeat 0 0 / cover;
+  background: url('/game/game-background.jpg') no-repeat center / cover;
   overflow: hidden;
 
   @media (max-width: 768px) {
     flex-direction: column;
     padding: 0 20px;
   }
+}
+
+.game-page_1 {
+  background: url('/game/location/1.jpg') no-repeat center / cover;
+}
+
+.game-page_2 {
+  background: url('/game/location/2.jpg') no-repeat center / cover;
+}
+
+.game-page_3 {
+  background: url('/game/location/3.jpg') no-repeat center / cover;
 }
 
 .game-page_player-hit {
@@ -149,6 +161,7 @@
   line-height: 21.09px;
   letter-spacing: 0.02em;
   color: rgba(160, 236, 234, 1);
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.75);
 
   @media (max-width: 768px) {
     display: none;

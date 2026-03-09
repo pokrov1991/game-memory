@@ -56,11 +56,15 @@
 }
 
 .game-page__person-img-player-body_4 {
-  filter: hue-rotate(90deg) saturate(150%);
+  background: url('game/inventory/z3-a1-body-2.png') 0 0 / contain no-repeat;
 }
 
 .game-page__person-img-player-body_6 {
-  filter: hue-rotate(180deg);
+  width: 244px;
+  height: 186px;
+  bottom: 240px;
+  left: 81px;
+  background: url('game/inventory/z3-a1-body-3.png') 0 0 / contain no-repeat;
 }
 
 .game-page__person-img-player-arm {
@@ -88,11 +92,18 @@
 }
 
 .game-page__person-img-player-head_3 {
-  filter: hue-rotate(90deg) saturate(150%);
+  width: 154px;
+  height: 152px;
+  left: 146px;
+  background: url('game/inventory/z5-a1-head-2.png') 0 0 / contain no-repeat;
 }
 
 .game-page__person-img-player-head_5 {
-  filter: hue-rotate(180deg);
+  width: 134px;
+  height: 138px;
+  left: 146px;
+  bottom: 350px;
+  background: url('game/inventory/z5-a1-head-3.png') 0 0 / contain no-repeat;
 }
 
 .game-page__person-img-player-head_stun {

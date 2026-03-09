@@ -391,27 +391,27 @@
 }
 
 .tavern-page__store-item_1 {
-  background-image: url('tavern/store/body-1.png');
-}
-
-.tavern-page__store-item_2 {
   background-image: url('tavern/store/head-1.png');
 }
 
-.tavern-page__store-item_3 {
-  background-image: url('tavern/store/body-2.png');
+.tavern-page__store-item_2 {
+  background-image: url('tavern/store/body-1.png');
 }
 
-.tavern-page__store-item_4 {
+.tavern-page__store-item_3 {
   background-image: url('tavern/store/head-2.png');
 }
 
+.tavern-page__store-item_4 {
+  background-image: url('tavern/store/body-2.png');
+}
+
 .tavern-page__store-item_5 {
-  background-image: url('tavern/store/body-3.png');
+  background-image: url('tavern/store/head-3.png');
 }
 
 .tavern-page__store-item_6 {
-  background-image: url('tavern/store/head-3.png');
+  background-image: url('tavern/store/body-3.png');
 }
 
 .tavern-page__store-item_7 {

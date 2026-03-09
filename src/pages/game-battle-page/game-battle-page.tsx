@@ -314,6 +314,7 @@ export const GameBattlePage = () => {
   return (
     <main className={classNames(
       styles['game-page'],
+      styles[`game-page_${gameLevel.id}`],
       { 
         [styles['game-page_player-hit']]: playerHit,
         [styles['game-page_enemy-hit']]: enemyHit,
