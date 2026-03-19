@@ -51,6 +51,7 @@ export const GameBattlePage = () => {
     userInventory,
     userParams,
     userOrgans,
+    userPotions,
     updateOrgan,
     levelUp,
     scoreUp,
@@ -69,6 +70,7 @@ export const GameBattlePage = () => {
   const [enemyState, setEnemyState] = useState('default')
   const [enemyHit, setEnemyHit] = useState(false)
   const [playerHit, setPlayerHit] = useState(false)
+  const [potions, setPotions] = useState(userPotions)
   const enemyRef = useRef<EnemyService | null>(null)
   const enemyOrgan = userOrgans[gameLevel.id]
   const userHelmetId = userInventory.find((item) => item.type === 'helmet' && item.isDressed).id
@@ -147,6 +149,8 @@ export const GameBattlePage = () => {
     setScoreSession(0)
     setHP(hpInitial)
     setHPEnemy(gameLevel.enemyHp)
+    setPotions(userPotions)
+    setStunPlayer(false)
     setAlarmPlayer(false)
     setColorPlayerAttack('')
     setColorPlayerPreAttack('')
@@ -290,6 +294,14 @@ export const GameBattlePage = () => {
     }
   }
 
+  const handleUsePotions = (): void => {
+    if (potions > 0) {
+      const healAmount = Math.floor(hpInitial * 0.25) // восстанавливает 25% от начального HP
+      setHP(hp + healAmount > hpInitial ? hpInitial : hp + healAmount)
+      setPotions(potions - 1)
+    }
+  }
+
   const handleSetLeader = async (level: number, score: number) => {
     try {
       const leader = {
@@ -334,6 +346,13 @@ export const GameBattlePage = () => {
         </div>
         <div className={styles['game-page__info']}>
           <GameScore score={score} />
+        </div>
+        <div className={classNames(
+            styles['game-page__potions'],
+            { [styles['game-page__potions_disabled']]: potions <= 0 }
+          )}
+          onClick={handleUsePotions}>
+          <span>{potions}</span>
         </div>
       </div>
 

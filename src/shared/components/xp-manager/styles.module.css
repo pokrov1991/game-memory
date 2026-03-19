@@ -29,6 +29,13 @@
   padding-top: 20px;
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
 
+  @media (max-width: 768px) {
+    width: 90px;
+    height: 80px;
+    font-size: 0;
+    line-height: 0;
+  }
+
   b {
     font-weight: 700;
     font-size: 26px;
@@ -75,9 +82,19 @@
     min-height: 94px;
     height: 94px;
 
+    @media (max-width: 768px) {
+      width: 150px;
+      min-height: 74px;
+      height: 74px;
+    }
+
     span {
       font-size: 22px;
       margin-bottom: 20px;
+
+      @media (max-width: 768px) {
+        font-size: 18px;
+      }
     }
   }
 }
@@ -85,6 +102,10 @@
 .xp-manager__control {
   display: flex;
   gap: 30px;
+
+  @media (max-width: 768px) {
+    gap: 5px;
+  }
 }
 
 .xp-manager__counter {

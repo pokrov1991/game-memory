@@ -67,6 +67,9 @@
   }
 }
 
+.item_0 {
+  display: none;
+}
 .item_1 {
   &::after {
     background-image: url(/game/enemy/enemy-1-default.webp);
@@ -98,6 +101,16 @@
   &::after {
     background-image: url(/map/tavern.png);
     top: -10px;
+  }
+}
+
+.item_102 {
+  b {
+    display: none;
+  }
+  &::after {
+    background-image: url(/map/base.png);
+    top: -5px;
   }
 }
 

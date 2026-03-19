@@ -5,6 +5,10 @@
   width: 100%;
   padding: 10px 20px 10px 200px;
   background: #fff;
+
+  @media (max-width: 768px) {
+    padding: 10px 20px;
+  }
 }
 
 .user-treasures__player {
@@ -14,6 +18,10 @@
   width: 190px;
   height: 200px;
   overflow: hidden;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
 }
 
 .user-treasures__player-head {
@@ -49,6 +57,10 @@
 .user-treasures__info {
   display: flex;
   gap: 20px;
+
+  @media (max-width: 768px) {
+    flex-wrap: wrap;
+  }
 }
 
 .user-treasures__info-item {

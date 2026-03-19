@@ -178,6 +178,39 @@
   }
 }
 
+.game-page__potions {
+  margin: -110px 0 0 -50px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 130px;
+  min-width: 130px;
+  height: 100px;
+  min-height: 100px;
+  background: url(/game/button-health.png) no-repeat center / contain;
+  cursor: pointer;
+
+  span {
+    font-family: 'Alegreya', sans-serif;
+    font-size: 44px;
+    font-weight: 700;
+    color: #fff;
+    position: relative;
+    top: -6px;
+    left: -16px;
+  }
+
+  @media (max-width: 768px) {
+    bottom: 0;
+  }
+}
+
+.game-page__potions_disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
 .game-page__canvas {
   position: relative;
   width: 100%;

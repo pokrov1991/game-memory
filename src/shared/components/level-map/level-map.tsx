@@ -68,6 +68,9 @@ export const LevelMap = () => {
     if (level.type === 'tavern') {
       navigate('/tavern', {})
     }
+    if (level.type === 'base') {
+      navigate('/base', {})
+    }
   }
 
   const levelPoints = levels.map(level => {

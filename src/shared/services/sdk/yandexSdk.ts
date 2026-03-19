@@ -82,7 +82,7 @@ export default class YandexSDK extends SDK {
           },
           userScore: 0,
           userCoins: 10000,
-          userPotions: 0,
+          userPotions: 1,
           userParams: {
             hp: 100,
             guard: 1,

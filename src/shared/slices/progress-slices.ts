@@ -48,7 +48,7 @@ const initialState: ProgressState = {
   },
   userScore: 0,
   userCoins: 0,
-  userPotions: 0,
+  userPotions: 1,
   userParams: {
     hp: 100,
     guard: 1,
