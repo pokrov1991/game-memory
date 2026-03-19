@@ -34,6 +34,7 @@ export const Navigation = () => {
     <ul className={styles.root}>
       <Item to="/levels" title={isNewGame ? 'Новая игра' : 'Продолжить'} />
       <Item to="/leader-board" title="Лидеры" />
+      <Item to="/intro" title="Вступление" />
     </ul>
   )
 }

@@ -110,66 +110,66 @@ export const BasePage = () => {
   }
     
   return (
-    <main className={styles['tavern-page']}>
+    <main className={styles['base-page']}>
       <div className={classNames(
-        styles['tavern-page__wrap'],
-        styles[`tavern-page__wrap_${mode}`],
+        styles['base-page__wrap'],
+        styles[`base-page__wrap_${mode}`],
       )}>
         <Navigation/>
 
-        { mode === 'question1' && <div className={styles['tavern-page__question']}>
-          <button className={styles['tavern-page__question-up']} onClick={scrollUp}></button>
-          <div className={styles['tavern-page__question-scroll']} ref={scrollRef}>
+        { mode === 'question1' && <div className={styles['base-page__question']}>
+          <button className={styles['base-page__question-up']} onClick={scrollUp}></button>
+          <div className={styles['base-page__question-scroll']} ref={scrollRef}>
             Текст 1
           </div>
-          <button className={styles['tavern-page__question-down']} onClick={scrollDown}></button>
+          <button className={styles['base-page__question-down']} onClick={scrollDown}></button>
           <Button onClick={() => handleTraining()}>
             Обучение
           </Button>
         </div> }
 
-         { mode === 'question2' && <div className={styles['tavern-page__question']}>
-          <button className={styles['tavern-page__question-up']} onClick={scrollUp}></button>
-          <div className={styles['tavern-page__question-scroll']} ref={scrollRef}>
+         { mode === 'question2' && <div className={styles['base-page__question']}>
+          <button className={styles['base-page__question-up']} onClick={scrollUp}></button>
+          <div className={styles['base-page__question-scroll']} ref={scrollRef}>
             Текст 2
           </div>
-          <button className={styles['tavern-page__question-down']} onClick={scrollDown}></button>
+          <button className={styles['base-page__question-down']} onClick={scrollDown}></button>
           <Button onClick={() => handleTraining()}>
             Обучение
           </Button>
         </div> }
 
-        { mode === 'question3' && <div className={styles['tavern-page__question']}>
-          <button className={styles['tavern-page__question-up']} onClick={scrollUp}></button>
-          <div className={styles['tavern-page__question-scroll']} ref={scrollRef}>
+        { mode === 'question3' && <div className={styles['base-page__question']}>
+          <button className={styles['base-page__question-up']} onClick={scrollUp}></button>
+          <div className={styles['base-page__question-scroll']} ref={scrollRef}>
             Текст 3
           </div>
-          <button className={styles['tavern-page__question-down']} onClick={scrollDown}></button>
+          <button className={styles['base-page__question-down']} onClick={scrollDown}></button>
           <Button onClick={() => handleTraining()}>
             Обучение
           </Button>
         </div> }
 
-        <div className={styles['tavern-page__barman']}>
+        <div className={styles['base-page__barman']}>
           <img src={talk ? imgBarmanTalk : imgBarmanDefault} />
 
           {mode === 'main' && 
-            <p className={styles['tavern-page__barman-text-main']}>
+            <p className={styles['base-page__barman-text-main']}>
               Бип, пип, пап<br/>пуп, пуп, бип...
             </p>}
 
           {mode === 'question1' && 
-            <p className={styles['tavern-page__barman-text-baloon']}>
+            <p className={styles['base-page__barman-text-baloon']}>
               Текст балуна 1
             </p>}
 
           {mode === 'question2' && 
-            <p className={styles['tavern-page__barman-text-baloon']}>
+            <p className={styles['base-page__barman-text-baloon']}>
               Текст балуна 2
             </p>}
 
           {mode === 'question3' && 
-            <p className={styles['tavern-page__barman-text-baloon']}>
+            <p className={styles['base-page__barman-text-baloon']}>
               Текст балуна 3
             </p>}
         </div>

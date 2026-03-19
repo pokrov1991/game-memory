@@ -1,4 +1,4 @@
-.tavern-page {
+.base-page {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -8,7 +8,7 @@
   background: url('/base/bg.jpg') no-repeat center 0 / cover;
 }
 
-.tavern-page__wrap {
+.base-page__wrap {
   position: relative;
   width: 100%;
   height: 100%;
@@ -25,13 +25,13 @@
   }
 }
 
-.tavern-page__wrap_question {
+.base-page__wrap_question {
   .navigation {
     margin-bottom: 45px;
   }
 }
 
-.tavern-page__barman {
+.base-page__barman {
   height: 35%;
   position: absolute;
   bottom: 33%;
@@ -50,7 +50,7 @@
   }
 }
 
-.tavern-page__barman-text-main {
+.base-page__barman-text-main {
   position: absolute;
   display: flex;
   flex-direction: column;
@@ -70,7 +70,7 @@
   z-index: 1;
 }
 
-.tavern-page__barman-text-baloon {
+.base-page__barman-text-baloon {
   position: absolute;
   top: -100px;
   right: 20px;
@@ -129,7 +129,7 @@
   }
 }
 
-.tavern-page__question {
+.base-page__question {
   position: relative;
   display: flex;
   flex-wrap: wrap;
@@ -144,7 +144,7 @@
   }
 }
 
-.tavern-page__question-scroll {
+.base-page__question-scroll {
   height: 280px;
   overflow-y: auto;
   width: 100%;
@@ -174,7 +174,7 @@
   }
 }
 
-.tavern-page__question-up {
+.base-page__question-up {
   position: absolute;
   top: -8px;
   right: -16px;
@@ -190,7 +190,7 @@
   }
 }
 
-.tavern-page__question-down {
+.base-page__question-down {
   position: absolute;
   bottom: -8px;
   right: -16px;
