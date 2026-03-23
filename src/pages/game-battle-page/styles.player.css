@@ -107,11 +107,25 @@
 }
 
 .game-page__person-img-player-head_stun {
-   background-image: url('game/player/z5-a1-head-stun.webp');
+  background-image: url('game/player/z5-a1-head-stun.webp');
+
+  &.game-page__person-img-player-head_3 {
+    background-image: url('game/player/z5-a1-head-2-stun.webp');
+  }
+  &.game-page__person-img-player-head_5 {
+    background-image: url('game/player/z5-a1-head-3-stun.webp');
+  }
 }
 
 .game-page__person-img-player-head_alarm {
-   background-image: url('game/player/z5-a1-head-alarm.webp');
+  background-image: url('game/player/z5-a1-head-alarm.webp');
+
+  &.game-page__person-img-player-head_3 {
+    background-image: url('game/player/z5-a1-head-2-alarm.webp');
+  }
+  &.game-page__person-img-player-head_5 {
+    background-image: url('game/player/z5-a1-head-3-alarm.webp');
+  }
 }
 
 

@@ -1,4 +1,5 @@
 @import 'styles.player.css';
+@import 'styles.enemy0.css';
 @import 'styles.enemy1.css';
 @import 'styles.enemy2.css';
 @import 'styles.enemy3.css';
@@ -19,6 +20,10 @@
     flex-direction: column;
     padding: 0 20px;
   }
+}
+
+.game-page_0 {
+  background: url('/game/location/0.jpg') no-repeat center / cover;
 }
 
 .game-page_1 {
@@ -179,6 +184,7 @@
 }
 
 .game-page__potions {
+  position: relative;
   margin: -110px 0 0 -50px;
   z-index: 2;
   display: flex;
@@ -199,10 +205,31 @@
     position: relative;
     top: -6px;
     left: -16px;
+    z-index: 2;
   }
 
   @media (max-width: 768px) {
     bottom: 0;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url(/game/button-health-active.png) no-repeat center / contain;
+    opacity: 0;
+    transition: opacity 0.3s;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  &:hover {
+    &::after {
+      opacity: 1;
+    }
   }
 }
 

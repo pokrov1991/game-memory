@@ -1,0 +1,116 @@
+.game-page__person-img-enemy-0 {
+  background-image: url('/game/enemy/enemy-0-default.webp');
+  background-repeat: no-repeat;
+}
+
+.game-page__person-img-enemy-0_start-black {
+  background-image: url('/game/enemy/enemy-0-start-sprite-black.png');
+  animation: enemyZeroSpriteStart 0.8s steps(8);
+}
+.game-page__person-img-enemy-0_start-blue {
+  background-image: url('/game/enemy/enemy-0-start-sprite-blue.png');
+  animation: enemyZeroSpriteStart 0.8s steps(8);
+}
+.game-page__person-img-enemy-0_start-green {
+  background-image: url('/game/enemy/enemy-0-start-sprite-green.png');
+  animation: enemyZeroSpriteStart 0.8s steps(8);
+}
+.game-page__person-img-enemy-0_start-red {
+  background-image: url('/game/enemy/enemy-0-start-sprite-red.png');
+  animation: enemyZeroSpriteStart 0.8s steps(8);
+}
+.game-page__person-img-enemy-0_start-yellow {
+  background-image: url('/game/enemy/enemy-0-start-sprite-yellow.png');
+  animation: enemyZeroSpriteStart 0.8s steps(8);
+}
+
+.game-page__person-img-enemy-0_run-black {
+  background-image: url('/game/enemy/enemy-0-run-sprite-black.png');
+  animation: enemyZeroSpriteRun 0.8s steps(8) infinite;
+}
+.game-page__person-img-enemy-0_run-blue {
+  background-image: url('/game/enemy/enemy-0-run-sprite-blue.png');
+  animation: enemyZeroSpriteRun 0.8s steps(8) infinite;
+}
+.game-page__person-img-enemy-0_run-green {
+  background-image: url('/game/enemy/enemy-0-run-sprite-green.png');
+  animation: enemyZeroSpriteRun 0.8s steps(8) infinite;
+}
+.game-page__person-img-enemy-0_run-red {
+  background-image: url('/game/enemy/enemy-0-run-sprite-red.png');
+  animation: enemyZeroSpriteRun 0.8s steps(8) infinite;
+}
+.game-page__person-img-enemy-0_run-yellow {
+  background-image: url('/game/enemy/enemy-0-run-sprite-yellow.png');
+  animation: enemyZeroSpriteRun 0.8s steps(8) infinite;
+}
+
+.game-page__person-img-enemy-0_attack-black {
+  background-image: url('/game/enemy/enemy-0-attack-sprite-black.png');
+  animation: enemyZeroSpriteAttack 0.8s steps(8);
+}
+.game-page__person-img-enemy-0_attack-blue {
+  background-image: url('/game/enemy/enemy-0-attack-sprite-blue.png');
+  animation: enemyZeroSpriteAttack 0.8s steps(8);
+}
+.game-page__person-img-enemy-0_attack-green {
+  background-image: url('/game/enemy/enemy-0-attack-sprite-green.png');
+  animation: enemyZeroSpriteAttack 0.8s steps(8);
+}
+.game-page__person-img-enemy-0_attack-red {
+  background-image: url('/game/enemy/enemy-0-attack-sprite-red.png');
+  animation: enemyZeroSpriteAttack 0.8s steps(8);
+}
+.game-page__person-img-enemy-0_attack-yellow {
+  background-image: url('/game/enemy/enemy-0-attack-sprite-yellow.png');
+  animation: enemyZeroSpriteAttack 0.8s steps(8);
+}
+
+.game-page__person-img-enemy-0_stun {
+  background-image: url('/game/enemy/enemy-0-stun.webp');
+}
+
+.game-page__person-img-enemy-0_hit {
+  background-image: url('/game/enemy/enemy-0-hit.webp');
+}
+
+.game-page__person-img-enemy-0_dead {
+  background-image: url('/game/enemy/enemy-0-dead-sprite.png');
+  animation: enemyZeroSpriteDead 0.6s steps(6) forwards;
+}
+
+@keyframes enemyZeroSpriteStart {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: -4000px 0;
+  }
+}
+
+@keyframes enemyZeroSpriteRun {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: -4000px 0;
+  }
+}
+
+@keyframes enemyZeroSpriteAttack {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: -4000px 0;
+  }
+}
+
+@keyframes enemyZeroSpriteDead {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: -3000px 0;
+  }
+}
