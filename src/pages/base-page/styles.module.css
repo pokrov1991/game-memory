@@ -50,83 +50,22 @@
   }
 }
 
-.base-page__barman-text-main {
-  position: absolute;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: start;
-  bottom: 10%;
-  right: 50%;
-  width: 100%;
-  height: 110px;
-  background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, #FFFFFF 100%);
-  font-family: 'Alegreya';
-  font-style: normal;
-  font-weight: 400;
-  font-size: 38px;
-  line-height: 46px;
-  color: #FFFFFF;
-  z-index: 1;
-}
-
 .base-page__barman-text-baloon {
   position: absolute;
-  top: -100px;
-  right: 20px;
-  width: 320px;
-  padding: 20px;
+  top: 60px;
+  left: 80px;
+  width: 160px;
   height: auto;
-  background: rgba(255, 255, 255, 0.75);
-  border-radius: 10px;
-  display: flex;
-  flex-direction: column;
   font-family: 'Alegreya';
   font-style: normal;
-  font-weight: 500;
-  font-size: 20px;
-  line-height: 28px;
-  color: #010101;
+  font-weight: 700;
+  font-size: 30px;
+  line-height: 30px;
+  text-align: center;
+  white-space: pre-wrap;
+  color: #0ce22a;
+  text-shadow: 0 0 10px #0ce22a;
   z-index: 3;
-
-  &::before {
-    content: '';
-    position: absolute;
-    bottom: -20px;
-    left: 60px;
-    width: 0;
-    height: 0;
-    border-left: 10px solid transparent;
-    border-right: 10px solid transparent;
-    border-top: 20px solid rgba(255, 255, 255, 0.75);
-  }
-
-  strong {
-    margin-bottom: 5px;
-    font-family: 'Alegreya';
-    font-style: normal;
-    font-weight: 700;
-    font-size: 24px;
-    line-height: 28px;
-    color: #010101;
-  }
-  span {
-    margin-bottom: 5px;
-    font-family: 'Roboto';
-    font-style: italic;
-    font-weight: 700;
-    font-size: 16px;
-    line-height: 20px;
-    color: #006aa5;
-  }
-  b {
-    display: flex;
-    gap: 16px;
-    padding-top: 12px;
-    margin-top: 7px;
-    border-top: 1px solid rgba(0, 0, 0, 0.1);
-    width: 100%;
-  }
 }
 
 .base-page__question {
@@ -142,6 +81,16 @@
   @media (max-width: 768px) {
     width: 100%;
   }
+
+  button.MuiButtonBase-root {
+    width: 205px;
+    height: 96px;
+    min-height: 96px;
+
+    span {
+      font-size: 26px;
+    }
+  }
 }
 
 .base-page__question-scroll {
@@ -150,9 +99,18 @@
   width: 100%;
   padding-right: 20px;
   margin-bottom: 20px;
-  font-family: 'Roboto', sans-serif;
-  font-size: 18px;
-  color: #ffffff;
+
+  p {
+    font-family: 'Roboto', sans-serif;
+    font-size: 18px;
+    line-height: 28px;
+    font-weight: 700;
+    text-indent: 10px;
+    text-shadow: 0 0 5px rgba(0, 0, 0, 0.75);
+    color: #ffffff;
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
 
   &::-webkit-scrollbar {
     width: 10px;

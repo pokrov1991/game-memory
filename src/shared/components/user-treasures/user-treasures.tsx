@@ -22,7 +22,7 @@ export const UserTreasures = () => {
         <div className={classNames(styles['user-treasures__info-item'], styles['user-treasures__info-item_potion'])}>
           {userPotions}
         </div>
-        {Object.values(userOrgans).map((item, key) => <div title={item.name} className={classNames(styles['user-treasures__info-item'], styles[`user-treasures__info-item_${key}`])}>
+        {Object.values(userOrgans).map((item, key) => <div title={item.name} key={key} className={classNames(styles['user-treasures__info-item'], styles[`user-treasures__info-item_${key}`])}>
           {item.count}
         </div>)}
       </div>

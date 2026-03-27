@@ -1,10 +1,10 @@
 import classNames from 'classnames'
-import { useState, useRef } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Button, UserTreasures } from '@/shared/components'
 import { useProgress } from '@/shared/hooks/useProgress'
-import imgBarmanDefault from '/base/baseman.png'
-import imgBarmanTalk from '/tavern/talk.webp'
+import imgBarmanDefault from '/base/default.webp'
+import imgBarmanTalk from '/base/talk.webp'
 import styles from './styles.module.css'
 
 type MenuMode = 'main' | 'question1' | 'question2' | 'question3'
@@ -22,13 +22,41 @@ export const BasePage = () => {
   const [menu, setMenu] = useState(MENU)
   const [mode, setMode] = useState('main')
   const [talk, setTalk] = useState(false)
+  const [blink, setBlink] = useState('привет')
   const { selectLevel } = useProgress()
   const scrollRef = useRef(null);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setBlink('(–)     (–)')
+
+      setTimeout(() => {
+        setBlink('(+)     (+)')
+      }, 500)
+
+    }, 5000)
+
+    return () => clearInterval(interval)
+  }, []);
   
   const handleTraining = () => {
     console.log('training')
     selectLevel(0)
     navigate('/game-battle', {})
+  }
+
+  const scrollUp = () => {
+    scrollRef.current.scrollBy({
+      top: -64,
+      behavior: "smooth"
+    })
+  }
+
+  const scrollDown = () => {
+    scrollRef.current.scrollBy({
+      top: 64,
+      behavior: "smooth"
+    })
   }
 
   const NavigationItem = ({
@@ -94,20 +122,6 @@ export const BasePage = () => {
       </ul>
     )
   }
-
-  const scrollUp = () => {
-    scrollRef.current.scrollBy({
-      top: -64,
-      behavior: "smooth"
-    })
-  }
-
-  const scrollDown = () => {
-    scrollRef.current.scrollBy({
-      top: 64,
-      behavior: "smooth"
-    })
-  }
     
   return (
     <main className={styles['base-page']}>
@@ -120,7 +134,19 @@ export const BasePage = () => {
         { mode === 'question1' && <div className={styles['base-page__question']}>
           <button className={styles['base-page__question-up']} onClick={scrollUp}></button>
           <div className={styles['base-page__question-scroll']} ref={scrollRef}>
-            Текст 1
+            <p>
+              Идентификация… неизвестный пользователь...<br />
+              Вы находитесь на планете «Земля-7», объекте «Сектор-3».
+              Данная база выведена из эксплуатации. Персонал эвакуирован согласно протоколу 4 года назад.
+            </p>
+            <p>
+              Основной комплекс перенесён в сейсмоактивную зону данной планеты, на значительном удалении от текущих координат.
+              Связь с новым объектом нестабильна или отсутствует.<br />
+              Причина эвакуаци... данные засекречены.
+            </p>
+            <p>
+              Рекомендация: пройдите обучение для получения базовых навыков выживания на «Земле-7».
+            </p>
           </div>
           <button className={styles['base-page__question-down']} onClick={scrollDown}></button>
           <Button onClick={() => handleTraining()}>
@@ -131,7 +157,27 @@ export const BasePage = () => {
          { mode === 'question2' && <div className={styles['base-page__question']}>
           <button className={styles['base-page__question-up']} onClick={scrollUp}></button>
           <div className={styles['base-page__question-scroll']} ref={scrollRef}>
-            Текст 2
+            <p>
+              Запрос принят: возвращение на Землю.<br />
+              Прямой маршрут недоступен. Транспортные модули на объекте «Сектор-3» выведены из эксплуатации.
+            </p>
+            <p>
+              Для возврата требуется доступ к действующему космическому комплексу.<br />
+              Ближайший функционирующий объект расположен в сейсмоактивной зоне данной планеты.<br />
+              Расстояние превышает безопасный пеший маршрут.
+            </p>
+            <p>
+              Дополнительная информация: доступна карта местности.<br />
+              Карта содержит основные ориентиры, точки интереса и возможные маршруты передвижения.
+            </p>
+            <p>
+              Обнаружен активный объект: «Таверна».<br />
+              Данный тип сооружения используется для временного укрытия, восстановления и взаимодействия с другими выжившими.
+            </p>
+            <p>
+              Рекомендация: пройдите подготовку по выживанию, изучите карту и направляйтесь к ближайшей «Таверне».<br />
+              Вероятность успешного возвращения… неизвестна.
+            </p>
           </div>
           <button className={styles['base-page__question-down']} onClick={scrollDown}></button>
           <Button onClick={() => handleTraining()}>
@@ -142,7 +188,21 @@ export const BasePage = () => {
         { mode === 'question3' && <div className={styles['base-page__question']}>
           <button className={styles['base-page__question-up']} onClick={scrollUp}></button>
           <div className={styles['base-page__question-scroll']} ref={scrollRef}>
-            Текст 3
+            <p>
+              Запрос принят: уровень опасности.<br />
+              Планета «Земля-7» классифицирована как условно опасная среда.<br />
+              Зафиксированы формы жизни с нестабильным поведенческим паттерном.
+            </p>
+            <p>
+              Все обнаруженные существа обладают кристаллическими структурами различного спектра.<br />
+              Их реакции зависят от взаимодействия с кристаллами других цветов.<br />
+              Прогноз поведения без анализа - невозможен.
+            </p>
+            <p>
+              Для оценки взаимодействий используется портативное устройство: планшет.<br />
+              Рекомендация: пройдите обучение и используйте планшет перед контактом.<br />
+              Игнорирование протокола повышает риск... критически.
+            </p>
           </div>
           <button className={styles['base-page__question-down']} onClick={scrollDown}></button>
           <Button onClick={() => handleTraining()}>
@@ -154,23 +214,23 @@ export const BasePage = () => {
           <img src={talk ? imgBarmanTalk : imgBarmanDefault} />
 
           {mode === 'main' && 
-            <p className={styles['base-page__barman-text-main']}>
-              Бип, пип, пап<br/>пуп, пуп, бип...
+            <p className={styles['base-page__barman-text-baloon']}>
+              {blink}
             </p>}
 
           {mode === 'question1' && 
             <p className={styles['base-page__barman-text-baloon']}>
-              Текст балуна 1
+              find(a);
             </p>}
 
           {mode === 'question2' && 
             <p className={styles['base-page__barman-text-baloon']}>
-              Текст балуна 2
+              <span style={{ fontSize: '20px' }}>hello world!</span>
             </p>}
 
           {mode === 'question3' && 
             <p className={styles['base-page__barman-text-baloon']}>
-              Текст балуна 3
+              alert(c);
             </p>}
         </div>
 
