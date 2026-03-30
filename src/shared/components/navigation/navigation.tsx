@@ -2,7 +2,6 @@ import styles from './styles.module.css'
 import classNames from 'classnames'
 import { useNavigate } from 'react-router-dom'
 import { useProgress } from '@/shared/hooks'
-import { useUser } from '@/shared/contexts/UserContext'
 
 const Item = ({
   to,
@@ -24,11 +23,9 @@ const Item = ({
 }
 
 export const Navigation = () => {
-  const { game } = useUser()
-  const { userLevel } = useProgress()
+  const { userScore } = useProgress()
 
-  const cUserLevel = userLevel > 1 ? userLevel : game?.userLevel
-  const isNewGame = cUserLevel <= 1
+  const isNewGame = userScore === 0
 
   return (
     <ul className={styles.root}>

@@ -44,6 +44,48 @@
   animation: effects-cards 1s steps(21) forwards;
 }
 
+.game-training-cards {
+  position: relative;
+}
+
+.game-training-cards-info {
+  width: 720px;
+  position: absolute;
+  top: -120px;
+  left: 0;
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 16px;
+  padding: 10px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.8);
+  z-index: 2;
+
+  @media (max-width: 768px) {
+    width: 355px;
+    top: -90px;
+    left: -5px;
+    font-size: 12px;
+    padding: 5px;
+    border-radius: 4px;
+  }
+}
+
+.game-training-cards-item {
+  position: absolute;
+  background: rgba(0, 0, 0, 0.5);
+  opacity: 1;
+  transition: 0.3s;
+}
+
+.game-training-cards-item_info {
+  background: rgba(0, 0, 0, 0);
+  cursor: pointer;
+  pointer-events: none;
+}
+
+
 @keyframes effects-cards {
   0% {
     background-position: 0 0;

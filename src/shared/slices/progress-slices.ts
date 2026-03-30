@@ -38,8 +38,8 @@ interface ProgressState {
 }
 
 const initialState: ProgressState = {
-  completedLevels: [1],
-  selectedLevel: 1,
+  completedLevels: [102],
+  selectedLevel: 0,
   userLevel: 1,
   userLevelParams: {
     hp: 0,
@@ -79,6 +79,7 @@ const initialState: ProgressState = {
     },
   ],
   userOrgans: {
+    0: { id: 0, name: 'Болт от ПС-91', count: 0 },
     1: { id: 1, name: 'Зуб щитомордника', count: 0 },
     2: { id: 2, name: 'Шкура голема', count: 0 }
   },

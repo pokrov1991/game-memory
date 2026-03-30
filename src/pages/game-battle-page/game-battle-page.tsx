@@ -90,7 +90,7 @@ export const GameBattlePage = () => {
   const setGameDataWin = async (nextLevel: number) => {
     await YandexSDK.setGameData({
       ...game,
-      completedLevels: Array.from(new Set([ ...game.completedLevels, nextLevel ])),
+      completedLevels: Array.from(new Set([ ...game.completedLevels, nextLevel, ...(gameLevel.id === 0 ? [101] : []) ])),
       selectedLevel: nextLevel,
       userLevel: level,
       userScore: score,
@@ -201,7 +201,7 @@ export const GameBattlePage = () => {
     enemyRef.current.setDeadState()
     handlePause()
     setTimeout(() => {
-      updateOrgan({ organId: gameLevel.id, count: enemyOrgan.count + 1 })
+      updateOrgan({ organId: gameLevel.enemyId, count: enemyOrgan.count + 1 })
       setResultText(<>Поздравляем! Вы прошли уровень «{gameLevel.title}» и получили: Опыт - {scoreSession} ед. и {enemyOrgan.name} <i data-icon={`organ-${enemyOrgan.id}`}></i> - 1 шт.</>)
       setOpenModalWin(true)
     }, delayGameEffects + gameLevel.enemyStateDurations.DEAD)

@@ -4,6 +4,7 @@ import { GameView } from '@/shared/services/game/GameView'
 import { GameController } from '@/shared/services/game/GameController'
 import { GameLevelStateType, GameLevelStoreType, CardParams} from '@/shared/services/game/types'
 import { GameEffectsCards } from './game-effects-cards'
+import { GameTrainingCards } from './game-training-cards'
 import { MAP_CARD_COLORS } from '@/shared/services/game/constants'
 import styles from './styles.module.css'
 
@@ -127,6 +128,13 @@ export const GameCanvas: React.FC<GameCanvasProps> = ({
 
   return (
     <div className={styles['game-canvas']}>
+      {level.id === 0 && <GameTrainingCards
+        levelId={level.id}
+        cardsParams={effectsCardsParams}
+        cardsMatched={effectsCardsMatched}
+        cardsValues={gameControllerRef.current?.model.cards || []}
+        onPause={onPlay}
+      />}
       <GameEffectsCards 
         levelId={level.id} 
         cardsParams={effectsCardsParams} 

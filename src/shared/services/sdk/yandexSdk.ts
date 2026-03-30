@@ -72,8 +72,8 @@ export default class YandexSDK extends SDK {
           return gameData;
         }
         gameData = {
-          completedLevels: [1],
-          selectedLevel: 1,
+          completedLevels: [102],
+          selectedLevel: 0,
           userLevel: 1,
           userLevelParams: {
             hp: 0,
@@ -113,6 +113,7 @@ export default class YandexSDK extends SDK {
             },
           ],
           userOrgans: {
+            0: { id: 0, name: 'Болт от ПС-91', count: 1000 },
             1: { id: 1, name: 'Зуб щитомордника', count: 1000 },
             2: { id: 2, name: 'Шкура голема', count: 1000 }
           }

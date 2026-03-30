@@ -21,15 +21,15 @@ export const LEVELS_STATE_CONFIG: GameLevelStateSimpleType[] = [
         type: 'battle',
         cardCount: 10,
         cardCol: 5,
-        initialSeconds: [8, 10, 6, 5, 9],
-        initialAttacks: [20, 40, 10, 10, 20],
+        initialSeconds: [20, 10, 5, 10, 5],
+        initialAttacks: [5, 3, 2, 3, 2],
         initialColors: ['red','blue','green','black','yellow'],
         enemyId: 0,
         enemyName: 'ПС-91',
-        enemyHp: 10,
+        enemyHp: 50,
         enemyStateDurations,
         isPassed: true,
-        isCurrent: true,
+        isCurrent: false,
     },
     {
         id: 1,
@@ -47,8 +47,8 @@ export const LEVELS_STATE_CONFIG: GameLevelStateSimpleType[] = [
         enemyName: 'Горлодер',
         enemyHp: 10,
         enemyStateDurations,
-        isPassed: true,
-        isCurrent: true,
+        isPassed: false,
+        isCurrent: false,
     },
     {
         id: 2,
@@ -237,7 +237,7 @@ export const LEVELS_STATE_CONFIG: GameLevelStateSimpleType[] = [
         enemyName: 'Goblin',
         enemyHp: 100,
         enemyStateDurations,
-        isPassed: true,
+        isPassed: false,
         isCurrent: false,
     },
     {
@@ -257,7 +257,7 @@ export const LEVELS_STATE_CONFIG: GameLevelStateSimpleType[] = [
         enemyHp: 100,
         enemyStateDurations,
         isPassed: true,
-        isCurrent: false,
+        isCurrent: true,
     },
   ]
   

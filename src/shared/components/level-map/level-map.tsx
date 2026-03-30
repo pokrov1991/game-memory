@@ -117,7 +117,7 @@ export const LevelMap = () => {
 
           {selectedLevel.isPassed && (
             <Button onClick={handleStartGame}>
-              {level.type === 'tavern' ? 'Зайти' : 'Играть'}
+              {level.type === 'tavern' || level.type === 'base' ? 'Зайти' : 'Играть'}
             </Button>
           )}
 

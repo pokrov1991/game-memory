@@ -82,7 +82,7 @@
     width: 100%;
   }
 
-  button.MuiButtonBase-root {
+  button:last-child {
     width: 205px;
     height: 96px;
     min-height: 96px;

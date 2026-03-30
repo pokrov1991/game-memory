@@ -24,6 +24,10 @@
 
 .game-page_0 {
   background: url('/game/location/0.jpg') no-repeat center / cover;
+
+  .game-page__restart {
+    display: none;
+  }
 }
 
 .game-page_1 {
@@ -83,7 +87,7 @@
     flex-direction: row;
     width: 320px;
     height: 100px;
-    margin: 0 auto 20px -65px;
+    margin: 0 auto 20px -50px;
   }
 }
 
@@ -230,6 +234,14 @@
     &::after {
       opacity: 1;
     }
+  }
+
+  @media (max-width: 768px) {
+    margin: 0;
+    position: absolute;
+    top: 30px;
+    left: 3px;
+    transform: scale(0.55);
   }
 }
 
