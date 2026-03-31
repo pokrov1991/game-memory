@@ -14,7 +14,7 @@
     top: 10%;
     right: 5%;
 
-    @media (max-width: 520px) {
+    @media (max-width: 768px) {
       position: absolute;
       top: 60px;
       right: 0;
@@ -34,7 +34,7 @@
 .music {
   position: absolute;
   top: 8px;
-  left: 8px;
+  right: 50px; 
   z-index: 10;
   display: flex;
   width: 40px;

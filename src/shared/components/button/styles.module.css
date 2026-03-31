@@ -1,7 +1,7 @@
 .button {
-  width: 255px;
-  height: 116px;
-  min-height: 116px;
+  width: 200px;
+  height: 90px;
+  min-height: 90px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -23,8 +23,8 @@
 }
 
 .text {
-  font-size: 32px;
+  font-size: 26px;
   text-transform: capitalize;
   color: #fff;
-  margin-bottom: 24px;
+  margin-bottom: 18px;
 }

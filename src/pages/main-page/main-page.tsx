@@ -1,6 +1,6 @@
-import { useMusic, useProgress } from '@/shared/hooks'
 import bgUrl from '@/assets/bg.png'
 import styles from './styles.module.css'
+import { useMusic } from '@/shared/hooks'
 import { UserInfo } from '@/shared/components/user-info/user-info'
 import { Experience } from '@/shared/components/experience/experience'
 import { Navigation } from '@/shared/components/navigation/navigation'

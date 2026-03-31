@@ -130,6 +130,10 @@
   &::-webkit-scrollbar-thumb:hover {
     background: rgba(255, 255, 255, 0.75);
   }
+
+  @media (max-width: 768px) {
+    height: 220px;
+  }
 }
 
 .base-page__question-up {
@@ -175,7 +179,7 @@
   transform-origin: center;
   transform-box: border-box;
 
-  @media (max-width: 520px) {
+  @media (max-width: 768px) {
     width: 100%;
   }
 
@@ -230,6 +234,11 @@
         background: #fff;
         box-shadow: 0px 0px 10px 0px rgba(255, 255, 255, 0.75);
       }
+    }
+
+    @media (max-width: 768px) {
+      font-size: 28px;
+      line-height: 32px;
     }
   }
 }

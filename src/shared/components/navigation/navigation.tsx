@@ -29,9 +29,9 @@ export const Navigation = () => {
 
   return (
     <ul className={styles.root}>
-      <Item to="/levels" title={isNewGame ? 'Новая игра' : 'Продолжить'} />
-      <Item to="/leader-board" title="Лидеры" />
+      {isNewGame ? <Item to="/intro" title="Новая игра" /> : <Item to="/levels" title="Продолжить" />}
       <Item to="/intro" title="Вступление" />
+      {/* <Item to="/leader-board" title="Лидеры" /> */}
     </ul>
   )
 }
