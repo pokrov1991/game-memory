@@ -8,22 +8,21 @@ import { LEVELS_USER_CONFIG } from '@/shared'
 export const Experience = () => {
   const { game } = useUser()
   const { userLevel, userScore } = useProgress()
+  const level = userLevel > 1 ? userLevel : game?.userLevel
+  const score = userScore > 0 ? userScore : game?.userScore
 
-  const cUserLevel = userLevel > 1 ? userLevel : game?.userLevel
-  const cScore = userScore > 0 ? userScore : game?.userScore
-
-  const scoreLevel = LEVELS_USER_CONFIG[userLevel].score
-  const scorePercent = !isNaN(cScore) ? (cScore / scoreLevel) * 100 : 0
-
-  // TODO: Все комутеды (cStore) заменить на const [score, setScore] = useState(userScore > 0 ? userScore : game.userScore)
-  // Высчитывать шкалу с вычетом общегго количества очков (что бы шкала всегда с нуля считалась)
+  const scoreEnd = LEVELS_USER_CONFIG[userLevel].score
+  const scoreStart = userLevel > 1 ? scoreEnd - LEVELS_USER_CONFIG[userLevel - 1].score : 0
+  const scoreLevel = scoreEnd - scoreStart
+  const scoreCurrent = score - scoreStart
+  const scorePercent = Number((scoreCurrent / scoreLevel) * 100) || 0
 
   return (
     <svg
       className={styles.experience}
-      width="357"
-      height="344"
-      viewBox="0 0 357 344"
+      width="350"
+      height="340"
+      viewBox="0 0 350 340"
       fill="none"
       xmlns="http://www.w3.org/2000/svg">
       <path
@@ -71,8 +70,8 @@ export const Experience = () => {
       </g>
       <LevelInfo
         value={scorePercent}
-        currentScore={cScore}
-        level={cUserLevel}
+        currentScore={score}
+        level={level}
         maxLevel={scoreLevel}
       />
       <Defs />

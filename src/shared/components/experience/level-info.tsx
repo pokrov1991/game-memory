@@ -22,7 +22,7 @@ export const LevelInfo = ({
     <rect stroke="#0097D3" width={width} height={height} />
     <rect
       fill="#08C8DF"
-      width={(width - offset) * (value / 100)}
+      width={(width - offset) * (Number(value) / 100)}
       height={height - offset}
       x={offset / 2}
       y={offset / 2}
@@ -45,10 +45,10 @@ export const LevelInfo = ({
       <tspan x="0" dx="0" textAnchor="middle">
         {currentScore}
       </tspan>
-      <tspan x="0" dx="10" textAnchor="middle">
+      <tspan x="0" dx="25" textAnchor="middle">
         /
       </tspan>
-      <tspan x="0" dx="30" textAnchor="middle" fill="#949492">
+      <tspan x="0" dx="50" textAnchor="middle" fill="#949492">
         {maxLevel}
       </tspan>
     </text>
