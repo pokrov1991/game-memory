@@ -25,11 +25,10 @@ export const INVENTORY_STORE_CONFIG = [
         id: 3,
         type: 'helmet',
         name: 'Маска щитомордника',
-        desc: 'Повышает защиту на 20 единиц.',
+        desc: 'Повышает здоровье на 20 единиц.',
         price: 500,
         organs: [
-            { id: 1, name: 'Зуб щитомордника', count: 5 },
-            { id: 2, name: 'Шкура голема', count: 3 }
+            { id: 1, name: 'Зуб щитомордника', count: 3 },
         ],
         hp: 20,
         isPaid: false,
@@ -38,12 +37,12 @@ export const INVENTORY_STORE_CONFIG = [
     {
         id: 4,
         type: 'plastron',
-        name: 'Доспех голема',
+        name: 'Доспех литора',
         desc: 'Повышает защиту на 30 единиц.',
-        price: 800,
+        price: 600,
         organs: [
-            { id: 1, name: 'Зуб щитомордника', count: 8 },
-            { id: 2, name: 'Шкура голема', count: 5 }
+            { id: 1, name: 'Зуб щитомордника', count: 4 },
+            { id: 2, name: 'Шкура голема', count: 3 }
         ],
         hp: 30,
         isPaid: false,
@@ -52,28 +51,29 @@ export const INVENTORY_STORE_CONFIG = [
     {
         id: 5,
         type: 'helmet',
-        name: 'Шлем большой',
-        desc: 'Повышает защиту на 50 единиц.',
-        price: 1000,
+        name: 'Шлем ИС-2',
+        desc: 'Повышает защиту на 40 единиц.',
+        price: 800,
         organs: [
-            { id: 1, name: 'Монстр щитомордника', count: 99 },
-            { id: 2, name: 'Шкура голема', count: 99 }
+            { id: 1, name: 'Зуб щитомордника', count: 2 },
+            { id: 2, name: 'Шкура голема', count: 6 },
+            { id: 3, name: 'Пластина от ИС-2', count: 1 },
         ],
-        hp: 50,
+        hp: 40,
         isPaid: false,
         isDressed: false
     },
     {
         id: 6,
         type: 'plastron',
-        name: 'Большой доспех',
-        desc: 'Повышает защиту на 60 единиц.',
-        price: 1200,
+        name: 'Доспех ИС-2',
+        desc: 'Повышает защиту на 50 единиц.',
+        price: 1000,
         organs: [
-            { id: 1, name: 'Зуб щитомордника', count: 99 },
-            { id: 2, name: 'Шкура голема', count: 99 }
+            { id: 1, name: 'Зуб щитомордника', count: 6 },
+            { id: 2, name: 'Шкура голема', count: 8 }
         ],
-        hp: 60,
+        hp: 50,
         isPaid: false,
         isDressed: false
     },
@@ -82,9 +82,9 @@ export const INVENTORY_STORE_CONFIG = [
         type: 'potion',
         name: 'Зелье здоровья',
         desc: 'Восстанавливает немного здоровья.',
-        price: 20,
+        price: 2000,
         organs: [],
-        hp: 10,
+        hp: 25,
         isPaid: false,
         isDressed: false
     }

@@ -234,7 +234,7 @@ export const GameBattlePage = () => {
 
     // Ставим удар по врагу
     if (newScore > 0) {
-      const attack = Math.floor(currentScore + currentScore * userParams.attack / 100)
+      const attack = Math.floor(currentScore + userParams.attack)
       const newHpEnemy = hpEnemy > attack ? hpEnemy - attack : 0
       setHPEnemy(newHpEnemy)
 
@@ -279,7 +279,7 @@ export const GameBattlePage = () => {
 
   const handleEnemyAttack = (damage: number): void => {
     console.log('attack enemy', damage)
-    const damageWithGuard = Math.floor(damage - damage * userParams.guard / 100)
+    const damageWithGuard = Math.floor(damage - userParams.guard)
     const newHp = hp > damageWithGuard ? hp - damageWithGuard : 0
     setHP(newHp)
 

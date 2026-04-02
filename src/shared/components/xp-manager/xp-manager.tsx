@@ -6,8 +6,8 @@ import YandexSDK from '@/shared/services/sdk/yandexSdk'
 import styles from './styles.module.css'
 
 const UNIT_HP = 5
-const UNIT_GUARD = 1
-const UNIT_ATTACK = 1
+const UNIT_GUARD = 0.5
+const UNIT_ATTACK = 0.5
 const USER_PARAMS_DEFAULT = {
   hp: 100,
   guard: 1,

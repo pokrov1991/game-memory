@@ -81,7 +81,8 @@ const initialState: ProgressState = {
   userOrgans: {
     0: { id: 0, name: 'Болт от ПС-91', count: 0 },
     1: { id: 1, name: 'Зуб щитомордника', count: 0 },
-    2: { id: 2, name: 'Шкура голема', count: 0 }
+    2: { id: 2, name: 'Шкура голема', count: 0 },
+    3: { id: 3, name: 'Пластина от ИС-2', count: 0 },
   },
 }
 
@@ -131,8 +132,10 @@ export const progressSlice = createSlice({
         },
       ]
       state.userOrgans = {
+        0: { id: 0, name: 'Болт от ПС-91', count: 0 },
         1: { id: 1, name: 'Зуб щитомордника', count: 0 },
-        2: { id: 2, name: 'Шкура голема', count: 0 }
+        2: { id: 2, name: 'Шкура голема', count: 0 },
+        3: { id: 3, name: 'Пластина от ИС-2', count: 0 },
       }
     },
     setProgress: (state, action: PayloadAction<ProgressState>) => {
