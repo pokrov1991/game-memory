@@ -1,10 +1,11 @@
 import styles from './styles.module.css'
+import classNames from 'classnames'
 import React, { useState, useCallback, useEffect } from 'react'
 import { ICONS } from '@/shared/constants/icons'
-import classNames from 'classnames'
 
 export const Fullscreen: React.FC = () => {
   const [isFullscreen, setIsFullscreen] = useState(false)
+  
   const handleFullscreenToggle = useCallback(
     () => setIsFullscreen(prevIsFullscreen => !prevIsFullscreen),
     []

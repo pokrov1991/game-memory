@@ -1,6 +1,5 @@
 import bgUrl from '@/assets/bg.png'
 import styles from './styles.module.css'
-import { useMusic } from '@/shared/hooks'
 import { UserInfo } from '@/shared/components/user-info/user-info'
 import { Experience } from '@/shared/components/experience/experience'
 import { Navigation } from '@/shared/components/navigation/navigation'
@@ -21,22 +20,15 @@ export const MainPage = () => {
   const { user } = useUser();
   const isAuth = user !== null && user.mode !== 'lite';
 
-  const musicButton = useMusic({
-    src: '/music/theme.mp3',
-    loop: true,
-    ui: true,
-  })
-
   return (
-    <div className={styles.root}>
-      <div className={styles.music}>{musicButton}</div>
-      <div className={styles.menu}>
+    <div className={styles['main-page']}>
+      <div className={styles['main-page__menu']}>
         <Navigation />
       </div>
-      <div className={styles.info}>
+      <div className={styles['main-page__info']}>
         {isAuth ? <AuthControlPanel /> : <ControlPanel />}
       </div>
-      <img src={bgUrl} className={styles.bg} />
+      <img src={bgUrl} className={styles['main-page__bg']} />
     </div>
   )
 }
