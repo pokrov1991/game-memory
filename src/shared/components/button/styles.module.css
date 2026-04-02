@@ -5,15 +5,15 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: url('@/assets/images/button/button-level-play.png') 0 0 / 100% no-repeat;
+  background: url('/ui/button/button-level-play.png') 0 0 / 100% no-repeat;
   transition: all 0.3s linear;
 
   &:hover {
-    background: url('@/assets/images/button/button-level-play-hover.png') 0 0 / 100% no-repeat;
+    background: url('/ui/button/button-level-play-hover.png') 0 0 / 100% no-repeat;
   }
 
   &:active {
-    background: url('@/assets/images/button/button-level-play-active.png') 0 0 / 100% no-repeat;
+    background: url('/ui/button/button-level-play-active.png') 0 0 / 100% no-repeat;
   }
 }
 

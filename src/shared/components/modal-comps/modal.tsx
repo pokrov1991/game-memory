@@ -2,7 +2,7 @@ import { PropsWithChildren } from 'react'
 import { TModal } from './types'
 import Portal from './portal'
 import style from './modal.module.css'
-import topbar from '@/assets/modal-topbar.svg'
+import topbar from '/ui/modal-topbar.svg'
 
 export const Modal = ({
   isOpened,

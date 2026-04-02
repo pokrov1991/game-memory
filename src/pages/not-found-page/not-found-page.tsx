@@ -1,6 +1,5 @@
 import { Button } from '@/shared'
-import bgUrl from '@/assets/404.png'
-
+import bgUrl from '/ui/404.png'
 import styles from './styles.module.css'
 
 export const NotFoundPage = () => (

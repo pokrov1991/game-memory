@@ -1,7 +1,7 @@
 .root {
   display: flex;
   align-items: center;
-  background: url('@/assets/images/form/form-field-background-min.png') left
+  background: url('/ui/form/form-field-background-min.png') left
     center no-repeat;
   background-size: auto 100%;
 }

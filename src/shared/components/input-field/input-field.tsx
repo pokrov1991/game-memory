@@ -12,8 +12,8 @@ type Props = {
   onBlur: (e: React.FocusEvent<HTMLInputElement>) => void
 }
 
-import IconPlaceWebp from '@/assets/images/form/form-field-icon.webp'
-import IconPlacePng from '@/assets/images/form/form-field-icon-min.png'
+import IconPlaceWebp from '/ui/form/form-field-icon.webp'
+import IconPlacePng from '/ui/form/form-field-icon-min.png'
 
 export const InputField = ({
   label,

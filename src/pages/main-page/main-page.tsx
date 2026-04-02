@@ -1,4 +1,4 @@
-import bgUrl from '@/assets/bg.png'
+import bgUrl from '/ui/bg.png'
 import styles from './styles.module.css'
 import { UserInfo } from '@/shared/components/user-info/user-info'
 import { Experience } from '@/shared/components/experience/experience'

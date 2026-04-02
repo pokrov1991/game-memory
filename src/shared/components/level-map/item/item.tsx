@@ -1,5 +1,5 @@
 import classNames from 'classnames'
-import bgItem from '@/assets/images/level-map/Item.png'
+import bgItem from '/ui/level-map/Item.png'
 import styles from './styles.module.css'
 
 type Props = {

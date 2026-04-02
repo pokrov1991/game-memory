@@ -1,6 +1,5 @@
 import { Button } from '@/shared'
-import bgUrl from '@/assets/500.png'
-
+import bgUrl from '/ui/500.png'
 import styles from './styles.module.css'
 
 export const ErrorPage = () => (

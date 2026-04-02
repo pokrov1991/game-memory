@@ -1,8 +1,7 @@
-import React, { useEffect } from 'react'
 import styles from './styles.module.css'
-import { NavLink } from 'react-router-dom'
 import classNames from 'classnames'
-import branchPic from '@/assets/images/pics/branch-pic.svg'
+import branchPic from '/ui/pics/branch-pic.svg'
+import { NavLink } from 'react-router-dom'
 
 type Props = {
   routes: Array<{
