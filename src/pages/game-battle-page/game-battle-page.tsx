@@ -43,6 +43,8 @@ export const GameBattlePage = () => {
   const [isPause, togglePause] = useToggle(true)
   const [isClickCard, setIsClickCard] = useState(false)
   const {
+    progress,
+    completedLevels,
     completeLevel,
     selectedLevel,
     selectLevel,
@@ -89,8 +91,8 @@ export const GameBattlePage = () => {
 
   const setGameDataWin = async (nextLevel: number) => {
     await YandexSDK.setGameData({
-      ...game,
-      completedLevels: Array.from(new Set([ ...game.completedLevels, nextLevel, ...(gameLevel.id === 0 ? [101] : []) ])),
+      ...progress,
+      completedLevels: Array.from(new Set([ ...completedLevels, nextLevel ])),
       selectedLevel: nextLevel,
       userLevel: level,
       userScore: score,
@@ -100,7 +102,7 @@ export const GameBattlePage = () => {
   
   const setGameDataLose = async () => {
     await YandexSDK.setGameData({
-      ...game,
+      ...progress,
       userLevel: level,
       userScore: score,
     })
@@ -161,6 +163,9 @@ export const GameBattlePage = () => {
   const onContinue = async () => {
     const nextLevel = gameLevel.id + 1
 
+    if (!completedLevels.find((item) => item === 101)) {
+      completeLevel(101)
+    }
     completeLevel(nextLevel)
     selectLevel(nextLevel)
     

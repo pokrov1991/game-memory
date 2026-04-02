@@ -52,10 +52,11 @@
 
 .base-page__barman-text-baloon {
   position: absolute;
-  top: 60px;
-  left: 80px;
+  top: calc(42% - 32px);
+  left: calc(50% - 80px);
   width: 160px;
-  height: auto;
+  height: 32px;
+  margin: 0;
   font-family: 'Alegreya';
   font-style: normal;
   font-weight: 700;
