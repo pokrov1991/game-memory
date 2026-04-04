@@ -12,7 +12,10 @@
 }
 
 .modal__wrapper {
-  overflow: hidden;
+  /* overflow: hidden; */
+  overflow: auto;
+  height: auto;
+  max-height: 100%;
   position: relative;
   max-width: 620px;
   width: 100%;

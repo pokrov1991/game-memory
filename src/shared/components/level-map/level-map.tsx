@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Item } from './item'
-import { Button, LinkText, LEVELS_STATE } from '@/shared'
+import { Button, ModalDefault, LinkText, LEVELS_STATE } from '@/shared'
 import { useProgress } from '@/shared/hooks'
 import { useUser } from '@/shared/contexts/UserContext'
 import bgMapInfo from '/ui/level-map/climb.png'
@@ -19,6 +19,7 @@ export const LevelMap = () => {
   const [levels, setLevels] = useState(LEVELS_STATE)
   const [level, setLevel] = useState(levels[0])
   const [isSelect, setSelect] = useState(false)
+  const [isOpenModalInfo, setOpenModalInfo] = useState(false)
   const { game } = useUser()
   const { completedLevels, selectLevel } = useProgress()
 
@@ -61,6 +62,10 @@ export const LevelMap = () => {
   const handleClickClose = () => setSelect(false)
 
   const handleStartGame = () => {
+    if (level.id > 3 && level.id !==101 && level.id !==102) {
+      setOpenModalInfo(true)
+      return
+    }
     selectLevel(level.id)
     if (level.type === 'battle') {
       navigate('/game-battle', {})
@@ -144,7 +149,16 @@ export const LevelMap = () => {
           </div>       
         </div>
       </div>
-      
+
+      <ModalDefault
+        onContinue={() => setOpenModalInfo(false)}
+        title="¯\_(ツ)_/¯"
+        subtitle="Первая глава закончилась"
+        info="Продолжение следует..."
+        buttonSuccess='Ok'
+        isOpened={isOpenModalInfo}
+        isButtonCancel={false}
+      />
     </div>
   )
 }

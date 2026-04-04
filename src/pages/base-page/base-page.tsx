@@ -1,7 +1,7 @@
 import classNames from 'classnames'
 import { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Button, UserTreasures } from '@/shared/components'
+import { Button, UserTreasures, ModalDefault } from '@/shared/components'
 import { useProgress } from '@/shared/hooks/useProgress'
 import imgBarmanDefault from '/base/default.webp'
 import imgBarmanTalk from '/base/talk.webp'
@@ -23,6 +23,7 @@ export const BasePage = () => {
   const [mode, setMode] = useState('main')
   const [talk, setTalk] = useState(false)
   const [blink, setBlink] = useState('привет')
+  const [isOpenModalInfo, setOpenModalInfo] = useState(false)
   const { selectLevel } = useProgress()
   const scrollRef = useRef(null);
 
@@ -40,7 +41,6 @@ export const BasePage = () => {
   }, []);
   
   const handleTraining = () => {
-    console.log('training')
     selectLevel(0)
     navigate('/game-battle', {})
   }
@@ -122,6 +122,35 @@ export const BasePage = () => {
       </ul>
     )
   }
+
+  const modalInfo = () => {
+    return (
+      <div className={styles['base-page__modal-info']}>
+        <p>Cущества данной планеты излучают свет через биолюминесценцию. Планшет позволяет выявить спектр свечения существа и отправить обратную фазу света, перегружая его биолюминесцентные органы.</p>
+        <span>Тут нарисован планшет</span>
+        <p>Ваша задача - подобрать спектр свечения существа. Так вы сможете нанести существу урон и защитить себя.</p>
+        <p>На планете представлены 5 пар карт световых фаз. Каждая пара соответствует определенной световой фазе.</p>
+        <p>Подберите пару по цвету, чтобы нанести существу урон.</p>
+        <span>Тут гифка: нажимаю на карту красного цвета, потом на карту синего цвета, потом опять красный и снова красный</span>
+        <p>Учтите, существа крайне агрессивны. И при визуальном контакте, нападут на вас.</p>
+        <p>Атаки местной фауны как правильно имеют свой паттерн, который характеризуется уникальной цветовой последовательностью свечения.</p>
+        <p>При смене свечения следует энергитический выброс который может нанести вам урон.</p>
+        <span>Тут гифка: противник заряжается и атакует</span>
+        <p>Используйте планшет для анализа свечения существ и выбора правильной пары карт.</p>
+        <p>Если вам удастся подобрать цвет, который соответствует спектру свечения существа, отразите его атаку. При этом, вы оглужите на его на некоторое время.</p>
+        <span>Здесть гифка парирования</span>
+        <p>Прошу обратить внимание на инструкции по использованию светого щита скафантда.</p>
+        <p>По умолчанию у вас имеется одна энергетическая ячейка. Которая позволяет нейтролизовать полученную радиацию и восстановить часть здоровья.</p>
+        <span>Тут гифка использования жизьки</span>
+        <p>Вы можеть увеличить количество энергетических ячеек. Если приобретете противорадиационный кристал.</p>
+        <p>Так же ваш скафандр собирает биолюминесцентную энергию. Которую можно использовать для увеличения характеристик скафандра.</p>
+        <span>Тут гифка шкалы энергии</span>
+        <p>Прошу заметить, наш комплекс не обладает устройством для улучшения характеристик скафандра.</p>
+        <p>Но у нас имеются записи... на планете имеется разумная жизнь, и технологии спсобные взаимодействовать с биолюминесцентной энергией.</p>
+        <p>Удачи!</p>
+      </div>
+    )
+  }
     
   return (
     <main className={styles['base-page']}>
@@ -149,7 +178,7 @@ export const BasePage = () => {
             </p>
           </div>
           <button className={styles['base-page__question-down']} onClick={scrollDown}></button>
-          <Button onClick={() => handleTraining()}>
+          <Button onClick={() => setOpenModalInfo(true)}>
             Обучение
           </Button>
         </div> }
@@ -180,7 +209,7 @@ export const BasePage = () => {
             </p>
           </div>
           <button className={styles['base-page__question-down']} onClick={scrollDown}></button>
-          <Button onClick={() => handleTraining()}>
+          <Button onClick={() => setOpenModalInfo(true)}>
             Обучение
           </Button>
         </div> }
@@ -206,7 +235,7 @@ export const BasePage = () => {
             </p>
           </div>
           <button className={styles['base-page__question-down']} onClick={scrollDown}></button>
-          <Button onClick={() => handleTraining()}>
+          <Button onClick={() => setOpenModalInfo(true)}>
             Обучение
           </Button>
         </div> }
@@ -237,6 +266,17 @@ export const BasePage = () => {
 
         <UserTreasures/>
       </div>
+      <ModalDefault
+        className={styles['base-page__modal']}
+        onContinue={handleTraining}
+        onExit={() => setOpenModalInfo(false)}
+        title="Инструктаж"
+        subtitle="Вам выдан планшет. Это устройство позволяет взаимодействовать с местной фауной."
+        buttonSuccess="Поехали!"
+        buttonCancel="Еще не готов"
+        info={modalInfo()}
+        isOpened={isOpenModalInfo}
+      />
     </main>
   )
 }

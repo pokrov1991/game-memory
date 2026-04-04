@@ -243,3 +243,25 @@
     }
   }
 }
+
+.base-page__modal {
+  width: 100%;
+
+  div:last-child {
+    max-width: 980px;
+  }
+}
+
+.base-page__modal-info {
+  width: 100%;
+
+  p {
+    font-size: 18px;
+    margin: 0;
+  }
+
+  span {
+    margin: 20px 0;
+    display: block;
+  }
+}

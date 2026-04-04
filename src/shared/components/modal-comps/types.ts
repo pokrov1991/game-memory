@@ -8,7 +8,8 @@ export enum TypeModal {
 
 export type TModal = {
   isOpened: boolean
-  type: TypeModal
+  type: TypeModal,
+  className?: string,
 }
 
 export type TModalAction = TModal & {
@@ -16,7 +17,10 @@ export type TModalAction = TModal & {
   level?: number,
   title?: string | number,
   subtitle?: string | number,
-  info?: string,
+  info?: string | JSX.Element,
+  buttonSuccess?: string,
+  buttonCancel?: string,
+  isButtonCancel?: boolean,
   onContinue(e?: React.MouseEvent<HTMLButtonElement>): void,
   onExit?(): void
 }

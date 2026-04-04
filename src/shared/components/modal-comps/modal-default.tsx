@@ -6,13 +6,17 @@ import style from './modal-content.module.css'
 export const ModalDefault = ({
   onExit,
   onContinue,
+  className,
   title,
   subtitle,
   isOpened,
-  info
+  info,
+  buttonSuccess = 'Да',
+  buttonCancel = 'Нет',
+  isButtonCancel = true
 }: TModalNonType) => {
   return (
-    <Modal isOpened={isOpened} type={TypeModal.Exit}>
+    <Modal className={className} isOpened={isOpened} type={TypeModal.Exit}>
       <div className={style['exit']}>
         <Typography marginBottom="8px" fontSize="22px" color="white">
           {title}
@@ -20,7 +24,7 @@ export const ModalDefault = ({
         <Typography marginBottom="40px" fontSize="22px" color="#BAB8BB">
           {subtitle}
         </Typography>
-        <Typography marginBottom="50px" fontSize="22px" color="white">
+        <Typography marginBottom="50px" fontSize="22px" color="white" component="div">
           {info}
         </Typography>
       </div>
@@ -31,17 +35,19 @@ export const ModalDefault = ({
             color="inherit"
             className={style['approve']}
             onClick={onContinue}>
-            <span>Да</span>
+            <span>{buttonSuccess}</span>
           </Button>
         </div>
         <div className={style['approve-dark-wrapper']}>
-          <Button
-            size="large"
-            color="inherit"
-            className={style['approve-dark']}
-            onClick={onExit}>
-            <span>Нет</span>
-          </Button>
+          {isButtonCancel && (
+            <Button
+              size="large"
+              color="inherit"
+              className={style['approve-dark']}
+              onClick={onExit}>
+              <span>{buttonCancel}</span>
+            </Button>
+          )}
         </div>
       </div>
     </Modal>
