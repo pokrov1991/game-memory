@@ -111,7 +111,7 @@ export const GamePage = () => {
     handlePause()
     setTimeout(() => {
       setResultText(
-        `Поздравляем! Вы прошли уровень «${gameLevel.title}» и получили опыт: ${
+        `Поздравляем! Вы прошли уровень «${gameLevel.title}» и получили энергию: ${
           score + seconds
         } exp`
       )

@@ -38,7 +38,7 @@ export const INVENTORY_STORE_CONFIG = [
         id: 4,
         type: 'plastron',
         name: 'Доспех литора',
-        desc: 'Повышает защиту на 30 единиц.',
+        desc: 'Повышает здоровье на 30 единиц.',
         price: 600,
         organs: [
             { id: 1, name: 'Зуб щитомордника', count: 4 },
@@ -52,7 +52,7 @@ export const INVENTORY_STORE_CONFIG = [
         id: 5,
         type: 'helmet',
         name: 'Шлем ИС-2',
-        desc: 'Повышает защиту на 40 единиц.',
+        desc: 'Повышает здоровье на 40 единиц.',
         price: 800,
         organs: [
             { id: 1, name: 'Зуб щитомордника', count: 2 },
@@ -67,7 +67,7 @@ export const INVENTORY_STORE_CONFIG = [
         id: 6,
         type: 'plastron',
         name: 'Доспех ИС-2',
-        desc: 'Повышает защиту на 50 единиц.',
+        desc: 'Повышает здоровье на 50 единиц.',
         price: 1000,
         organs: [
             { id: 1, name: 'Зуб щитомордника', count: 6 },
@@ -80,8 +80,8 @@ export const INVENTORY_STORE_CONFIG = [
     {
         id: 7,
         type: 'potion',
-        name: 'Зелье здоровья',
-        desc: 'Восстанавливает немного здоровья.',
+        name: 'Противорадиационный кристал',
+        desc: 'Добавляет одну ячейку востановления здоровья.',
         price: 2000,
         organs: [],
         hp: 25,

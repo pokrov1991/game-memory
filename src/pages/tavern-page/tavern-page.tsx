@@ -16,7 +16,7 @@ type MenuItem = { to: string; title: string; isActive?: boolean }
 const MENU: Array<MenuItem> = [
   { to: 'levels', title: 'Игра на монеты' },
   { to: 'store', title: 'Купить товары' },
-  { to: 'xp', title: 'Очки опыта' },
+  { to: 'xp', title: 'Сферы энергии' },
   { to: '/levels', title: 'Выход' }
 ]
 
@@ -192,7 +192,7 @@ export const TavernPage = () => {
       xp: () => {
         setMode('xp')
         setMenu([
-          { to: 'xp', title: 'Очки опыта', isActive: true },
+          { to: 'xp', title: 'Сферы энергии', isActive: true },
           { to: 'main', title: 'Назад' }
         ])
       },
@@ -317,7 +317,7 @@ export const TavernPage = () => {
 
           {mode === 'xp' && 
             <p className={styles['tavern-page__barman-text-baloon']}>
-              У теебя есть сферы опыта, которые ты можешь потратить на улучшение своих характеристик. Чем выше уровень, тем больше сфер для распределения. На что хочешь потратить свои сферы?
+              У тебя есть сферы энергии, которые ты можешь потратить на улучшение своих характеристик. Чем выше уровень, тем больше сфер для распределения. На что хочешь потратить свои сферы?
             </p>}
         </div>
 

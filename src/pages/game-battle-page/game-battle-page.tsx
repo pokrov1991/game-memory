@@ -207,7 +207,7 @@ export const GameBattlePage = () => {
     handlePause()
     setTimeout(() => {
       updateOrgan({ organId: gameLevel.enemyId, count: enemyOrgan.count + 1 })
-      setResultText(<>Поздравляем! Вы прошли уровень «{gameLevel.title}» и получили: Опыт - {scoreSession} ед. и {enemyOrgan.name} <i data-icon={`organ-${enemyOrgan.id}`}></i> - 1 шт.</>)
+      setResultText(<>Поздравляем! Вы прошли уровень «{gameLevel.title}» и получили: Энергию - {scoreSession} ед. и {enemyOrgan.name} <i data-icon={`organ-${enemyOrgan.id}`}></i> - 1 шт.</>)
       setOpenModalWin(true)
     }, delayGameEffects + gameLevel.enemyStateDurations.DEAD)
   }
