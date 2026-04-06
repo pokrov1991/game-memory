@@ -156,8 +156,10 @@
     "/tavern/treasures/0-1.png",
     "/tavern/treasures/0-2.png",
     "/tavern/treasures/0-3.png",
+    "/tavern/treasures/0.png",
     "/tavern/treasures/1.png",
     "/tavern/treasures/2.png",
+    "/tavern/treasures/3.png",
     "/tavern/ampula.png",
     "/tavern/bg.jpg",
     "/tavern/card.png",
@@ -167,6 +169,10 @@
     "/tavern/sphere-red.png",
     "/tavern/sphere-yellow.png",
     "/tavern/talk.webp",
+    "/main/bg-before.jpg",
+    "/main/bg-after.png",
+    "/main/bg-boy.png",
+    "/main/bg-boy-light.png",
     "/ui/button/button-level-play-active.png",
     "/ui/button/button-level-play-hover.png",
     "/ui/button/button-level-play.png",
@@ -206,7 +212,6 @@
     "/ui/500.png",
     "/ui/arrow-active.png",
     "/ui/arrow.png",
-    "/ui/bg.png",
     "/ui/modal-topbar.svg"
   ]
 }

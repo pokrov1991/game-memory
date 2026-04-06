@@ -51,11 +51,17 @@
     background-repeat: no-repeat;
   }
 
+  i[data-icon='organ-0'] {
+    background-image: url('tavern/treasures/0.png');
+  }
   i[data-icon='organ-1'] {
     background-image: url('tavern/treasures/1.png');
   }
   i[data-icon='organ-2'] {
     background-image: url('tavern/treasures/2.png');
+  }
+  i[data-icon='organ-3'] {
+    background-image: url('tavern/treasures/3.png');
   }
 }
 

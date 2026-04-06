@@ -169,6 +169,12 @@
   }
 }
 
+.barman-text-item_0 {
+  &::before {
+    background-image: url('tavern/treasures/0.png');
+  }
+}
+
 .barman-text-item_1 {
   &::before {
     background-image: url('tavern/treasures/1.png');
@@ -178,6 +184,12 @@
 .barman-text-item_2 {
   &::before {
     background-image: url('tavern/treasures/2.png');
+  }
+}
+
+.barman-text-item_3 {
+  &::before {
+    background-image: url('tavern/treasures/3.png');
   }
 }
 

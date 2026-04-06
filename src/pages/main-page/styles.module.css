@@ -1,5 +1,15 @@
 .main-page {
-  & .main-page__bg {
+  & .main-page__bg-before {
+    object-fit: cover;
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    z-index: -3;
+  }
+
+  & .main-page__bg-after {
     object-fit: cover;
     position: fixed;
     left: 0;
@@ -28,5 +38,36 @@
     left: 0;
     bottom: 0;
     width: 100%;
+  }
+
+  .main-page__boy {
+    position: absolute;
+    left: 6%;
+    bottom: 16%;
+    width: auto;
+    height: 20%;
+    z-index: -2;
+  }
+
+  .main-page__bg-boy {
+    height: 100%;
+  }
+
+  .main-page__bg-boy-light {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    animation: glow 2s infinite;
+  }
+}
+
+@keyframes glow {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
   }
 }

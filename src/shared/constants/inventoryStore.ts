@@ -42,7 +42,7 @@ export const INVENTORY_STORE_CONFIG = [
         price: 600,
         organs: [
             { id: 1, name: 'Зуб щитомордника', count: 4 },
-            { id: 2, name: 'Шкура голема', count: 3 }
+            { id: 2, name: 'Шкура литора', count: 3 }
         ],
         hp: 30,
         isPaid: false,
@@ -56,7 +56,7 @@ export const INVENTORY_STORE_CONFIG = [
         price: 800,
         organs: [
             { id: 1, name: 'Зуб щитомордника', count: 2 },
-            { id: 2, name: 'Шкура голема', count: 6 },
+            { id: 2, name: 'Шкура литора', count: 6 },
             { id: 3, name: 'Пластина от ИС-2', count: 1 },
         ],
         hp: 40,
@@ -71,7 +71,7 @@ export const INVENTORY_STORE_CONFIG = [
         price: 1000,
         organs: [
             { id: 1, name: 'Зуб щитомордника', count: 6 },
-            { id: 2, name: 'Шкура голема', count: 8 }
+            { id: 2, name: 'Шкура литора', count: 8 }
         ],
         hp: 50,
         isPaid: false,

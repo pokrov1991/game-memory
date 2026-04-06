@@ -88,11 +88,6 @@
     background-image: url(/game/enemy/enemy-3-default.webp);
   }
 }
-.item_4 {
-  &::after {
-    background-image: url(/game/enemy/enemy-2-default.webp);
-  }
-}
 
 .item_101 {
   b {

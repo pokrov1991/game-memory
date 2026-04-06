@@ -105,12 +105,24 @@
 
 .user-treasures__info-item_0 {
   &::before {
-    background-image: url('tavern/treasures/1.png');
+    background-image: url('tavern/treasures/0.png');
   }
 }
 
 .user-treasures__info-item_1 {
   &::before {
+    background-image: url('tavern/treasures/1.png');
+  }
+}
+
+.user-treasures__info-item_2 {
+  &::before {
     background-image: url('tavern/treasures/2.png');
+  }
+}
+
+.user-treasures__info-item_3 {
+  &::before {
+    background-image: url('tavern/treasures/3.png');
   }
 }
