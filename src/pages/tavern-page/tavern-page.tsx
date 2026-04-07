@@ -147,7 +147,10 @@ export const TavernPage = () => {
   const levelPreviews = levels.map(level => {
     return (
       <div 
-        className={styles['tavern-page__levels-item']} 
+        className={classNames(
+          styles['tavern-page__levels-item'],
+          {[styles['tavern-page__levels-item_disabled']]: userCoins < level.coins}
+        )}
         onClick={() => {
           setLevel(level)
           setOpenModalDefault(true)

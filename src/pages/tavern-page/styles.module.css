@@ -338,6 +338,12 @@
   }
 }
 
+.tavern-page__levels-item_disabled {
+  cursor: default;
+  opacity: 0.5;
+  pointer-events: none;
+}
+
 .tavern-page__store {
   position: relative;
   display: flex;

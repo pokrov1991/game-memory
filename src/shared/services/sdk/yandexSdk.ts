@@ -81,7 +81,7 @@ export default class YandexSDK extends SDK {
             attack: 0,    
           },
           userScore: 0,
-          userCoins: 10000,
+          userCoins: 5,
           userPotions: 1,
           userParams: {
             hp: 100,
@@ -113,10 +113,10 @@ export default class YandexSDK extends SDK {
             },
           ],
           userOrgans: {
-            0: { id: 0, name: 'Болт от ПС-91', count: 1000 },
-            1: { id: 1, name: 'Зуб щитомордника', count: 1000 },
-            2: { id: 2, name: 'Шкура литора', count: 1000 },
-            3: { id: 3, name: 'Пластина от ИС-2', count: 1000 },
+            0: { id: 0, name: 'Болт от ПС-91', count: 0 },
+            1: { id: 1, name: 'Зуб щитомордника', count: 0 },
+            2: { id: 2, name: 'Шкура литора', count: 0 },
+            3: { id: 3, name: 'Пластина от ИС-2', count: 0 },
           }
         }
         await this.setGameData(gameData);

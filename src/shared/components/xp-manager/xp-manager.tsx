@@ -23,6 +23,7 @@ export const XpManager = () => {
   const [hp, setHp] = useState(userParams.hp)
   const [guard, setGuard] = useState(userParams.guard)
   const [attack, setAttack] = useState(userParams.attack)
+  const [isDisabled, setDisabled] = useState(true)
 
   const syncProgress = async () => {
     await YandexSDK.setGameData({...progress, userParams, userLevelParams})
@@ -41,7 +42,17 @@ export const XpManager = () => {
   }, [countAttack])
 
   useEffect(() => {
+    const isSameParams =
+      countHp === userLevelParams.hp &&
+      countGuard === userLevelParams.guard &&
+      countAttack === userLevelParams.attack
+
+    setDisabled(isSameParams)
+  }, [countHp, countGuard, countAttack, userLevelParams])
+
+  useEffect(() => {
     syncProgress()
+    setDisabled(true)
   }, [userParams])
 
   return (
@@ -54,10 +65,14 @@ export const XpManager = () => {
           <span>Атака: <b>{attack}</b></span>
         </div>
         <div className={styles['xp-manager__info-actions']}>
-          <Button onClick={() => {
-            levelParamsUp({ hp: countHp, guard: countGuard, attack: countAttack })
-            paramsUp({ hp: hp, guard: guard, attack: attack })
-          }}>Сохранить</Button>
+          <Button 
+            onClick={() => {
+              levelParamsUp({ hp: countHp, guard: countGuard, attack: countAttack })
+              paramsUp({ hp: hp, guard: guard, attack: attack })
+            }} 
+            disabled={isDisabled}>
+            Сохранить
+          </Button>
         </div>
       </div>
       <div className={styles['xp-manager__control']}>

@@ -96,6 +96,11 @@
         font-size: 18px;
       }
     }
+
+    &[attr='disabled'] {
+      cursor: default;
+      opacity: 0.5;
+    }
   }
 }
 

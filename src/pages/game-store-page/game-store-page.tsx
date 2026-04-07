@@ -59,7 +59,7 @@ export const GameStorePage = () => {
   }
 
   const setGameDataLose = async () => {
-    const currentCoins = cCoins > gameLevel.coins ? cCoins - gameLevel.coins : 0
+    const currentCoins = cCoins > gameLevel.coins ? cCoins - gameLevel.coins : 5
     coinsUp(currentCoins)
     await YandexSDK.setGameData({
       ...game,
