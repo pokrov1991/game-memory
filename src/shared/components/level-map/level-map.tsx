@@ -4,14 +4,15 @@ import { Item } from './item'
 import { Button, ModalDefault, LinkText, LEVELS_STATE } from '@/shared'
 import { useProgress } from '@/shared/hooks'
 import { useUser } from '@/shared/contexts/UserContext'
-import bgMapInfo from '/ui/level-map/climb.png'
-import bgMap from '/ui/level-map/map.jpg'
-import cloudOne from '/ui/level-map/cloud-1.png'
-import cloudTwo from '/ui/level-map/cloud-2.png'
-import cloudThree from '/ui/level-map/cloud-3.png'
 import styles from './styles.module.css'
 import classNames from 'classnames'
 import CloseIcon from '@mui/icons-material/Close'
+
+const bgMapInfo = '/ui/level-map/climb.png'
+const bgMap = '/ui/level-map/map.jpg'
+const cloudOne = '/ui/level-map/cloud-1.png'
+const cloudTwo = '/ui/level-map/cloud-2.png'
+const cloudThree = '/ui/level-map/cloud-3.png'
 
 export const LevelMap = () => {
   const scrollRef = useRef(null)

@@ -1,5 +1,4 @@
 import classNames from 'classnames'
-import bgItem from '/ui/level-map/Item.png'
 import styles from './styles.module.css'
 
 type Props = {
@@ -10,6 +9,8 @@ type Props = {
   y: number
   onClick: (level: number) => void
 }
+
+const bgItem = '/ui/level-map/Item.png'
 
 export const Item = ({ id, x, y, isCurrent, isPassed, onClick }: Props) => (
   <div 

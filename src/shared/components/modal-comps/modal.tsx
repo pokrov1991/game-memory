@@ -3,7 +3,8 @@ import { TModal } from './types'
 import classNames from 'classnames'
 import Portal from './portal'
 import style from './modal.module.css'
-import topbar from '/ui/modal-topbar.svg'
+
+const topbar = '/ui/modal-topbar.svg'
 
 export const Modal = ({
   isOpened,

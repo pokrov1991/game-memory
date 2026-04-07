@@ -1,6 +1,5 @@
 import styles from './styles.module.css'
 import classNames from 'classnames'
-import branchPic from '/ui/pics/branch-pic.svg'
 import { NavLink } from 'react-router-dom'
 
 type Props = {
@@ -10,6 +9,8 @@ type Props = {
     sort: number
   }>
 }
+
+const branchPic = '/ui/pics/branch-pic.svg'
 
 export const Navigate = ({ routes }: Props) => {
   const links = routes

@@ -4,14 +4,14 @@ import { useNavigate } from 'react-router-dom'
 import { LEVELS_STORE, INVENTORY_STORE_CONFIG } from '@/shared'
 import { useProgress } from '@/shared/hooks'
 import { Button, UserTreasures, XpManager, ModalDefault } from '@/shared/components'
-import { GameLevelStoreType } from '@/shared/services/game/types'
 import YandexSDK from '@/shared/services/sdk/yandexSdk'
-import imgBarmanDefault from '/tavern/default.webp'
-import imgBarmanTalk from '/tavern/talk.webp'
 import styles from './styles.module.css'
 
 type MenuMode = 'main' | 'levels' | 'store' | 'xp'
 type MenuItem = { to: string; title: string; isActive?: boolean }
+
+const imgBarmanDefault = '/tavern/default.webp'
+const imgBarmanTalk = '/tavern/talk.webp'
 
 const MENU: Array<MenuItem> = [
   { to: 'levels', title: 'Игра на монеты' },

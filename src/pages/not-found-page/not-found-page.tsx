@@ -1,6 +1,7 @@
 import { Button } from '@/shared'
-import bgUrl from '/ui/404.png'
 import styles from './styles.module.css'
+
+const bgUrl = '/ui/500.png'
 
 export const NotFoundPage = () => (
   <div className={styles.bg} style={{ backgroundImage: `url(${bgUrl})` }}>

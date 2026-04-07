@@ -3,12 +3,13 @@ import { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Button, UserTreasures, ModalDefault } from '@/shared/components'
 import { useProgress } from '@/shared/hooks/useProgress'
-import imgBarmanDefault from '/base/default.webp'
-import imgBarmanTalk from '/base/talk.webp'
 import styles from './styles.module.css'
 
 type MenuMode = 'main' | 'question1' | 'question2' | 'question3'
 type MenuItem = { to: string; title: string; isActive?: boolean }
+
+const imgBarmanDefault = '/base/default.webp'
+const imgBarmanTalk = '/base/talk.webp'
 
 const MENU: Array<MenuItem> = [
   { to: 'question1', title: 'Где я?' },
