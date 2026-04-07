@@ -42,10 +42,20 @@
   z-index: 1;
   pointer-events: none;
 
+  @media (max-width: 1024px) {
+    width: calc(100vw - 365px);
+  }
+
   img {
     height: 100%;
     position: absolute;
     left: 0;
+
+    @media (max-width: 1024px) {
+      height: auto;
+      width: 100%;
+      bottom: 0;
+    }
   }
 }
 
