@@ -2,6 +2,7 @@ import bgBefore from '/main/bg-before.jpg'
 import bgAfter from '/main/bg-after.png'
 import bgBoy from '/main/bg-boy.png'
 import bgBoyLight from '/main/bg-boy-light.png'
+import bgFire from '/main/bg-fire.webp'
 import styles from './styles.module.css'
 import { UserInfo } from '@/shared/components/user-info/user-info'
 import { Experience } from '@/shared/components/experience/experience'
@@ -34,6 +35,7 @@ export const MainPage = () => {
       <div className={styles['main-page__boy']}>
         <img src={bgBoy} className={styles['main-page__bg-boy']} />
         <img src={bgBoyLight} className={styles['main-page__bg-boy-light']} />
+        <img src={bgFire} className={styles['main-page__bg-fire']} />
       </div>
       <img src={bgAfter} className={styles['main-page__bg-after']} />
       <img src={bgBefore} className={styles['main-page__bg-before']} />

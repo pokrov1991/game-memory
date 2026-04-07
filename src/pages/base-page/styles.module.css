@@ -248,7 +248,7 @@
   width: 100%;
 
   div:last-child {
-    max-width: 980px;
+    max-width: 760px;
   }
 }
 
@@ -256,12 +256,17 @@
   width: 100%;
 
   p {
-    font-size: 18px;
+    font-family: 'Roboto';
+    font-size: 16px;
     margin: 0;
   }
 
-  span {
+  img {
+    width: 100%;
+    max-width: 640px;
+    height: auto;
     margin: 20px 0;
-    display: block;
+    padding: 10px;
+    border: 1px solid #43d9fe80;
   }
 }

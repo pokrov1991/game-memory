@@ -21,7 +21,7 @@ export const LEVELS_STATE_CONFIG: GameLevelStateSimpleType[] = [
         type: 'battle',
         cardCount: 10,
         cardCol: 5,
-        initialSeconds: [20, 10, 5, 10, 5],
+        initialSeconds: [30, 10, 5, 10, 5],
         initialAttacks: [5, 3, 2, 3, 2],
         initialColors: ['red','blue','green','black','yellow'],
         enemyId: 0,
