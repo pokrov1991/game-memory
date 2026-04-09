@@ -47,8 +47,8 @@ export const GamePage = () => {
   const [resultText, setResultText] = useState('')
   const [setLeader] = useSetLeaderboardMutation()
 
-  useMusic({ src: '/music/success.mp3', conditional: isOpenModalWin })
-  useMusic({ src: '/music/timeout.mp3', conditional: isOpenModalLose })
+  useMusic({ src: './music/success.mp3', conditional: isOpenModalWin })
+  useMusic({ src: './music/timeout.mp3', conditional: isOpenModalLose })
 
   const onRestart = (): void => {
     setRestartKey(prevKey => prevKey + 1)

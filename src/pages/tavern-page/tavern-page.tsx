@@ -10,8 +10,8 @@ import styles from './styles.module.css'
 type MenuMode = 'main' | 'levels' | 'store' | 'xp'
 type MenuItem = { to: string; title: string; isActive?: boolean }
 
-const imgBarmanDefault = '/tavern/default.webp'
-const imgBarmanTalk = '/tavern/talk.webp'
+const imgBarmanDefault = './tavern/default.webp'
+const imgBarmanTalk = './tavern/talk.webp'
 
 const MENU: Array<MenuItem> = [
   { to: 'levels', title: 'Игра на монеты' },

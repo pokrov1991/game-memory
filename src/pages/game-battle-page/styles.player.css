@@ -30,7 +30,7 @@
   position: absolute;
   width: 98px;
   height: 161px;
-  background: url('game/player/z1-a1-pack.png') 0 0 / contain no-repeat;
+  background: url('../game/player/z1-a1-pack.png') 0 0 / contain no-repeat;
   bottom: 235px;
   left: 120px;
   animation: a1 2s infinite;
@@ -40,7 +40,7 @@
   position: absolute;
   width: 182px;
   height: 242px;
-  background: url('game/player/z2-legs.png') 0 0 / contain no-repeat;
+  background: url('../game/player/z2-legs.png') 0 0 / contain no-repeat;
   bottom: 20px;
   left: 110px;
 }
@@ -49,14 +49,14 @@
   position: absolute;
   width: 168px;
   height: 174px;
-  background: url('game/player/z3-a1-body.png') 0 0 / contain no-repeat;
+  background: url('../game/player/z3-a1-body.png') 0 0 / contain no-repeat;
   bottom: 240px;
   left: 150px;
   animation: a1 2s infinite;
 }
 
 .game-page__person-img-player-body_4 {
-  background: url('game/inventory/z3-a1-body-2.png') 0 0 / contain no-repeat;
+  background: url('../game/inventory/z3-a1-body-2.png') 0 0 / contain no-repeat;
 }
 
 .game-page__person-img-player-body_6 {
@@ -64,14 +64,14 @@
   height: 186px;
   bottom: 240px;
   left: 81px;
-  background: url('game/inventory/z3-a1-body-3.png') 0 0 / contain no-repeat;
+  background: url('../game/inventory/z3-a1-body-3.png') 0 0 / contain no-repeat;
 }
 
 .game-page__person-img-player-arm {
   position: absolute;
   width: 120px;
   height: 120px;
-  background: url('game/player/z4-a1-a2-arm.png') 0 0 / contain no-repeat;
+  background: url('../game/player/z4-a1-a2-arm.png') 0 0 / contain no-repeat;
   left: 129px;
   bottom: 244px;
   animation: a1 2s infinite;
@@ -85,7 +85,7 @@
   position: absolute;
   width: 100px;
   height: 152px;
-  background: url('game/player/z5-a1-head.webp') 0 0 / contain no-repeat;
+  background: url('../game/player/z5-a1-head.webp') 0 0 / contain no-repeat;
   bottom: 352px;
   left: 176px;
   animation: a1 2s infinite;
@@ -95,7 +95,7 @@
   width: 154px;
   height: 152px;
   left: 146px;
-  background: url('game/inventory/z5-a1-head-2.png') 0 0 / contain no-repeat;
+  background: url('../game/inventory/z5-a1-head-2.png') 0 0 / contain no-repeat;
 }
 
 .game-page__person-img-player-head_5 {
@@ -103,28 +103,28 @@
   height: 138px;
   left: 146px;
   bottom: 350px;
-  background: url('game/inventory/z5-a1-head-3.png') 0 0 / contain no-repeat;
+  background: url('../game/inventory/z5-a1-head-3.png') 0 0 / contain no-repeat;
 }
 
 .game-page__person-img-player-head_stun {
-  background-image: url('game/player/z5-a1-head-stun.webp');
+  background-image: url('../game/player/z5-a1-head-stun.webp');
 
   &.game-page__person-img-player-head_3 {
-    background-image: url('game/player/z5-a1-head-2-stun.webp');
+    background-image: url('../game/player/z5-a1-head-2-stun.webp');
   }
   &.game-page__person-img-player-head_5 {
-    background-image: url('game/player/z5-a1-head-3-stun.webp');
+    background-image: url('../game/player/z5-a1-head-3-stun.webp');
   }
 }
 
 .game-page__person-img-player-head_alarm {
-  background-image: url('game/player/z5-a1-head-alarm.webp');
+  background-image: url('../game/player/z5-a1-head-alarm.webp');
 
   &.game-page__person-img-player-head_3 {
-    background-image: url('game/player/z5-a1-head-2-alarm.webp');
+    background-image: url('../game/player/z5-a1-head-2-alarm.webp');
   }
   &.game-page__person-img-player-head_5 {
-    background-image: url('game/player/z5-a1-head-3-alarm.webp');
+    background-image: url('../game/player/z5-a1-head-3-alarm.webp');
   }
 }
 
@@ -133,30 +133,30 @@
   position: absolute;
   width: 121px;
   height: 132px;
-  background: url('game/player/z6-a1-tablet-default.png') 0 0 / contain no-repeat;
+  background: url('../game/player/z6-a1-tablet-default.png') 0 0 / contain no-repeat;
   bottom: 195px;
   left: 225px;
   animation: a1 2s infinite;
 }
 
 .game-page__person-img-player-tablet_red {
-  background-image: url('game/player/z6-a1-tablet-red.png');
+  background-image: url('../game/player/z6-a1-tablet-red.png');
 }
 
 .game-page__person-img-player-tablet_blue {
-  background-image: url('game/player/z6-a1-tablet-blue.png');
+  background-image: url('../game/player/z6-a1-tablet-blue.png');
 }
 
 .game-page__person-img-player-tablet_green {
-  background-image: url('game/player/z6-a1-tablet-green.png');
+  background-image: url('../game/player/z6-a1-tablet-green.png');
 }
 
 .game-page__person-img-player-tablet_yellow {
-  background-image: url('game/player/z6-a1-tablet-yellow.png');
+  background-image: url('../game/player/z6-a1-tablet-yellow.png');
 }
 
 .game-page__person-img-player-tablet_black {
-  background-image: url('game/player/z6-a1-tablet-black.png');
+  background-image: url('../game/player/z6-a1-tablet-black.png');
 }
 
 .game-page__person-img-player_hit-flash {

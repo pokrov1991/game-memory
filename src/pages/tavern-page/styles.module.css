@@ -165,31 +165,31 @@
 
 .barman-text-item_money {
   &::before {
-    background-image: url('tavern/treasures/0-2.png');
+    background-image: url('../tavern/treasures/0-2.png');
   }
 }
 
 .barman-text-item_0 {
   &::before {
-    background-image: url('tavern/treasures/0.png');
+    background-image: url('../tavern/treasures/0.png');
   }
 }
 
 .barman-text-item_1 {
   &::before {
-    background-image: url('tavern/treasures/1.png');
+    background-image: url('../tavern/treasures/1.png');
   }
 }
 
 .barman-text-item_2 {
   &::before {
-    background-image: url('tavern/treasures/2.png');
+    background-image: url('../tavern/treasures/2.png');
   }
 }
 
 .barman-text-item_3 {
   &::before {
-    background-image: url('tavern/treasures/3.png');
+    background-image: url('../tavern/treasures/3.png');
   }
 }
 
@@ -245,13 +245,13 @@
   right: -16px;
   width: 40px;
   height: 28px;
-  background: url('ui/arrow.png') no-repeat center / contain;
+  background: url('../ui/arrow.png') no-repeat center / contain;
   border: none;
   cursor: pointer;
   z-index: 3;
 
   &:hover {
-    background-image: url('ui/arrow-active.png');
+    background-image: url('../ui/arrow-active.png');
   }
 }
 
@@ -261,14 +261,14 @@
   right: -16px;
   width: 40px;
   height: 28px;
-  background: url('ui/arrow.png') no-repeat center / contain;
+  background: url('../ui/arrow.png') no-repeat center / contain;
   border: none;
   cursor: pointer;
   transform: rotate(180deg);
   z-index: 3;
 
   &:hover {
-    background-image: url('ui/arrow-active.png');
+    background-image: url('../ui/arrow-active.png');
   }
 }
 
@@ -442,31 +442,31 @@
 }
 
 .tavern-page__store-item_1 {
-  background-image: url('tavern/store/head-1.png');
+  background-image: url('../tavern/store/head-1.png');
 }
 
 .tavern-page__store-item_2 {
-  background-image: url('tavern/store/body-1.png');
+  background-image: url('../tavern/store/body-1.png');
 }
 
 .tavern-page__store-item_3 {
-  background-image: url('tavern/store/head-2.png');
+  background-image: url('../tavern/store/head-2.png');
 }
 
 .tavern-page__store-item_4 {
-  background-image: url('tavern/store/body-2.png');
+  background-image: url('../tavern/store/body-2.png');
 }
 
 .tavern-page__store-item_5 {
-  background-image: url('tavern/store/head-3.png');
+  background-image: url('../tavern/store/head-3.png');
 }
 
 .tavern-page__store-item_6 {
-  background-image: url('tavern/store/body-3.png');
+  background-image: url('../tavern/store/body-3.png');
 }
 
 .tavern-page__store-item_7 {
-  background-image: url('tavern/store/hp-1.png');
+  background-image: url('../tavern/store/hp-1.png');
 }
 
 .tavern-page__store-item_active {

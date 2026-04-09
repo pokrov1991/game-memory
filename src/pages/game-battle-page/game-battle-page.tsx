@@ -86,8 +86,8 @@ export const GameBattlePage = () => {
   const [hp, setHP] = useState(hpInitial)
   const [hpEnemy, setHPEnemy] = useState(hpEnemyInitial)
 
-  useMusic({ src: '/music/success.mp3', conditional: isOpenModalWin })
-  useMusic({ src: '/music/timeout.mp3', conditional: isOpenModalLose })
+  useMusic({ src: './music/success.mp3', conditional: isOpenModalWin })
+  useMusic({ src: './music/timeout.mp3', conditional: isOpenModalLose })
 
   const setGameDataWin = async (nextLevel: number) => {
     await YandexSDK.setGameData({

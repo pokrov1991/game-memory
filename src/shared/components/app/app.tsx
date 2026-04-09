@@ -36,6 +36,8 @@ export const App = () => {
           window.__ASSETS__ = loadedAssets
         }
       } catch (err) {
+        console.error('Boot error:', err)
+        
         if (!cancelled) {
           setError(err instanceof Error ? err.message : 'Ошибка загрузки')
         }
@@ -50,7 +52,11 @@ export const App = () => {
   }, [])
 
   return (
-    <ErrorBoundary fallback={<Navigate to="/error" />}>
+    <ErrorBoundary 
+      fallback={<Navigate to="/error" />}
+      onError={(error, info) => {
+        console.error('React ErrorBoundary:', error, info)
+      }}>
       <Container disableGutters maxWidth={false}>
         
         {!isReady && (

@@ -4,11 +4,11 @@ import { Clock, Score } from '@/shared'
 import { useUser } from '@/shared/contexts/UserContext'
 import { TUser } from '@/types'
 
-const LayoutPng = '/ui/layout/layout-backgound-min.png'
-const OutlinePng = '/ui/layout/outer-frame-border-min.png'
-const UserBackgroundPng = '/ui/layout/user-background-min.png'
-const BadgeWebp = '/ui/layout/user-badge.webp'
-const BadgePng = '/ui/layout/user-badge-min.png'
+const LayoutPng = './ui/layout/layout-backgound-min.png'
+const OutlinePng = './ui/layout/outer-frame-border-min.png'
+const UserBackgroundPng = './ui/layout/user-background-min.png'
+const BadgeWebp = './ui/layout/user-badge.webp'
+const BadgePng = './ui/layout/user-badge-min.png'
 
 interface ILayoutProps {
   children: React.ReactNode

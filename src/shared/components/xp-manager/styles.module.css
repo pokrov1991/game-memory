@@ -21,7 +21,7 @@
   align-items: center;
   justify-content: center;
   text-align: center;
-  background: url(tavern/ampula.png) center / cover;
+  background: url(../tavern/ampula.png) center / cover;
   border-radius: 50px;
   font-family: 'Roboto';
   font-size: 14px;
@@ -122,26 +122,26 @@
 
   &_hp {
     .xp-manager__counter-name {
-      background: url(tavern/sphere-red.png) center / cover;
+      background: url(../tavern/sphere-red.png) center / cover;
     }
   }
 }
 
 .xp-manager__counter_hp {
   .xp-manager__counter-name {
-    background: url(tavern/sphere-green.png) center / cover;
+    background: url(../tavern/sphere-green.png) center / cover;
   }
 }
 
 .xp-manager__counter_guard {
   .xp-manager__counter-name {
-    background: url(tavern/sphere-yellow.png) center / cover;
+    background: url(../tavern/sphere-yellow.png) center / cover;
   }
 }
 
 .xp-manager__counter_attack {
   .xp-manager__counter-name {
-    background: url(tavern/sphere-red.png) center / cover;
+    background: url(../tavern/sphere-red.png) center / cover;
   }
 }
 
@@ -151,7 +151,7 @@
   justify-content: center;
   width: 100px;
   height: 92px;
-  background: url(tavern/sphere-black.png) center / cover;
+  background: url(../tavern/sphere-black.png) center / cover;
   font-family: 'Roboto';
   font-size: 14px;
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
@@ -166,7 +166,7 @@
   button {
     width: 40px;
     height: 28px;
-    background: url('ui/arrow-active.png') no-repeat center / contain;
+    background: url('../ui/arrow-active.png') no-repeat center / contain;
     border: none;
     cursor: pointer;
     transform: rotate(-90deg);
@@ -177,7 +177,7 @@
 
     &[disabled] {
       cursor: default;
-      background-image: url('ui/arrow.png');
+      background-image: url('../ui/arrow.png');
     }
   }
   span {

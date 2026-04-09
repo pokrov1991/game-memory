@@ -1,8 +1,9 @@
-import { Component, ReactNode } from 'react'
+import { Component, ReactNode, ErrorInfo } from 'react'
 
 type ErrorBoundaryProps = {
   fallback?: ReactNode
   children?: ReactNode | ReactNode[]
+  onError?: (error: Error, info: ErrorInfo) => void
 }
 
 type ErrorBoundaryState = {
@@ -20,6 +21,12 @@ export class ErrorBoundary extends Component<
 
   static getDerivedStateFromError() {
     return { hasError: true }
+  }
+
+  componentDidCatch(error: Error, info: ErrorInfo) {
+    console.error('ErrorBoundary поймал ошибку:', error)
+    console.error('React stack:', info.componentStack)
+    this.props.onError?.(error, info)
   }
 
   render() {

@@ -59,7 +59,8 @@ export const routesConfig: RouteObject[] = [
       },
       {
         path: '*',
-        Component: NotFoundPage,
+        // Component: NotFoundPage,
+        Component: MainPage, // Для яндекса, т.к. в урле есть #
       },
     ],
   },

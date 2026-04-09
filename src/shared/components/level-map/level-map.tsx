@@ -8,11 +8,11 @@ import styles from './styles.module.css'
 import classNames from 'classnames'
 import CloseIcon from '@mui/icons-material/Close'
 
-const bgMapInfo = '/ui/level-map/climb.png'
-const bgMap = '/ui/level-map/map.jpg'
-const cloudOne = '/ui/level-map/cloud-1.png'
-const cloudTwo = '/ui/level-map/cloud-2.png'
-const cloudThree = '/ui/level-map/cloud-3.png'
+const bgMapInfo = './ui/level-map/climb.png'
+const bgMap = './ui/level-map/map.jpg'
+const cloudOne = './ui/level-map/cloud-1.png'
+const cloudTwo = './ui/level-map/cloud-2.png'
+const cloudThree = './ui/level-map/cloud-3.png'
 
 export const LevelMap = () => {
   const scrollRef = useRef(null)

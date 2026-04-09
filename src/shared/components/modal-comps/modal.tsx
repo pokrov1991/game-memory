@@ -4,7 +4,7 @@ import classNames from 'classnames'
 import Portal from './portal'
 import style from './modal.module.css'
 
-const topbar = '/ui/modal-topbar.svg'
+const topbar = './ui/modal-topbar.svg'
 
 export const Modal = ({
   isOpened,

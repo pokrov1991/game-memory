@@ -41,26 +41,35 @@ function loadAudio(src: string): Promise<AudioAsset> {
 }
 
 function loadFile(src: string): Promise<Asset> {
-  const lower = src.toLowerCase();
+  const fixedSrc = src.startsWith("/")
+    ? `.${src}`
+    : src;
+
+  const lower = fixedSrc.toLowerCase();
 
   if (/\.(png|jpg|jpeg|webp|gif|svg)$/.test(lower)) {
-    return loadImage(src);
+    return loadImage(fixedSrc);
   }
 
   if (/\.(mp3|wav|ogg|m4a)$/.test(lower)) {
-    return loadAudio(src);
+    return loadAudio(fixedSrc);
   }
 
-  return fetch(src).then((response) => {
+  return fetch(fixedSrc).then((response) => {
     if (!response.ok) {
-      throw new Error(`Не удалось загрузить файл: ${src}`);
+      throw new Error(`Не удалось загрузить файл: ${fixedSrc}`);
     }
-    return response.blob().then((blob) => ({ type: "file", src, blob }));
+
+    return response.blob().then((blob) => ({
+      type: "file",
+      src: fixedSrc,
+      blob,
+    }));
   });
 }
 
 export async function preloadAssets(onProgress?: (percent: number) => void): Promise<Map<string, Asset>> {
-  const response = await fetch("/assets-manifest.json");
+  const response = await fetch("./assets-manifest.json");
 
   if (!response.ok) {
     throw new Error("Не удалось загрузить assets-manifest.json");

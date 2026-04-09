@@ -10,7 +10,7 @@ type Props = {
   onClick: (level: number) => void
 }
 
-const bgItem = '/ui/level-map/Item.png'
+const bgItem = './ui/level-map/Item.png'
 
 export const Item = ({ id, x, y, isCurrent, isPassed, onClick }: Props) => (
   <div 

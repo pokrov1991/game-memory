@@ -30,7 +30,7 @@
   left: 47px;
   width: 100px;
   height: 152px;
-  background: url('game/player/z5-a1-head.webp') 0 0 / contain no-repeat;
+  background: url('../game/player/z5-a1-head.webp') 0 0 / contain no-repeat;
   z-index: 2;
 }
 
@@ -40,7 +40,7 @@
   left: 20px;
   width: 168px;
   height: 174px;
-  background: url('game/player/z3-a1-body.png') 0 0 / contain no-repeat;
+  background: url('../game/player/z3-a1-body.png') 0 0 / contain no-repeat;
   z-index: 1;
 }
 
@@ -48,7 +48,7 @@
   position: absolute;
   width: 120px;
   height: 120px;
-  background: url('game/player/z4-a1-a2-arm.png') 0 0 / contain no-repeat;
+  background: url('../game/player/z4-a1-a2-arm.png') 0 0 / contain no-repeat;
   left: -1px;
   top: 142px;
   z-index: 2;
@@ -87,42 +87,42 @@
 
 .user-treasures__info-item_level {
   &::before {
-    background-image: url('tavern/treasures/0-1.png');
+    background-image: url('../tavern/treasures/0-1.png');
   }
 }
 
 .user-treasures__info-item_coin {
   &::before {
-    background-image: url('tavern/treasures/0-2.png');
+    background-image: url('../tavern/treasures/0-2.png');
   }
 }
 
 .user-treasures__info-item_potion {
   &::before {
-    background-image: url('tavern/treasures/0-3.png');
+    background-image: url('../tavern/treasures/0-3.png');
   }
 }
 
 .user-treasures__info-item_0 {
   &::before {
-    background-image: url('tavern/treasures/0.png');
+    background-image: url('../tavern/treasures/0.png');
   }
 }
 
 .user-treasures__info-item_1 {
   &::before {
-    background-image: url('tavern/treasures/1.png');
+    background-image: url('../tavern/treasures/1.png');
   }
 }
 
 .user-treasures__info-item_2 {
   &::before {
-    background-image: url('tavern/treasures/2.png');
+    background-image: url('../tavern/treasures/2.png');
   }
 }
 
 .user-treasures__info-item_3 {
   &::before {
-    background-image: url('tavern/treasures/3.png');
+    background-image: url('../tavern/treasures/3.png');
   }
 }

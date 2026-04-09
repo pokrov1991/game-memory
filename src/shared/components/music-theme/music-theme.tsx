@@ -4,7 +4,7 @@ import { useMusic } from '@/shared/hooks'
 
 export const MusicTheme: React.FC = () => {
   const Button = useMusic({
-    src: '/music/theme.mp3',
+    src: './music/theme.mp3',
     loop: true,
     ui: true,
   })

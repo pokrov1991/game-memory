@@ -46,8 +46,8 @@ export const GameStorePage = () => {
 
   const cCoins = userCoins > 0 ? userCoins : coins
 
-  useMusic({ src: '/music/success.mp3', conditional: isOpenModalWin })
-  useMusic({ src: '/music/timeout.mp3', conditional: isOpenModalLose })
+  useMusic({ src: './music/success.mp3', conditional: isOpenModalWin })
+  useMusic({ src: './music/timeout.mp3', conditional: isOpenModalLose })
 
   const setGameDataWin = async () => {
     const currentCoins = cCoins + gameLevel.coins

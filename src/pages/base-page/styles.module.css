@@ -143,13 +143,13 @@
   right: -16px;
   width: 40px;
   height: 28px;
-  background: url('ui/arrow.png') no-repeat center / contain;
+  background: url('../ui/arrow.png') no-repeat center / contain;
   border: none;
   cursor: pointer;
   z-index: 3;
 
   &:hover {
-    background-image: url('ui/arrow-active.png');
+    background-image: url('../ui/arrow-active.png');
   }
 }
 
@@ -159,14 +159,14 @@
   right: -16px;
   width: 40px;
   height: 28px;
-  background: url('ui/arrow.png') no-repeat center / contain;
+  background: url('../ui/arrow.png') no-repeat center / contain;
   border: none;
   cursor: pointer;
   transform: rotate(180deg);
   z-index: 3;
 
   &:hover {
-    background-image: url('ui/arrow-active.png');
+    background-image: url('../ui/arrow-active.png');
   }
 }
 

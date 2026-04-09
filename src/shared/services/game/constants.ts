@@ -22,10 +22,10 @@ export const MAP_CARD_COLORS = {
   'card-10.png': 'red',
 }
 
-export const PATH_SPRITE = '/game'
-export const PATH_SPRITE_CARD = '/game/card.png'
-export const PATH_SPRITE_CARD_HOVER = '/game/card-hover.png'
-export const PATH_SPRITE_CARD_LIGHT = '/game/card-light.png'
+export const PATH_SPRITE = './game'
+export const PATH_SPRITE_CARD = './game/card.png'
+export const PATH_SPRITE_CARD_HOVER = './game/card-hover.png'
+export const PATH_SPRITE_CARD_LIGHT = './game/card-light.png'
 
 export const FRAME_TIMOUT = 500
 export const CARD_MARGIN = 10
