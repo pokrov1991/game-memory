@@ -7,7 +7,10 @@
   background: #fff;
 
   @media (max-width: 768px) {
-    padding: 10px 20px;
+    position: relative;
+    margin: 0 0 -30px -20px;
+    width: calc(100% + 40px);
+    padding: 10px 10px 10px 160px;
   }
 }
 
@@ -17,41 +20,12 @@
   left: 0px;
   width: 190px;
   height: 200px;
-  overflow: hidden;
 
   @media (max-width: 768px) {
-    display: none;
+    width: 150px;
+    height: 180px;
+    overflow: hidden;
   }
-}
-
-.user-treasures__player-head {
-  position: absolute;
-  top: 0;
-  left: 47px;
-  width: 100px;
-  height: 152px;
-  background: url('../game/player/z5-a1-head.webp') 0 0 / contain no-repeat;
-  z-index: 2;
-}
-
-.user-treasures__player-body {
-  position: absolute;
-  top: 91px;
-  left: 20px;
-  width: 168px;
-  height: 174px;
-  background: url('../game/player/z3-a1-body.png') 0 0 / contain no-repeat;
-  z-index: 1;
-}
-
-.user-treasures__player-arm {
-  position: absolute;
-  width: 120px;
-  height: 120px;
-  background: url('../game/player/z4-a1-a2-arm.png') 0 0 / contain no-repeat;
-  left: -1px;
-  top: 142px;
-  z-index: 2;
 }
 
 .user-treasures__info {

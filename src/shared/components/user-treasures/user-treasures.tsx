@@ -1,5 +1,6 @@
 import classNames from 'classnames'
 import { useProgress } from '@/shared/hooks'
+import { StoryPlayer } from '@/shared/components'
 import styles from './styles.module.css'
 
 export const UserTreasures = () => {
@@ -8,9 +9,7 @@ export const UserTreasures = () => {
   return (
     <div className={styles['user-treasures']}>
       <div className={styles['user-treasures__player']}>
-        <div className={styles['user-treasures__player-head']}></div>
-        <div className={styles['user-treasures__player-body']}></div>
-        <div className={styles['user-treasures__player-arm']}></div>
+        <StoryPlayer />
       </div>
       <div className={styles['user-treasures__info']}>
         <div className={classNames(styles['user-treasures__info-item'], styles['user-treasures__info-item_level'])}>
