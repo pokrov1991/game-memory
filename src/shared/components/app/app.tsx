@@ -65,22 +65,10 @@ export const App = () => {
 
         {isReady && <Outlet />}
 
-        <Fullscreen />
+        {/* <Fullscreen /> */}
         <MusicTheme />
 
       </Container>
     </ErrorBoundary>
   )
 }
-
-// export const App = () => {
-//   return (
-//     <ErrorBoundary fallback={<Navigate to="/error" />}>
-//       <Container disableGutters maxWidth={false}>
-//         <Outlet />
-//         <Fullscreen />
-//         <MusicTheme />
-//       </Container>
-//     </ErrorBoundary>
-//   )
-// }

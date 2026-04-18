@@ -2,6 +2,7 @@ import classNames from 'classnames'
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Button } from '@/shared/components'
+import { StoryPlayer } from '@/shared/components'
 import styles from './styles.module.css'
 import BALLOONS from './balloons.json'
 
@@ -89,10 +90,11 @@ export const IntroPage = () => {
           </div>
         </div>
       )}
+
       {step > 0 && (
         <div className={styles['intro-page__slide']}>
           <div className={styles['intro-page__slide-wrap']}>
-            {balloons.map((balloon, index) => (
+            {false && balloons.map((balloon, index) => (
               <div 
                 key={index} 
                 className={styles['intro-page__balloon']}
@@ -104,6 +106,25 @@ export const IntroPage = () => {
               </div>
             ))}
             <img src={slides[step as keyof typeof slides]} />
+          </div>
+        </div>
+      )}
+
+      {step > 0 && (
+        <div className={styles['intro-page__info']}>
+          {balloons[1]?.text && <div className={styles['intro-page__info-enemy']}>
+            <div className={styles['intro-page__info-enemy-img']}></div>
+            <div className={styles['intro-page__info-enemy-text']}>
+              <p>{balloons[1]?.text}</p>
+            </div>
+          </div>}
+          <div className={styles['intro-page__info-player']}>
+            <div className={styles['intro-page__info-player-img']}>
+              <StoryPlayer />
+            </div>
+            <div className={styles['intro-page__info-player-text']}>
+              <p>{balloons[0]?.text}</p>
+            </div>
           </div>
         </div>
       )}

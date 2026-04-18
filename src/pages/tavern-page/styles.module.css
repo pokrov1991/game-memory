@@ -33,10 +33,6 @@
   }
 }
 
-/* .tavern-page__wrap_main {
-  padding-top: 200px;
-} */
-
 .tavern-page__wrap_levels {
   .navigation {
     margin-bottom: 45px;
@@ -54,7 +50,6 @@
   position: absolute;
   bottom: 17%;
   right: 0;
-  z-index: 1;
 
   img {
     position: relative;
@@ -86,7 +81,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: start;
-  bottom: 10%;
+  bottom: 17%;
   right: 50%;
   width: 100%;
   height: 110px;
@@ -99,24 +94,31 @@
   color: #FFFFFF;
   z-index: 1;
 
+  p {
+    margin: 0;
+    position: relative;
+    z-index: 3;
+  }
+
   @media (max-width: 768px) {
     position: relative;
     right: 0;
     bottom: 0;
     height: auto;
     width: 100%;
-    background: rgba(255, 255, 255, 0.85);
+    background: rgba(0, 0, 0, 0.75);
     margin: 0;
     padding: 10px 180px 10px 150px;
-    color: #333;
+    color: #fff;
     font-family: 'Roboto';
     font-weight: 500;
     font-size: 16px;
     line-height: 22px;
     align-items: flex-end;
+    z-index: auto;
   }
 
-  @media (max-width: 410px) {
+  @media (max-width: 500px) {
     text-align: left;
     padding: 10px 180px 10px 20px;
   }
@@ -153,6 +155,13 @@
     border-top: 20px solid rgba(255, 255, 255, 0.75);
   }
 
+  p {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    position: relative;
+    z-index: 3;
+  }
   strong {
     width: 100%;
     margin-bottom: 5px;
@@ -174,6 +183,7 @@
   }
   b {
     display: flex;
+    flex-wrap: wrap;
     gap: 16px;
     padding-top: 12px;
     margin-top: 7px;
@@ -188,10 +198,10 @@
     bottom: 0;
     height: auto;
     width: 100%;
-    background: rgba(255, 255, 255, 0.85);
+    background: rgba(0, 0, 0, 0.75);
     margin: 0;
     padding: 10px 180px 10px 150px;
-    color: #333;
+    color: #fff;
     font-family: 'Roboto';
     font-weight: 500;
     font-size: 16px;
@@ -199,10 +209,17 @@
     text-align: right;
     align-items: flex-end;
     border-radius: 0;
-    z-index: 1;
+    z-index: auto;
 
+    strong {
+      color: #fff;
+    }
+    span {
+      color: #c3712a;
+    }
     b {
       width: auto;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
     }
 
     &::before {
@@ -210,7 +227,7 @@
     }
   }
 
-  @media (max-width: 410px) {
+  @media (max-width: 500px) {
     text-align: left;
     padding: 10px 180px 10px 20px;
   }
@@ -236,6 +253,10 @@
     background-repeat: no-repeat;
     background-position: center;
     background-size: contain;
+  }
+
+  @media (max-width: 768px) {
+    color: #fff;
   }
 }
 
@@ -272,6 +293,10 @@
 
 .barman-text-item_disabled {
   color: #a50000;
+
+  @media (max-width: 768px) {
+    color: #ff3030;
+  }
 }
 
 .tavern-page__levels {

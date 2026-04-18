@@ -21,7 +21,7 @@ export const Modal = ({
         <div className={style['modal__wrapper']}>
           <div className={`${style['modal__content']} ${style[`modal__content_${type}`]}`}>
             <div className={style['modal__topbar']}>
-              <img src={topbar} alt="!" />
+              <img className={style['modal__topbar-img']} src={topbar} alt="!" />
             </div>
             {children}
           </div>

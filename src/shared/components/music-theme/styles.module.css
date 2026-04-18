@@ -1,7 +1,8 @@
 .music-theme {
   position: absolute;
   top: 8px;
-  right: 50px; 
+  /* right: 50px;  */
+  right: 10px;
   z-index: 10;
   display: flex;
   width: 40px;

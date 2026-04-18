@@ -285,17 +285,18 @@ export const TavernPage = () => {
           <img src={talk ? imgBarmanTalk : imgBarmanDefault} />
 
           {mode === 'main' && 
-            <p className={styles['tavern-page__barman-text-main']}>
-              Здравствуй путник!<br/>Чего желаешь?
-            </p>}
+            <div className={styles['tavern-page__barman-text-main']}>
+              <p>Здравствуй путник!<br/>Чего желаешь?</p>
+            </div>}
 
           {mode === 'levels' && 
-            <p className={styles['tavern-page__barman-text-baloon']}>
-              Выбери соперника, который тебе по зубам. Если победишь - получаешь монетки, если проиграешь - теряешь их. Что скажешь?
-            </p>}
+            <div className={styles['tavern-page__barman-text-baloon']}>
+              <p>Выбери соперника, который тебе по зубам. Если победишь - получаешь монетки, если проиграешь - теряешь их. Что скажешь?</p>
+            </div>}
 
           {mode === 'store' && storeInventoryItem && 
-            <p className={styles['tavern-page__barman-text-baloon']}>
+            <div className={styles['tavern-page__barman-text-baloon']}>
+              <p>
               <strong>{storeInventoryItem.name}</strong>
               <span>{storeInventoryItem.desc}</span>
               <b>
@@ -316,12 +317,13 @@ export const TavernPage = () => {
                   </i>
                 ))}
               </b>
-            </p>}
+              </p>
+            </div>}
 
           {mode === 'xp' && 
-            <p className={styles['tavern-page__barman-text-baloon']}>
-              У тебя есть сферы энергии, которые ты можешь потратить на улучшение своих характеристик. Чем выше уровень, тем больше сфер для распределения. На что хочешь потратить свои сферы?
-            </p>}
+            <div className={styles['tavern-page__barman-text-baloon']}>
+              <p>У тебя есть сферы энергии, которые ты можешь потратить на улучшение своих характеристик. Чем выше уровень, тем больше сфер для распределения. На что хочешь потратить свои сферы?</p>
+            </div>}
         </div>
 
         <UserTreasures/>

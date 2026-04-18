@@ -51,7 +51,7 @@
 .game-training-cards-info {
   width: 720px;
   position: absolute;
-  top: -120px;
+  top: -80px;
   left: 0;
   font-family: 'Roboto';
   font-style: normal;
@@ -64,7 +64,7 @@
 
   @media (max-width: 1024px) {
     width: 460px;
-    top: -125px;
+    top: -90px;
     font-size: 14px;
     padding: 8px;
     border-radius: 6px;
@@ -72,7 +72,7 @@
 
   @media (max-width: 768px) {
     width: 355px;
-    top: -90px;
+    top: -75px;
     left: -5px;
     font-size: 12px;
     padding: 5px;

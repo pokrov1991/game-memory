@@ -9,19 +9,22 @@
 }
 
 .intro-page__actions {
-  position: absolute;
+  background: rgba(0, 0, 0, 0.8);
+  position: relative;
+  width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
-  bottom: 0;
+  top: 0;
   right: 0;
   gap: 10px;
-  padding: 10px 10px;
+  padding: 10px 55px 10px 20px;
   z-index: 3;
 
   button {
     width: 160px;
     height: 64px;
+    min-width: 160px;
     min-height: 64px;
 
     span {
@@ -29,25 +32,33 @@
       font-weight: 700;
       margin-bottom: 6px;
     }
-  }
 
-  @media (max-width: 768px) {
-    gap: 7px;
+    @media (max-width: 768px) {
+      width: 140px;
+      height: 58px;
+      min-width: 140px;
+      min-height: 58px;
+    }
   }
 }
 
 .intro-page__actions-btn {
   padding: 10px 20px;
-  background: rgba(255, 255, 255, 0.5);
   border-radius: 5px;
   font-family: Roboto, sans-serif;
   font-weight: 500;
   font-size: 16px;
-  color: #000;
+  color: #fff;
+  opacity: 0.75;
+  transition: 0.3s;
   cursor: pointer;
 
   &:hover {
-    background: rgba(255, 255, 255, 1);
+    opacity: 1;
+  }
+
+  &:first-child {
+    margin-right: auto;
   }
 
   @media (max-width: 768px) {
@@ -56,12 +67,11 @@
 }
 
 .intro-page__actions-btn_disabled {
-  background: rgba(255, 255, 255, 0.3);
-  color: rgba(0, 0, 0, 0.5);
+  opacity: 0.5;
   cursor: not-allowed;
 
   &:hover {
-    background: rgba(255, 255, 255, 0.3);
+    opacity: 0.5;
   } 
 }
 
@@ -163,5 +173,97 @@
         border-top: 10px solid rgba(255, 255, 255, 0.8);
       }
     }
+  }
+}
+
+.intro-page__info {
+  position: relative;
+  width: 100%;
+  color: #fff;
+  z-index: 3;
+}
+
+.intro-page__info-player {
+  position: relative;
+  width: 100%;
+}
+
+.intro-page__info-player-img {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 200px;
+  overflow: hidden;
+
+  @media (max-width: 768px) {
+    width: 150px;
+  }
+}
+
+.intro-page__info-player-text {
+  font-family: Roboto, sans-serif;
+  font-weight: 600;
+  font-size: 18px;
+  width: 100%;
+  padding: 15px 20px 15px 200px;
+  background: rgba(255, 255, 255, 0.8);
+  color: #010101;
+
+  p {
+    margin: 0;
+  }
+
+  @media (max-width: 768px) {
+    font-size: 16px;
+    line-height: 22px;
+    padding: 15px 20px 15px 150px;
+  }
+}
+
+.intro-page__info-enemy {
+  position: relative;
+  width: 100%;
+}
+
+.intro-page__info-enemy-img {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  border: 20px solid #000;
+  background: #016da8;
+
+  @media (max-width: 768px) {
+    width: 150px;
+    height: 150px;
+  }
+}
+
+.intro-page__info-enemy-text {
+  font-family: Roboto, sans-serif;
+  font-weight: 600;
+  font-size: 18px;
+  width: 100%;
+  padding: 15px 200px 15px 200px;
+  background: rgba(0, 0, 0, 0.75);
+  color: #fff;
+  text-align: right;
+
+  p {
+    margin: 0;
+    position: relative;
+    z-index: 3;
+  }
+
+  @media (max-width: 768px) {
+    font-size: 16px;
+    line-height: 22px;
+    padding: 15px 150px 15px 150px;
+  }
+
+  @media (max-width: 500px) {
+    padding: 15px 150px 15px 20px;
   }
 }
