@@ -6,7 +6,7 @@
   padding: 10px 20px 10px 200px;
   background: #fff;
 
-  @media (max-width: 768px) {
+  @media (max-width: 1024px) {
     position: relative;
     margin: 0 0 -30px -20px;
     width: calc(100% + 40px);
@@ -21,7 +21,7 @@
   width: 190px;
   height: 200px;
 
-  @media (max-width: 768px) {
+  @media (max-width: 1024px) {
     width: 150px;
     height: 180px;
     overflow: hidden;
@@ -32,7 +32,7 @@
   display: flex;
   gap: 20px;
 
-  @media (max-width: 768px) {
+  @media (max-width: 1024px) {
     flex-wrap: wrap;
   }
 }

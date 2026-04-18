@@ -8,7 +8,7 @@
   background: url('/tavern/bg.jpg') no-repeat center 0 / cover;
   overflow: hidden;
 
-  @media (max-width: 768px) {
+  @media (max-width: 1024px) {
     overflow-y: scroll;
   }
 }
@@ -20,7 +20,7 @@
   max-width: 1100px;
   padding: 90px 20px;
 
-  @media (max-width: 768px) {
+  @media (max-width: 1024px) {
     padding: 30px 20px;
     min-height: 100vh;
     display: flex;
@@ -50,6 +50,7 @@
   position: absolute;
   bottom: 17%;
   right: 0;
+  pointer-events: none;
 
   img {
     position: relative;
@@ -58,7 +59,7 @@
     z-index: 2;
   }
 
-  @media (max-width: 768px) {
+  @media (max-width: 1024px) {
     position: relative;
     margin: auto 0 1px -20px;
     height: auto;
@@ -100,7 +101,7 @@
     z-index: 3;
   }
 
-  @media (max-width: 768px) {
+  @media (max-width: 1024px) {
     position: relative;
     right: 0;
     bottom: 0;
@@ -191,7 +192,7 @@
     width: 100%;
   }
 
-  @media (max-width: 768px) {
+  @media (max-width: 1024px) {
     position: relative;
     right: 0;
     top: 0;
@@ -255,7 +256,7 @@
     background-size: contain;
   }
 
-  @media (max-width: 768px) {
+  @media (max-width: 1024px) {
     color: #fff;
   }
 }
@@ -294,7 +295,7 @@
 .barman-text-item_disabled {
   color: #a50000;
 
-  @media (max-width: 768px) {
+  @media (max-width: 1024px) {
     color: #ff3030;
   }
 }
@@ -309,7 +310,7 @@
   margin-bottom: 40px;
   z-index: 2;
 
-  @media (max-width: 768px) {
+  @media (max-width: 1024px) {
     width: 100%;
   }
 }
@@ -475,7 +476,7 @@
   height: 230px;
   gap: 15px;
 
-  @media (max-width: 768px) {
+  @media (max-width: 1024px) {
     width: 350px;
     height: 180px;
     gap: 10px;
@@ -493,7 +494,7 @@
   border-radius: 4px;
   cursor: pointer;
 
-  @media (max-width: 768px) {
+  @media (max-width: 1024px) {
     width: 80px;
     height: 80px;
   }
@@ -510,7 +511,7 @@
     color: #E9E1D1;
     text-shadow: 0px 0px 11px rgba(0, 0, 0, 0.8);
 
-    @media (max-width: 768px) {
+    @media (max-width: 1024px) {
       font-size: 18px;
     }
   }
@@ -529,7 +530,7 @@
     border-radius: 2px;
     transition: 0.3s;
 
-    @media (max-width: 768px) {
+    @media (max-width: 1024px) {
       width: 76px;
       height: 76px;
     }
@@ -612,7 +613,7 @@
   transform-origin: center;
   transform-box: border-box;
 
-  @media (max-width: 768px) {
+  @media (max-width: 1024px) {
     width: 100%;
   }
 
@@ -669,7 +670,7 @@
       }
     }
     
-    @media (max-width: 768px) {
+    @media (max-width: 1024px) {
       font-size: 28px;
       line-height: 52px;
     }
