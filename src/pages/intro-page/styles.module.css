@@ -1,7 +1,7 @@
 .intro-page {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   flex-direction: column;
   width: 100%;
   height: 100vh;
@@ -77,7 +77,7 @@
 
 .intro-page__start {
   width: 100%;
-  height: 100vh;
+  height: 100%;
 }
 
 .intro-page__start-wrap {
@@ -102,7 +102,7 @@
 
 .intro-page__slide {
   width: 100%;
-  height: 100vh;
+  height: 100%;
 }
 
 .intro-page__slide-wrap {
@@ -113,12 +113,14 @@
   align-items: center;
 
   img {
-    position: absolute;
+    position: fixed;
     display: block;
     width: 100%;
-    /* height: 100%;
-    object-fit: cover; */
     z-index: 1;
+
+    @media (max-width: 768px) {
+      position: relative;
+    }
   }
 }
 

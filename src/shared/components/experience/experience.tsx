@@ -12,7 +12,7 @@ export const Experience = () => {
   const score = userScore > 0 ? userScore : game?.userScore
 
   const scoreEnd = LEVELS_USER_CONFIG[userLevel].score
-  const scoreStart = userLevel > 1 ? scoreEnd - LEVELS_USER_CONFIG[userLevel - 1].score : 0
+  const scoreStart = userLevel > 1 ? LEVELS_USER_CONFIG[userLevel - 1].score : 0
   const scoreLevel = scoreEnd - scoreStart
   const scoreCurrent = score - scoreStart
   const scorePercent = Number((scoreCurrent / scoreLevel) * 100) || 0

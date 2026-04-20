@@ -40,6 +40,12 @@ export const TavernPage = () => {
   }
 
   useEffect(() => {
+    if (userCoins === 0) {
+      coinsUp(5)
+    }
+  }, [])
+
+  useEffect(() => {
     // Мержим конфиг и прогресс юзера по инвентарю, что бы отображать актуальное состояние
     const inventoryMap = new Map(userInventory.map(item => [item.id, item]))
     const merged = INVENTORY_STORE_CONFIG.map(item => ({
