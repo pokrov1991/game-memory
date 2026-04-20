@@ -70,8 +70,8 @@ export const useMusic = (props: IMusicProps) => {
 
   return (
     <button style={buttonStyle} onClick={onClickBtn} ref={buttonRef}>
-      {!isPlaying && <img src={ICONS.Play} alt={'Начать мелодию'} />}
-      {isPlaying && <img src={ICONS.Pause} alt={'Остановить мелодию'} />}
+      {!isPlaying && <img src={ICONS.SoundOn} alt={'Начать мелодию'} />}
+      {isPlaying && <img src={ICONS.SoundOff} alt={'Остановить мелодию'} />}
     </button>
   )
 }

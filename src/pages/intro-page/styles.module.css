@@ -8,6 +8,11 @@
   background: #000;
 }
 
+.intro-page + div {
+  top: 20px;
+  right: 5px;
+}
+
 .intro-page__actions {
   background: rgba(0, 0, 0, 0.8);
   position: relative;
@@ -231,15 +236,23 @@
   position: absolute;
   right: 0;
   bottom: 0;
-  width: 200px;
-  height: 200px;
-  border-radius: 50%;
-  border: 20px solid #000;
+  width: 120px;
+  height: 120px;
+  padding: 0;
+  border-radius: 50% 50% 0 50%;
+  border: 10px solid #000;
   background: #016da8;
 
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+  }
+
   @media (max-width: 768px) {
-    width: 150px;
-    height: 150px;
+    width: 100px;
+    height: 100px;
   }
 }
 
@@ -248,7 +261,7 @@
   font-weight: 600;
   font-size: 18px;
   width: 100%;
-  padding: 15px 200px 15px 200px;
+  padding: 15px 140px 15px 120px;
   background: rgba(0, 0, 0, 0.75);
   color: #fff;
   text-align: right;
@@ -262,10 +275,10 @@
   @media (max-width: 768px) {
     font-size: 16px;
     line-height: 22px;
-    padding: 15px 150px 15px 150px;
+    padding: 15px 120px 15px 100px;
   }
 
   @media (max-width: 500px) {
-    padding: 15px 150px 15px 20px;
+    padding: 15px 120px 15px 20px;
   }
 }

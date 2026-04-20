@@ -10,4 +10,10 @@
   padding: 8px;
   cursor: pointer;
   margin-left: auto;
+  opacity: 0.75;
+  transition: 0.3s;
+
+  &:hover {
+    opacity: 1;
+  }
 }

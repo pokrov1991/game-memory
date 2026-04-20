@@ -11,8 +11,10 @@ import Emblem from '/ui/icons/emblem.svg'
 import Comment from '/ui/icons/comment.svg'
 import FullscreenIn from '/ui/icons/fullscreen-in.svg'
 import FullscreenOut from '/ui/icons/fullscreen-out.svg'
-import Play from '/ui/icons/play.svg'
-import Pause from '/ui/icons/pause.svg'
+import SoundOn from '/ui/icons/sound-on.svg'
+import SoundOff from '/ui/icons/sound-off.svg'
+import Voice from '/ui/icons/voice.svg'
+import VoiceAnimation from '/ui/icons/voice.gif'
 
 export const ICONS = {
   Clock,
@@ -28,6 +30,8 @@ export const ICONS = {
   Comment,
   FullscreenIn,
   FullscreenOut,
-  Play,
-  Pause,
+  SoundOn,
+  SoundOff,
+  Voice,
+  VoiceAnimation
 }

@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Button } from '@/shared/components'
 import { StoryPlayer } from '@/shared/components'
+import { ICONS } from '@/shared/constants/icons'
 import styles from './styles.module.css'
 import BALLOONS from './balloons.json'
 
@@ -113,7 +114,9 @@ export const IntroPage = () => {
       {step > 0 && (
         <div className={styles['intro-page__info']}>
           {balloons[1]?.text && <div className={styles['intro-page__info-enemy']}>
-            <div className={styles['intro-page__info-enemy-img']}></div>
+            <div className={styles['intro-page__info-enemy-img']}>
+              <img src={ICONS.VoiceAnimation} />
+            </div>
             <div className={styles['intro-page__info-enemy-text']}>
               <p>{balloons[1]?.text}</p>
             </div>
