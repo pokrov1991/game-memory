@@ -63,6 +63,15 @@
   i[data-icon='organ-3'] {
     background-image: url('../tavern/treasures/3.png');
   }
+  i[data-icon='organ-4'] {
+    background-image: url('../tavern/treasures/4.png');
+  }
+  i[data-icon='organ-5'] {
+    background-image: url('../tavern/treasures/5.png');
+  }
+  i[data-icon='organ-6'] {
+    background-image: url('../tavern/treasures/6.png');
+  }
 }
 
 .modal__content::before {

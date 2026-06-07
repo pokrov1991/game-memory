@@ -114,9 +114,12 @@ export default class YandexSDK extends SDK {
           ],
           userOrgans: {
             0: { id: 0, name: 'Болт от ПС-91', count: 0 },
-            1: { id: 1, name: 'Зуб щитомордника', count: 0 },
-            2: { id: 2, name: 'Шкура литора', count: 0 },
-            3: { id: 3, name: 'Пластина от ИС-2', count: 0 },
+            1: { id: 1, name: 'Камень щитомордника', count: 0 },
+            2: { id: 2, name: 'Кость литора', count: 0 },
+            3: { id: 3, name: 'Хромовая пластина', count: 0 },
+            4: { id: 4, name: 'Ткань меркиля', count: 0 },
+            5: { id: 5, name: 'Перья титуса', count: 0 },
+            6: { id: 6, name: 'Тентакля севы', count: 0 },
           }
         }
         await this.setGameData(gameData);

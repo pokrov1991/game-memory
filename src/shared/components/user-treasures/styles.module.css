@@ -100,3 +100,21 @@
     background-image: url('../tavern/treasures/3.png');
   }
 }
+
+.user-treasures__info-item_4 {
+  &::before {
+    background-image: url('../tavern/treasures/4.png');
+  }
+}
+
+.user-treasures__info-item_5 {
+  &::before {
+    background-image: url('../tavern/treasures/5.png');
+  }
+}
+
+.user-treasures__info-item_6 {
+  &::before {
+    background-image: url('../tavern/treasures/6.png');
+  }
+}

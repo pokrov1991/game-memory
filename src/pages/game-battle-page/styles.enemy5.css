@@ -1,0 +1,121 @@
+.game-page__person-img-enemy-5 {
+  background-image: url('/game/enemy/enemy-5-default.webp');
+  background-repeat: no-repeat;
+  width: 520px !important;
+  height: 520px !important;
+  transform: scale(0.7) !important;
+  top: -110px !important;
+  left: -110px !important;
+}
+
+.game-page__person-img-enemy-5_start-black {
+  background-image: url('/game/enemy/enemy-5-start-sprite-black.png');
+  animation: enemyFiveSpriteStart 0.5s steps(5) forwards;
+}
+.game-page__person-img-enemy-5_start-blue {
+  background-image: url('/game/enemy/enemy-5-start-sprite-blue.png');
+  animation: enemyFiveSpriteStart 0.5s steps(5) forwards;
+}
+.game-page__person-img-enemy-5_start-green {
+  background-image: url('/game/enemy/enemy-5-start-sprite-green.png');
+  animation: enemyFiveSpriteStart 0.5s steps(5) forwards;
+}
+.game-page__person-img-enemy-5_start-red {
+  background-image: url('/game/enemy/enemy-5-start-sprite-red.png');
+  animation: enemyFiveSpriteStart 0.5s steps(5) forwards;
+}
+.game-page__person-img-enemy-5_start-yellow {
+  background-image: url('/game/enemy/enemy-5-start-sprite-yellow.png');
+  animation: enemyFiveSpriteStart 0.5s steps(5) forwards;
+}
+
+.game-page__person-img-enemy-5_run-black {
+  background-image: url('/game/enemy/enemy-5-run-sprite-black.png');
+  animation: enemyFiveSpriteRun 0.6s steps(6) infinite;
+}
+.game-page__person-img-enemy-5_run-blue {
+  background-image: url('/game/enemy/enemy-5-run-sprite-blue.png');
+  animation: enemyFiveSpriteRun 0.6s steps(6) infinite;
+}
+.game-page__person-img-enemy-5_run-green {
+  background-image: url('/game/enemy/enemy-5-run-sprite-green.png');
+  animation: enemyFiveSpriteRun 0.6s steps(6) infinite;
+}
+.game-page__person-img-enemy-5_run-red {
+  background-image: url('/game/enemy/enemy-5-run-sprite-red.png');
+  animation: enemyFiveSpriteRun 0.6s steps(6) infinite;
+}
+.game-page__person-img-enemy-5_run-yellow {
+  background-image: url('/game/enemy/enemy-5-run-sprite-yellow.png');
+  animation: enemyFiveSpriteRun 0.6s steps(6) infinite;
+}
+
+.game-page__person-img-enemy-5_attack-black {
+  background-image: url('/game/enemy/enemy-5-attack-sprite-black.png');
+  animation: enemyFiveSpriteAttack 0.8s steps(8) forwards;
+}
+.game-page__person-img-enemy-5_attack-blue {
+  background-image: url('/game/enemy/enemy-5-attack-sprite-blue.png');
+  animation: enemyFiveSpriteAttack 0.8s steps(8) forwards;
+}
+.game-page__person-img-enemy-5_attack-green {
+  background-image: url('/game/enemy/enemy-5-attack-sprite-green.png');
+  animation: enemyFiveSpriteAttack 0.8s steps(8) forwards;
+}
+.game-page__person-img-enemy-5_attack-red {
+  background-image: url('/game/enemy/enemy-5-attack-sprite-red.png');
+  animation: enemyFiveSpriteAttack 0.8s steps(8) forwards;
+}
+.game-page__person-img-enemy-5_attack-yellow {
+  background-image: url('/game/enemy/enemy-5-attack-sprite-yellow.png');
+  animation: enemyFiveSpriteAttack 0.8s steps(8) forwards;
+}
+
+.game-page__person-img-enemy-5_stun {
+  background-image: url('/game/enemy/enemy-5-stun.webp');
+}
+
+.game-page__person-img-enemy-5_hit {
+  background-image: url('/game/enemy/enemy-5-hit.webp');
+}
+
+.game-page__person-img-enemy-5_dead {
+  background-image: url('/game/enemy/enemy-5-dead-sprite.png');
+  animation: enemyFiveSpriteDead 0.5s steps(5) forwards;
+}
+
+@keyframes enemyFiveSpriteStart {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: -2500px 0;
+  }
+}
+
+@keyframes enemyFiveSpriteRun {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: -3000px 0;
+  }
+}
+
+@keyframes enemyFiveSpriteAttack {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: -4000px 0;
+  }
+}
+
+@keyframes enemyFiveSpriteDead {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: -2500px 0;
+  }
+}

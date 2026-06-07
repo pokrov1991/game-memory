@@ -71,7 +71,7 @@ export const LEVELS_STORE_CONFIG = [
     },
     {
         id: 8,
-        title: 'Мракс Обломок',
+        title: 'Мракс Сотник',
         description: '',
         type: 'store',
         gameTimer: 35,
@@ -91,7 +91,7 @@ export const LEVELS_STORE_CONFIG = [
     },
     {
         id: 10,
-        title: 'Ворг Кристаллоспин',
+        title: 'Ворг Силуян',
         description: '',
         type: 'store',
         gameTimer: 50,

@@ -67,6 +67,22 @@
   background: url('../game/inventory/z3-a1-body-3.png') 0 0 / contain no-repeat;
 }
 
+.game-page__person-img-player-body_8 {
+  width: 220px;
+  height: 180px;
+  bottom: 237px;
+  left: 92px;
+  background: url('../game/inventory/z3-a1-body-4.png') 0 0 / contain no-repeat;
+}
+
+.game-page__person-img-player-body_10 {
+  width: 235px;
+  height: 180px;
+  bottom: 243px;
+  left: 84px;
+  background: url('../game/inventory/z3-a1-body-5.png') 0 0 / contain no-repeat;
+}
+
 .game-page__person-img-player-arm {
   position: absolute;
   width: 120px;
@@ -85,9 +101,9 @@
   position: absolute;
   width: 100px;
   height: 152px;
-  background: url('../game/player/z5-a1-head.webp') 0 0 / contain no-repeat;
   bottom: 352px;
   left: 176px;
+  background: url('../game/player/z5-a1-head.webp') 0 0 / contain no-repeat;
   animation: a1 2s infinite;
 }
 
@@ -106,6 +122,22 @@
   background: url('../game/inventory/z5-a1-head-3.png') 0 0 / contain no-repeat;
 }
 
+.game-page__person-img-player-head_7 {
+  width: 145px;
+  height: 145px;
+  left: 145px;
+  bottom: 340px;
+  background: url('../game/inventory/z5-a1-head-4.png') 0 0 / contain no-repeat;
+}
+
+.game-page__person-img-player-head_9 {
+  width: 155px;
+  height: 160px;
+  bottom: 347px;
+  left: 148px;
+  background: url('../game/inventory/z5-a1-head-5.png') 0 0 / contain no-repeat;
+}
+
 .game-page__person-img-player-head_stun {
   background-image: url('../game/player/z5-a1-head-stun.webp');
 
@@ -114,6 +146,12 @@
   }
   &.game-page__person-img-player-head_5 {
     background-image: url('../game/player/z5-a1-head-3-stun.webp');
+  }
+  &.game-page__person-img-player-head_7 {
+    background-image: url('../game/player/z5-a1-head-4-stun.webp');
+  }
+  &.game-page__person-img-player-head_9 {
+    background-image: url('../game/player/z5-a1-head-5-stun.webp');
   }
 }
 
@@ -125,6 +163,12 @@
   }
   &.game-page__person-img-player-head_5 {
     background-image: url('../game/player/z5-a1-head-3-alarm.webp');
+  }
+  &.game-page__person-img-player-head_7 {
+    background-image: url('../game/player/z5-a1-head-4-alarm.webp');
+  }
+  &.game-page__person-img-player-head_9 {
+    background-image: url('../game/player/z5-a1-head-5-alarm.webp');
   }
 }
 

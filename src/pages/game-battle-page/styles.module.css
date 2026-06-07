@@ -3,6 +3,9 @@
 @import 'styles.enemy1.css';
 @import 'styles.enemy2.css';
 @import 'styles.enemy3.css';
+@import 'styles.enemy4.css';
+@import 'styles.enemy5.css';
+@import 'styles.enemy6.css';
 
 .game-page {
   display: flex;
@@ -40,6 +43,18 @@
 
 .game-page_3 {
   background: url('/game/location/3.jpg') no-repeat center / cover;
+}
+
+.game-page_4 {
+  background: url('/game/location/4.jpg') no-repeat center / cover;
+}
+
+.game-page_5 {
+  background: url('/game/location/5.jpg') no-repeat center / cover;
+}
+
+.game-page_6 {
+  background: url('/game/location/6.jpg') no-repeat center / cover;
 }
 
 .game-page_player-hit {

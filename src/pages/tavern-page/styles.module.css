@@ -291,6 +291,23 @@
   }
 }
 
+.barman-text-item_4 {
+  &::before {
+    background-image: url('../tavern/treasures/4.png');
+  }
+}
+
+.barman-text-item_5 {
+  &::before {
+    background-image: url('../tavern/treasures/5.png');
+  }
+}
+
+.barman-text-item_6 {
+  &::before {
+    background-image: url('../tavern/treasures/6.png');
+  }
+}
 
 .barman-text-item_disabled {
   color: #a50000;
@@ -466,6 +483,10 @@
       margin-bottom: 24px;
     }
   }
+
+  @media (max-width: 570px) {
+    width: 100%;
+  }
 }
 
 .tavern-page__store-items {
@@ -479,6 +500,13 @@
   @media (max-width: 1024px) {
     width: 350px;
     height: 180px;
+    gap: 10px;
+  }
+
+  @media (max-width: 570px) {
+    flex-direction: row;
+    width: 100%;
+    height: auto;
     gap: 10px;
   }
 }
@@ -569,6 +597,22 @@
 }
 
 .tavern-page__store-item_7 {
+  background-image: url('../tavern/store/head-4.png');
+}
+
+.tavern-page__store-item_8 {
+  background-image: url('../tavern/store/body-4.png');
+}
+
+.tavern-page__store-item_9 {
+  background-image: url('../tavern/store/head-5.png');
+}
+
+.tavern-page__store-item_10 {
+  background-image: url('../tavern/store/body-5.png');
+}
+
+.tavern-page__store-item_11 {
   background-image: url('../tavern/store/hp-1.png');
 }
 

@@ -63,7 +63,7 @@ export const LevelMap = () => {
   const handleClickClose = () => setSelect(false)
 
   const handleStartGame = () => {
-    if (level.id > 3 && level.id !==101 && level.id !==102) {
+    if (level.id > 6 && level.id !==101 && level.id !==102) {
       setOpenModalInfo(true)
       return
     }

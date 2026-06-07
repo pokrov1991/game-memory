@@ -26,9 +26,9 @@ export const INVENTORY_STORE_CONFIG = [
         type: 'helmet',
         name: 'Маска щитомордника',
         desc: 'Повышает здоровье на 20 единиц.',
-        price: 500,
+        price: 200,
         organs: [
-            { id: 1, name: 'Зуб щитомордника', count: 3 },
+            { id: 1, name: 'Камень щитомордника', count: 3 },
         ],
         hp: 20,
         isPaid: false,
@@ -39,10 +39,10 @@ export const INVENTORY_STORE_CONFIG = [
         type: 'plastron',
         name: 'Доспех литора',
         desc: 'Повышает здоровье на 30 единиц.',
-        price: 600,
+        price: 300,
         organs: [
-            { id: 1, name: 'Зуб щитомордника', count: 4 },
-            { id: 2, name: 'Шкура литора', count: 3 }
+            { id: 1, name: 'Камень щитомордника', count: 4 },
+            { id: 2, name: 'Кость литора', count: 3 }
         ],
         hp: 30,
         isPaid: false,
@@ -51,34 +51,93 @@ export const INVENTORY_STORE_CONFIG = [
     {
         id: 5,
         type: 'helmet',
-        name: 'Шлем ИС-2',
-        desc: 'Повышает здоровье на 40 единиц.',
+        name: 'Шлем каменовского',
+        desc: 'Повышает здоровье на 60 единиц.',
         price: 800,
         organs: [
-            { id: 1, name: 'Зуб щитомордника', count: 2 },
-            { id: 2, name: 'Шкура литора', count: 6 },
-            { id: 3, name: 'Пластина от ИС-2', count: 1 },
+            { id: 1, name: 'Камень щитомордника', count: 4 },
+            { id: 2, name: 'Кость литора', count: 4 },
+            { id: 3, name: 'Хромовая пластина', count: 1 },
         ],
-        hp: 40,
+        hp: 60,
         isPaid: false,
         isDressed: false
     },
     {
         id: 6,
         type: 'plastron',
-        name: 'Доспех ИС-2',
-        desc: 'Повышает здоровье на 50 единиц.',
+        name: 'Броня каменовского',
+        desc: 'Повышает здоровье на 70 единиц.',
         price: 1000,
         organs: [
-            { id: 1, name: 'Зуб щитомордника', count: 6 },
-            { id: 2, name: 'Шкура литора', count: 8 }
+            { id: 1, name: 'Камень щитомордника', count: 6 },
+            { id: 2, name: 'Кость литора', count: 5 },
+            { id: 3, name: 'Хромовая пластина', count: 2 },
+        ],
+        hp: 70,
+        isPaid: false,
+        isDressed: false
+    },
+    {
+        id: 7,
+        type: 'helmet',
+        name: 'Колпак меркиля',
+        desc: 'Повышает здоровье на 40 единиц.',
+        price: 500,
+        organs: [
+            { id: 4, name: 'Ткань меркиля', count: 4 },
+        ],
+        hp: 40,
+        isPaid: false,
+        isDressed: false
+    },
+    {
+        id: 8,
+        type: 'plastron',
+        name: 'Тряпки меркиля',
+        desc: 'Повышает здоровье на 50 единиц.',
+        price: 600,
+        organs: [
+            { id: 4, name: 'Ткань меркиля', count: 5 },
         ],
         hp: 50,
         isPaid: false,
         isDressed: false
     },
     {
-        id: 7,
+        id: 9,
+        type: 'helmet',
+        name: 'Клюв севы',
+        desc: 'Повышает здоровье на 70 единиц.',
+        price: 1000,
+        organs: [
+            { id: 1, name: 'Камень щитомордника', count: 6 },
+            { id: 3, name: 'Хромовая пластина', count: 2 },
+            { id: 4, name: 'Ткань меркиля', count: 2 },
+            { id: 5, name: 'Перья титуса', count: 2 },
+        ],
+        hp: 70,
+        isPaid: false,
+        isDressed: false
+    },
+    {
+        id: 10,
+        type: 'plastron',
+        name: 'Броня севы',
+        desc: 'Повышает здоровье на 80 единиц.',
+        price: 1200,
+        organs: [
+            { id: 2, name: 'Кость литора', count: 5 },
+            { id: 3, name: 'Хромовая пластина', count: 3 },
+            { id: 4, name: 'Ткань меркиля', count: 2 },
+            { id: 5, name: 'Перья титуса', count: 2 },
+        ],
+        hp: 80,
+        isPaid: false,
+        isDressed: false
+    },
+    {
+        id: 11,
         type: 'potion',
         name: 'Противорадиационный кристал',
         desc: 'Добавляет одну ячейку востановления здоровья.',
