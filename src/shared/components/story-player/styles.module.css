@@ -57,3 +57,15 @@
     top: 131px;
   }
 }
+
+.story-player_antogonist {
+  .story-player__head {
+    background: url('../game/player/antogonist/z5-a1-head.png') 0 0 / contain no-repeat;
+  }
+  .story-player__body {
+    background: url('../game/player/antogonist/z3-a1-body.png') 0 0 / contain no-repeat;
+  }
+  .story-player__arm {
+    background: url('../game/player/antogonist/z4-a1-a2-arm.png') 0 0 / contain no-repeat;
+  }
+}

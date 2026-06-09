@@ -64,7 +64,8 @@ export const LevelMap = () => {
 
   const handleStartGame = () => {
     if (level.id > 6 && level.id !==101 && level.id !==102) {
-      setOpenModalInfo(true)
+      navigate('/intro', { state: {part: 'e1c'}})
+      // setOpenModalInfo(true)
       return
     }
     selectLevel(level.id)
@@ -153,7 +154,7 @@ export const LevelMap = () => {
 
       <ModalDefault
         onContinue={() => setOpenModalInfo(false)}
-        title="¯\_(ツ)_/¯"
+        title="[ + _ + ]"
         subtitle="Первая глава закончилась"
         info="Продолжение следует..."
         buttonSuccess='Ok'

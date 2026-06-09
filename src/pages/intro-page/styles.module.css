@@ -83,6 +83,13 @@
 .intro-page__start {
   width: 100%;
   height: 100%;
+
+  + .intro-page__slide {
+    display: none;
+  }
+  ~ .intro-page__info {
+    display: none;
+  }
 }
 
 .intro-page__start-wrap {
@@ -281,4 +288,26 @@
   @media (max-width: 500px) {
     padding: 15px 120px 15px 20px;
   }
+}
+
+.intro-page__info-antogonist {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 200px;
+  height: 200px;
+  overflow: hidden;
+  transform: scaleX(-1);
+
+  + .intro-page__info-enemy-text {
+      padding: 15px 200px 15px 120px;
+  }
+
+  @media (max-width: 768px) {
+    width: 150px;
+
+    + .intro-page__info-enemy-text {
+        padding: 15px 160px 15px 120px;
+      }
+    }
 }
