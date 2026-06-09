@@ -40,7 +40,7 @@ export const TavernPage = () => {
   }
 
   useEffect(() => {
-    if (userCoins === 0) {
+    if (userCoins < 5) {
       coinsUp(5)
     }
   }, [])
