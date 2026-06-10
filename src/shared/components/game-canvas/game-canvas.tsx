@@ -16,6 +16,7 @@ type GameCanvasProps = {
   onColor: (color: string, countFlipped: number) => void
   onPlay: () => void
   onVictory: () => void
+  onClick?: () => void
 }
 
 export const GameCanvas: React.FC<GameCanvasProps> = ({
@@ -26,6 +27,7 @@ export const GameCanvas: React.FC<GameCanvasProps> = ({
   onColor,
   onPlay,
   onVictory,
+  onClick
 }) => {
   const [isWin, setIsWin] = useState(false)
   const [score, setScore] = useState(0)
@@ -56,6 +58,7 @@ export const GameCanvas: React.FC<GameCanvasProps> = ({
 
   useEffect(() => {
     onColor(cardColor, cardCountFlipped)
+    onClick()
   }, [cardColor, cardCountFlipped])
 
   useEffect(() => {

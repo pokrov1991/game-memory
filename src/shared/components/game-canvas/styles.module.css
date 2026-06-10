@@ -42,6 +42,8 @@
   background-size: 2400% 100%;
   /* background-size: auto 100%; */
   animation: effects-cards 1s steps(21) forwards;
+  cursor: initial;
+  pointer-events: initial;
 }
 
 .game-training-cards {

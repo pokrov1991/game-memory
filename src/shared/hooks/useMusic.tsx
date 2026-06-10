@@ -1,90 +1,121 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { ICONS } from '../constants'
+import { useAudio } from '@/shared/hooks'
 
 interface IMusicProps {
   src: string
   loop?: boolean
   conditional?: boolean
-  ui?: boolean
+  type?: 'effect' | 'theme'
 }
 
-export const useMusic = (props: IMusicProps) => {
-  const { loop = false, src = '', conditional = true, ui = false } = props
+const themeAudio = new Audio()
+let currentThemeSrc = ''
+
+export const useMusic = ({
+  src,
+  loop = false,
+  conditional = true,
+  type = 'effect',
+}: IMusicProps) => {
+  const { isMuted, audioUnlocked } = useAudio()
 
   const [isPlaying, setIsPlaying] = useState(false)
   const audioRef = useRef<HTMLAudioElement | null>(null)
-  const buttonRef = useRef<HTMLButtonElement | null>(null)
 
-  const onClickBtn = useCallback(() => {
-    setIsPlaying(prevState => !prevState)
+  const playTheme = useCallback(async () => {
+    if (!audioUnlocked || !conditional || !src) return
+
+    themeAudio.muted = isMuted
+    themeAudio.loop = loop
+
+    if (currentThemeSrc !== src) {
+      themeAudio.pause()
+      themeAudio.src = src
+      themeAudio.currentTime = 0
+      currentThemeSrc = src
+    }
+
+    try {
+      await themeAudio.play()
+      setIsPlaying(true)
+    } catch {
+      setIsPlaying(false)
+    }
+  }, [src, loop, conditional, isMuted, audioUnlocked])
+
+  const stopTheme = useCallback(() => {
+    themeAudio.pause()
+    setIsPlaying(false)
   }, [])
 
-  useEffect(() => {
-    const audio = new Audio()
+  const playEffect = useCallback(async () => {
+    if (!audioRef.current || !conditional || !src) return
 
-    audio.src = src
+    audioRef.current.muted = isMuted
+
+    try {
+      audioRef.current.currentTime = 0
+      await audioRef.current.play()
+    } catch {}
+  }, [src, conditional, isMuted])
+
+  useEffect(() => {
+    if (type === 'theme') return
+
+    const audio = new Audio(src)
     audio.loop = loop
+    audio.muted = isMuted
 
     audioRef.current = audio
 
-    document.body.appendChild(audio)
-
     return () => {
-      // Убираем со страницы, убираем звук
-      audioRef.current?.pause()
-      document.body.removeChild(audio)
+      audio.pause()
+      audio.currentTime = 0
+      audioRef.current = null
     }
-  }, [])
+  }, [src, loop, isMuted, type])
 
   useEffect(() => {
-    if (ui || !conditional) return
+    if (type !== 'theme') return
 
-    if (!audioRef.current?.HAVE_ENOUGH_DATA) return
-
-    audioRef.current?.play()
-  }, [conditional, ui])
+    if (conditional) {
+      playTheme()
+    } else {
+      stopTheme()
+    }
+  }, [type, conditional, playTheme, stopTheme])
 
   useEffect(() => {
-    if (!ui || !conditional) return
-
-    const onPlayUiHandler = () => {
-      if (!audioRef.current?.HAVE_ENOUGH_DATA) return
-
-      if (isPlaying) {
-        audioRef.current?.pause()
-
-        return
-      }
-
-      audioRef.current?.play()
+    if (type === 'theme') {
+      themeAudio.muted = isMuted
     }
 
-    buttonRef.current?.addEventListener('click', onPlayUiHandler)
-
-    return () => {
-      buttonRef.current?.removeEventListener('click', onPlayUiHandler)
+    if (audioRef.current) {
+      audioRef.current.muted = isMuted
     }
-  }, [isPlaying, conditional, ui])
+  }, [isMuted, type])
 
-  if (!ui) return null
+  const play = useCallback(() => {
+    if (type === 'theme') {
+      playTheme()
+      return
+    }
 
-  return (
-    <button style={buttonStyle} onClick={onClickBtn} ref={buttonRef}>
-      {!isPlaying && <img src={ICONS.SoundOn} alt={'Начать мелодию'} />}
-      {isPlaying && <img src={ICONS.SoundOff} alt={'Остановить мелодию'} />}
-    </button>
-  )
-}
+    playEffect()
+  }, [type, playTheme, playEffect])
 
-const buttonStyle = {
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  margin: 'auto',
-  width: '100%',
-  height: '100%',
-  backgroundColor: 'transparent',
-  outline: 'none',
-  border: 'none',
-  cursor: 'pointer',
+  const stop = useCallback(() => {
+    if (type === 'theme') {
+      stopTheme()
+      return
+    }
+
+    audioRef.current?.pause()
+  }, [type, stopTheme])
+
+  return {
+    play,
+    stop,
+    isPlaying,
+  }
 }

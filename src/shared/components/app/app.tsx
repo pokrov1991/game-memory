@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react'
 import { Container } from '@mui/material'
-import { Navigate, Outlet } from 'react-router-dom'
+import { Navigate, Outlet, useLocation } from 'react-router-dom'
 import { ErrorBoundary } from '../error-boundary/error-boundary'
-import { Fullscreen } from '../fullscreen/fullscreen'
+// import { Fullscreen } from '../fullscreen/fullscreen'
 import { LoadingScreen } from '../loading-screen/loading-screen'
 import { MusicTheme } from '../music-theme/music-theme'
 import { preloadAssets } from '../../../utils/preloadAssets'
+import { useMusic, useAudio } from '@/shared/hooks'
 
 declare global {
   interface Window {
@@ -18,6 +19,18 @@ export const App = () => {
   const [isReady, setIsReady] = useState(false)
   const [error, setError] = useState('')
   const [assets, setAssets] = useState(null)
+  const { unlockAudio } = useAudio()
+  const location = useLocation()
+  const pagesWithMainTheme = ['/', '/intro', '/levels']
+
+  console.log('Current location:', location.pathname) // Логируем текущий путь и состояние
+
+  useMusic({
+    src: './music/theme.mp3',
+    loop: true,
+    type: 'theme',
+    conditional: pagesWithMainTheme.includes(location.pathname) || location.key === 'default',
+  })
 
   useEffect(() => {
     let cancelled = false
@@ -57,7 +70,7 @@ export const App = () => {
       onError={(error, info) => {
         console.error('React ErrorBoundary:', error, info)
       }}>
-      <Container disableGutters maxWidth={false}>
+      <Container disableGutters maxWidth={false} onClick={unlockAudio}>
         
         {!isReady && (
           <LoadingScreen progress={progress} error={error} />
