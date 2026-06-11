@@ -21,15 +21,30 @@ export const App = () => {
   const [assets, setAssets] = useState(null)
   const { unlockAudio } = useAudio()
   const location = useLocation()
-  const pagesWithMainTheme = ['/', '/intro', '/levels']
+  const pagesMainTheme = ['/', '/levels']
+  const pagesIntroTheme = ['/intro']
+  const pagesBattleTheme = ['/game-battle', '/game-store', '/game']
+  const pagesBaseTheme = ['/base']
 
-  console.log('Current location:', location.pathname) // Логируем текущий путь и состояние
+  const isMainTheme = pagesMainTheme.includes(location.pathname) || location.key === 'default'
+  const isIntroTheme = pagesIntroTheme.includes(location.pathname)
+  const isBaseTheme = pagesBaseTheme.includes(location.pathname)
+  const isBattleTheme = pagesBattleTheme.includes(location.pathname)
+  const isPlayTheme = isMainTheme || isIntroTheme || isBaseTheme || isBattleTheme
+
+  const themeSrc = isBattleTheme
+    ? './music/game/theme.mp3'
+    : isIntroTheme 
+    ? './music/intro/theme.mp3'
+    : isBaseTheme 
+    ? './music/base/theme.mp3'
+    : './music/theme.mp3'
 
   useMusic({
-    src: './music/theme.mp3',
+    src: themeSrc,
     loop: true,
     type: 'theme',
-    conditional: pagesWithMainTheme.includes(location.pathname) || location.key === 'default',
+    conditional: isPlayTheme
   })
 
   useEffect(() => {

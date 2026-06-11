@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Item } from './item'
 import { Button, ModalDefault, LinkText, LEVELS_STATE } from '@/shared'
-import { useProgress } from '@/shared/hooks'
+import { useProgress, useMusic } from '@/shared/hooks'
 import { useUser } from '@/shared/contexts/UserContext'
 import styles from './styles.module.css'
 import classNames from 'classnames'
@@ -26,6 +26,8 @@ export const LevelMap = () => {
 
   const cCompletedLevels = completedLevels.length > 1 ? completedLevels : game.completedLevels
 
+  const soundClick = useMusic({ src: './music/click.mp3', type: 'effect' })
+
   useEffect(() => {
     levels.forEach(level => {
       if (cCompletedLevels.includes(level.id)) {
@@ -47,6 +49,7 @@ export const LevelMap = () => {
   }
 
   const handleClickLevel = (levelId: number) => {
+    soundClick.play()
     levels.forEach(level => {
       level.isCurrent = false
       if (level.id === levelId) {
@@ -58,9 +61,14 @@ export const LevelMap = () => {
     setSelect(true)
   }
 
-  const handleMainPage = () => navigate('/', {})
+  const handleMainPage = () => {
+    soundClick.play()
+    setTimeout(() => navigate('/'), 100)
+  }
 
-  const handleClickClose = () => setSelect(false)
+  const handleClickClose = () => {
+    setSelect(false)
+  }
 
   const handleStartGame = () => {
     if (level.id > 6 && level.id !==101 && level.id !==102) {
@@ -78,6 +86,7 @@ export const LevelMap = () => {
     if (level.type === 'base') {
       navigate('/base', {})
     }
+    soundClick.play()
   }
 
   const levelPoints = levels.map(level => {

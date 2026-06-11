@@ -24,6 +24,9 @@ const scaleStyle = {
   transform: `scale(${scalePercent})`
 }
 
+// Задержка что бы показать все анимации
+const delayGameEffects = 1000
+
 export const GamePage = () => {
   const navigate = useNavigate()
   const [isOpenModalWin, setOpenModalWin] = useState(false)
@@ -47,8 +50,10 @@ export const GamePage = () => {
   const [resultText, setResultText] = useState('')
   const [setLeader] = useSetLeaderboardMutation()
 
-  useMusic({ src: './music/success.mp3', conditional: isOpenModalWin })
-  useMusic({ src: './music/timeout.mp3', conditional: isOpenModalLose })
+  const soundCardSwap = useMusic({ src: './music/game/card-swap.wav', type: 'effect' })
+  const soundCardSuccess = useMusic({ src: './music/game/card-success.wav', type: 'effect' })
+  const soundWin = useMusic({ src: './music/game/win.mp3', type: 'effect' })
+  const soundLose = useMusic({ src: './music/game/lose.mp3', type: 'effect' })
 
   const onRestart = (): void => {
     setRestartKey(prevKey => prevKey + 1)
@@ -116,7 +121,8 @@ export const GamePage = () => {
         } exp`
       )
       setOpenModalWin(true)
-    }, 1000) // Задержка что бы показать все анимации
+      soundWin.play()
+    }, delayGameEffects)
   }
 
   const handleGameOver = (): void => {
@@ -124,10 +130,12 @@ export const GamePage = () => {
       `Не унывай! Попробуй еще раз пройти уровень. У тебя получится )`
     )
     setOpenModalLose(true)
+    soundLose.play()
   }
 
   const handleScore = (newScore: number): void => {
     setScore(newScore)
+    soundCardSuccess.play()
   }
 
   const handleSeconds = (reSeconds: number): void => {
@@ -190,6 +198,7 @@ export const GamePage = () => {
           onColor={() => {}}
           onPlay={handlePause}
           onVictory={handleGameWin}
+          onClick={soundCardSwap.play}
         />
       </div>
       <ModalResult

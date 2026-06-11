@@ -1,7 +1,7 @@
 import styles from './styles.module.css'
 import classNames from 'classnames'
 import { useNavigate } from 'react-router-dom'
-import { useProgress } from '@/shared/hooks'
+import { useProgress, useMusic } from '@/shared/hooks'
 
 const Item = ({
   to,
@@ -12,11 +12,16 @@ const Item = ({
   title: string
   isActive?: boolean
 }) => {
+  const soundClick = useMusic({ src: './music/click.mp3', type: 'effect' })
   const navigate = useNavigate()
+  const handleClick = () => {
+    soundClick.play()
+    setTimeout(() => navigate(to), 100)
+  }
   return (
     <li
       className={classNames('', { [styles.active]: isActive })}
-      onClick={() => navigate(to)}>
+      onClick={handleClick}>
       {title}
     </li>
   )

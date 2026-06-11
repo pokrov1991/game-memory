@@ -46,8 +46,10 @@ export const GameStorePage = () => {
 
   const cCoins = userCoins > 0 ? userCoins : coins
 
-  useMusic({ src: './music/success.mp3', conditional: isOpenModalWin })
-  useMusic({ src: './music/timeout.mp3', conditional: isOpenModalLose })
+  const soundCardSwap = useMusic({ src: './music/game/card-swap.wav', type: 'effect' })
+  const soundCardSuccess = useMusic({ src: './music/game/card-success.wav', type: 'effect' })
+  const soundWin = useMusic({ src: './music/game/win.mp3', type: 'effect' })
+  const soundLose = useMusic({ src: './music/game/lose.mp3', type: 'effect' })
 
   const setGameDataWin = async () => {
     const currentCoins = cCoins + gameLevel.coins
@@ -85,6 +87,14 @@ export const GameStorePage = () => {
     navigate('/tavern')
   }
 
+  const handleClickCard = () => {
+    soundCardSwap.play()
+  }
+
+  const handleClickCardSucces = () => {
+    soundCardSuccess.play()
+  }
+
   const handleMenu = (): void => {
     togglePause(true)
     setOpenModalDefault(true)
@@ -99,12 +109,14 @@ export const GameStorePage = () => {
     setTimeout(() => {
       setResultText(`Поздравляем! Обыграли «${gameLevel.title}» и получили: ${gameLevel.coins} монет.`)
       setOpenModalWin(true)
+      soundWin.play()
     }, delayGameEffects)
   }
 
   const handleGameOver = (): void => {
     setResultText(`Вы проиграли! Вас обыграл «${gameLevel.title}» и вы потеряли: ${gameLevel.coins} монет.`)
     setOpenModalLose(true)
+    soundLose.play()
   }
 
   const handleSeconds = (reSeconds: number): void => {
@@ -138,10 +150,11 @@ export const GameStorePage = () => {
           isPause={isPause}
           restartKey={restartKey}
           level={gameLevel}
-          onScore={() => {}}
+          onScore={soundCardSuccess.play}
           onColor={() => {}}
           onPlay={handlePause}
           onVictory={handleGameWin}
+          onClick={soundCardSwap.play}
         />
       </div>
       <ModalResult

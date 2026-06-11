@@ -86,8 +86,11 @@ export const GameBattlePage = () => {
   const [hp, setHP] = useState(hpInitial)
   const [hpEnemy, setHPEnemy] = useState(hpEnemyInitial)
 
-  useMusic({ src: './music/success.mp3', conditional: isOpenModalWin })
-  useMusic({ src: './music/timeout.mp3', conditional: isOpenModalLose })
+  const soundCardSwap = useMusic({ src: './music/game/card-swap.wav', type: 'effect' })
+  const soundCardSuccess = useMusic({ src: './music/game/card-success.wav', type: 'effect' })
+  const soundPlayerHit = useMusic({ src: './music/game/player-hit.wav', type: 'effect' })
+  const soundWin = useMusic({ src: './music/game/win.mp3', type: 'effect' })
+  const soundLose = useMusic({ src: './music/game/lose.mp3', type: 'effect' })
 
   const setGameDataWin = async (nextLevel: number) => {
     await YandexSDK.setGameData({
@@ -209,6 +212,7 @@ export const GameBattlePage = () => {
       updateOrgan({ organId: gameLevel.enemyId, count: enemyOrgan.count + 1 })
       setResultText(<>Поздравляем! Вы прошли уровень «{gameLevel.title}» и получили: Энергию - {scoreSession} ед. и {enemyOrgan.name} <i data-icon={`organ-${enemyOrgan.id}`}></i> - 1 шт.</>)
       setOpenModalWin(true)
+      soundWin.play()
     }, delayGameEffects + gameLevel.enemyStateDurations.DEAD)
   }
 
@@ -216,6 +220,7 @@ export const GameBattlePage = () => {
     handlePause()
     setResultText(<>Не унывай! Попробуй еще раз пройти уровень. У тебя получится!</>)
     setOpenModalLose(true)
+    soundLose.play()
   }
 
   const handleScore = (newScore: number, colorParry: string): void => {
@@ -253,6 +258,8 @@ export const GameBattlePage = () => {
         setTimeout(() => setStunEnemy(false), STUN_ANIMATION_DELAY / 1000)
       } 
     }
+
+    soundCardSuccess.play()
   }
 
   const handleColor = (color: string, countFlipped: number): void => {
@@ -297,6 +304,8 @@ export const GameBattlePage = () => {
       setStunPlayer(true)
       setTimeout(() => setStunPlayer(false), STUN_ANIMATION_DELAY)
     }
+
+    soundPlayerHit.play()
   }
 
   const handleUsePotions = (): void => {
@@ -446,6 +455,7 @@ export const GameBattlePage = () => {
           onColor={handleColor}
           onPlay={handlePause}
           onVictory={handleChangeCards}
+          onClick={soundCardSwap.play}
         />
         <GameTimerAttack
           isPause={isPause}

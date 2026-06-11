@@ -2,7 +2,7 @@ import classNames from 'classnames'
 import { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Button, UserTreasures, ModalDefault } from '@/shared/components'
-import { useProgress } from '@/shared/hooks/useProgress'
+import { useProgress, useMusic } from '@/shared/hooks'
 import styles from './styles.module.css'
 
 type MenuMode = 'main' | 'question1' | 'question2' | 'question3'
@@ -26,7 +26,9 @@ export const BasePage = () => {
   const [blink, setBlink] = useState('привет')
   const [isOpenModalInfo, setOpenModalInfo] = useState(false)
   const { selectLevel } = useProgress()
-  const scrollRef = useRef(null);
+  const scrollRef = useRef(null)
+
+  const soundRobotTalk = useMusic({ src: './music/base/robot-talk.wav', type: 'effect' })
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -99,6 +101,7 @@ export const BasePage = () => {
 
     const onClick = () => {
       setTalk(true)
+      soundRobotTalk.play()
       setTimeout(() => setTalk(false), 1000)
       const action = ACTIONS[to as MenuMode]
       if (action) return action()
