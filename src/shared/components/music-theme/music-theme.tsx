@@ -20,7 +20,7 @@ export const MusicTheme: React.FC = () => {
 
   return (<div className={styles['music-theme']}>
     <button style={buttonStyle} onClick={toggleMute}>
-      <img src={isMuted || !audioUnlocked ? '/ui/icons/sound-on.svg' : '/ui/icons/sound-off.svg'} />
+      <img src={isMuted || !audioUnlocked ? './ui/icons/sound-on.svg' : './ui/icons/sound-off.svg'} />
     </button>
   </div>)
 }
