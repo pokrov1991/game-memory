@@ -86,7 +86,7 @@
 .footer {
   display: flex;
   align-items: center;
-  grid-gap: 88px;
+  grid-gap: 40px;
   position: absolute;
   bottom: 1%;
   left: 0;

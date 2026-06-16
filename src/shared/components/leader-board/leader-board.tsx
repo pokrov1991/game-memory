@@ -12,7 +12,13 @@ export const LeaderBoard: React.FC = () => {
     limit: 10,
   })
 
-  if (!data) return null
+  if (!data) return (
+    <div className={styles['leader-board']}>
+      <div className={styles['leader-board__empty']}>
+          Таблица лидеров пуста!
+      </div>
+    </div>
+  )
 
   return (
     <div className={styles['leader-board']}>

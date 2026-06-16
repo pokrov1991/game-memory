@@ -34,18 +34,18 @@ export const GamePage = () => {
   const [isOpenModalDefault, setOpenModalDefault] = useState(false)
   const [isPause, togglePause] = useToggle(true)
   const {
-    completeLevel,
-    selectedLevel,
-    selectLevel,
-    userLevel,
-    userScore,
-    levelUp,
-    scoreUp,
+    progress,
+    selectedLevelArcade,
+    selectLevelArcade,
+    userScoreArcade,
+    scoreArcadeUp,
   } = useProgress()
-  const { user, game } = useUser()
+  const { user } = useUser()
   const [restartKey, setRestartKey] = useState(0)
-  const [gameLevel, setGameLevel] = useLevel<GameLevelStoreType>(selectedLevel, 'store')
-  const [score, setScore] = useState(0)
+  const [gameLevel, setGameLevel] = useLevel<GameLevelStoreType>(selectedLevelArcade, 'store') // Уровень игры (из 11 уровней)
+  const [sessionLevel, setSessionLevel] = useState(1) // Уровень текущей игры
+  const [score, setScore] = useState(0) // Очки за всю игру
+  const [scoreSession, setScoreSession] = useState(0) // Очки за текущий уровень
   const [seconds, setSeconds] = useState(gameLevel.gameTimer)
   const [resultText, setResultText] = useState('')
   const [setLeader] = useSetLeaderboardMutation()
@@ -57,50 +57,49 @@ export const GamePage = () => {
 
   const onRestart = (): void => {
     setRestartKey(prevKey => prevKey + 1)
-    setScore(0)
+    setScoreSession(0)
     togglePause(true)
   }
 
   const onContinue = async () => {
-    const scoreTotal = score + seconds
-    const nextLevel = gameLevel.id + 1
-    const isFinal = gameLevel.id >= 11
+    const isFinal = sessionLevel >= 11
 
-    completeLevel(nextLevel)
-    setGameLevel(nextLevel)
-    selectLevel(nextLevel)
-
-    if (!isFinal && game.userLevel < nextLevel) {
-      levelUp(nextLevel)
-    }
-    if (game.userLevel === gameLevel.id) {
-      scoreUp(scoreTotal)
-      // handleSetLeader(userLevel, userScore + scoreTotal)
-    }
-    
-    await YandexSDK.setGameData({
-      completedLevels: Array.from(new Set([ ...game.completedLevels, nextLevel ])),
-      selectedLevel: nextLevel,
-      userLevel: !isFinal && game.userLevel < nextLevel ? nextLevel : game.userLevel,
-      userScore: game.userLevel === gameLevel.id ? game.userScore + scoreTotal : game.userScore,
-    })
-
-    if (!isFinal) {
-      onRestart()
+    if (isFinal) {
+      // Запускаем уровни заного начиная с уровня, например 4
+      selectLevelArcade(4)
+      setGameLevel(4)
     } else {
-      navigate('/levels')
+      selectLevelArcade(sessionLevel)
+      setGameLevel(sessionLevel)
     }
 
+    onRestart()
     setOpenModalWin(false)
   }
 
   const onGameOver = (): void => {
-    onRestart()
     setOpenModalLose(false)
+    navigate('/arcade')
   }
 
   const onExit = (): void => {
-    navigate('/levels')
+    navigate('/arcade')
+  }
+
+  const onSaveResult = async (score: number, level: number) => {
+    setScore(score)
+    setSessionLevel(level)
+
+    if (score > userScoreArcade) {
+      scoreArcadeUp(score)
+
+      await YandexSDK.setGameData({
+        ...progress,
+        userScoreArcade: score,
+      })
+
+      handleSetLeader(level, score)
+    }
   }
 
   const handleMenu = (): void => {
@@ -112,29 +111,35 @@ export const GamePage = () => {
     togglePause()
   }
 
-  const handleGameWin = (): void => {
+  const handleGameWin = async () => {
+    const totalScore = score + seconds
+    const nextLevel = sessionLevel + 1
+
+    onSaveResult(totalScore, nextLevel)
+
     handlePause()
     setTimeout(() => {
-      setResultText(
-        `Поздравляем! Вы прошли уровень «${gameLevel.title}» и получили энергию: ${
-          score + seconds
-        } exp`
-      )
+      setResultText(`Вы прошли уровень «${sessionLevel}» и получили ${scoreSession + seconds} очков: ${scoreSession} за карты и за ${seconds} время. Всего ${totalScore} очков.`)
       setOpenModalWin(true)
       soundWin.play()
     }, delayGameEffects)
   }
 
   const handleGameOver = (): void => {
-    setResultText(
-      `Не унывай! Попробуй еще раз пройти уровень. У тебя получится )`
-    )
+    onSaveResult(score, sessionLevel)
+
+    setResultText(`Поздравляем! Вы набрали ${score} очков.`)
     setOpenModalLose(true)
     soundLose.play()
   }
 
   const handleScore = (newScore: number): void => {
-    setScore(newScore)
+    const currentScore = newScore - scoreSession > 0 ? newScore - scoreSession : 0
+    const totalScore = currentScore + score
+
+    setScoreSession(newScore)
+    setScore(totalScore)
+
     soundCardSuccess.play()
   }
 
@@ -149,7 +154,7 @@ export const GamePage = () => {
           avatar: user.avatar,
           nickname: user.name,
           firstname: user.name,
-          level: level,
+          level: sessionLevel,
           scorePSS: score,
         },
         ratingFieldName: '',
@@ -173,9 +178,6 @@ export const GamePage = () => {
           <button onClick={handlePause} className={styles['game-page__pause']}>
             {isPause ? '▷' : '||'}
           </button>
-          <button onClick={onRestart} className={styles['game-page__restart']}>
-            Заново
-          </button>
           <GameCountdown
             isPause={isPause}
             restartKey={restartKey}
@@ -185,11 +187,11 @@ export const GamePage = () => {
           />
         </div>
         <div className={styles['game-page__info']}>
-          <GameScore score={score} />
+          <GameScore score={score} arcadeLevel={sessionLevel} />
         </div>
       </div>
       <div className={styles['game-page__canvas']}>
-        <GameScoreEffects score={score} />
+        <GameScoreEffects score={scoreSession} />
         <GameCanvas
           isPause={isPause}
           restartKey={restartKey}
@@ -216,8 +218,9 @@ export const GamePage = () => {
       <ModalDefault
         onContinue={onExit}
         onExit={() => setOpenModalDefault(false)}
-        title=""
-        subtitle={gameLevel.id}
+        title="Выход"
+        subtitle={`Вы остановились в на уровне ${sessionLevel}.`}
+        info="Вы желаете выйти из игры?"
         isOpened={isOpenModalDefault}
       />
     </main>

@@ -73,6 +73,7 @@ export default class YandexSDK extends SDK {
         }
         gameData = {
           completedLevels: [102],
+          selectedLevelArcade: 0,
           selectedLevel: 0,
           userLevel: 1,
           userLevelParams: {
@@ -80,6 +81,7 @@ export default class YandexSDK extends SDK {
             guard: 0,
             attack: 0,    
           },
+          userScoreArcade: 0,
           userScore: 0,
           userCoins: 5,
           userPotions: 1,

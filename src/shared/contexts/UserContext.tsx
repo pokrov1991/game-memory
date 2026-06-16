@@ -11,6 +11,7 @@ interface UserData {
 
 interface GameData {
   completedLevels: number[];
+  selectedLevelArcade: number;
   selectedLevel: number;
   userLevel: number;
   userLevelParams: {
@@ -18,6 +19,7 @@ interface GameData {
     guard: number;
     attack: number;
   };
+  userScoreArcade: number;
   userScore: number;
   userCoins: number;
   userPotions: number;

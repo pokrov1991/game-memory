@@ -1,0 +1,52 @@
+.arcade-page {
+  width: 100%;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 24px 0;
+}
+
+.navigation {
+  width: 100%;
+  max-width: 480px;
+  padding: 0 36px;
+}
+
+.arcade-page-content {
+  width: 100%;
+  padding: 0 48px;
+}
+
+.arcade-page-title {
+  font-family: 'Alegreya';
+  font-size: 28px;
+  font-style: normal;
+  font-weight: 700;
+  color: #fff;
+  width: 100%;
+}
+
+.arcade-page-info {
+  font-family: 'Roboto', sans-serif;
+  font-size: 18px;
+  color: #ffffff;
+  margin-bottom: 20px;
+}
+
+.arcade-page-list {
+  color: #fff;
+  font-family: 'Roboto', sans-serif;
+  font-size: 18px;
+}
+
+@media (max-width: 1023px) {
+  .navigation {
+    padding: 0 24px;
+  }
+  .arcade-page-content {
+    padding: 0 36px;
+  }
+}

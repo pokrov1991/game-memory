@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 interface ProgressState {
   completedLevels: number[]
+  selectedLevelArcade: number
   selectedLevel: number
   userLevel: number
   userLevelParams: {
@@ -9,6 +10,7 @@ interface ProgressState {
     guard: number
     attack: number
   };
+  userScoreArcade: number
   userScore: number
   userCoins: number
   userPotions: number
@@ -39,6 +41,7 @@ interface ProgressState {
 
 const initialState: ProgressState = {
   completedLevels: [102],
+  selectedLevelArcade: 0,
   selectedLevel: 0,
   userLevel: 1,
   userLevelParams: {
@@ -46,6 +49,7 @@ const initialState: ProgressState = {
     guard: 0,
     attack: 0,
   },
+  userScoreArcade: 0,
   userScore: 0,
   userCoins: 5,
   userPotions: 1,
@@ -95,6 +99,7 @@ export const progressSlice = createSlice({
   reducers: {
     resetProgress: state => {
       state.completedLevels = [1]
+      state.selectedLevelArcade = 1
       state.selectedLevel = 1
       state.userLevel = 1
       state.userLevelParams = {
@@ -102,6 +107,7 @@ export const progressSlice = createSlice({
         guard: 0,
         attack: 0,    
       }
+      state.userScoreArcade = 0
       state.userScore = 0
       state.userCoins = 0
       state.userPotions = 0
@@ -150,6 +156,9 @@ export const progressSlice = createSlice({
     completeLevel: (state, action: PayloadAction<number>) => {
       state.completedLevels.push(action.payload)
     },
+    selectLevelArcade: (state, action: PayloadAction<number>) => {
+      state.selectedLevelArcade = action.payload
+    },
     selectLevel: (state, action: PayloadAction<number>) => {
       state.selectedLevel = action.payload
     },
@@ -161,6 +170,9 @@ export const progressSlice = createSlice({
       state.userLevelParams.hp = hp
       state.userLevelParams.guard = guard
       state.userLevelParams.attack = attack
+    },
+    scoreArcadeUp: (state, action: PayloadAction<number>) => {
+      state.userScoreArcade = action.payload
     },
     scoreUp: (state, action: PayloadAction<number>) => {
       state.userScore = action.payload
@@ -193,9 +205,11 @@ export const {
   resetProgress, 
   setProgress,
   completeLevel,
+  selectLevelArcade,
   selectLevel, 
   levelUp,
   levelParamsUp,
+  scoreArcadeUp,
   scoreUp, 
   coinsUp, 
   potionsUp, 

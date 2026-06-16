@@ -35,9 +35,10 @@
 }
 
 .link {
-  font-size: 26px;
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Alegreya';
+  font-style: normal;
   font-weight: 400;
+  font-size: 38px;
   background-image: linear-gradient(
     90deg,
     rgba(0, 0, 0, 1) 0%,
@@ -56,6 +57,11 @@
   position: relative;
   border-left: 2px solid #ffffff;
   border-radius: 2px;
+
+  @media (max-width: 1024px) {
+    font-size: 28px;
+    line-height: 52px;
+  }
 }
 
 .link:before,
@@ -85,7 +91,6 @@
   );
   cursor: default;
   text-shadow: 7px 3px 2px rgba(0, 0, 0, 0.5);
-  font-size: 30px;
 }
 
 .link:not(.active):hover {

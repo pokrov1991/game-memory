@@ -11,7 +11,6 @@ import {
   ModalLevelUp
 } from '@/shared/components'
 import { useLevel, useToggle, useProgress, useMusic } from '@/shared/hooks'
-import { useSetLeaderboardMutation } from '@/shared'
 import { useUser } from '@/shared/contexts/UserContext'
 import { TypeModal } from '@/shared/components/modal-comps/types'
 import { EnemyState, GameLevelStateType } from '@/shared/services/game/types'
@@ -58,7 +57,7 @@ export const GameBattlePage = () => {
     levelUp,
     scoreUp,
   } = useProgress()
-  const { user, game } = useUser()
+  const { game } = useUser()
   const [restartKey, setRestartKey] = useState(0)
   const [gameLevel, _setGameLevel] = useLevel<GameLevelStateType>(selectedLevel, 'battle')
   const [level, setLevel] = useState(userLevel > 0 ? userLevel : game.userLevel)
@@ -68,7 +67,6 @@ export const GameBattlePage = () => {
   const [colorPlayerPreAttack, setColorPlayerPreAttack] = useState('')
   const [colorEnemyAttack, setColorEnemyAttack] = useState('')
   const [resultText, setResultText] = useState(<></>)
-  const [setLeader] = useSetLeaderboardMutation()
   const [enemyState, setEnemyState] = useState('default')
   const [enemyHit, setEnemyHit] = useState(false)
   const [playerHit, setPlayerHit] = useState(false)
@@ -173,7 +171,6 @@ export const GameBattlePage = () => {
     selectLevel(nextLevel)
     
     setGameDataWin(nextLevel)
-    // handleSetLeader(level, score)
 
     setOpenModalWin(false)
     navigate('/levels')
@@ -313,27 +310,6 @@ export const GameBattlePage = () => {
       const healAmount = Math.floor(hpInitial * 0.25) // восстанавливает 25% от начального HP
       setHP(hp + healAmount > hpInitial ? hpInitial : hp + healAmount)
       setPotions(potions - 1)
-    }
-  }
-
-  const handleSetLeader = async (level: number, score: number) => {
-    try {
-      const leader = {
-        data: {
-          avatar: user.avatar,
-          nickname: user.name,
-          firstname: user.name,
-          level: level,
-          scorePSS: score,
-        },
-        ratingFieldName: '',
-        teamName: '',
-      }
-      await setLeader(leader)
-    } catch (error: unknown) {
-      if (error instanceof Error) {
-        console.log(`Не удалось добавить лидера: ${error.message}`)
-      }
     }
   }
 

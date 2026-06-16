@@ -32,7 +32,7 @@ export const TavernPage = () => {
   const [menu, setMenu] = useState(MENU)
   const [mode, setMode] = useState('main')
   const [talk, setTalk] = useState(false)
-  const { progress, selectLevel, userCoins, userPotions, userOrgans, userInventory, coinsUp, potionsUp, updateOrgan, updateInventory } = useProgress()
+  const { progress, userCoins, userPotions, userOrgans, userInventory, coinsUp, potionsUp, updateOrgan, updateInventory } = useProgress()
   const scrollRef = useRef(null);
   
   const syncProgress = async () => {
@@ -144,9 +144,8 @@ export const TavernPage = () => {
   const handleClickLevel = (levelId: number) => {
     const level = {...levels[levelId - 1]}
 
-    selectLevel(level.id)
     if (level.type === 'store') {
-      navigate('/game-store', {})
+      navigate('/game-store', { state: {levelId: level.id}})
     }
   }
 

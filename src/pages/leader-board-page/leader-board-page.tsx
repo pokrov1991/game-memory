@@ -3,7 +3,7 @@ import styles from './styles.module.css'
 
 const routes = [
   {
-    path: '/',
+    path: '/arcade',
     name: 'Назад',
     sort: 20,
   },

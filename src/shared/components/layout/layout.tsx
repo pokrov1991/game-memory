@@ -1,8 +1,8 @@
 import React from 'react'
-import styles from './styles.module.css'
 import { Clock, Score } from '@/shared'
 import { useUser } from '@/shared/contexts/UserContext'
 import { TUser } from '@/types'
+import styles from './styles.module.css'
 
 const LayoutPng = './ui/layout/layout-backgound-min.png'
 const OutlinePng = './ui/layout/outer-frame-border-min.png'
@@ -18,13 +18,13 @@ interface ILayoutProps {
 const Fullname = (user: TUser) => {
   return (
     <>
-      <div className={styles.userName}>{user?.name}</div>
+      <div className={styles.userName}>{user?.name !== '' ? user.name : 'Авторизуйся'}</div>
     </>
   )
 }
 
 export const Layout = ({ children, title }: ILayoutProps) => {
-  const { user } = useUser();
+  const { user } = useUser()
 
   return (
     <div className={styles.root}>

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import {
   GameCanvas,
   GameCountdown,
@@ -27,18 +27,19 @@ const delayGameEffects = 1000
 
 export const GameStorePage = () => {
   const navigate = useNavigate()
+  const location = useLocation()
   const [isOpenModalWin, setOpenModalWin] = useState(false)
   const [isOpenModalLose, setOpenModalLose] = useState(false)
   const [isOpenModalDefault, setOpenModalDefault] = useState(false)
   const [isPause, togglePause] = useToggle(true)
   const {
-    selectedLevel,
     userCoins,
     coinsUp,
   } = useProgress()
   const { game } = useUser()
+  const { levelId } = location.state || {}
   const [restartKey, _setRestartKey] = useState(0)
-  const [gameLevel, _setGameLevel] = useLevel<GameLevelStoreType>(selectedLevel, 'store')
+  const [gameLevel, _setGameLevel] = useLevel<GameLevelStoreType>(levelId, 'store')
   const [score, _setScore] = useState(game.userScore)
   const [coins, _setCoins] = useState(game.userCoins)
   const [_seconds, setSeconds] = useState(gameLevel.gameTimer)
@@ -85,14 +86,6 @@ export const GameStorePage = () => {
     setGameDataLose()
     setOpenModalDefault(false)
     navigate('/tavern')
-  }
-
-  const handleClickCard = () => {
-    soundCardSwap.play()
-  }
-
-  const handleClickCardSucces = () => {
-    soundCardSuccess.play()
   }
 
   const handleMenu = (): void => {

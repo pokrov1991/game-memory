@@ -4,9 +4,11 @@ import {
   resetProgress,
   setProgress,
   completeLevel,
+  selectLevelArcade,
   selectLevel,
   levelUp,
   levelParamsUp,
+  scoreArcadeUp,
   scoreUp,
   coinsUp,
   potionsUp,
@@ -20,9 +22,11 @@ export const useProgress = () => {
 
   const progress = useSelector((state: RootState) => state.progress)
   const completedLevels = useSelector((state: RootState) => state.progress.completedLevels)
+  const selectedLevelArcade = useSelector((state: RootState) => state.progress.selectedLevelArcade)
   const selectedLevel = useSelector((state: RootState) => state.progress.selectedLevel)
   const userLevel = useSelector((state: RootState) => state.progress.userLevel)
   const userLevelParams = useSelector((state: RootState) => state.progress.userLevelParams)
+  const userScoreArcade = useSelector((state: RootState) => state.progress.userScoreArcade)
   const userScore = useSelector((state: RootState) => state.progress.userScore)
   const userCoins = useSelector((state: RootState) => state.progress.userCoins)
   const userPotions = useSelector((state: RootState) => state.progress.userPotions)
@@ -42,6 +46,10 @@ export const useProgress = () => {
     dispatch(completeLevel(level))
   }
 
+  const handleSelectLevelArcade = (level: number) => {
+    dispatch(selectLevelArcade(level))
+  }
+
   const handleSelectLevel = (level: number) => {
     dispatch(selectLevel(level))
   }
@@ -52,6 +60,10 @@ export const useProgress = () => {
 
   const handleLevelParamsUp = (params: { hp: number; guard: number; attack: number }) => {
     dispatch(levelParamsUp(params))
+  }
+
+  const handleScoreArcadeUp = (score: number) => {
+    dispatch(scoreArcadeUp(score))
   }
 
   const handleScoreUp = (score: number) => {
@@ -81,9 +93,11 @@ export const useProgress = () => {
   return {
     progress,
     completedLevels,
+    selectedLevelArcade,
     selectedLevel,
     userLevel,
     userLevelParams,
+    userScoreArcade,
     userScore,
     userCoins,
     userPotions,
@@ -93,9 +107,11 @@ export const useProgress = () => {
     resetProgress: handleResetProgress,
     setProgress: handleSetProgress,
     completeLevel: handleCompleteLevel,
+    selectLevelArcade: handleSelectLevelArcade,
     selectLevel: handleSelectLevel,
     levelUp: handleLevelUp,
     levelParamsUp: handleLevelParamsUp,
+    scoreArcadeUp: handleScoreArcadeUp,
     scoreUp: handleScoreUp,
     coinsUp: handleCoinsUp,
     potionsUp: handlePotionsUp,

@@ -7,6 +7,7 @@ import { GameStorePage } from '@/pages/game-store-page/game-store-page'
 import { TavernPage } from '@/pages/tavern-page/tavern-page'
 import { BasePage } from '@/pages/base-page/base-page'
 import { IntroPage } from '@/pages/intro-page/intro-page'
+import { ArcadePage } from '@/pages/arcade-page/arcade-page'
 import { LeaderBoardPage } from '@/pages/leader-board-page/leader-board-page'
 import { MainPage } from '@/pages/main-page/main-page'
 import { NotFoundPage } from '@/pages/not-found-page/not-found-page'
@@ -44,6 +45,10 @@ export const routesConfig: RouteObject[] = [
       {
         path: '/intro',
         Component: IntroPage,
+      },
+      {
+        path: '/arcade',
+        Component: ArcadePage,
       },
       {
         path: '/leader-board',
