@@ -35,8 +35,3 @@ export const apiSlices = createApi({
     }),
   }),
 })
-
-export const {
-  useGetLeaderboardQuery,
-  useSetLeaderboardMutation,
-} = apiSlices

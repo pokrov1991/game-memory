@@ -37,6 +37,7 @@ export default class YandexSDK extends SDK {
           name: this._player.getName(),
           avatar: this._player.getPhoto('medium'),
           mode: this._player.getMode(),
+          isAuthorized: this._player.isAuthorized(),
         };
       } catch (error) {
         console.error("Ошибка получения данных пользователя:", error);
@@ -150,6 +151,35 @@ export default class YandexSDK extends SDK {
         console.log("Реклама успешно показана");
       } catch (error) {
         console.error("Ошибка показа рекламы:", error);
+      }
+    }
+
+    @ensureYsdk
+    static async getLeaderboard(leaderboardName: string) {
+      try {
+        console.log("Лидерборд инициирован");
+        return await this._ysdk.leaderboards.getDescription(leaderboardName);
+      } catch (error) {
+        console.error("Ошибка инициализации лидерборда:", error);
+      }
+    }
+
+    @ensureYsdk
+    static async setLeaderboardScore(leaderboardName: string, score: number, extraData?: string) {
+      try {
+        console.log("Запись в лидерборд:", leaderboardName, score, extraData);
+        await this._ysdk.leaderboards.setScore(leaderboardName, score, extraData);
+      } catch (error) {
+        console.error("Ошибка записи в лидерборд:", error);
+      }
+    }
+
+    @ensureYsdk
+    static async getLeaderboardEntries(leaderboardName: string, options: {includeUser?: boolean; quantityAround?: number; quantityTop?: number;}) {
+      try {
+        return await this._ysdk.leaderboards.getEntries(leaderboardName, options);
+      } catch (error) {
+        console.error("Ошибка получения списка лидеров:", error);
       }
     }
   }

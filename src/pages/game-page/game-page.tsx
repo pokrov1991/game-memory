@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import {
   GameCanvas,
@@ -9,7 +9,6 @@ import {
   ModalDefault,
 } from '@/shared/components'
 import { useLevel, useToggle, useProgress, useMusic } from '@/shared/hooks'
-import { useSetLeaderboardMutation } from '@/shared'
 import { useUser } from '@/shared/contexts/UserContext'
 import { TypeModal } from '@/shared/components/modal-comps/types'
 import { GameLevelStoreType } from '@/shared/services/game/types'
@@ -48,7 +47,6 @@ export const GamePage = () => {
   const [scoreSession, setScoreSession] = useState(0) // Очки за текущий уровень
   const [seconds, setSeconds] = useState(gameLevel.gameTimer)
   const [resultText, setResultText] = useState('')
-  const [setLeader] = useSetLeaderboardMutation()
 
   const soundCardSwap = useMusic({ src: './music/game/card-swap.wav', type: 'effect' })
   const soundCardSuccess = useMusic({ src: './music/game/card-success.wav', type: 'effect' })
@@ -148,24 +146,7 @@ export const GamePage = () => {
   }
 
   const handleSetLeader = async (level: number, score: number) => {
-    try {
-      const leader = {
-        data: {
-          avatar: user.avatar,
-          nickname: user.name,
-          firstname: user.name,
-          level: sessionLevel,
-          scorePSS: score,
-        },
-        ratingFieldName: '',
-        teamName: '',
-      }
-      await setLeader(leader)
-    } catch (error: unknown) {
-      if (error instanceof Error) {
-        console.log(`Не удалось добавить лидера: ${error.message}`)
-      }
-    }
+    await YandexSDK.setLeaderboardScore('orionBoard', score, `${level}`)
   }
 
   return (

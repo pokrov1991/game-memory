@@ -3,7 +3,7 @@ import { setupListeners } from '@reduxjs/toolkit/query'
 import { apiSlices, progressSlice } from '@/shared/slices'
 
 const rootReducer = combineReducers({
-  [apiSlices.reducerPath]: apiSlices.reducer,
+  [apiSlices.reducerPath]: apiSlices.reducer, // TODO ели не нужен, надо удалить
   [progressSlice.reducerPath]: progressSlice.reducer,
 })
 

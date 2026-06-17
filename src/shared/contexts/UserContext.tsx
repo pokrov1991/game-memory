@@ -7,6 +7,7 @@ interface UserData {
   name: string;
   avatar: string;
   mode: string;
+  isAuthorized: boolean;
 }
 
 interface GameData {

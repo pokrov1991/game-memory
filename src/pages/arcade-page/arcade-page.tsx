@@ -1,7 +1,10 @@
+import { useEffect } from 'react'
 import { Layout, Navigate } from '@/shared/components'
 import { useNavigate } from 'react-router-dom'
 import { useProgress } from '@/shared/hooks'
+import { useUser } from '@/shared/contexts/UserContext'
 import { Button } from '@/shared/components'
+import YandexSDK from '@/shared/services/sdk/yandexSdk'
 import styles from './styles.module.css'
 
 const routes = [
@@ -25,11 +28,28 @@ const routes = [
 export const ArcadePage = () => {
   const navigate = useNavigate()
   const { selectLevelArcade } = useProgress()
+  const { user, setUser, setGame } = useUser()
 
   const handleClickLevel = () => {
-    selectLevelArcade(1)
-    navigate('/game')
+    if (user.isAuthorized) {
+      selectLevelArcade(1)
+      navigate('/game')
+    } else {
+      YandexSDK.authUser().then((res) => {
+        setUser(res.user)
+        setGame(res.game)
+      })
+    }
   }
+
+  useEffect(() => {
+    const fetchLeaderboard = async () => {
+      const leaderboard = await YandexSDK.getLeaderboard('orionBoard')
+      console.log('leaderboard', leaderboard)
+    }
+
+    fetchLeaderboard()
+  }, [])
 
   return (
     <main className={styles['arcade-page']}>

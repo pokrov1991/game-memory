@@ -1,3 +1,4 @@
+import { ILeaderboardDescription, ILeaderboardEntries } from '@/types';
 export default class SDK {
     static _initialized = false; // Флаг, указывающий на успешную инициализацию
   
@@ -37,6 +38,21 @@ export default class SDK {
     static async showAd() {
       this.ensureInitialized();
       throw new Error("Метод showAd() должен быть реализован");
+    }
+
+    static async getLeaderboard(leaderboardName: string): Promise<ILeaderboardDescription>  {
+      this.ensureInitialized();
+      throw new Error("Метод getLeaderboard() должен быть реализован");
+    }
+
+    static async setLeaderboardScore(leaderboardName: string, score: number, extraData?: string): Promise<void>  {
+      this.ensureInitialized();
+      throw new Error("Метод setLeaderboardScore() должен быть реализован");
+    }
+
+    static async getLeaderboardEntries(leaderboardName: string, options: {includeUser?: boolean; quantityAround?: number; quantityTop?: number;}): Promise<ILeaderboardEntries>  {
+      this.ensureInitialized();
+      throw new Error("Метод getLeaderboardEntries() должен быть реализован");
     }
   }
   
