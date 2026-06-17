@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import { useProgress } from '@/shared/hooks'
 import { useUser } from '@/shared/contexts/UserContext'
 import { Button } from '@/shared/components'
+import { LEVELS_STORE_CONFIG } from '@/shared/constants'
 import YandexSDK from '@/shared/services/sdk/yandexSdk'
 import styles from './styles.module.css'
 
@@ -71,7 +72,15 @@ export const ArcadePage = () => {
               Проходите уровни в удобном для вас темпе. Выбирайте любой уровень, тренируйте свои навыки и улучшайте результаты. Такая тренировка помогает постепенно освоить игру.
             </p>
             <div className={styles['arcade-page-list']}>
-              Лист с играми
+              {LEVELS_STORE_CONFIG.map((level) => {
+                return (
+                <div className={styles['arcade-page-list-item']} onClick={() => {
+                  navigate('/game', { state: {levelId: level.id}})
+                }}>
+                  <b>Карт: {level.cardCount}</b>
+                  <span>Время: {level.gameTimer} сек.</span>
+                </div>)
+              })}
             </div>
           </div>
         </div>

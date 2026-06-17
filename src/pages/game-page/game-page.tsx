@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useState } from 'react'
+import { useNavigate, useLocation } from 'react-router-dom'
 import {
   GameCanvas,
   GameCountdown,
@@ -9,7 +9,6 @@ import {
   ModalDefault,
 } from '@/shared/components'
 import { useLevel, useToggle, useProgress, useMusic } from '@/shared/hooks'
-import { useUser } from '@/shared/contexts/UserContext'
 import { TypeModal } from '@/shared/components/modal-comps/types'
 import { GameLevelStoreType } from '@/shared/services/game/types'
 import YandexSDK from '@/shared/services/sdk/yandexSdk'
@@ -28,6 +27,7 @@ const delayGameEffects = 1000
 
 export const GamePage = () => {
   const navigate = useNavigate()
+  const location = useLocation()
   const [isOpenModalWin, setOpenModalWin] = useState(false)
   const [isOpenModalLose, setOpenModalLose] = useState(false)
   const [isOpenModalDefault, setOpenModalDefault] = useState(false)
@@ -39,7 +39,7 @@ export const GamePage = () => {
     userScoreArcade,
     scoreArcadeUp,
   } = useProgress()
-  const { user } = useUser()
+  const { levelId } = location.state || {}
   const [restartKey, setRestartKey] = useState(0)
   const [gameLevel, setGameLevel] = useLevel<GameLevelStoreType>(selectedLevelArcade, 'store') // Уровень игры (из 11 уровней)
   const [sessionLevel, setSessionLevel] = useState(1) // Уровень текущей игры
@@ -60,6 +60,8 @@ export const GamePage = () => {
   }
 
   const onContinue = async () => {
+    if (levelId) navigate('/arcade')
+
     const isFinal = sessionLevel >= 11
 
     if (isFinal) {
@@ -85,6 +87,8 @@ export const GamePage = () => {
   }
 
   const onSaveResult = async (score: number, level: number) => {
+    if (levelId) return
+
     setScore(score)
     setSessionLevel(level)
 
