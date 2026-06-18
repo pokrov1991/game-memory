@@ -21,21 +21,29 @@ export const App = () => {
   const [assets, setAssets] = useState(null)
   const { unlockAudio } = useAudio()
   const location = useLocation()
-  const pagesMainTheme = ['/', '/levels']
+  const pagesMainTheme = ['/', '/levels', '/arcade', '/leader-board']
   const pagesIntroTheme = ['/intro']
-  const pagesBattleTheme = ['/game-battle', '/game-store', '/game']
+  const pagesBattleTheme = ['/game-battle']
+  const pagesArcadeTheme = ['/game-store', '/game']
   const pagesBaseTheme = ['/base']
+  const pagesTavernTheme = ['/tavern']
 
   const isMainTheme = pagesMainTheme.includes(location.pathname) || location.key === 'default'
   const isIntroTheme = pagesIntroTheme.includes(location.pathname)
   const isBaseTheme = pagesBaseTheme.includes(location.pathname)
+  const isTavernTheme = pagesTavernTheme.includes(location.pathname)
   const isBattleTheme = pagesBattleTheme.includes(location.pathname)
-  const isPlayTheme = isMainTheme || isIntroTheme || isBaseTheme || isBattleTheme
+  const isArcadeTheme = pagesArcadeTheme.includes(location.pathname)
+  const isPlayTheme = isMainTheme || isIntroTheme || isBaseTheme || isTavernTheme || isBattleTheme || isArcadeTheme
 
   const themeSrc = isBattleTheme
     ? './music/game/theme.mp3'
     : isIntroTheme 
     ? './music/intro/theme.mp3'
+    : isTavernTheme
+    ? './music/tavern/theme.mp3'
+    : isArcadeTheme
+    ? './music/arcade/theme.mp3'
     : isBaseTheme 
     ? './music/base/theme.mp3'
     : './music/theme.mp3'

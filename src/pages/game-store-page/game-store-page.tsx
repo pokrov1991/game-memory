@@ -49,8 +49,8 @@ export const GameStorePage = () => {
 
   const soundCardSwap = useMusic({ src: './music/game/card-swap.wav', type: 'effect' })
   const soundCardSuccess = useMusic({ src: './music/game/card-success.wav', type: 'effect' })
-  const soundWin = useMusic({ src: './music/game/win.mp3', type: 'effect' })
-  const soundLose = useMusic({ src: './music/game/lose.mp3', type: 'effect' })
+  const soundWin = useMusic({ src: './music/game/win.wav', type: 'effect' })
+  const soundLose = useMusic({ src: './music/game/lose.wav', type: 'effect' })
 
   const setGameDataWin = async () => {
     const currentCoins = cCoins + gameLevel.coins

@@ -75,6 +75,7 @@ export const ArcadePage = () => {
               {LEVELS_STORE_CONFIG.map((level) => {
                 return (
                 <div className={styles['arcade-page-list-item']} onClick={() => {
+                  selectLevelArcade(level.id)
                   navigate('/game', { state: {levelId: level.id}})
                 }}>
                   <b>Карт: {level.cardCount}</b>

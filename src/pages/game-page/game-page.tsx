@@ -50,8 +50,8 @@ export const GamePage = () => {
 
   const soundCardSwap = useMusic({ src: './music/game/card-swap.wav', type: 'effect' })
   const soundCardSuccess = useMusic({ src: './music/game/card-success.wav', type: 'effect' })
-  const soundWin = useMusic({ src: './music/game/win.mp3', type: 'effect' })
-  const soundLose = useMusic({ src: './music/game/lose.mp3', type: 'effect' })
+  const soundWin = useMusic({ src: './music/game/win.wav', type: 'effect' })
+  const soundLose = useMusic({ src: './music/game/lose.wav', type: 'effect' })
 
   const onRestart = (): void => {
     setRestartKey(prevKey => prevKey + 1)
@@ -204,7 +204,7 @@ export const GamePage = () => {
         onContinue={onExit}
         onExit={() => setOpenModalDefault(false)}
         title="Выход"
-        subtitle={`Вы остановились в на уровне ${sessionLevel}.`}
+        subtitle={`Вы остановились в на уровне ${levelId ?? sessionLevel}.`}
         info="Вы желаете выйти из игры?"
         isOpened={isOpenModalDefault}
       />

@@ -4,7 +4,6 @@
   background: rgba(0, 0, 0, 1);
   margin: 0 auto;
   width: calc(100% - 96px);
-  max-width: 976px;
 }
 
 .leader-board__error {

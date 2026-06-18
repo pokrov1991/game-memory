@@ -2,7 +2,7 @@ import classNames from 'classnames'
 import { useEffect, useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { LEVELS_STORE, INVENTORY_STORE_CONFIG } from '@/shared'
-import { useProgress } from '@/shared/hooks'
+import { useProgress, useMusic } from '@/shared/hooks'
 import { Button, UserTreasures, XpManager, ModalDefault } from '@/shared/components'
 import YandexSDK from '@/shared/services/sdk/yandexSdk'
 import styles from './styles.module.css'
@@ -34,6 +34,8 @@ export const TavernPage = () => {
   const [talk, setTalk] = useState(false)
   const { progress, userCoins, userPotions, userOrgans, userInventory, coinsUp, potionsUp, updateOrgan, updateInventory } = useProgress()
   const scrollRef = useRef(null);
+
+  const soundPigTalk = useMusic({ src: './music/tavern/pig-talk.wav', type: 'effect' })
   
   const syncProgress = async () => {
     await YandexSDK.setGameData(progress)
@@ -90,6 +92,7 @@ export const TavernPage = () => {
 
     setTalk(true)
     setTimeout(() => setTalk(false), 1000)
+    soundPigTalk.play()
   }
 
   const handlePay = async () => {
@@ -213,6 +216,7 @@ export const TavernPage = () => {
     const onClick = () => {
       setTalk(true)
       setTimeout(() => setTalk(false), 1000)
+      soundPigTalk.play()
       const action = ACTIONS[to as MenuMode]
       if (action) return action()
 

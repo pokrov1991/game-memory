@@ -22,7 +22,6 @@ import styles from './styles.module.css'
 
 // Вычисляем размер UI элементов относительно высоты экрана
 let scalePercent = window.innerHeight < 1040 ? window.innerHeight / 1040 : 1
-
 const scaleStyle = {
   transform: `scale(${scalePercent})`
 }
@@ -81,14 +80,17 @@ export const GameBattlePage = () => {
                     .reduce((sum, item) => sum + item.hp, 0)
   const hpInitial = userParams.hp + hpGuard
   const hpEnemyInitial = gameLevel.enemyHp
+  const hpAlarm = 30
   const [hp, setHP] = useState(hpInitial)
   const [hpEnemy, setHPEnemy] = useState(hpEnemyInitial)
 
   const soundCardSwap = useMusic({ src: './music/game/card-swap.wav', type: 'effect' })
   const soundCardSuccess = useMusic({ src: './music/game/card-success.wav', type: 'effect' })
   const soundPlayerHit = useMusic({ src: './music/game/player-hit.wav', type: 'effect' })
-  const soundWin = useMusic({ src: './music/game/win.mp3', type: 'effect' })
-  const soundLose = useMusic({ src: './music/game/lose.mp3', type: 'effect' })
+  const soundPlayerStun = useMusic({ src: './music/game/player-stun.wav', type: 'effect' })
+  const soundEnemyStun = useMusic({ src: './music/game/enemy-stun.wav', type: 'effect' })
+  const soundWin = useMusic({ src: './music/game/win.wav', type: 'effect' })
+  const soundLose = useMusic({ src: './music/game/lose.wav', type: 'effect' })
 
   const setGameDataWin = async (nextLevel: number) => {
     await YandexSDK.setGameData({
@@ -249,6 +251,7 @@ export const GameBattlePage = () => {
       setTimeout(() => setEnemyHit(false), 200)
 
       if (colorParry === colorEnemyAttack) {
+        soundEnemyStun.play()
         setStunEnemy(true)
         enemyRef.current.setHitState()
         // enemyRef.current.setStunState() // можно оставить, но главное isStunEnemy
@@ -292,12 +295,13 @@ export const GameBattlePage = () => {
     const newHp = hp > damageWithGuard ? hp - damageWithGuard : 0
     setHP(newHp)
 
-    newHp < 30 ? setAlarmPlayer(true) : setAlarmPlayer(false)
+    newHp < hpAlarm ? setAlarmPlayer(true) : setAlarmPlayer(false)
 
     setPlayerHit(true)
     setTimeout(() => setPlayerHit(false), 200)
 
     if (colorPlayerPreAttack === colorEnemyAttack) {
+      soundPlayerStun.play()
       setStunPlayer(true)
       setTimeout(() => setStunPlayer(false), STUN_ANIMATION_DELAY)
     }
@@ -307,9 +311,10 @@ export const GameBattlePage = () => {
 
   const handleUsePotions = (): void => {
     if (potions > 0) {
-      const healAmount = Math.floor(hpInitial * 0.25) // восстанавливает 25% от начального HP
-      setHP(hp + healAmount > hpInitial ? hpInitial : hp + healAmount)
+      const hpAmount = Math.floor(hpInitial * 0.25) // восстанавливает 25% от начального HP
+      setHP(hp + hpAmount > hpInitial ? hpInitial : hp + hpAmount)
       setPotions(potions - 1)
+      if (hp + hpAmount >= hpAlarm) setAlarmPlayer(false)
     }
   }
 

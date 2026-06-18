@@ -41,7 +41,7 @@
 .loading-bar-fill {
   height: 100%;
   width: 0%;
-  background: linear-gradient(90deg, #4fc3f7, #00e676);
+  background: linear-gradient(90deg, #aaa, #fff);
   transition: width 0.2s ease;
 }
 
