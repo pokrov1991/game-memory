@@ -328,6 +328,10 @@
   }
 }
 
+.game-page_pvp .game-page__person_enemy .game-page__person-img {
+  transform: scale(-1, 1);
+}
+
 .game-page__person-img-enemy {
   width: 500px;
   height: 500px;

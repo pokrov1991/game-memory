@@ -40,6 +40,7 @@ export const GamePvpPage = () => {
   const [isAlarmPlayer, setAlarmPlayer] = useState(false)
   const [isPause, togglePause] = useToggle(true)
   const [isClickCard, setIsClickCard] = useState(false)
+  const [isClickCardEnemy, setIsClickCardEnemy] = useState(false)
   const {
     progress,
     completedLevels,
@@ -66,6 +67,7 @@ export const GamePvpPage = () => {
   const [colorPlayerPreAttack, setColorPlayerPreAttack] = useState('')
   const [colorEnemyAttack, setColorEnemyAttack] = useState('')
   const [resultText, setResultText] = useState(<></>)
+  const [playerSkinId, setPlayerSkinId] = useState(gameLevel.enemyId)
   const [enemySkinId, setEnemySkinId] = useState(gameLevel.enemyId)
   const [enemyState, setEnemyState] = useState('default')
   const [enemyHit, setEnemyHit] = useState(false)
@@ -207,6 +209,7 @@ export const GamePvpPage = () => {
         const mySide = msg.you
         const enemySide = mySide === 'p1' ? 'p2' : 'p1'
 
+        setPlayerSkinId(msg.state[mySide].skinId)
         setEnemySkinId(msg.state[enemySide].skinId)
 
         ws.send(JSON.stringify({
@@ -231,12 +234,13 @@ export const GamePvpPage = () => {
 
         const enemySide = mySide === 'p1' ? 'p2' : 'p1'
 
+        setPlayerSkinId(msg.state[mySide].skinId)
         setEnemySkinId(msg.state[enemySide].skinId)
         setHP(msg.state[mySide].hp)
         setHPEnemy(msg.state[enemySide].hp)
         setPotions(msg.state[mySide].potions)
 
-        setColorEnemyAttack(msg.state[enemySide].colorAttack)
+        setColorEnemyAttack(msg.state[enemySide].colorPreAttack)
         setColorPlayerPreAttack(msg.state[mySide].colorPreAttack)
         setColorPlayerAttack(msg.state[mySide].colorAttack)
 
@@ -250,6 +254,13 @@ export const GamePvpPage = () => {
           if (msg.target === enemySide && msg.damage > 0) {
             setEnemyHit(true)
             setTimeout(() => setEnemyHit(false), 200)
+          }
+        }
+
+        if (msg.type === 'enemy_attack_color') {
+          if (msg.from !== mySide) {
+            setIsClickCardEnemy(true)
+            setTimeout(() => setIsClickCardEnemy(false), 300)
           }
         }
       }
@@ -380,7 +391,7 @@ export const GamePvpPage = () => {
     // Прибавляем очки
     const currentScore = newScore - scoreSession > 0 ? newScore - scoreSession : 0
     const totalScore = currentScore + score
-    console.log('attack player', currentScore, `(${newScore} ${totalScore})`)
+
     setScoreSession(newScore)
     setScore(totalScore)
     scoreUp(totalScore)
@@ -457,7 +468,6 @@ export const GamePvpPage = () => {
   }
 
   const handleEnemyAttack = (damage: number): void => {
-    console.log('attack enemy', damage)
     const damageWithGuard = Math.floor(damage - userParams.guard)
     const newHp = hp > damageWithGuard ? hp - damageWithGuard : 0
     setHP(newHp)
@@ -487,10 +497,11 @@ export const GamePvpPage = () => {
     <main className={classNames(
       styles['game-page'],
       styles[`game-page_${gameLevel.id}`],
+      styles['game-page_pvp'],
       { 
         [styles['game-page_player-hit']]: playerHit,
         [styles['game-page_enemy-hit']]: enemyHit,
-      }
+      },
     )}>
       <div className={styles['game-page__bar']} style={scaleStyle}>
         <div className={styles['game-page__control']}>
@@ -566,13 +577,34 @@ export const GamePvpPage = () => {
           styles['game-page__person'],
           styles['game-page__person_enemy']
         )}>
-          <div className={styles['game-page__person-img']}>
-            <div className={classNames(
-              styles['game-page__person-img-enemy'],
-              styles[`game-page__person-img-enemy-${enemySkinId}`],
-              { [styles['game-page__person-img-enemy_hit-flash']]: enemyHit },
-              setEnemySpriteClass(colorEnemyAttack, enemySkinId)
-            )}></div>
+          <div className={classNames(
+            styles['game-page__person-img'], 
+            { [styles['game-page__person-img-player_hit-flash']]: enemyHit }
+          )}>
+            <div className={styles['game-page__person-img-player']}>
+              <div className={styles['game-page__person-img-player-pack']}></div>
+              <div className={styles['game-page__person-img-player-legs']}></div>
+              <div className={classNames(
+                styles['game-page__person-img-player-body'],
+                styles[`game-page__person-img-player-body_${userPlastronId}`],
+              )}></div>
+              <div className={classNames(
+                styles['game-page__person-img-player-arm'],
+                { [styles['game-page__person-img-player-arm_active']]: isClickCardEnemy }
+              )}></div>
+              <div className={classNames(
+                styles['game-page__person-img-player-head'],
+                styles[`game-page__person-img-player-head_${userHelmetId}`],
+                { 
+                  [styles['game-page__person-img-player-head_stun']]: isStunEnemy,
+                  [styles['game-page__person-img-player-head_alarm']]: isAlarmPlayer
+                }
+              )}></div>
+              <div className={classNames(
+                styles['game-page__person-img-player-tablet'],
+                setPlayerSpriteClass(colorEnemyAttack)
+              )}></div>
+            </div>
           </div>
           <div className={styles['game-page__person-info']}>
             <div className={styles['game-page__person-name']}>{gameLevel.enemyName}</div>
