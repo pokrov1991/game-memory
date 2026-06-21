@@ -5,7 +5,6 @@ import {
   GameCanvas,
   GameScore,
   GameScoreEffects,
-  // GameTimerAttack,
   ModalResult,
   ModalDefault,
   ModalLevelUp
@@ -13,7 +12,7 @@ import {
 import { useLevel, useToggle, useProgress, useMusic } from '@/shared/hooks'
 import { useUser } from '@/shared/contexts/UserContext'
 import { TypeModal } from '@/shared/components/modal-comps/types'
-import { EnemyState, GameLevelStateType } from '@/shared/services/game/types'
+import { GameLevelStateType } from '@/shared/services/game/types'
 import { EnemyService } from '@/shared/services/game/EnemyService'
 import { STUN_ANIMATION_DELAY } from '@/shared/services/game/constants'
 import { LEVELS_USER_CONFIG } from '@/shared'
@@ -57,7 +56,7 @@ export const GamePvpPage = () => {
     levelUp,
     scoreUp,
   } = useProgress()
-  const { user, game } = useUser()
+  const { game } = useUser()
   const [restartKey, setRestartKey] = useState(0)
   const [gameLevel, _setGameLevel] = useLevel<GameLevelStateType>(selectedLevel, 'battle')
   const [level, setLevel] = useState(userLevel > 0 ? userLevel : game.userLevel)
@@ -69,7 +68,6 @@ export const GamePvpPage = () => {
   const [resultText, setResultText] = useState(<></>)
   const [playerSkinId, setPlayerSkinId] = useState(gameLevel.enemyId)
   const [enemySkinId, setEnemySkinId] = useState(gameLevel.enemyId)
-  const [enemyState, setEnemyState] = useState('default')
   const [enemyHit, setEnemyHit] = useState(false)
   const [playerHit, setPlayerHit] = useState(false)
   const [potions, setPotions] = useState(userPotions)
@@ -124,31 +122,6 @@ export const GamePvpPage = () => {
   const setPlayerSpriteClass = (color: string) => {
     return color ? styles[`game-page__person-img-player-tablet_${color}`] : ''
   }
-
-  const setEnemySpriteClass = (color: string, enemyId: number) => {
-    switch (enemyState) {
-      case EnemyState.START:
-        return styles[`game-page__person-img-enemy-${enemyId}_start-${color}`]
-      case EnemyState.RUN:
-        return styles[`game-page__person-img-enemy-${enemyId}_run-${color}`]
-      case EnemyState.ATTACK:
-        return styles[`game-page__person-img-enemy-${enemyId}_attack-${color}`]
-        case EnemyState.STUN:
-        return styles[`game-page__person-img-enemy-${enemyId}_stun`]
-      case EnemyState.HIT:
-        return styles[`game-page__person-img-enemy-${enemyId}_hit`]
-      case EnemyState.DEAD:
-        return styles[`game-page__person-img-enemy-${enemyId}_dead`]
-      default:
-        return ''
-    }
-  }
-
-  useEffect(() => {
-    if (!enemyRef.current) {
-      enemyRef.current = new EnemyService(gameLevel.enemyStateDurations, setEnemyState)
-    }
-  }, [])
 
   useEffect(() => {
     const ws = new WebSocket('wss://orion7.skybug.ru/ws')
@@ -423,7 +396,6 @@ export const GamePvpPage = () => {
       if (colorParry === colorEnemyAttack) {
         setStunEnemy(true)
         enemyRef.current.setHitState()
-        // enemyRef.current.setStunState() // можно оставить, но главное isStunEnemy
         setTimeout(() => setStunEnemy(false), STUN_ANIMATION_DELAY / 1000)
         soundEnemyStun.play()
       } 
@@ -451,39 +423,6 @@ export const GamePvpPage = () => {
     // Фиксируем клик по карте для анимации нажатия
     setIsClickCard(true)
     setTimeout(() => setIsClickCard(false), 300)
-  }
-
-  const handleTickEnemyAttack = (seconds: number, attackNumber: number): void => {    
-    if (seconds === Math.floor(gameLevel.enemyStateDurations.ATTACK / 1000)) {
-      enemyRef.current.setAttackState()
-    } else if (isStunEnemy) {
-      enemyRef.current.setStunState()
-    } else if (seconds === gameLevel.initialSeconds[attackNumber]) {
-      enemyRef.current.setStartState()
-    } else if (enemyRef.current.state !== EnemyState.RUN) {
-      enemyRef.current.setRunState()
-    }
-
-    setColorEnemyAttack(gameLevel.initialColors[attackNumber])
-  }
-
-  const handleEnemyAttack = (damage: number): void => {
-    const damageWithGuard = Math.floor(damage - userParams.guard)
-    const newHp = hp > damageWithGuard ? hp - damageWithGuard : 0
-    setHP(newHp)
-
-    newHp < hpAlarm ? setAlarmPlayer(true) : setAlarmPlayer(false)
-
-    setPlayerHit(true)
-    setTimeout(() => setPlayerHit(false), 200)
-
-    if (colorPlayerPreAttack === colorEnemyAttack) {
-      setStunPlayer(true)
-      setTimeout(() => setStunPlayer(false), STUN_ANIMATION_DELAY)
-      soundPlayerStun.play()
-    }
-
-    soundPlayerHit.play()
   }
 
   const handleUsePotions = (): void => {
@@ -635,17 +574,6 @@ export const GamePvpPage = () => {
           onVictory={handleChangeCards}
           onClick={soundCardSwap.play}
         />
-        {/* <GameTimerAttack
-          isPause={isPause}
-          isStun={isStunEnemy}
-          restartKey={restartKey}
-          colorParry={colorPlayerAttack}
-          initialSeconds={gameLevel.initialSeconds}
-          initialAttacks={gameLevel.initialAttacks}
-          initialColors={gameLevel.initialColors}
-          onEnemyAttack={handleEnemyAttack}
-          onTick={handleTickEnemyAttack}
-        /> */}
       </div>
       <ModalLevelUp
         onContinue={() => setOpenModalLevelUp(false)}

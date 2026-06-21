@@ -88,8 +88,6 @@ export const PvpPage = () => {
   const handleFindRandomMatch = () => {
     setError('')
 
-    console.log(playerId, selectedSkinId)
-
     sendWhenOpen({
       type: 'find_match',
       playerId,
