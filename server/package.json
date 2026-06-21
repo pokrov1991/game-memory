@@ -1,0 +1,11 @@
+{
+  "name": "orion7-battle-server",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "node battle-server.js",
+    "deploy": "rsync -avz --delete ./ root@orion7.skybug.ru:/var/www/orion7-server/ && ssh root@orion7.skybug.ru 'cd /var/www/orion7-server && npm install --omit=dev && pm2 restart orion7-battle'"
+  },
+  "dependencies": {
+    "ws": "^8.18.0"
+  }
+}

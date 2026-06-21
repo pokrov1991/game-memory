@@ -1,0 +1,393 @@
+@import 'styles.player.css';
+@import 'styles.enemy0.css';
+@import 'styles.enemy1.css';
+@import 'styles.enemy2.css';
+@import 'styles.enemy3.css';
+@import 'styles.enemy4.css';
+@import 'styles.enemy5.css';
+@import 'styles.enemy6.css';
+
+.game-page {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  padding: 20px 30px 20px 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: url('/game/game-background.jpg') no-repeat center / cover;
+  overflow: hidden;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    padding: 0 20px;
+  }
+}
+
+.game-page_0 {
+  background: url('/game/location/0.jpg') no-repeat center / cover;
+
+  .game-page__restart {
+    display: none;
+  }
+}
+
+.game-page_1 {
+  background: url('/game/location/1.jpg') no-repeat center / cover;
+}
+
+.game-page_2 {
+  background: url('/game/location/2.jpg') no-repeat center / cover;
+}
+
+.game-page_3 {
+  background: url('/game/location/3.jpg') no-repeat center / cover;
+}
+
+.game-page_4 {
+  background: url('/game/location/4.jpg') no-repeat center / cover;
+}
+
+.game-page_5 {
+  background: url('/game/location/5.jpg') no-repeat center / cover;
+}
+
+.game-page_6 {
+  background: url('/game/location/6.jpg') no-repeat center / cover;
+}
+
+.game-page_player-hit {
+  animation: screenPlayerHit 0.3s ease;
+}
+
+@keyframes screenPlayerHit {
+  0%   { transform: translate(0, 0); }
+  10%  { transform: translate(-10px, -5px); }
+  20%  { transform: translate(10px, 5px); }
+  30%  { transform: translate(-8px, 6px); }
+  40%  { transform: translate(8px, -6px); }
+  50%  { transform: translate(-6px, 4px); }
+  60%  { transform: translate(6px, -4px); }
+  70%  { transform: translate(-4px, 2px); }
+  80%  { transform: translate(4px, -2px); }
+  90%  { transform: translate(-2px, 1px); }
+  100% { transform: translate(0, 0); }
+}
+
+.game-page_enemy-hit {
+  animation: screenEnemyHit 0.3s ease;
+}
+
+@keyframes screenEnemyHit {
+  0%   { transform: translate(0, 0); }
+  25%  { transform: translate(8px, 0); }
+  50%  { transform: translate(-4px, 0); }
+  75%  { transform: translate(2px, 0); }
+  100% { transform: translate(0, 0); }
+}
+
+.game-page__bar {
+  position: relative;
+  width: 270px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 2;
+
+  @media (max-width: 768px) {
+    transform: none !important;
+    flex-direction: row;
+    width: 320px;
+    height: 100px;
+    margin: 0 auto 20px -50px;
+  }
+}
+
+.game-page__control {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  background: url('/game/game-control-base.png') no-repeat 0 0 / 100%;
+  width: 288px;
+  height: 282px;
+  min-height: 282px;
+  pointer-events: none;
+
+  @media (max-width: 768px) {
+    width: 80px;
+    height: 80px;
+    min-height: 80px;
+    margin-right: 60px;
+    margin-top: 10px;
+  }
+}
+
+.game-page__control button {
+  position: absolute;
+  transition: 0.3s;
+  z-index: 2;
+  cursor: pointer;
+  pointer-events: visible;
+}
+
+.game-page__control button:hover {
+  filter: hue-rotate(210deg);
+}
+
+.game-page__menu {
+  left: 20px;
+  top: 10px;
+  width: 130px;
+  height: 112px;
+  background: url('/game/game-menu.svg') no-repeat 0 0 / 100%;
+  border: none;
+
+  @media (max-width: 768px) {
+    left: 5px;
+    top: -5px;
+    width: 70px;
+    height: 70px;
+  }
+}
+
+.game-page__pause {
+  left: 60px;
+  bottom: 20px;
+  width: 98px;
+  height: 85px;
+  background: url('/game/game-menu-base.svg') no-repeat 0 0 / 100%;
+  border: none;
+  color: #fff;
+  font-weight: 900;
+  font-size: 20px;
+  padding: 0 0 7px 0;
+
+  @media (max-width: 768px) {
+    left: 40px;
+    bottom: -20px;
+    width: 70px;
+    height: 70px;
+    padding: 0 0 15px 4px;
+  }
+}
+
+.game-page__restart {
+  bottom: 20px;
+  right: 65px;
+  background: none;
+  border: none;
+  font-family: 'Roboto', sans-serif;
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 21.09px;
+  letter-spacing: 0.02em;
+  color: rgba(160, 236, 234, 1);
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.75);
+
+  @media (max-width: 768px) {
+    display: none;
+  }
+}
+
+.game-page__info {
+  display: flex;
+  justify-content: space-between;
+  pointer-events: none;
+
+  @media (max-width: 768px) {
+    transform: rotate(90deg);
+  }
+}
+
+.game-page__potions {
+  position: relative;
+  margin: -110px 0 0 -50px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 130px;
+  min-width: 130px;
+  height: 100px;
+  min-height: 100px;
+  background: url(/game/button-health.png) no-repeat center / contain;
+  cursor: pointer;
+
+  span {
+    font-family: 'Alegreya', sans-serif;
+    font-size: 44px;
+    font-weight: 700;
+    color: #fff;
+    position: relative;
+    top: -6px;
+    left: -16px;
+    z-index: 2;
+  }
+
+  @media (max-width: 768px) {
+    bottom: 0;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url(/game/button-health-active.png) no-repeat center / contain;
+    opacity: 0;
+    transition: opacity 0.3s;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  &:hover {
+    &::after {
+      opacity: 1;
+    }
+  }
+
+  @media (max-width: 768px) {
+    margin: 0;
+    position: absolute;
+    top: 30px;
+    left: 3px;
+    transform: scale(0.55);
+  }
+}
+
+.game-page__potions_disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.game-page__canvas {
+  position: relative;
+  width: 100%;
+  z-index: 1;
+
+  @media (max-width: 480px) {
+    margin-top: 20%;
+  }
+}
+
+.game-page__canvas_stun {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.game-page__persons {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: calc(100% - 250px);
+  height: auto;
+  pointer-events: none;
+  z-index: 3;
+
+  @media (max-width: 768px) {
+    width: 100%;
+  }
+}
+
+.game-page__person {
+  position: absolute;
+  bottom: 0;
+}
+
+.game-page__person_player {
+  left: 0;
+}
+
+.game-page__person_enemy {
+  right: 0;
+}
+
+.game-page__person-img {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 250px;
+  height: 250px;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.game-page__person_enemy .game-page__person-img {
+  width: 250px;
+  height: 250px;
+
+  @media (max-width: 768px) {
+    width: 200px;
+    height: 200px;
+  }
+}
+
+.game-page__person-img-enemy {
+  width: 500px;
+  height: 500px;
+  transform: scale(0.5);
+  transform-origin: top left;
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  @media (max-width: 768px) {
+    transform: scale(0.4);
+  }
+}
+
+.game-page__person-img-enemy_hit-flash {
+  animation: enemyHitFlash 0.2s linear;
+}
+
+@keyframes enemyHitFlash {
+  0%   { filter: brightness(3) saturate(3) hue-rotate(-20deg); }
+  20%  { filter: none; }
+  40%  { filter: brightness(3) saturate(3) hue-rotate(-20deg); }
+  60%  { filter: none; }
+  80%  { filter: brightness(3) saturate(3) hue-rotate(-20deg); }
+  100% { filter: none; }
+}
+
+.game-page__person-info {
+  position: relative;
+  width: 100%;
+  padding: 0 20px 20px;
+  margin: -30px 0 0;
+  z-index: 1;
+}
+
+.game-page__person-name {
+  font-size: 20px;
+  font-weight: bold;
+  color: #fff;
+  width: 100%;
+  text-align: left;
+}
+
+.game-page__person-hp {
+  height: 20px;
+  width: 100%;
+  border: 1px solid #fff;
+}
+
+.game-page__person-hp-bar {
+  height: 100%;
+  width: 100%;
+  background: #ff3633;
+  display: flex;
+  align-items: center;
+  transition: 0.3s;
+
+  span {
+    margin: 0 0 0 5px;
+    color: #fff;
+    font-size: 14px;
+  }
+}

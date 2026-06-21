@@ -5,7 +5,7 @@ import {
   GameCanvas,
   GameScore,
   GameScoreEffects,
-  GameTimerAttack,
+  // GameTimerAttack,
   ModalResult,
   ModalDefault,
   ModalLevelUp
@@ -29,7 +29,7 @@ const scaleStyle = {
 // Задержка что бы показать все анимации
 const delayGameEffects = 1000
 
-export const GameBattlePage = () => {
+export const GamePvpPage = () => {
   const navigate = useNavigate()
   const [isOpenModalWin, setOpenModalWin] = useState(false)
   const [isOpenModalLose, setOpenModalLose] = useState(false)
@@ -56,7 +56,7 @@ export const GameBattlePage = () => {
     levelUp,
     scoreUp,
   } = useProgress()
-  const { game } = useUser()
+  const { user, game } = useUser()
   const [restartKey, setRestartKey] = useState(0)
   const [gameLevel, _setGameLevel] = useLevel<GameLevelStateType>(selectedLevel, 'battle')
   const [level, setLevel] = useState(userLevel > 0 ? userLevel : game.userLevel)
@@ -74,6 +74,13 @@ export const GameBattlePage = () => {
   const enemyOrgan = userOrgans[gameLevel.id]
   const userHelmetId = userInventory.find((item) => item.type === 'helmet' && item.isDressed).id
   const userPlastronId = userInventory.find((item) => item.type === 'plastron' && item.isDressed).id
+
+  // Для игры PvP
+  const socketRef = useRef<WebSocket | null>(null)
+  const [battleId, setBattleId] = useState('')
+  const [playerSide, setPlayerSide] = useState<'p1' | 'p2' | null>(null)
+  const playerSideRef = useRef<'p1' | 'p2' | null>(null)
+  const [battleStatus, setBattleStatus] = useState<'waiting' | 'preparing' | 'playing'>('waiting')
 
   const hpGuard = userInventory
                     .filter(item => item.type === 'helmet' && item.isDressed || item.type === 'plastron' && item.isDressed)
@@ -141,13 +148,123 @@ export const GameBattlePage = () => {
   }, [])
 
   useEffect(() => {
+    const ws = new WebSocket('wss://orion7.skybug.ru/ws')
+
+    socketRef.current = ws
+
+    ws.onopen = () => {
+      ws.send(JSON.stringify({
+        type: 'find_match',
+        playerId: user.id,
+      }))
+    }
+
+    ws.onmessage = (event) => {
+      const msg = JSON.parse(event.data)
+
+      if (msg.type === 'waiting') {
+        setBattleStatus('waiting')
+        togglePause(true)
+      }
+
+      if (msg.type === 'match_found') {
+        setBattleId(msg.battleId)
+        setPlayerSide(msg.you)
+        playerSideRef.current = msg.you
+        setBattleStatus('preparing')
+
+        ws.send(JSON.stringify({
+          type: 'player_ready',
+          battleId: msg.battleId,
+        }))
+      }
+
+      if (msg.type === 'battle_started') {
+        setBattleStatus('playing')
+        togglePause(false)
+      }
+
+      if (
+        msg.type === 'state' ||
+        msg.type === 'attack_result' ||
+        msg.type === 'potion_used' ||
+        msg.type === 'enemy_attack_color'
+      ) {
+        const mySide = playerSideRef.current
+        if (!mySide) return
+
+        const enemySide = mySide === 'p1' ? 'p2' : 'p1'
+
+        setHP(msg.state[mySide].hp)
+        setHPEnemy(msg.state[enemySide].hp)
+        setPotions(msg.state[mySide].potions)
+
+        setColorEnemyAttack(msg.state[enemySide].colorAttack)
+        setColorPlayerPreAttack(msg.state[mySide].colorPreAttack)
+        setColorPlayerAttack(msg.state[mySide].colorAttack)
+
+        if (msg.type === 'attack_result') {
+          if (msg.target === mySide && msg.damage > 0) {
+            setPlayerHit(true)
+            setTimeout(() => setPlayerHit(false), 200)
+            soundPlayerHit.play()
+          }
+
+          if (msg.target === enemySide && msg.damage > 0) {
+            setEnemyHit(true)
+            setTimeout(() => setEnemyHit(false), 200)
+          }
+        }
+      }
+
+      if (msg.type === 'stun_success') {
+        const mySide = playerSideRef.current
+
+        if (msg.from === mySide) {
+          setStunEnemy(true)
+          enemyRef.current?.setHitState()
+          setTimeout(() => setStunEnemy(false), STUN_ANIMATION_DELAY)
+          soundEnemyStun.play()
+        } else {
+          setStunPlayer(true)
+          setTimeout(() => setStunPlayer(false), STUN_ANIMATION_DELAY)
+          soundPlayerStun.play()
+        }
+      }
+
+      if (msg.type === 'win') {
+        handleGameWin()
+      }
+
+      if (msg.type === 'lose') {
+        handleGameOver()
+      }
+
+      if (msg.type === 'opponent_left') {
+        setResultText(<>Соперник вышел из боя.</>)
+        setOpenModalWin(true)
+        soundWin.play()
+      }
+    }
+
+    return () => {
+      ws.close()
+    }
+  }, [])
+
+  useEffect(() => {
     if (hp <= 0) {
       handleGameOver()
     }
     if (hpEnemy <= 0) {
       handleGameWin()
     }
-  }, [hp, hpEnemy])
+    if (hp >= hpAlarm) {
+      setAlarmPlayer(false)
+    } else {
+      setAlarmPlayer(true)
+    }
+  }, [hp, hpEnemy, hpAlarm])
 
   const onRestart = (): void => {
     setRestartKey(prevKey => prevKey + 1)
@@ -244,9 +361,14 @@ export const GameBattlePage = () => {
     // Ставим удар по врагу
     if (newScore > 0) {
       const attack = Math.floor(currentScore + userParams.attack)
-      const newHpEnemy = hpEnemy > attack ? hpEnemy - attack : 0
-      setHPEnemy(newHpEnemy)
 
+      socketRef.current?.send(JSON.stringify({
+        type: 'attack',
+        battleId,
+        damage: attack,
+        colorParry,
+      }))
+      
       setEnemyHit(true)
       setTimeout(() => setEnemyHit(false), 200)
 
@@ -270,9 +392,17 @@ export const GameBattlePage = () => {
       setColorPlayerPreAttack('')
       setColorPlayerAttack(color)
     }
+
+    socketRef.current?.send(JSON.stringify({
+      type: 'set_attack_color',
+      battleId,
+      color,
+      countFlipped,
+    }))
+
     // Фиксируем клик по карте для анимации нажатия
     setIsClickCard(true)
-    setTimeout(() => setIsClickCard(false), 300) 
+    setTimeout(() => setIsClickCard(false), 300)
   }
 
   const handleTickEnemyAttack = (seconds: number, attackNumber: number): void => {    
@@ -310,12 +440,10 @@ export const GameBattlePage = () => {
   }
 
   const handleUsePotions = (): void => {
-    if (potions > 0) {
-      const hpAmount = Math.floor(hpInitial * 0.25) // восстанавливает 25% от начального HP
-      setHP(hp + hpAmount > hpInitial ? hpInitial : hp + hpAmount)
-      setPotions(potions - 1)
-      if (hp + hpAmount >= hpAlarm) setAlarmPlayer(false)
-    }
+    socketRef.current?.send(JSON.stringify({
+      type: 'use_potion',
+      battleId,
+    }))
   }
 
   return (
@@ -438,7 +566,7 @@ export const GameBattlePage = () => {
           onVictory={handleChangeCards}
           onClick={soundCardSwap.play}
         />
-        <GameTimerAttack
+        {/* <GameTimerAttack
           isPause={isPause}
           isStun={isStunEnemy}
           restartKey={restartKey}
@@ -448,7 +576,7 @@ export const GameBattlePage = () => {
           initialColors={gameLevel.initialColors}
           onEnemyAttack={handleEnemyAttack}
           onTick={handleTickEnemyAttack}
-        />
+        /> */}
       </div>
       <ModalLevelUp
         onContinue={() => setOpenModalLevelUp(false)}
