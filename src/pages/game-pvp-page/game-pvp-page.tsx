@@ -66,6 +66,7 @@ export const GamePvpPage = () => {
   const [colorPlayerPreAttack, setColorPlayerPreAttack] = useState('')
   const [colorEnemyAttack, setColorEnemyAttack] = useState('')
   const [resultText, setResultText] = useState(<></>)
+  const [enemySkinId, setEnemySkinId] = useState(gameLevel.enemyId)
   const [enemyState, setEnemyState] = useState('default')
   const [enemyHit, setEnemyHit] = useState(false)
   const [playerHit, setPlayerHit] = useState(false)
@@ -153,14 +154,44 @@ export const GamePvpPage = () => {
     socketRef.current = ws
 
     ws.onopen = () => {
+      const savedBattleId = sessionStorage.getItem('pvpBattleId')
+      const savedPlayerSide = sessionStorage.getItem('pvpPlayerSide') as 'p1' | 'p2' | null
+      const savedBattleState = sessionStorage.getItem('pvpBattleState')
+
+      if (!savedBattleId || !savedPlayerSide || !savedBattleState) {
+        navigate('/pvp')
+        return
+      }
+
+      const state = JSON.parse(savedBattleState)
+      const enemySide = savedPlayerSide === 'p1' ? 'p2' : 'p1'
+
+      setBattleId(savedBattleId)
+      setPlayerSide(savedPlayerSide)
+      playerSideRef.current = savedPlayerSide
+
+      setEnemySkinId(state[enemySide].skinId)
+      setHP(state[savedPlayerSide].hp)
+      setHPEnemy(state[enemySide].hp)
+      setPotions(state[savedPlayerSide].potions)
+
       ws.send(JSON.stringify({
-        type: 'find_match',
-        playerId: user.id,
+        type: 'join_battle_socket',
+        battleId: savedBattleId,
+        side: savedPlayerSide,
       }))
     }
 
     ws.onmessage = (event) => {
       const msg = JSON.parse(event.data)
+
+      if (msg.type === 'joined_battle_socket') {
+        ws.send(JSON.stringify({
+          type: 'player_ready',
+          battleId: msg.battleId,
+        }))
+        return
+      }
 
       if (msg.type === 'waiting') {
         setBattleStatus('waiting')
@@ -172,6 +203,11 @@ export const GamePvpPage = () => {
         setPlayerSide(msg.you)
         playerSideRef.current = msg.you
         setBattleStatus('preparing')
+
+        const mySide = msg.you
+        const enemySide = mySide === 'p1' ? 'p2' : 'p1'
+
+        setEnemySkinId(msg.state[enemySide].skinId)
 
         ws.send(JSON.stringify({
           type: 'player_ready',
@@ -195,6 +231,7 @@ export const GamePvpPage = () => {
 
         const enemySide = mySide === 'p1' ? 'p2' : 'p1'
 
+        setEnemySkinId(msg.state[enemySide].skinId)
         setHP(msg.state[mySide].hp)
         setHPEnemy(msg.state[enemySide].hp)
         setPotions(msg.state[mySide].potions)
@@ -292,7 +329,7 @@ export const GamePvpPage = () => {
     setGameDataWin(nextLevel)
 
     setOpenModalWin(false)
-    navigate('/levels')
+    navigate('/pvp')
   }
 
   const onGameOver = (): void => {
@@ -303,7 +340,7 @@ export const GamePvpPage = () => {
 
   const onExit = (): void => {
     setGameDataLose()
-    navigate('/levels')
+    navigate('/pvp')
   }
 
   const handleMenu = (): void => {
@@ -532,9 +569,9 @@ export const GamePvpPage = () => {
           <div className={styles['game-page__person-img']}>
             <div className={classNames(
               styles['game-page__person-img-enemy'],
-              styles[`game-page__person-img-enemy-${gameLevel.enemyId}`],
+              styles[`game-page__person-img-enemy-${enemySkinId}`],
               { [styles['game-page__person-img-enemy_hit-flash']]: enemyHit },
-              setEnemySpriteClass(colorEnemyAttack, gameLevel.enemyId)
+              setEnemySpriteClass(colorEnemyAttack, enemySkinId)
             )}></div>
           </div>
           <div className={styles['game-page__person-info']}>

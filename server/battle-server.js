@@ -15,6 +15,11 @@ const wss = new WebSocketServer({
 
 let waitingPlayer = null
 const battles = new Map()
+const privateRooms = new Map()
+
+const createRoomCode = () => {
+  return Math.random().toString(36).slice(2, 8).toUpperCase()
+}
 
 const send = (ws, data) => {
   if (ws && ws.readyState === ws.OPEN) {
@@ -27,8 +32,9 @@ const broadcast = (battle, data) => {
   send(battle.sockets.p2, data)
 }
 
-const createPlayer = (playerId) => ({
+const createPlayer = (playerId, skinId = 1) => ({
   playerId,
+  skinId,
   hp: PLAYER_INITIAL_HP,
   hpInitial: PLAYER_INITIAL_HP,
   score: 0,
@@ -43,15 +49,15 @@ const createPlayer = (playerId) => ({
   connected: true,
 })
 
-const createBattle = (p1Socket, p1Id, p2Socket, p2Id) => {
+const createBattle = (p1Socket, p1Id, p1SkinId, p2Socket, p2Id, p2SkinId) => {
   const battleId = crypto.randomUUID()
 
   return {
     state: {
       battleId,
       status: 'preparing',
-      p1: createPlayer(p1Id),
-      p2: createPlayer(p2Id),
+      p1: createPlayer(p1Id, p1SkinId),
+      p2: createPlayer(p2Id, p2SkinId),
       createdAt: Date.now(),
     },
     sockets: {
@@ -143,11 +149,13 @@ wss.on('connection', (ws) => {
 
     if (msg.type === 'find_match') {
       const playerId = String(msg.playerId || crypto.randomUUID())
+      const skinId = Number(msg.skinId || 1)
 
       if (!waitingPlayer) {
         waitingPlayer = {
           ws,
           playerId,
+          skinId,
           createdAt: Date.now(),
         }
 
@@ -171,8 +179,10 @@ wss.on('connection', (ws) => {
       const battle = createBattle(
         waitingPlayer.ws,
         waitingPlayer.playerId,
+        waitingPlayer.skinId,
         ws,
-        playerId
+        playerId,
+        skinId
       )
 
       battles.set(battle.state.battleId, battle)
@@ -197,6 +207,85 @@ wss.on('connection', (ws) => {
       return
     }
 
+    if (msg.type === 'create_private_match') {
+      const playerId = String(msg.playerId || crypto.randomUUID())
+      const skinId = Number(msg.skinId || 1)
+      const roomCode = createRoomCode()
+
+      privateRooms.set(roomCode, {
+        ws,
+        playerId,
+        skinId,
+        createdAt: Date.now(),
+      })
+
+      send(ws, {
+        type: 'private_match_created',
+        roomCode,
+        message: 'Private match created',
+      })
+
+      console.log('Private room created:', roomCode)
+
+      return
+    }
+
+    if (msg.type === 'join_private_match') {
+      const playerId = String(msg.playerId || crypto.randomUUID())
+      const skinId = Number(msg.skinId || 1)
+      const roomCode = String(msg.roomCode || '').toUpperCase().trim()
+
+      const room = privateRooms.get(roomCode)
+
+      if (!room) {
+        send(ws, {
+          type: 'error',
+          message: 'Room not found',
+        })
+        return
+      }
+
+      if (room.ws === ws) {
+        send(ws, {
+          type: 'error',
+          message: 'You cannot join your own room',
+        })
+        return
+      }
+
+      const battle = createBattle(
+        room.ws,
+        room.playerId,
+        room.skinId,
+        ws,
+        playerId,
+        skinId
+      )
+
+      battles.set(battle.state.battleId, battle)
+      privateRooms.delete(roomCode)
+
+      send(battle.sockets.p1, {
+        type: 'match_found',
+        battleId: battle.state.battleId,
+        you: 'p1',
+        roomCode,
+        state: battle.state,
+      })
+
+      send(battle.sockets.p2, {
+        type: 'match_found',
+        battleId: battle.state.battleId,
+        you: 'p2',
+        roomCode,
+        state: battle.state,
+      })
+
+      console.log('Private battle created:', battle.state.battleId)
+
+      return
+    }
+
     if (!msg.battleId) {
       send(ws, {
         type: 'error',
@@ -212,6 +301,32 @@ wss.on('connection', (ws) => {
         type: 'error',
         message: 'Battle not found',
       })
+      return
+    }
+
+    if (msg.type === 'join_battle_socket') {
+      const requestedSide = msg.side
+
+      if (requestedSide !== 'p1' && requestedSide !== 'p2') {
+        send(ws, {
+          type: 'error',
+          message: 'Invalid side',
+        })
+        return
+      }
+
+      battle.sockets[requestedSide] = ws
+      battle.state[requestedSide].connected = true
+
+      send(ws, {
+        type: 'joined_battle_socket',
+        battleId: msg.battleId,
+        you: requestedSide,
+        state: battle.state,
+      })
+
+      sendState(battle)
+
       return
     }
 

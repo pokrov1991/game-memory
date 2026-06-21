@@ -1,0 +1,124 @@
+.pvp-lobby {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px;
+  background: #16141f;
+  color: #fff;
+}
+
+.pvp-lobby__panel {
+  width: min(920px, 100%);
+  padding: 32px;
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.pvp-lobby__title {
+  margin: 0 0 24px;
+  font-size: 42px;
+  text-align: center;
+}
+
+.pvp-lobby__section {
+  margin-top: 24px;
+}
+
+.pvp-lobby__section h2 {
+  margin: 0 0 12px;
+  font-size: 24px;
+}
+
+.pvp-lobby__skins {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.pvp-lobby__skin,
+.pvp-lobby__skin_active {
+  padding: 16px;
+  border-radius: 18px;
+  border: 2px solid transparent;
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  cursor: pointer;
+}
+
+.pvp-lobby__skin_active {
+  border-color: #ffd24a;
+  background: rgba(255, 210, 74, 0.18);
+}
+
+.pvp-lobby__skin-img {
+  height: 120px;
+  margin-bottom: 10px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
+/* Тут подставь те же картинки/спрайты, что используются для enemy */
+.pvp-lobby__skin-img_1 {
+  background-image: url('/img/enemies/enemy-1.png');
+}
+
+.pvp-lobby__skin-img_2 {
+  background-image: url('/img/enemies/enemy-2.png');
+}
+
+.pvp-lobby__skin-img_3 {
+  background-image: url('/img/enemies/enemy-3.png');
+}
+
+.pvp-lobby__skin-img_4 {
+  background-image: url('/img/enemies/enemy-4.png');
+}
+
+.pvp-lobby__button {
+  min-height: 48px;
+  padding: 0 22px;
+  border: none;
+  border-radius: 14px;
+  background: #ffd24a;
+  color: #16141f;
+  font-size: 18px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.pvp-lobby__button:hover {
+  filter: brightness(1.08);
+}
+
+.pvp-lobby__status {
+  margin-top: 12px;
+  color: #ffd24a;
+}
+
+.pvp-lobby__code {
+  margin-top: 12px;
+  font-size: 22px;
+}
+
+.pvp-lobby__join {
+  display: flex;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.pvp-lobby__input {
+  min-height: 48px;
+  flex: 1;
+  padding: 0 16px;
+  border-radius: 14px;
+  border: 2px solid transparent;
+  font-size: 18px;
+  text-transform: uppercase;
+}
+
+.pvp-lobby__error {
+  margin-top: 16px;
+  color: #ff6b6b;
+}

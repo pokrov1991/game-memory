@@ -37,7 +37,8 @@ export const Navigation = () => {
       {isNewGame ? <Item to="/intro" title="Новая игра" /> : <Item to="/levels" title="Продолжить" />}
       <Item to="/intro" title="Вступление" />
       <Item to="/arcade" title="Быстрая игра" />
-      <Item to="/game-pvp" title="PVP" />
+      <Item to="/game-pvp" title="PVP Game" />
+      <Item to="/pvp" title="PVP Lobby" />
     </ul>
   )
 }
