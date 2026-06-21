@@ -30,14 +30,14 @@
   font-size: 24px;
 }
 
-.pvp-lobby__skins {
+.pvp-lobby__locations {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 16px;
 }
 
-.pvp-lobby__skin,
-.pvp-lobby__skin_active {
+.pvp-lobby__location,
+.pvp-lobby__location_active {
   padding: 16px;
   border-radius: 18px;
   border: 2px solid transparent;
@@ -46,34 +46,42 @@
   cursor: pointer;
 }
 
-.pvp-lobby__skin_active {
+.pvp-lobby__location_active {
   border-color: #ffd24a;
   background: rgba(255, 210, 74, 0.18);
 }
 
-.pvp-lobby__skin-img {
+.pvp-lobby__location-img {
   height: 120px;
   margin-bottom: 10px;
+  border-radius: 14px;
   background-position: center;
   background-repeat: no-repeat;
-  background-size: contain;
+  background-size: cover;
 }
 
-/* Тут подставь те же картинки/спрайты, что используются для enemy */
-.pvp-lobby__skin-img_1 {
-  background-image: url('/img/enemies/enemy-1.png');
+.pvp-lobby__location-img_1 {
+  background-image: url('/img/locations/location-1.jpg');
 }
 
-.pvp-lobby__skin-img_2 {
-  background-image: url('/img/enemies/enemy-2.png');
+.pvp-lobby__location-img_2 {
+  background-image: url('/img/locations/location-2.jpg');
 }
 
-.pvp-lobby__skin-img_3 {
-  background-image: url('/img/enemies/enemy-3.png');
+.pvp-lobby__location-img_3 {
+  background-image: url('/img/locations/location-3.jpg');
 }
 
-.pvp-lobby__skin-img_4 {
-  background-image: url('/img/enemies/enemy-4.png');
+.pvp-lobby__location-img_4 {
+  background-image: url('/img/locations/location-4.jpg');
+}
+
+.pvp-lobby__location-img_5 {
+  background-image: url('/img/locations/location-5.jpg');
+}
+
+.pvp-lobby__location-img_6 {
+  background-image: url('/img/locations/location-6.jpg');
 }
 
 .pvp-lobby__button {

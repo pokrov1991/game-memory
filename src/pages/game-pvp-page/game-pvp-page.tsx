@@ -59,6 +59,7 @@ export const GamePvpPage = () => {
   const { game } = useUser()
   const [restartKey, setRestartKey] = useState(0)
   const [gameLevel, _setGameLevel] = useLevel<GameLevelStateType>(selectedLevel, 'battle')
+  const [locationId, setLocationId] = useState(1)
   const [level, setLevel] = useState(userLevel > 0 ? userLevel : game.userLevel)
   const [score, setScore] = useState(userScore > 0 ? userScore : game.userScore)
   const [scoreSession, setScoreSession] = useState(0)
@@ -141,6 +142,7 @@ export const GamePvpPage = () => {
       const state = JSON.parse(savedBattleState)
       const enemySide = savedPlayerSide === 'p1' ? 'p2' : 'p1'
 
+      setLocationId(state.locationId || 1)
       setBattleId(savedBattleId)
       setPlayerSide(savedPlayerSide)
       playerSideRef.current = savedPlayerSide
@@ -182,6 +184,7 @@ export const GamePvpPage = () => {
         const mySide = msg.you
         const enemySide = mySide === 'p1' ? 'p2' : 'p1'
 
+        setLocationId(msg.state.locationId || 1)
         setPlayerSkinId(msg.state[mySide].skinId)
         setEnemySkinId(msg.state[enemySide].skinId)
 
@@ -207,6 +210,7 @@ export const GamePvpPage = () => {
 
         const enemySide = mySide === 'p1' ? 'p2' : 'p1'
 
+        setLocationId(msg.state.locationId || 1)
         setPlayerSkinId(msg.state[mySide].skinId)
         setEnemySkinId(msg.state[enemySide].skinId)
         setHP(msg.state[mySide].hp)
@@ -435,7 +439,7 @@ export const GamePvpPage = () => {
   return (
     <main className={classNames(
       styles['game-page'],
-      styles[`game-page_${gameLevel.id}`],
+      styles[`game-page_${locationId}`],
       styles['game-page_pvp'],
       { 
         [styles['game-page_player-hit']]: playerHit,

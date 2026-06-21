@@ -49,12 +49,13 @@ const createPlayer = (playerId, skinId = 1) => ({
   connected: true,
 })
 
-const createBattle = (p1Socket, p1Id, p1SkinId, p2Socket, p2Id, p2SkinId) => {
+const createBattle = (p1Socket, p1Id, p1SkinId, p2Socket, p2Id, p2SkinId, locationId = 1) => {
   const battleId = crypto.randomUUID()
 
   return {
     state: {
       battleId,
+      locationId,
       status: 'preparing',
       p1: createPlayer(p1Id, p1SkinId),
       p2: createPlayer(p2Id, p2SkinId),
@@ -149,6 +150,7 @@ wss.on('connection', (ws) => {
 
     if (msg.type === 'find_match') {
       const playerId = String(msg.playerId || crypto.randomUUID())
+      const locationId = Number(msg.locationId || 1)
       const skinId = Number(msg.skinId || 1)
 
       if (!waitingPlayer) {
@@ -156,6 +158,7 @@ wss.on('connection', (ws) => {
           ws,
           playerId,
           skinId,
+          locationId,
           createdAt: Date.now(),
         }
 
@@ -182,7 +185,8 @@ wss.on('connection', (ws) => {
         waitingPlayer.skinId,
         ws,
         playerId,
-        skinId
+        skinId,
+        waitingPlayer.locationId,
       )
 
       battles.set(battle.state.battleId, battle)
@@ -209,6 +213,7 @@ wss.on('connection', (ws) => {
 
     if (msg.type === 'create_private_match') {
       const playerId = String(msg.playerId || crypto.randomUUID())
+      const locationId = Number(msg.locationId || 1)
       const skinId = Number(msg.skinId || 1)
       const roomCode = createRoomCode()
 
@@ -216,6 +221,7 @@ wss.on('connection', (ws) => {
         ws,
         playerId,
         skinId,
+        locationId,
         createdAt: Date.now(),
       })
 
@@ -259,7 +265,8 @@ wss.on('connection', (ws) => {
         room.skinId,
         ws,
         playerId,
-        skinId
+        skinId,
+        room.locationId,
       )
 
       battles.set(battle.state.battleId, battle)

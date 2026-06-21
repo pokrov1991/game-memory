@@ -5,11 +5,13 @@ import styles from './styles.module.css'
 
 type MatchMode = 'idle' | 'waiting' | 'private-created'
 
-const SKINS = [
-  { id: 1, title: 'Существо 1' },
-  { id: 2, title: 'Существо 2' },
-  { id: 3, title: 'Существо 3' },
-  { id: 4, title: 'Существо 4' },
+const LOCATIONS = [
+  { id: 1, title: 'Локация 1' },
+  { id: 2, title: 'Локация 2' },
+  { id: 3, title: 'Локация 3' },
+  { id: 4, title: 'Локация 4' },
+  { id: 5, title: 'Локация 5' },
+  { id: 6, title: 'Локация 6' },
 ]
 
 export const PvpPage = () => {
@@ -19,6 +21,7 @@ export const PvpPage = () => {
   const socketRef = useRef<WebSocket | null>(null)
 
   const [selectedSkinId, setSelectedSkinId] = useState(1)
+  const [selectedLocationId, setSelectedLocationId] = useState(1)
   const [roomCode, setRoomCode] = useState('')
   const [createdRoomCode, setCreatedRoomCode] = useState('')
   const [mode, setMode] = useState<MatchMode>('idle')
@@ -55,6 +58,7 @@ export const PvpPage = () => {
         sessionStorage.setItem('pvpBattleId', msg.battleId)
         sessionStorage.setItem('pvpPlayerSide', msg.you)
         sessionStorage.setItem('pvpSelectedSkinId', String(selectedSkinId))
+        sessionStorage.setItem('pvpLocationId', String(msg.state.locationId))
         sessionStorage.setItem('pvpBattleState', JSON.stringify(msg.state))
 
         navigate('/game-pvp')
@@ -92,6 +96,7 @@ export const PvpPage = () => {
       type: 'find_match',
       playerId,
       skinId: selectedSkinId,
+      locationId: selectedLocationId,
     })
   }
 
@@ -102,6 +107,7 @@ export const PvpPage = () => {
       type: 'create_private_match',
       playerId,
       skinId: selectedSkinId,
+      locationId: selectedLocationId,
     })
   }
 
@@ -117,6 +123,7 @@ export const PvpPage = () => {
       type: 'join_private_match',
       playerId,
       skinId: selectedSkinId,
+      locationId: selectedLocationId,
       roomCode,
     })
   }
@@ -129,27 +136,27 @@ export const PvpPage = () => {
         </h1>
 
         <section className={styles['pvp-lobby__section']}>
-          <h2>Выбор скина</h2>
+          <h2>Выбор локации</h2>
 
-          <div className={styles['pvp-lobby__skins']}>
-            {SKINS.map((skin) => (
+          <div className={styles['pvp-lobby__locations']}>
+            {LOCATIONS.map((location) => (
               <button
-                key={skin.id}
+                key={location.id}
                 type="button"
-                onClick={() => setSelectedSkinId(skin.id)}
+                onClick={() => setSelectedLocationId(location.id)}
                 className={
-                  selectedSkinId === skin.id
-                    ? styles['pvp-lobby__skin_active']
-                    : styles['pvp-lobby__skin']
+                  selectedLocationId === location.id
+                    ? styles['pvp-lobby__location_active']
+                    : styles['pvp-lobby__location']
                 }
               >
                 <div
                   className={[
-                    styles['pvp-lobby__skin-img'],
-                    styles[`pvp-lobby__skin-img_${skin.id}`],
+                    styles['pvp-lobby__location-img'],
+                    styles[`pvp-lobby__location-img_${location.id}`],
                   ].join(' ')}
                 />
-                <span>{skin.title}</span>
+                <span>{location.title}</span>
               </button>
             ))}
           </div>
