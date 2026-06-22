@@ -1,57 +1,60 @@
-.pvp-lobby {
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 32px;
-  background: #16141f;
+.pvp-page {
+  width: 100%;
   color: #fff;
+  font-family: 'Roboto', sans-serif;
+
+  button span {
+    font-size: 20px;
+  }
 }
 
-.pvp-lobby__panel {
-  width: min(920px, 100%);
-  padding: 32px;
-  border-radius: 24px;
-  background: rgba(255, 255, 255, 0.08);
+.pvp-page__container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 36px 42px 24px;
 }
 
-.pvp-lobby__title {
-  margin: 0 0 24px;
-  font-size: 42px;
-  text-align: center;
-}
-
-.pvp-lobby__section {
+.pvp-page__section {
   margin-top: 24px;
 }
 
-.pvp-lobby__section h2 {
+.pvp-page__section h2 {
   margin: 0 0 12px;
   font-size: 24px;
+  font-family: 'Alegreya';
 }
 
-.pvp-lobby__locations {
+.pvp-page__locations {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 16px;
+
+  @media (max-width: 767px) {
+    grid-template-columns: repeat(1, 3fr);
+  }
 }
 
-.pvp-lobby__location,
-.pvp-lobby__location_active {
+.pvp-page__location,
+.pvp-page__location_active {
   padding: 16px;
   border-radius: 18px;
   border: 2px solid transparent;
   background: rgba(255, 255, 255, 0.1);
   color: #fff;
   cursor: pointer;
+
+  span {
+    font-size: 16px !important;
+  }
 }
 
-.pvp-lobby__location_active {
+.pvp-page__location_active {
   border-color: #ffd24a;
   background: rgba(255, 210, 74, 0.18);
 }
 
-.pvp-lobby__location-img {
+.pvp-page__location-img {
   height: 120px;
   margin-bottom: 10px;
   border-radius: 14px;
@@ -60,63 +63,52 @@
   background-size: cover;
 }
 
-.pvp-lobby__location-img_1 {
-  background-image: url('/img/locations/location-1.jpg');
+.pvp-page__location-img_1 {
+  background-image: url('/game/location/1.jpg');
 }
 
-.pvp-lobby__location-img_2 {
-  background-image: url('/img/locations/location-2.jpg');
+.pvp-page__location-img_2 {
+  background-image: url('/game/location/2.jpg');
 }
 
-.pvp-lobby__location-img_3 {
-  background-image: url('/img/locations/location-3.jpg');
+.pvp-page__location-img_3 {
+  background-image: url('/game/location/3.jpg');
 }
 
-.pvp-lobby__location-img_4 {
-  background-image: url('/img/locations/location-4.jpg');
+.pvp-page__location-img_4 {
+  background-image: url('/game/location/4.jpg');
 }
 
-.pvp-lobby__location-img_5 {
-  background-image: url('/img/locations/location-5.jpg');
+.pvp-page__location-img_5 {
+  background-image: url('/game/location/5.jpg');
 }
 
-.pvp-lobby__location-img_6 {
-  background-image: url('/img/locations/location-6.jpg');
+.pvp-page__location-img_6 {
+  background-image: url('/game/location/6.jpg');
 }
 
-.pvp-lobby__button {
-  min-height: 48px;
-  padding: 0 22px;
-  border: none;
-  border-radius: 14px;
-  background: #ffd24a;
-  color: #16141f;
-  font-size: 18px;
-  font-weight: 700;
-  cursor: pointer;
-}
-
-.pvp-lobby__button:hover {
-  filter: brightness(1.08);
-}
-
-.pvp-lobby__status {
+.pvp-page__status {
   margin-top: 12px;
   color: #ffd24a;
 }
 
-.pvp-lobby__code {
+.pvp-page__code {
   margin-top: 12px;
   font-size: 22px;
 }
 
-.pvp-lobby__join {
+.pvp-page__join {
   display: flex;
   gap: 12px;
   margin-top: 16px;
+
+  @media (max-width: 767px) {
+    flex-wrap: wrap;
+    margin-bottom: 50px;
+  }
 }
 
-.pvp-lobby__input {
+.pvp-page__input {
   min-height: 48px;
   flex: 1;
   padding: 0 16px;
@@ -126,7 +118,7 @@
   text-transform: uppercase;
 }
 
-.pvp-lobby__error {
+.pvp-page__error {
   margin-top: 16px;
   color: #ff6b6b;
 }

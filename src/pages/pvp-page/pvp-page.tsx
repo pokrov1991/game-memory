@@ -1,17 +1,28 @@
 import { useMemo, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useUser } from '@/shared/contexts/UserContext'
+import { Layout, Navigate, InputField, Button } from '@/shared/components'
 import styles from './styles.module.css'
 
 type MatchMode = 'idle' | 'waiting' | 'private-created'
 
+const routes = [
+  {
+    path: '/',
+    name: 'Назад',
+    sort: 20,
+  },
+  {
+    path: '/pvp',
+    name: 'PvP игра',
+    sort: 10,
+  },
+]
+
 const LOCATIONS = [
-  { id: 1, title: 'Локация 1' },
-  { id: 2, title: 'Локация 2' },
-  { id: 3, title: 'Локация 3' },
-  { id: 4, title: 'Локация 4' },
-  { id: 5, title: 'Локация 5' },
-  { id: 6, title: 'Локация 6' },
+  { id: 1, title: 'Каньон отражений' },
+  { id: 2, title: 'Белое плато' },
+  { id: 3, title: 'Серый мост' },
 ]
 
 export const PvpPage = () => {
@@ -20,7 +31,7 @@ export const PvpPage = () => {
 
   const socketRef = useRef<WebSocket | null>(null)
 
-  const [playerName, setPlayerName] = useState('')
+  const [playerName, setPlayerName] = useState(user.name)
   const [selectedSkinId, setSelectedSkinId] = useState(1)
   const [selectedLocationId, setSelectedLocationId] = useState(1)
   const [roomCode, setRoomCode] = useState('')
@@ -134,110 +145,116 @@ export const PvpPage = () => {
   }
 
   return (
-    <main className={styles['pvp-lobby']}>
-      <div className={styles['pvp-lobby__panel']}>
-        <h1 className={styles['pvp-lobby__title']}>
-          PvP бой
-        </h1>
+    <main className={styles['pvp-page']}>
+      <Layout title="PvP бой">
+        <div className={styles['pvp-page__container']}>
 
-        <section className={styles['pvp-lobby__section']}>
-          <h2>Имя игрока</h2>
-
-          <input
-            value={playerName}
-            onChange={(event) => setPlayerName(event.target.value)}
-            maxLength={20}
-            placeholder="Введите имя"
-            className={styles['pvp-lobby__input']}
-          />
-        </section>
-
-        <section className={styles['pvp-lobby__section']}>
-          <h2>Выбор локации</h2>
-
-          <div className={styles['pvp-lobby__locations']}>
-            {LOCATIONS.map((location) => (
-              <button
-                key={location.id}
-                type="button"
-                onClick={() => setSelectedLocationId(location.id)}
-                className={
-                  selectedLocationId === location.id
-                    ? styles['pvp-lobby__location_active']
-                    : styles['pvp-lobby__location']
-                }
-              >
-                <div
-                  className={[
-                    styles['pvp-lobby__location-img'],
-                    styles[`pvp-lobby__location-img_${location.id}`],
-                  ].join(' ')}
-                />
-                <span>{location.title}</span>
-              </button>
-            ))}
+          <div className={styles['pvp-page__navigation']}>
+            <Navigate routes={routes} />
           </div>
-        </section>
 
-        <section className={styles['pvp-lobby__section']}>
-          <h2>Случайный матч</h2>
+          <section className={styles['pvp-page__section']}>
+            <InputField
+              type="text"
+              name="playerName"
+              value={playerName}
+              onChange={(event) => setPlayerName(event.target.value)}
+              onBlur={() => {}}
+              error={''}
+              icon='/ui/icons/magic.svg'
+              label="Введите имя"
+            />
+          </section>
 
-          <button
-            type="button"
-            onClick={handleFindRandomMatch}
-            className={styles['pvp-lobby__button']}
-          >
-            Создать матч
-          </button>
+          <section className={styles['pvp-page__section']}>
+            <h2>Выбор локации</h2>
 
-          {mode === 'waiting' && (
-            <p className={styles['pvp-lobby__status']}>
-              Поиск соперника...
+            <div className={styles['pvp-page__locations']}>
+              {LOCATIONS.map((location) => (
+                <button
+                  key={location.id}
+                  type="button"
+                  onClick={() => setSelectedLocationId(location.id)}
+                  className={
+                    selectedLocationId === location.id
+                      ? styles['pvp-page__location_active']
+                      : styles['pvp-page__location']
+                  }
+                >
+                  <div
+                    className={[
+                      styles['pvp-page__location-img'],
+                      styles[`pvp-page__location-img_${location.id}`],
+                    ].join(' ')}
+                  />
+                  <span>{location.title}</span>
+                </button>
+              ))}
+            </div>
+          </section>
+
+          <section className={styles['pvp-page__section']}>
+            <h2>Случайный матч</h2>
+            
+            <Button
+              type="button"
+              onClick={handleFindRandomMatch}
+            >
+              Создать матч
+            </Button>
+
+            {mode === 'waiting' && (
+              <p className={styles['pvp-page__status']}>
+                Поиск соперника...
+              </p>
+            )}
+          </section>
+
+          <section className={styles['pvp-page__section']}>
+            <h2>Игра с другом</h2>
+
+            <Button
+              type="button"
+              onClick={handleCreatePrivateMatch}
+            >
+              Создать код
+            </Button>
+
+            {createdRoomCode && (
+              <div className={styles['pvp-page__code']}>
+                Код матча: <b>{createdRoomCode}</b>
+              </div>
+            )}
+
+            <div className={styles['pvp-page__join']}>
+
+              <InputField
+                type="text"
+                name="roomCode"
+                value={roomCode}
+                onChange={(event) => setRoomCode(event.target.value.toUpperCase())}
+                onBlur={() => {}}
+                error={''}
+                icon='/ui/icons/magic.svg'
+                label="Введите код"
+              />
+
+              <Button
+                type="button"
+                onClick={handleJoinPrivateMatch}
+              >
+                Войти
+              </Button>
+            </div>
+          </section>
+
+          {error && (
+            <p className={styles['pvp-page__error']}>
+              {error}
             </p>
           )}
-        </section>
-
-        <section className={styles['pvp-lobby__section']}>
-          <h2>Игра с другом</h2>
-
-          <button
-            type="button"
-            onClick={handleCreatePrivateMatch}
-            className={styles['pvp-lobby__button']}
-          >
-            Создать матч по коду
-          </button>
-
-          {createdRoomCode && (
-            <div className={styles['pvp-lobby__code']}>
-              Код матча: <b>{createdRoomCode}</b>
-            </div>
-          )}
-
-          <div className={styles['pvp-lobby__join']}>
-            <input
-              value={roomCode}
-              onChange={(event) => setRoomCode(event.target.value.toUpperCase())}
-              placeholder="Введите код"
-              className={styles['pvp-lobby__input']}
-            />
-
-            <button
-              type="button"
-              onClick={handleJoinPrivateMatch}
-              className={styles['pvp-lobby__button']}
-            >
-              Войти
-            </button>
-          </div>
-        </section>
-
-        {error && (
-          <p className={styles['pvp-lobby__error']}>
-            {error}
-          </p>
-        )}
-      </div>
+        </div>
+      </Layout>
     </main>
   )
 }

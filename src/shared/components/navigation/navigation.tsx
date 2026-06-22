@@ -6,10 +6,12 @@ import { useProgress, useMusic } from '@/shared/hooks'
 const Item = ({
   to,
   title,
+  sup,
   isActive = false,
 }: {
   to: string
   title: string
+  sup?: string
   isActive?: boolean
 }) => {
   const soundClick = useMusic({ src: './music/click.mp3', type: 'effect' })
@@ -23,6 +25,7 @@ const Item = ({
       className={classNames('', { [styles.active]: isActive })}
       onClick={handleClick}>
       {title}
+      {sup ? <sup>{sup}</sup> : ''}
     </li>
   )
 }
@@ -35,9 +38,9 @@ export const Navigation = () => {
   return (
     <ul className={styles.root}>
       {isNewGame ? <Item to="/intro" title="Новая игра" /> : <Item to="/levels" title="Продолжить" />}
-      <Item to="/intro" title="Вступление" />
+      {/* <Item to="/intro" title="Вступление" /> */}
       <Item to="/arcade" title="Быстрая игра" />
-      <Item to="/pvp" title="PvP игра" />
+      <Item to="/pvp" title="PvP игра" sup="Beta"/>
     </ul>
   )
 }

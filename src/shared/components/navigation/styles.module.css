@@ -37,6 +37,12 @@
     color: #fff;
     text-decoration: none;
 
+    sup {
+      font-size: 16px;
+      margin: 0 0 16px 4px;
+      color: #ffe584;
+    }
+
     &::before {
       content: '';
       position: absolute;
