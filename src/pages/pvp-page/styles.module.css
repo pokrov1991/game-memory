@@ -97,7 +97,12 @@
   font-size: 22px;
 
   b {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
     user-select: text;
+    cursor: pointer;
   }
 }
 
@@ -125,4 +130,10 @@
 .pvp-page__error {
   margin-top: 16px;
   color: #ff6b6b;
+}
+
+.pvp-page__copied {
+  font-size: 16px;
+  color: orange;
+  margin: 0 0 0 15px;
 }

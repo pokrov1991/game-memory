@@ -2,6 +2,7 @@ import { useMemo, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useUser } from '@/shared/contexts/UserContext'
 import { Layout, Navigate, InputField, Button } from '@/shared/components'
+import ContentCopyIcon from '@mui/icons-material/ContentCopy'
 import styles from './styles.module.css'
 
 type MatchMode = 'idle' | 'waiting' | 'private-created'
@@ -38,6 +39,7 @@ export const PvpPage = () => {
   const [createdRoomCode, setCreatedRoomCode] = useState('')
   const [mode, setMode] = useState<MatchMode>('idle')
   const [error, setError] = useState('')
+  const [copied, setCopied] = useState(false)
 
   const playerId = useMemo(() => {
     return String(user.id || crypto.randomUUID())
@@ -144,6 +146,44 @@ export const PvpPage = () => {
     })
   }
 
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(createdRoomCode)
+      setCopied(true)
+      setTimeout(() => {
+        setCopied(false)
+      }, 2000)
+
+      return true
+    } catch {
+      try {
+        const textarea = document.createElement('textarea')
+
+        textarea.value = createdRoomCode
+        textarea.style.position = 'fixed'
+        textarea.style.opacity = '0'
+
+        document.body.appendChild(textarea)
+
+        textarea.focus()
+        textarea.select()
+
+        const success = document.execCommand('copy')
+
+        document.body.removeChild(textarea)
+
+        setCopied(true)
+        setTimeout(() => {
+          setCopied(false)
+        }, 2000)
+
+        return success
+      } catch {
+        return false
+      }
+    }
+  }
+
   return (
     <main className={styles['pvp-page']}>
       <Layout title="PvP бой">
@@ -221,8 +261,17 @@ export const PvpPage = () => {
             </Button>
 
             {createdRoomCode && (
-              <div className={styles['pvp-page__code']}>
-                Код матча: <b>{createdRoomCode}</b>
+              <div
+                className={styles['pvp-page__code']}
+                onClick={handleCopy}
+              >
+                Код матча: <b>{createdRoomCode} <ContentCopyIcon/></b>
+
+                {copied && (
+                  <span className={styles['pvp-page__copied']}>
+                    Скопировано!
+                  </span>
+                )}
               </div>
             )}
 
