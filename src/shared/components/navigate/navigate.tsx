@@ -11,7 +11,7 @@ type Props = {
   }>
 }
 
-const branchPic = '/ui/pics/branch-pic.svg'
+const branchPic = 'ui/pics/branch-pic.svg'
 
 export const Navigate = ({ routes }: Props) => {
   const navigate = useNavigate()

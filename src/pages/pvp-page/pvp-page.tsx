@@ -201,7 +201,7 @@ export const PvpPage = () => {
               onChange={(event) => setPlayerName(event.target.value)}
               onBlur={() => {}}
               error={''}
-              icon='/ui/icons/magic.svg'
+              icon='ui/icons/magic.svg'
               label="Введите имя"
             />
           </section>
@@ -284,7 +284,7 @@ export const PvpPage = () => {
                 onChange={(event) => setRoomCode(event.target.value.toUpperCase())}
                 onBlur={() => {}}
                 error={''}
-                icon='/ui/icons/magic.svg'
+                icon='ui/icons/spirit.svg'
                 label="Введите код"
               />
 
