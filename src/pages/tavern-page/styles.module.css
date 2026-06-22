@@ -5,7 +5,12 @@
   flex-direction: column;
   width: 100%;
   height: 100vh;
-  background: url('/tavern/bg.jpg') no-repeat center 0 / cover;
+  /* background: url('/tavern/bg.jpg') no-repeat center 0 / cover; */
+  background-image: url(/tavern/bg.jpg);
+  background-color: #040000;
+  background-repeat: no-repeat;
+  background-size: auto 100%;
+  background-position: center top;
   overflow: hidden;
 
   @media (max-width: 1024px) {

@@ -118,7 +118,7 @@ export const IntroPage = () => {
 
       {(step === 0 && !part) && (
         <div className={styles['intro-page__start']}>
-          <div className={styles['intro-page__start-wrap']}>
+          <div className={styles['intro-page__start-wrap']} onClick={nextSlide}>
             <span>
               Разгар космической гонки.<br />
               Где-то на орбите Земли, вдали от глаз, дрейфует американская станция.
@@ -138,7 +138,7 @@ export const IntroPage = () => {
 
       {step > 0 && (
         <div className={styles['intro-page__slide']}>
-          <div className={styles['intro-page__slide-wrap']}>
+          <div className={styles['intro-page__slide-wrap']} onClick={nextSlide}>
             {false && balloons.map((balloon, index) => (
               <div 
                 key={index} 

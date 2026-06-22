@@ -95,6 +95,10 @@
 .pvp-page__code {
   margin-top: 12px;
   font-size: 22px;
+
+  b {
+    user-select: text;
+  }
 }
 
 .pvp-page__join {
