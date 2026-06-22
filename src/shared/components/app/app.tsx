@@ -23,7 +23,7 @@ export const App = () => {
   const location = useLocation()
   const pagesMainTheme = ['/', '/levels', '/arcade', '/leader-board']
   const pagesIntroTheme = ['/intro']
-  const pagesBattleTheme = ['/game-battle']
+  const pagesBattleTheme = ['/game-battle', '/game-pvp']
   const pagesArcadeTheme = ['/game-store', '/game']
   const pagesBaseTheme = ['/base']
   const pagesTavernTheme = ['/tavern']

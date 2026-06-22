@@ -55,6 +55,10 @@
   animation: a1 2s infinite;
 }
 
+.game-page_pvp .game-page__person_enemy .game-page__person-img-player-body {
+  background: url('../game/player/antogonist/z3-a1-body.png') 0 0 / contain no-repeat;
+}
+
 .game-page__person-img-player-body_4 {
   background: url('../game/inventory/z3-a1-body-2.png') 0 0 / contain no-repeat;
 }
@@ -91,6 +95,10 @@
   left: 129px;
   bottom: 244px;
   animation: a1 2s infinite;
+}
+
+.game-page_pvp .game-page__person_enemy .game-page__person-img-player-arm {
+  background: url('../game/player/antogonist/z4-a1-a2-arm.png') 0 0 / contain no-repeat;
 }
 
 .game-page__person-img-player-arm_active {

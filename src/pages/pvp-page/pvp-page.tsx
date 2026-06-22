@@ -20,6 +20,7 @@ export const PvpPage = () => {
 
   const socketRef = useRef<WebSocket | null>(null)
 
+  const [playerName, setPlayerName] = useState('')
   const [selectedSkinId, setSelectedSkinId] = useState(1)
   const [selectedLocationId, setSelectedLocationId] = useState(1)
   const [roomCode, setRoomCode] = useState('')
@@ -30,6 +31,7 @@ export const PvpPage = () => {
   const playerId = useMemo(() => {
     return String(user.id || crypto.randomUUID())
   }, [user.id])
+  const normalizedPlayerName = playerName.trim() || 'Игрок'
 
   const connect = () => {
     if (
@@ -95,6 +97,7 @@ export const PvpPage = () => {
     sendWhenOpen({
       type: 'find_match',
       playerId,
+      playerName: normalizedPlayerName,
       skinId: selectedSkinId,
       locationId: selectedLocationId,
     })
@@ -106,6 +109,7 @@ export const PvpPage = () => {
     sendWhenOpen({
       type: 'create_private_match',
       playerId,
+      playerName: normalizedPlayerName,
       skinId: selectedSkinId,
       locationId: selectedLocationId,
     })
@@ -122,6 +126,7 @@ export const PvpPage = () => {
     sendWhenOpen({
       type: 'join_private_match',
       playerId,
+      playerName: normalizedPlayerName,
       skinId: selectedSkinId,
       locationId: selectedLocationId,
       roomCode,
@@ -134,6 +139,18 @@ export const PvpPage = () => {
         <h1 className={styles['pvp-lobby__title']}>
           PvP бой
         </h1>
+
+        <section className={styles['pvp-lobby__section']}>
+          <h2>Имя игрока</h2>
+
+          <input
+            value={playerName}
+            onChange={(event) => setPlayerName(event.target.value)}
+            maxLength={20}
+            placeholder="Введите имя"
+            className={styles['pvp-lobby__input']}
+          />
+        </section>
 
         <section className={styles['pvp-lobby__section']}>
           <h2>Выбор локации</h2>

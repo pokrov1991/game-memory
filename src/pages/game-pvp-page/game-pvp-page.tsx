@@ -13,10 +13,8 @@ import { useLevel, useToggle, useProgress, useMusic } from '@/shared/hooks'
 import { useUser } from '@/shared/contexts/UserContext'
 import { TypeModal } from '@/shared/components/modal-comps/types'
 import { GameLevelStateType } from '@/shared/services/game/types'
-import { EnemyService } from '@/shared/services/game/EnemyService'
 import { STUN_ANIMATION_DELAY } from '@/shared/services/game/constants'
 import { LEVELS_USER_CONFIG } from '@/shared'
-import YandexSDK from '@/shared/services/sdk/yandexSdk'
 import styles from './styles.module.css'
 
 // Вычисляем размер UI элементов относительно высоты экрана
@@ -36,29 +34,21 @@ export const GamePvpPage = () => {
   const [isOpenModalLevelUp, setOpenModalLevelUp] = useState(false)
   const [isStunEnemy, setStunEnemy] = useState(false)
   const [isStunPlayer, setStunPlayer] = useState(false)
+  const [isAlarmEnemy, setAlarmEnemy] = useState(false)
   const [isAlarmPlayer, setAlarmPlayer] = useState(false)
   const [isPause, togglePause] = useToggle(true)
   const [isClickCard, setIsClickCard] = useState(false)
   const [isClickCardEnemy, setIsClickCardEnemy] = useState(false)
   const {
-    progress,
-    completedLevels,
-    completeLevel,
-    selectedLevel,
-    selectLevel,
     userLevel,
     userScore,
-    userInventory,
-    userParams,
-    userOrgans,
     userPotions,
-    updateOrgan,
     levelUp,
     scoreUp,
   } = useProgress()
   const { game } = useUser()
   const [restartKey, setRestartKey] = useState(0)
-  const [gameLevel, _setGameLevel] = useLevel<GameLevelStateType>(selectedLevel, 'battle')
+  const [gameLevel, _setGameLevel] = useLevel<GameLevelStateType>(1, 'battle')
   const [locationId, setLocationId] = useState(1)
   const [level, setLevel] = useState(userLevel > 0 ? userLevel : game.userLevel)
   const [score, setScore] = useState(userScore > 0 ? userScore : game.userScore)
@@ -67,15 +57,13 @@ export const GamePvpPage = () => {
   const [colorPlayerPreAttack, setColorPlayerPreAttack] = useState('')
   const [colorEnemyAttack, setColorEnemyAttack] = useState('')
   const [resultText, setResultText] = useState(<></>)
-  const [playerSkinId, setPlayerSkinId] = useState(gameLevel.enemyId)
-  const [enemySkinId, setEnemySkinId] = useState(gameLevel.enemyId)
+  const [playerName, setPlayerName] = useState('Игрок')
+  const [enemyName, setEnemyName] = useState('Соперник')
+  const [playerSkinId, setPlayerSkinId] = useState(1)
+  const [enemySkinId, setEnemySkinId] = useState(1)
   const [enemyHit, setEnemyHit] = useState(false)
   const [playerHit, setPlayerHit] = useState(false)
   const [potions, setPotions] = useState(userPotions)
-  const enemyRef = useRef<EnemyService | null>(null)
-  const enemyOrgan = userOrgans[gameLevel.id]
-  const userHelmetId = userInventory.find((item) => item.type === 'helmet' && item.isDressed).id
-  const userPlastronId = userInventory.find((item) => item.type === 'plastron' && item.isDressed).id
 
   // Для игры PvP
   const socketRef = useRef<WebSocket | null>(null)
@@ -84,11 +72,8 @@ export const GamePvpPage = () => {
   const playerSideRef = useRef<'p1' | 'p2' | null>(null)
   const [battleStatus, setBattleStatus] = useState<'waiting' | 'preparing' | 'playing'>('waiting')
 
-  const hpGuard = userInventory
-                    .filter(item => item.type === 'helmet' && item.isDressed || item.type === 'plastron' && item.isDressed)
-                    .reduce((sum, item) => sum + item.hp, 0)
-  const hpInitial = userParams.hp + hpGuard
-  const hpEnemyInitial = gameLevel.enemyHp
+  const hpInitial = 100
+  const hpEnemyInitial = 100
   const hpAlarm = 30
   const [hp, setHP] = useState(hpInitial)
   const [hpEnemy, setHPEnemy] = useState(hpEnemyInitial)
@@ -100,25 +85,6 @@ export const GamePvpPage = () => {
   const soundEnemyStun = useMusic({ src: './music/game/enemy-stun.wav', type: 'effect' })
   const soundWin = useMusic({ src: './music/game/win.wav', type: 'effect' })
   const soundLose = useMusic({ src: './music/game/lose.wav', type: 'effect' })
-
-  const setGameDataWin = async (nextLevel: number) => {
-    await YandexSDK.setGameData({
-      ...progress,
-      completedLevels: Array.from(new Set([ ...completedLevels, nextLevel ])),
-      selectedLevel: nextLevel,
-      userLevel: level,
-      userScore: score,
-      userOrgans: userOrgans
-    })
-  }
-  
-  const setGameDataLose = async () => {
-    await YandexSDK.setGameData({
-      ...progress,
-      userLevel: level,
-      userScore: score,
-    })
-  }
 
   const setPlayerSpriteClass = (color: string) => {
     return color ? styles[`game-page__person-img-player-tablet_${color}`] : ''
@@ -147,6 +113,8 @@ export const GamePvpPage = () => {
       setPlayerSide(savedPlayerSide)
       playerSideRef.current = savedPlayerSide
 
+      setPlayerName(state[savedPlayerSide].playerName)
+      setEnemyName(state[enemySide].playerName)
       setEnemySkinId(state[enemySide].skinId)
       setHP(state[savedPlayerSide].hp)
       setHPEnemy(state[enemySide].hp)
@@ -185,6 +153,8 @@ export const GamePvpPage = () => {
         const enemySide = mySide === 'p1' ? 'p2' : 'p1'
 
         setLocationId(msg.state.locationId || 1)
+        setPlayerName(msg.state[mySide].playerName)
+        setEnemyName(msg.state[enemySide].playerName)
         setPlayerSkinId(msg.state[mySide].skinId)
         setEnemySkinId(msg.state[enemySide].skinId)
 
@@ -211,6 +181,8 @@ export const GamePvpPage = () => {
         const enemySide = mySide === 'p1' ? 'p2' : 'p1'
 
         setLocationId(msg.state.locationId || 1)
+        setPlayerName(msg.state[mySide].playerName)
+        setEnemyName(msg.state[enemySide].playerName)
         setPlayerSkinId(msg.state[mySide].skinId)
         setEnemySkinId(msg.state[enemySide].skinId)
         setHP(msg.state[mySide].hp)
@@ -247,7 +219,6 @@ export const GamePvpPage = () => {
 
         if (msg.from === mySide) {
           setStunEnemy(true)
-          enemyRef.current?.setHitState()
           setTimeout(() => setStunEnemy(false), STUN_ANIMATION_DELAY)
           soundEnemyStun.play()
         } else {
@@ -284,50 +255,36 @@ export const GamePvpPage = () => {
     if (hpEnemy <= 0) {
       handleGameWin()
     }
-    if (hp >= hpAlarm) {
-      setAlarmPlayer(false)
-    } else {
-      setAlarmPlayer(true)
-    }
+    hp >= hpAlarm ? setAlarmPlayer(false) : setAlarmPlayer(true)
+    hpEnemy >= hpAlarm ? setAlarmEnemy(false) : setAlarmEnemy(true)
   }, [hp, hpEnemy, hpAlarm])
 
   const onRestart = (): void => {
     setRestartKey(prevKey => prevKey + 1)
     setScoreSession(0)
     setHP(hpInitial)
-    setHPEnemy(gameLevel.enemyHp)
+    setHPEnemy(hpEnemyInitial)
     setPotions(userPotions)
+    setStunEnemy(false)
     setStunPlayer(false)
+    setAlarmEnemy(false)
     setAlarmPlayer(false)
     setColorPlayerAttack('')
     setColorPlayerPreAttack('')
     togglePause(true)
-    enemyRef.current.resetState()
   }
 
   const onContinue = async () => {
-    const nextLevel = gameLevel.id + 1
-
-    if (!completedLevels.find((item) => item === 101)) {
-      completeLevel(101)
-    }
-    completeLevel(nextLevel)
-    selectLevel(nextLevel)
-    
-    setGameDataWin(nextLevel)
-
     setOpenModalWin(false)
     navigate('/pvp')
   }
 
   const onGameOver = (): void => {
-    setGameDataLose()
     setOpenModalLose(false)
     onRestart()
   }
 
   const onExit = (): void => {
-    setGameDataLose()
     navigate('/pvp')
   }
 
@@ -347,19 +304,17 @@ export const GamePvpPage = () => {
   }
 
   const handleGameWin = (): void => {
-    enemyRef.current.setDeadState()
     handlePause()
     setTimeout(() => {
-      updateOrgan({ organId: gameLevel.enemyId, count: enemyOrgan.count + 1 })
-      setResultText(<>Поздравляем! Вы прошли уровень «{gameLevel.title}» и получили: Энергию - {scoreSession} ед. и {enemyOrgan.name} <i data-icon={`organ-${enemyOrgan.id}`}></i> - 1 шт.</>)
+      setResultText(<>Поздравляем, вы победили!</>)
       setOpenModalWin(true)
       soundWin.play()
-    }, delayGameEffects + gameLevel.enemyStateDurations.DEAD)
+    }, delayGameEffects + 300)
   }
 
   const handleGameOver = (): void => {
     handlePause()
-    setResultText(<>Не унывай! Попробуй еще раз пройти уровень. У тебя получится!</>)
+    setResultText(<>Вы проиграли!</>)
     setOpenModalLose(true)
     soundLose.play()
   }
@@ -385,7 +340,7 @@ export const GamePvpPage = () => {
 
     // Ставим удар по врагу
     if (newScore > 0) {
-      const attack = Math.floor(currentScore + userParams.attack)
+      const attack = Math.floor(currentScore)
 
       socketRef.current?.send(JSON.stringify({
         type: 'attack',
@@ -399,7 +354,6 @@ export const GamePvpPage = () => {
 
       if (colorParry === colorEnemyAttack) {
         setStunEnemy(true)
-        enemyRef.current.setHitState()
         setTimeout(() => setStunEnemy(false), STUN_ANIMATION_DELAY / 1000)
         soundEnemyStun.play()
       } 
@@ -454,9 +408,6 @@ export const GamePvpPage = () => {
           <button onClick={handlePause} className={styles['game-page__pause']}>
             {isPause ? '▷' : '||'}
           </button>
-          <button onClick={onRestart} className={styles['game-page__restart']}>
-            Заново
-          </button>
         </div>
         <div className={styles['game-page__info']}>
           <GameScore score={score} />
@@ -485,7 +436,6 @@ export const GamePvpPage = () => {
               <div className={styles['game-page__person-img-player-legs']}></div>
               <div className={classNames(
                 styles['game-page__person-img-player-body'],
-                styles[`game-page__person-img-player-body_${userPlastronId}`],
               )}></div>
               <div className={classNames(
                 styles['game-page__person-img-player-arm'],
@@ -493,7 +443,6 @@ export const GamePvpPage = () => {
               )}></div>
               <div className={classNames(
                 styles['game-page__person-img-player-head'],
-                styles[`game-page__person-img-player-head_${userHelmetId}`],
                 { 
                   [styles['game-page__person-img-player-head_stun']]: isStunPlayer,
                   [styles['game-page__person-img-player-head_alarm']]: isAlarmPlayer
@@ -506,7 +455,7 @@ export const GamePvpPage = () => {
             </div>
           </div>
           <div className={styles['game-page__person-info']}>
-            <div className={styles['game-page__person-name']}>Игрок</div>
+            <div className={styles['game-page__person-name']}>{playerName}</div>
             <div className={styles['game-page__person-hp']}>
               <div
                 className={styles['game-page__person-hp-bar']}
@@ -529,7 +478,6 @@ export const GamePvpPage = () => {
               <div className={styles['game-page__person-img-player-legs']}></div>
               <div className={classNames(
                 styles['game-page__person-img-player-body'],
-                styles[`game-page__person-img-player-body_${userPlastronId}`],
               )}></div>
               <div className={classNames(
                 styles['game-page__person-img-player-arm'],
@@ -537,10 +485,9 @@ export const GamePvpPage = () => {
               )}></div>
               <div className={classNames(
                 styles['game-page__person-img-player-head'],
-                styles[`game-page__person-img-player-head_${userHelmetId}`],
                 { 
                   [styles['game-page__person-img-player-head_stun']]: isStunEnemy,
-                  [styles['game-page__person-img-player-head_alarm']]: isAlarmPlayer
+                  [styles['game-page__person-img-player-head_alarm']]: isAlarmEnemy
                 }
               )}></div>
               <div className={classNames(
@@ -550,7 +497,7 @@ export const GamePvpPage = () => {
             </div>
           </div>
           <div className={styles['game-page__person-info']}>
-            <div className={styles['game-page__person-name']}>{gameLevel.enemyName}</div>
+            <div className={styles['game-page__person-name']}>{enemyName}</div>
             <div className={styles['game-page__person-hp']}>
               <div
                 className={styles['game-page__person-hp-bar']}
@@ -599,8 +546,8 @@ export const GamePvpPage = () => {
       <ModalDefault
         onContinue={onExit}
         onExit={() => setOpenModalDefault(false)}
-        title={`Уровень ${gameLevel.id}`}
-        subtitle={gameLevel.title}
+        title="PvP бой"
+        subtitle="Если вы покинете игру, вам будет защитано поражение."
         info="Вы желаете выйти из игры?"
         isOpened={isOpenModalDefault}
       />
