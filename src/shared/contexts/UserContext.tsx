@@ -1,55 +1,9 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { useProgress } from '@/shared/hooks/useProgress';
-import YandexSDK from '@/shared/services/sdk/yandexSdk';
+import { GameProgress, PlatformUser, platformApi } from '@/shared/services/platform';
 
-interface UserData {
-  id: string;
-  name: string;
-  avatar: string;
-  mode: string;
-  isAuthorized: boolean;
-}
-
-interface GameData {
-  completedLevels: number[];
-  selectedLevelArcade: number;
-  selectedLevel: number;
-  userLevel: number;
-  userLevelParams: {
-    hp: number;
-    guard: number;
-    attack: number;
-  };
-  userScoreArcade: number;
-  userScore: number;
-  userCoins: number;
-  userPotions: number;
-  userParams: {
-    hp: number;      // Здоровье игрока
-    guard: number;   // Процент уменьшения урона от врага
-    attack: number;  // Процент увеличения атаки от экипировки
-  };
-  userInventory: [
-    {
-      id: number;
-      type: string;
-      name: string;
-      desc: string;
-      price: number;
-      organs: Array<{ id: number; name: string; count: number }>;
-      hp: number;
-      isPaid: boolean;
-      isDressed: boolean;
-    }
-  ];
-  userOrgans: {
-    [key: number]: {
-      id: number;
-      name: string;
-      count: number;
-    };
-  };
-}
+type UserData = PlatformUser
+type GameData = GameProgress
 
 interface UserContextType {
   user: UserData | null;
@@ -79,19 +33,19 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
   useEffect(() => {
     async function fetchUser() {
       try {
-        await YandexSDK.init(); // Инициализация SDK
-        const userData = await YandexSDK.getUserData();
+        await platformApi.init(); // Инициализация платформенного API
+        const userData = await platformApi.getUserData();
         console.log("Данные игрока:", userData);
         setUser(userData);
 
-        // await YandexSDK.authUser(); // Проверка авторизации
+        // await platformApi.authUser(); // Проверка авторизации
 
-        const gameData = await YandexSDK.getGameData();
+        const gameData = await platformApi.getGameData();
         console.log("Данные игры:", gameData);
         setGame(gameData);
         setProgress(gameData);
 
-        // await YandexSDK.showAd(); // Показ рекламы
+        // await platformApi.showAd(); // Показ рекламы
       } catch (err: any) {
         setError(err.message || 'Ошибка загрузки пользователя');
       } finally {

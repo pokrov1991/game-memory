@@ -2,7 +2,7 @@ import classNames from 'classnames'
 import { useState, useEffect } from 'react'
 import { useProgress } from '@/shared/hooks'
 import { Button } from '@/shared/components'
-import YandexSDK from '@/shared/services/sdk/yandexSdk'
+import { platformApi } from '@/shared/services/platform'
 import styles from './styles.module.css'
 
 const UNIT_HP = 5
@@ -26,7 +26,7 @@ export const XpManager = () => {
   const [isDisabled, setDisabled] = useState(true)
 
   const syncProgress = async () => {
-    await YandexSDK.setGameData({...progress, userParams, userLevelParams})
+    await platformApi.setGameData({...progress, userParams, userLevelParams})
   }
 
   useEffect(() => {

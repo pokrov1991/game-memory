@@ -1,97 +1,10 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { DEFAULT_GAME_PROGRESS } from '@/shared/services/platform/defaults'
+import { GameProgress } from '@/shared/services/platform/types'
 
-interface ProgressState {
-  completedLevels: number[]
-  selectedLevelArcade: number
-  selectedLevel: number
-  userLevel: number
-  userLevelParams: {
-    hp: number
-    guard: number
-    attack: number
-  };
-  userScoreArcade: number
-  userScore: number
-  userCoins: number
-  userPotions: number
-  userParams: {
-    hp: number
-    guard: number
-    attack: number
-  };
-  userInventory: Array<{
-    id: number;
-    type: string;
-    name: string;
-    desc: string;
-    price: number;
-    organs: Array<{ id: number; name: string; count: number }>;
-    hp: number;
-    isPaid: boolean;
-    isDressed: boolean;
-  }>;
-  userOrgans: {
-    [key: number]: {
-      id: number;
-      name: string;
-      count: number;
-    };
-  };
-}
+export type ProgressState = GameProgress
 
-const initialState: ProgressState = {
-  completedLevels: [102],
-  selectedLevelArcade: 0,
-  selectedLevel: 0,
-  userLevel: 1,
-  userLevelParams: {
-    hp: 0,
-    guard: 0,
-    attack: 0,
-  },
-  userScoreArcade: 0,
-  userScore: 0,
-  userCoins: 5,
-  userPotions: 1,
-  userParams: {
-    hp: 100,
-    guard: 1,
-    attack: 1,
-  },
-  userInventory: [
-    {
-      id: 1,
-      type: 'helmet',
-      name: 'Шлем астронавта',
-      desc: 'Обеспечивает базовую защиту.',
-      price: 0,
-      organs: [],
-      hp: 0,
-      isPaid: true,
-      isDressed: true
-    },
-    {
-      id: 2,
-      type: 'plastron',
-      name: 'Скафандр астронавта',
-      desc: 'Обеспечивает базовую защиту.',
-      price: 0,
-      organs: [],
-      hp: 0,
-      isPaid: true,
-      isDressed: true
-    },
-  ],
-  userOrgans: {
-    0: { id: 0, name: 'Болт от ПС-91', count: 0 },
-    1: { id: 1, name: 'Камень щитомордника', count: 0 },
-    2: { id: 2, name: 'Кость литора', count: 0 },
-    3: { id: 3, name: 'Хромовая пластина', count: 0 },
-    4: { id: 4, name: 'Ткань меркиля', count: 0 },
-    5: { id: 5, name: 'Перья титуса', count: 0 },
-    6: { id: 6, name: 'Тентакля севы', count: 0 },
-  },
-}
+const initialState: ProgressState = DEFAULT_GAME_PROGRESS
 
 export const progressSlice = createSlice({
   name: 'progress',

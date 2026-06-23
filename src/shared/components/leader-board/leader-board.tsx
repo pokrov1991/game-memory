@@ -1,17 +1,16 @@
 import React, { useEffect, useState } from 'react'
-import YandexSDK from '@/shared/services/sdk/yandexSdk'
-import { ILeaderboardEntries, ILeaderboardEntry } from '@/types';
+import { LeaderboardEntries, LeaderboardEntry, platformApi } from '@/shared/services/platform'
 import { Spinner } from '@/shared/components'
 import { LeaderBoardItem } from './leader-board-item'
 import styles from './styles.module.css'
 
 export const LeaderBoard: React.FC = () => {
-  const [data, setData] = useState<ILeaderboardEntries>()
+  const [data, setData] = useState<LeaderboardEntries>()
   const [isLoading, setLoading] = useState(true)
 
   useEffect(() => {
     const fetchLeaderboardEntries = async () => {
-      const dataFetch = await YandexSDK.getLeaderboardEntries('orionBoard', {
+      const dataFetch = await platformApi.getLeaderboardEntries('orionBoard', {
         quantityTop: 10,
         includeUser: true,
         quantityAround: 3
@@ -36,7 +35,7 @@ export const LeaderBoard: React.FC = () => {
         </div>
       )}
       {!isLoading &&
-        data.entries.map((props: ILeaderboardEntry, index) => (
+        data.entries.map((props: LeaderboardEntry, index) => (
           <LeaderBoardItem key={index} {...props} />
         ))}
     </div>

@@ -11,7 +11,7 @@ import {
 import { useLevel, useToggle, useProgress, useMusic } from '@/shared/hooks'
 import { TypeModal } from '@/shared/components/modal-comps/types'
 import { GameLevelStoreType } from '@/shared/services/game/types'
-import YandexSDK from '@/shared/services/sdk/yandexSdk'
+import { platformApi } from '@/shared/services/platform'
 import styles from './styles.module.css'
 
 
@@ -95,7 +95,7 @@ export const GamePage = () => {
     if (score > userScoreArcade) {
       scoreArcadeUp(score)
 
-      await YandexSDK.setGameData({
+      await platformApi.setGameData({
         ...progress,
         userScoreArcade: score,
       })
@@ -150,7 +150,7 @@ export const GamePage = () => {
   }
 
   const handleSetLeader = async (level: number, score: number) => {
-    await YandexSDK.setLeaderboardScore('orionBoard', score, `${level}`)
+    await platformApi.setLeaderboardScore('orionBoard', score, `${level}`)
   }
 
   return (

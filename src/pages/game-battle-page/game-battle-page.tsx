@@ -17,7 +17,7 @@ import { EnemyState, GameLevelStateType } from '@/shared/services/game/types'
 import { EnemyService } from '@/shared/services/game/EnemyService'
 import { STUN_ANIMATION_DELAY } from '@/shared/services/game/constants'
 import { LEVELS_USER_CONFIG } from '@/shared'
-import YandexSDK from '@/shared/services/sdk/yandexSdk'
+import { platformApi } from '@/shared/services/platform'
 import styles from './styles.module.css'
 
 // Вычисляем размер UI элементов относительно высоты экрана
@@ -93,7 +93,7 @@ export const GameBattlePage = () => {
   const soundLose = useMusic({ src: './music/game/lose.wav', type: 'effect' })
 
   const setGameDataWin = async (nextLevel: number) => {
-    await YandexSDK.setGameData({
+    await platformApi.setGameData({
       ...progress,
       completedLevels: Array.from(new Set([ ...completedLevels, nextLevel ])),
       selectedLevel: nextLevel,
@@ -104,7 +104,7 @@ export const GameBattlePage = () => {
   }
   
   const setGameDataLose = async () => {
-    await YandexSDK.setGameData({
+    await platformApi.setGameData({
       ...progress,
       userLevel: level,
       userScore: score,

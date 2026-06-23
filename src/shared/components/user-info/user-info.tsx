@@ -3,7 +3,7 @@ import { Defs } from './defs'
 import { TUser } from '@/types'
 import { MouseEventHandler } from 'react'
 import { useUser } from '@/shared/contexts/UserContext'
-import YandexSDK from '@/shared/services/sdk/yandexSdk';
+import { platformApi } from '@/shared/services/platform';
 
 const UserName = (user: TUser) => user?.name
 
@@ -25,7 +25,7 @@ export const UserInfo = () => {
   const { user, setUser, setGame  } = useUser();
   const isAuth = user !== null && user.mode !== 'lite';
 
-  const handleEnter = () => YandexSDK.authUser().then((res) => {
+  const handleEnter = () => platformApi.authUser().then((res) => {
     setUser(res.user)
     setGame(res.game)
   });

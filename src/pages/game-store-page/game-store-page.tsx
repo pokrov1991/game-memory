@@ -11,7 +11,7 @@ import { useLevel, useToggle, useProgress, useMusic } from '@/shared/hooks'
 import { useUser } from '@/shared/contexts/UserContext'
 import { TypeModal } from '@/shared/components/modal-comps/types'
 import { GameLevelStoreType } from '@/shared/services/game/types'
-import YandexSDK from '@/shared/services/sdk/yandexSdk'
+import { platformApi } from '@/shared/services/platform'
 import styles from './styles.module.css'
 
 
@@ -55,7 +55,7 @@ export const GameStorePage = () => {
   const setGameDataWin = async () => {
     const currentCoins = cCoins + gameLevel.coins
     coinsUp(currentCoins)
-    await YandexSDK.setGameData({
+    await platformApi.setGameData({
       ...game,
       userCoins: currentCoins
     })
@@ -64,7 +64,7 @@ export const GameStorePage = () => {
   const setGameDataLose = async () => {
     const currentCoins = cCoins > gameLevel.coins ? cCoins - gameLevel.coins : 5
     coinsUp(currentCoins)
-    await YandexSDK.setGameData({
+    await platformApi.setGameData({
       ...game,
       userCoins: currentCoins
     })

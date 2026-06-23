@@ -5,7 +5,7 @@ import { useProgress } from '@/shared/hooks'
 import { useUser } from '@/shared/contexts/UserContext'
 import { Button } from '@/shared/components'
 import { LEVELS_STORE_CONFIG } from '@/shared/constants'
-import YandexSDK from '@/shared/services/sdk/yandexSdk'
+import { platformApi } from '@/shared/services/platform'
 import styles from './styles.module.css'
 
 const routes = [
@@ -36,7 +36,7 @@ export const ArcadePage = () => {
       selectLevelArcade(1)
       navigate('/game')
     } else {
-      YandexSDK.authUser().then((res) => {
+      platformApi.authUser().then((res) => {
         setUser(res.user)
         setGame(res.game)
       })
@@ -45,7 +45,7 @@ export const ArcadePage = () => {
 
   useEffect(() => {
     const fetchLeaderboard = async () => {
-      const leaderboard = await YandexSDK.getLeaderboard('orionBoard')
+      const leaderboard = await platformApi.getLeaderboard('orionBoard')
       console.log('leaderboard', leaderboard)
     }
 
@@ -77,7 +77,7 @@ export const ArcadePage = () => {
                 <div className={styles['arcade-page-list-item']} onClick={() => {
                   selectLevelArcade(level.id)
                   navigate('/game', { state: {levelId: level.id}})
-                }}>
+                }} key={level.id}>
                   <b>Карт: {level.cardCount}</b>
                   <span>Время: {level.gameTimer} сек.</span>
                 </div>)

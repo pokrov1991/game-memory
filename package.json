@@ -3,7 +3,11 @@
   "version": "0.0.0",
   "scripts": {
     "dev": "vite",
+    "dev:yandex": "VITE_PLATFORM_API=yandex vite",
+    "dev:local": "VITE_PLATFORM_API=local vite",
     "build": "vite build",
+    "build:yandex": "VITE_PLATFORM_API=yandex vite build",
+    "build:local": "VITE_PLATFORM_API=local vite build",
     "preview": "vite preview",
     "lint": "eslint .",
     "format": "prettier --write ."

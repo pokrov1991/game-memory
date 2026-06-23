@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import { LEVELS_STORE, INVENTORY_STORE_CONFIG } from '@/shared'
 import { useProgress, useMusic } from '@/shared/hooks'
 import { Button, UserTreasures, XpManager, ModalDefault } from '@/shared/components'
-import YandexSDK from '@/shared/services/sdk/yandexSdk'
+import { platformApi } from '@/shared/services/platform'
 import styles from './styles.module.css'
 
 type MenuMode = 'main' | 'levels' | 'store' | 'xp'
@@ -38,7 +38,7 @@ export const TavernPage = () => {
   const soundPigTalk = useMusic({ src: './music/tavern/pig-talk.wav', type: 'effect' })
   
   const syncProgress = async () => {
-    await YandexSDK.setGameData(progress)
+    await platformApi.setGameData(progress)
   }
 
   useEffect(() => {
