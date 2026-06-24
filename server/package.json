@@ -2,10 +2,14 @@
   "name": "orion7-battle-server",
   "version": "1.0.0",
   "scripts": {
-    "start": "node battle-server.js",
-    "deploy": "rsync -avz --delete ./ root@orion7.skybug.ru:/var/www/orion7-server/ && ssh root@orion7.skybug.ru 'cd /var/www/orion7-server && npm install --omit=dev && pm2 restart orion7-battle'"
+    "start": "node index.js",
+    "migrate": "node db/migrate.js",
+    "deploy": "ssh root@orion7.skybug.ru 'mkdir -p /var/www/orion7/server' && rsync -avz --delete ./ root@orion7.skybug.ru:/var/www/orion7/server/ && ssh root@orion7.skybug.ru 'cd /var/www/orion7/server && npm install --omit=dev && npm run migrate && (pm2 restart orion7 --update-env || pm2 start index.js --name orion7)'"
   },
   "dependencies": {
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "pg": "^8.13.1",
     "ws": "^8.18.0"
   }
 }

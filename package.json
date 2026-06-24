@@ -9,6 +9,10 @@
     "build:yandex": "VITE_PLATFORM_API=yandex vite build",
     "build:local": "VITE_PLATFORM_API=local vite build",
     "preview": "vite preview",
+    "deploy": "npm run build:local && ssh root@orion7.skybug.ru 'mkdir -p /var/www/orion7/dist' && rsync -avz --delete dist/ root@orion7.skybug.ru:/var/www/orion7/dist/",
+    "server:deploy": "npm --prefix server run deploy",
+    "server:start": "npm --prefix server start",
+    "server:migrate": "npm --prefix server run migrate",
     "lint": "eslint .",
     "format": "prettier --write ."
   },

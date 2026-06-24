@@ -2,6 +2,7 @@
 
 interface ImportMetaEnv {
   readonly VITE_PLATFORM_API?: 'yandex' | 'local'
+  readonly VITE_API_BASE_URL?: string
 }
 
 interface ImportMeta {

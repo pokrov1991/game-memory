@@ -4,7 +4,7 @@
 Логин: root
 Пароль: jeB946Khi8HqK0OD
 
-root@80.78.244.5
+ssh root@80.78.244.5
 
 Доступ к DNS
 Адрес: https://dnsadmin.hosting.reg.ru/manager/ispmgr
