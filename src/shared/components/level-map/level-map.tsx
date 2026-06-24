@@ -120,7 +120,7 @@ export const LevelMap = () => {
         <div className={styles.levelMapInfoWrap}>
           <div className={styles.levelMapInfoTitle}>
             <div>
-              <h1>Уровень {selectedLevel.id}</h1>
+              <h1>{[101, 102].includes(selectedLevel.id) ? 'Локация' : `Уровень ${selectedLevel.id}`}</h1>
               <h2>{selectedLevel.title}</h2>
             </div>
             <div className={styles.levelMapInfoClose} onClick={handleClickClose}>
