@@ -233,6 +233,10 @@ export class YandexPlatformApi implements PlatformApi {
     }
   }
 
+  async isPlayerNameAvailable(): Promise<boolean> {
+    return true
+  }
+
   private ensureInitialized(): void {
     if (!this.initialized || !this.ysdk) {
       throw new Error('Yandex SDK не инициализирован. Вызовите init() перед использованием.')

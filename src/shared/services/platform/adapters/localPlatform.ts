@@ -1,5 +1,9 @@
 import { createDefaultGameProgress } from '../defaults'
-import { readLocalGameProgress, readLocalPlayerName, writeLocalGameProgress } from '../platformStorage'
+import {
+  readLocalGameProgress,
+  readOrCreateLocalPlayer,
+  writeLocalGameProgress,
+} from '../platformStorage'
 import {
   GameProgress,
   LeaderboardDescription,
@@ -11,9 +15,11 @@ import {
 } from '../types'
 
 const createLocalUser = (): PlatformUser => {
+  const player = readOrCreateLocalPlayer()
+
   return {
-    id: 'local-player',
-    name: readLocalPlayerName() || 'Игрок',
+    id: player.id,
+    name: player.name || 'Игрок',
     avatar: '',
     mode: 'local',
     isAuthorized: true,
@@ -146,6 +152,25 @@ export class LocalPlatformApi implements PlatformApi {
         userRank: 0,
         entries: [],
       }
+    }
+  }
+
+  async isPlayerNameAvailable(playerName: string): Promise<boolean> {
+    const user = createLocalUser()
+    const params = new URLSearchParams({
+      name: playerName,
+      playerId: user.id,
+    })
+
+    try {
+      const data = await getJson<{ available: boolean }>(
+        buildApiUrl(`/api/leaderboard/player-name?${params.toString()}`)
+      )
+
+      return data.available
+    } catch (error) {
+      console.error('Ошибка проверки имени локального игрока:', error)
+      return false
     }
   }
 }

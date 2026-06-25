@@ -89,6 +89,14 @@ export const Navigation = () => {
       return
     }
 
+    // TODO - возможно надо открыть, что бы имя было уникально
+    // const isNameAvailable = await platformApi.isPlayerNameAvailable?.(normalizedPlayerName)
+
+    // if (isLocalPlatform && !isNameAvailable) {
+    //   setPlayerNameError('Имя уже занято')
+    //   return
+    // }
+
     writeLocalPlayerName(normalizedPlayerName)
     setUser(await platformApi.getUserData())
     setOpenPlayerNameModal(false)

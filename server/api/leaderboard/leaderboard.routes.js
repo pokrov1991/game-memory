@@ -49,9 +49,24 @@ const sendError = (res, error) => {
 
 router.get("/top", async (req, res) => {
   try {
-    const result = await service.getEntries({
+    const result = await service.getEntriesWithOptions({
       leaderboardName: req.query.leaderboardName || "orionBoard",
       limit: req.query.limit || req.query.quantityTop,
+      includeUser: req.query.includeUser,
+      quantityAround: req.query.quantityAround,
+      playerId: req.query.playerId,
+    });
+
+    res.json(result);
+  } catch (error) {
+    sendError(res, error);
+  }
+});
+
+router.get("/player-name", async (req, res) => {
+  try {
+    const result = await service.isPlayerNameAvailable({
+      playerName: req.query.name,
       playerId: req.query.playerId,
     });
 
@@ -84,9 +99,11 @@ router.get("/:leaderboardName", (req, res) => {
 
 router.get("/:leaderboardName/entries", async (req, res) => {
   try {
-    const result = await service.getEntries({
+    const result = await service.getEntriesWithOptions({
       leaderboardName: req.params.leaderboardName,
       limit: req.query.quantityTop || req.query.limit,
+      includeUser: req.query.includeUser,
+      quantityAround: req.query.quantityAround,
       playerId: req.query.playerId,
     });
 

@@ -105,4 +105,5 @@ export interface PlatformApi {
   getLeaderboard(leaderboardName: string): Promise<LeaderboardDescription | null>
   setLeaderboardScore(leaderboardName: string, score: number, extraData?: string): Promise<void>
   getLeaderboardEntries(leaderboardName: string, options: LeaderboardOptions): Promise<LeaderboardEntries>
+  isPlayerNameAvailable?(playerName: string): Promise<boolean>
 }

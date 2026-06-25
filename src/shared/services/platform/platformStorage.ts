@@ -2,7 +2,12 @@ import { createDefaultGameProgress } from './defaults'
 import { GameProgress } from './types'
 
 const STORAGE_KEY = 'orion7:game-progress:v1'
-const LOCAL_PLAYER_NAME_KEY = 'orion7:local-player-name:v1'
+const LOCAL_PLAYER_KEY = 'orion7:local-player:v1'
+
+type LocalPlayer = {
+  id: string
+  name: string | null
+}
 
 const canUseStorage = () => typeof window !== 'undefined' && Boolean(window.localStorage)
 
@@ -37,16 +42,68 @@ export const writeLocalGameProgress = (progress: GameProgress): void => {
   window.localStorage.setItem(STORAGE_KEY, JSON.stringify(progress))
 }
 
-export const readLocalPlayerName = (): string | null => {
+const createLocalPlayerId = (): string => {
+  return typeof crypto !== 'undefined' && 'randomUUID' in crypto
+    ? crypto.randomUUID()
+    : `${Date.now()}-${Math.random().toString(36).slice(2)}`
+}
+
+export const readLocalPlayer = (): LocalPlayer | null => {
   if (!canUseStorage()) return null
 
-  const name = window.localStorage.getItem(LOCAL_PLAYER_NAME_KEY)?.trim()
+  const rawValue = window.localStorage.getItem(LOCAL_PLAYER_KEY)
 
-  return name || null
+  if (!rawValue) return null
+
+  try {
+    const player = JSON.parse(rawValue) as Partial<LocalPlayer>
+    const id = typeof player.id === 'string' ? player.id.trim() : ''
+    const name = typeof player.name === 'string' ? player.name.trim() : null
+
+    if (!id) return null
+
+    return {
+      id,
+      name: name || null,
+    }
+  } catch {
+    return null
+  }
+}
+
+export const writeLocalPlayer = (player: LocalPlayer): void => {
+  if (!canUseStorage()) return
+
+  window.localStorage.setItem(LOCAL_PLAYER_KEY, JSON.stringify({
+    id: player.id,
+    name: player.name?.trim() || null,
+  }))
+}
+
+export const readOrCreateLocalPlayer = (): LocalPlayer => {
+  const player = readLocalPlayer()
+
+  if (player) return player
+
+  const nextPlayer: LocalPlayer = {
+    id: createLocalPlayerId(),
+    name: null,
+  }
+
+  writeLocalPlayer(nextPlayer)
+
+  return nextPlayer
+}
+
+export const readLocalPlayerName = (): string | null => {
+  return readLocalPlayer()?.name || null
 }
 
 export const writeLocalPlayerName = (name: string): void => {
-  if (!canUseStorage()) return
+  const player = readOrCreateLocalPlayer()
 
-  window.localStorage.setItem(LOCAL_PLAYER_NAME_KEY, name.trim())
+  writeLocalPlayer({
+    ...player,
+    name: name.trim(),
+  })
 }

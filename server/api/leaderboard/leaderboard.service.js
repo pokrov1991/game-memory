@@ -29,6 +29,12 @@ const sanitizeLimit = (value) => {
   return Math.min(limit, MAX_LIMIT);
 };
 
+const sanitizeAroundLimit = (value) => {
+  if (value === undefined || value === null || value === "") return 0;
+
+  return sanitizeLimit(value);
+};
+
 const assertString = (value, fieldName, maxLength) => {
   if (typeof value !== "string") {
     const error = new Error(`${fieldName} must be a string`);
@@ -94,12 +100,46 @@ const submitScore = async (body) => {
 };
 
 const getEntries = async ({ leaderboardName, limit, playerId }) => {
+  return getEntriesWithOptions({ leaderboardName, limit, playerId });
+};
+
+const getEntriesWithOptions = async ({
+  leaderboardName,
+  limit,
+  playerId,
+  includeUser,
+  quantityAround,
+}) => {
   const normalizedLeaderboardName = sanitizeLeaderboardName(leaderboardName);
   const normalizedLimit = sanitizeLimit(limit);
-  const entries = await repository.getTopEntries(
+  const topEntries = await repository.getTopEntries(
     normalizedLeaderboardName,
     normalizedLimit
   );
+  const shouldIncludeUser = includeUser === true || includeUser === "true";
+  const aroundLimit = sanitizeAroundLimit(quantityAround);
+  const aroundEntries = shouldIncludeUser
+    ? await repository.getEntriesAroundPlayer(
+        normalizedLeaderboardName,
+        playerId ? String(playerId) : "",
+        aroundLimit
+      )
+    : [];
+  const entriesByPlayerId = new Map();
+
+  topEntries.forEach((entry) => {
+    entriesByPlayerId.set(entry.player.id, entry);
+  });
+
+  aroundEntries.forEach((entry) => {
+    entriesByPlayerId.set(entry.player.id, entry);
+  });
+
+  const entries = Array.from(entriesByPlayerId.values()).sort((a, b) => {
+    if (a.rank !== b.rank) return a.rank - b.rank;
+
+    return b.score - a.score;
+  });
   const userRank = await repository.getPlayerRank(
     normalizedLeaderboardName,
     playerId ? String(playerId) : ""
@@ -109,12 +149,36 @@ const getEntries = async ({ leaderboardName, limit, playerId }) => {
     leaderboard: buildDescription(normalizedLeaderboardName),
     ranges: [
       {
-        start: 0,
-        size: entries.length,
+        start: topEntries[0]?.rank ? topEntries[0].rank - 1 : 0,
+        size: topEntries.length,
       },
+      ...(aroundEntries.length
+        ? [{
+            start: aroundEntries[0].rank - 1,
+            size: aroundEntries.length,
+          }]
+        : []),
     ],
     userRank,
     entries,
+  };
+};
+
+const isPlayerNameAvailable = async ({ playerName, playerId }) => {
+  const normalizedPlayerName = assertString(
+    playerName,
+    "playerName",
+    MAX_PLAYER_NAME_LENGTH
+  );
+  const normalizedPlayerId =
+    typeof playerId === "string" ? playerId.trim().slice(0, 128) : "";
+  const existingPlayer = await repository.findPlayerByName(
+    normalizedPlayerName,
+    normalizedPlayerId
+  );
+
+  return {
+    available: !existingPlayer,
   };
 };
 
@@ -124,6 +188,8 @@ module.exports = {
   MAX_SCORE,
   buildDescription,
   getEntries,
+  getEntriesWithOptions,
+  isPlayerNameAvailable,
   sanitizeLeaderboardName,
   submitScore,
 };

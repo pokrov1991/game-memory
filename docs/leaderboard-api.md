@@ -32,6 +32,8 @@ Query params:
 - `leaderboardName` - идентификатор лидерборда, по умолчанию `orionBoard`.
 - `quantityTop` или `limit` - количество записей в топе, по умолчанию `10`, максимум `100`.
 - `playerId` - опциональный id текущего игрока для `userRank`.
+- `includeUser=true` - добавить записи вокруг текущего игрока.
+- `quantityAround` - количество соседних позиций вокруг текущего игрока, максимум `100`.
 
 Пример:
 
@@ -77,6 +79,8 @@ Query params:
 
 - `quantityTop` или `limit` - количество записей в топе, по умолчанию `10`, максимум `100`.
 - `playerId` - опциональный id текущего игрока для `userRank`.
+- `includeUser=true` - добавить записи вокруг текущего игрока.
+- `quantityAround` - количество соседних позиций вокруг текущего игрока, максимум `100`.
 
 Пример:
 
@@ -84,9 +88,32 @@ Query params:
 curl "http://localhost:8080/api/leaderboard/orionBoard/entries?quantityTop=10"
 ```
 
+## GET `/api/leaderboard/player-name`
+
+Проверяет, свободно ли имя игрока среди записей локального лидерборда.
+
+Query params:
+
+- `name` - проверяемое имя игрока.
+- `playerId` - текущий игрок, которого нужно исключить из проверки.
+
+Пример:
+
+```bash
+curl "http://localhost:8080/api/leaderboard/player-name?name=Alex&playerId=local-player-id"
+```
+
+Ответ:
+
+```json
+{
+  "available": true
+}
+```
+
 ## POST `/api/leaderboard/score`
 
-Отправляет score игрока. Backend хранит лучший score для каждой пары `(leaderboardName, playerId)`.
+Отправляет score игрока. Backend хранит лучший score для каждой пары `(leaderboardName, playerId)`. В local-сборке `playerId` берется из профиля `orion7:local-player:v1`, поэтому разные local-игроки записываются отдельными строками.
 
 Тело запроса:
 
