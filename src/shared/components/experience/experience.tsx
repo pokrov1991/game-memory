@@ -1,18 +1,16 @@
 import styles from './styles.module.css'
 import { useProgress } from '@/shared/hooks'
-import { useUser } from '@/shared/contexts/UserContext'
 import { Defs } from './defs'
 import { LevelInfo } from './level-info'
 import { LEVELS_USER_CONFIG } from '@/shared'
 
 export const Experience = () => {
-  const { game } = useUser()
   const { userLevel, userScore } = useProgress()
-  const level = userLevel > 1 ? userLevel : game?.userLevel
-  const score = userScore > 0 ? userScore : game?.userScore
+  const level = userLevel
+  const score = userScore
 
-  const scoreEnd = LEVELS_USER_CONFIG[userLevel].score
-  const scoreStart = userLevel > 1 ? LEVELS_USER_CONFIG[userLevel - 1].score : 0
+  const scoreEnd = LEVELS_USER_CONFIG[level].score
+  const scoreStart = level > 1 ? LEVELS_USER_CONFIG[level - 1].score : 0
   const scoreLevel = scoreEnd - scoreStart
   const scoreCurrent = score - scoreStart
   const scorePercent = Number((scoreCurrent / scoreLevel) * 100) || 0

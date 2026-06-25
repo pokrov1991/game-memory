@@ -1,3 +1,4 @@
+import classNames from 'classnames'
 import { Modal } from '.'
 import { Button, Typography } from '@mui/material'
 import { TModalNonType, TypeModal } from './types'
@@ -13,6 +14,7 @@ export const ModalDefault = ({
   info,
   buttonSuccess = 'Да',
   buttonCancel = 'Нет',
+  isButtonSuccessDisabled = false,
   isButtonCancel = true
 }: TModalNonType) => {
   return (
@@ -33,7 +35,8 @@ export const ModalDefault = ({
           <Button
             size="large"
             color="inherit"
-            className={style['approve']}
+            className={classNames(style['approve'], { [style.disabled]: isButtonSuccessDisabled })}
+            disabled={isButtonSuccessDisabled}
             onClick={onContinue}>
             <span>{buttonSuccess}</span>
           </Button>

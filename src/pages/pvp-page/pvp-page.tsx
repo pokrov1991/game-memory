@@ -193,7 +193,7 @@ export const PvpPage = () => {
             <Navigate routes={routes} />
           </div>
 
-          <section className={styles['pvp-page__section']}>
+          {/* <section className={styles['pvp-page__section']}>
             <InputField
               type="text"
               name="playerName"
@@ -204,7 +204,7 @@ export const PvpPage = () => {
               icon='ui/icons/magic.svg'
               label="Введите имя"
             />
-          </section>
+          </section> */}
 
           <section className={styles['pvp-page__section']}>
             <h2>Выбор локации</h2>

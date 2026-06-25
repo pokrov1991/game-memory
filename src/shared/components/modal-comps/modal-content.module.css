@@ -90,3 +90,11 @@
 .approve-dark span {
   text-shadow: 2px 2px 2px #000;
 }
+
+.actions .approve-wrapper .disabled {
+  color: #fff;
+
+  &:after {
+    background-color: gray;
+  }
+}

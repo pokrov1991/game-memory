@@ -70,3 +70,11 @@ export const createDefaultGameProgress = (): GameProgress => ({
     ])
   ),
 })
+
+export const isInitialGameProgress = (progress: GameProgress): boolean => {
+  return JSON.stringify(progress) === JSON.stringify(createDefaultGameProgress())
+}
+
+export const hasStartedCampaign = (progress: GameProgress): boolean => {
+  return !isInitialGameProgress(progress)
+}

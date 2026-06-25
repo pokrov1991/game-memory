@@ -1,12 +1,12 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useMemo, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Item } from './item'
 import { Button, ModalDefault, LinkText, LEVELS_STATE } from '@/shared'
 import { useProgress, useMusic } from '@/shared/hooks'
-import { useUser } from '@/shared/contexts/UserContext'
 import styles from './styles.module.css'
 import classNames from 'classnames'
 import CloseIcon from '@mui/icons-material/Close'
+import { GameLevelStateType } from '@/shared/services/game/types'
 
 const bgMapInfo = './ui/level-map/climb.png'
 const bgMap = './ui/level-map/map.jpg'
@@ -17,29 +17,27 @@ const cloudThree = './ui/level-map/cloud-3.png'
 export const LevelMap = () => {
   const scrollRef = useRef(null)
   const navigate = useNavigate()
-  const [levels, setLevels] = useState(LEVELS_STATE)
-  const [level, setLevel] = useState(levels[0])
+  const [selectedLevelId, setSelectedLevelId] = useState(LEVELS_STATE[0].id)
   const [isSelect, setSelect] = useState(false)
   const [isOpenModalInfo, setOpenModalInfo] = useState(false)
-  const { game } = useUser()
   const { completedLevels, selectLevel } = useProgress()
 
-  const cCompletedLevels = completedLevels.length > 1 ? completedLevels : game.completedLevels
+  const currentLevelId = completedLevels[completedLevels.length - 1]
+  const levels = useMemo<GameLevelStateType[]>(() => {
+    return LEVELS_STATE.map(level => ({
+      ...level,
+      isPassed: completedLevels.includes(level.id),
+      isCurrent: level.id === selectedLevelId,
+    }))
+  }, [completedLevels, selectedLevelId])
+  const level = levels.find(level => level.id === selectedLevelId) || levels[0]
 
   const soundClick = useMusic({ src: './music/click.mp3', type: 'effect' })
 
   useEffect(() => {
-    levels.forEach(level => {
-      if (cCompletedLevels.includes(level.id)) {
-        level.isPassed = true
-      }
-      level.isCurrent = false
-      if (level.id === cCompletedLevels[cCompletedLevels.length - 1]) {
-        level.isCurrent = true
-        setLevel(level)
-      }
-    })
-  }, [cCompletedLevels])
+    setSelectedLevelId(currentLevelId)
+    setSelect(false)
+  }, [currentLevelId])
 
   const handleMapLoad = () => {
     const el = scrollRef.current
@@ -50,14 +48,7 @@ export const LevelMap = () => {
 
   const handleClickLevel = (levelId: number) => {
     soundClick.play()
-    levels.forEach(level => {
-      level.isCurrent = false
-      if (level.id === levelId) {
-        level.isCurrent = true
-        setLevel(level)
-      }
-    })
-    setLevels(levels)
+    setSelectedLevelId(levelId)
     setSelect(true)
   }
 

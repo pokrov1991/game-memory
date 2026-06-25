@@ -1,5 +1,5 @@
 import { createDefaultGameProgress } from '../defaults'
-import { readLocalGameProgress, writeLocalGameProgress } from '../platformStorage'
+import { readLocalGameProgress, readLocalPlayerName, writeLocalGameProgress } from '../platformStorage'
 import {
   GameProgress,
   LeaderboardDescription,
@@ -10,12 +10,14 @@ import {
   PlatformUser,
 } from '../types'
 
-const LOCAL_USER: PlatformUser = {
-  id: 'local-player',
-  name: 'Игрок',
-  avatar: '',
-  mode: 'local',
-  isAuthorized: true,
+const createLocalUser = (): PlatformUser => {
+  return {
+    id: 'local-player',
+    name: readLocalPlayerName() || 'Игрок',
+    avatar: '',
+    mode: 'local',
+    isAuthorized: true,
+  }
 }
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || ''
@@ -42,12 +44,12 @@ export class LocalPlatformApi implements PlatformApi {
   }
 
   async getUserData(): Promise<PlatformUser> {
-    return LOCAL_USER
+    return createLocalUser()
   }
 
   async authUser(): Promise<PlatformAuthResult> {
     return {
-      user: LOCAL_USER,
+      user: createLocalUser(),
       game: await this.getGameData(),
     }
   }
@@ -84,17 +86,19 @@ export class LocalPlatformApi implements PlatformApi {
     extraData?: string
   ): Promise<void> {
     try {
+      const user = createLocalUser()
+
       await fetch(buildApiUrl('/api/leaderboard/score'), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          avatar: LOCAL_USER.avatar,
+          avatar: user.avatar,
           extraData,
           leaderboardName,
-          playerId: LOCAL_USER.id,
-          playerName: LOCAL_USER.name,
+          playerId: user.id,
+          playerName: user.name,
           score,
         }),
       }).then((response) => {
@@ -111,9 +115,10 @@ export class LocalPlatformApi implements PlatformApi {
     leaderboardName: string,
     options: LeaderboardOptions
   ): Promise<LeaderboardEntries> {
+    const user = createLocalUser()
     const params = new URLSearchParams({
       leaderboardName,
-      playerId: LOCAL_USER.id,
+      playerId: user.id,
     })
 
     if (options.quantityTop) {

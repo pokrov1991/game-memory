@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { ReactNode } from 'react'
 
 export enum TypeModal {
   Lose = 'lose',
@@ -20,6 +20,7 @@ export type TModalAction = TModal & {
   info?: string | JSX.Element,
   buttonSuccess?: string,
   buttonCancel?: string,
+  isButtonSuccessDisabled?: boolean,
   isButtonCancel?: boolean,
   onContinue(e?: React.MouseEvent<HTMLButtonElement>): void,
   onExit?(): void
