@@ -67,10 +67,14 @@ export const GamePvpPage = () => {
 
   // Для игры PvP
   const socketRef = useRef<WebSocket | null>(null)
+  const countdownIntervalRef = useRef<number | null>(null)
+  const battleStartedRef = useRef(false)
+  const [isCountdownOpen, setCountdownOpen] = useState(false)
+  const [countdown, setCountdown] = useState<number | null>(null)
   const [battleId, setBattleId] = useState('')
   const [playerSide, setPlayerSide] = useState<'p1' | 'p2' | null>(null)
   const playerSideRef = useRef<'p1' | 'p2' | null>(null)
-  const [battleStatus, setBattleStatus] = useState<'waiting' | 'preparing' | 'playing'>('waiting')
+  const [battleStatus, setBattleStatus] = useState<'waiting' | 'preparing' | 'countdown' | 'playing'>('waiting')
 
   const hpInitial = 100
   const hpEnemyInitial = 100
@@ -88,6 +92,50 @@ export const GamePvpPage = () => {
 
   const setPlayerSpriteClass = (color: string) => {
     return color ? styles[`game-page__person-img-player-tablet_${color}`] : ''
+  }
+
+  const clearCountdown = () => {
+    if (countdownIntervalRef.current !== null) {
+      window.clearInterval(countdownIntervalRef.current)
+      countdownIntervalRef.current = null
+    }
+
+    setCountdownOpen(false)
+    setCountdown(null)
+  }
+
+  const startCountdown = (seconds: number, endsAt: number, serverNow: number) => {
+    if (battleStartedRef.current) return
+
+    clearCountdown()
+
+    const remainingMs = Math.max(0, endsAt - serverNow)
+    const localEndsAt = Date.now() + remainingMs
+
+    const updateCountdown = () => {
+      const nextCountdown = Math.ceil((localEndsAt - Date.now()) / 1000)
+
+      setCountdown(Math.max(1, Math.min(seconds, nextCountdown)))
+
+      if (nextCountdown <= 1 && countdownIntervalRef.current !== null) {
+        window.clearInterval(countdownIntervalRef.current)
+        countdownIntervalRef.current = null
+      }
+    }
+
+    setBattleStatus('countdown')
+    setCountdownOpen(true)
+    updateCountdown()
+    countdownIntervalRef.current = window.setInterval(updateCountdown, 250)
+  }
+
+  const startBattle = () => {
+    if (battleStartedRef.current) return
+
+    battleStartedRef.current = true
+    clearCountdown()
+    setBattleStatus('playing')
+    togglePause(false)
   }
 
   useEffect(() => {
@@ -139,6 +187,8 @@ export const GamePvpPage = () => {
       }
 
       if (msg.type === 'waiting') {
+        clearCountdown()
+        battleStartedRef.current = false
         setBattleStatus('waiting')
         togglePause(true)
       }
@@ -164,9 +214,19 @@ export const GamePvpPage = () => {
         }))
       }
 
-      if (msg.type === 'battle_started') {
-        setBattleStatus('playing')
-        togglePause(false)
+      if (msg.type === 'match_countdown_started') {
+        const seconds = Number(msg.seconds || 10)
+        const startsAt = Number(msg.startsAt || Date.now())
+
+        startCountdown(
+          seconds,
+          Number(msg.endsAt || startsAt + seconds * 1000),
+          Number(msg.serverNow || startsAt)
+        )
+      }
+
+      if (msg.type === 'match_started' || msg.type === 'battle_started') {
+        startBattle()
       }
 
       if (
@@ -188,6 +248,17 @@ export const GamePvpPage = () => {
         setHP(msg.state[mySide].hp)
         setHPEnemy(msg.state[enemySide].hp)
         setPotions(msg.state[mySide].potions)
+
+        if (msg.type === 'state' && msg.state.status === 'countdown') {
+          const seconds = Number(msg.state.countdownSeconds || 10)
+          const startsAt = Number(msg.state.countdownStartedAt || Date.now())
+
+          startCountdown(
+            seconds,
+            Number(msg.state.countdownEndsAt || startsAt + seconds * 1000),
+            Number(msg.serverNow || startsAt)
+          )
+        }
 
         setColorEnemyAttack(msg.state[enemySide].colorPreAttack)
         setColorPlayerPreAttack(msg.state[mySide].colorPreAttack)
@@ -237,6 +308,15 @@ export const GamePvpPage = () => {
       }
 
       if (msg.type === 'opponent_left') {
+        clearCountdown()
+
+        if (!battleStartedRef.current) {
+          battleStartedRef.current = false
+          setBattleStatus('waiting')
+          togglePause(true)
+          return
+        }
+
         setResultText(<>Соперник вышел из боя.</>)
         setOpenModalWin(true)
         soundWin.play()
@@ -244,6 +324,7 @@ export const GamePvpPage = () => {
     }
 
     return () => {
+      clearCountdown()
       ws.close()
     }
   }, [])
@@ -550,6 +631,22 @@ export const GamePvpPage = () => {
         subtitle="Если вы покинете игру, вам будет защитано поражение."
         info="Вы желаете выйти из игры?"
         isOpened={isOpenModalDefault}
+      />
+      <ModalDefault
+        title="Соперник найден"
+        info={(
+          <div>
+            <div>Бой начнётся через:</div>
+            <div style={{ fontSize: '72px', lineHeight: 1.1, marginTop: '18px' }}>
+              {countdown}
+            </div>
+          </div>
+        )}
+        buttonSuccess="Ожидайте"
+        isButtonSuccessDisabled={true}
+        isButtonCancel={false}
+        onContinue={() => {}}
+        isOpened={isCountdownOpen}
       />
     </main>
   )

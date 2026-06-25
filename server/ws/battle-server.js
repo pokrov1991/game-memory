@@ -6,6 +6,7 @@ const WS_PATH = "/ws";
 const PLAYER_INITIAL_HP = 100;
 const POTION_HEAL = 25;
 const INITIAL_POTIONS = 3;
+const MATCH_COUNTDOWN_SECONDS = 10;
 
 let waitingPlayer = null;
 const battles = new Map();
@@ -70,6 +71,7 @@ const createBattle = (
       p1: p1Socket,
       p2: p2Socket,
     },
+    countdownTimeout: null,
   };
 };
 
@@ -95,6 +97,8 @@ const findBattleBySocket = (ws) => {
 
 const finishBattle = (battle, loserSide, reason = "hp_zero") => {
   if (!battle || battle.state.status === "finished") return;
+
+  clearBattleCountdown(battle);
 
   const winnerSide = getOpponentSide(loserSide);
 
@@ -130,8 +134,68 @@ const safeParse = (raw) => {
 const sendState = (battle) => {
   broadcast(battle, {
     type: "state",
+    serverNow: Date.now(),
     state: battle.state,
   });
+};
+
+const clearBattleCountdown = (battle) => {
+  if (!battle?.countdownTimeout) return;
+
+  clearTimeout(battle.countdownTimeout);
+  battle.countdownTimeout = null;
+};
+
+const startBattleCountdown = (battle) => {
+  if (!battle || battle.countdownTimeout || battle.state.status !== "preparing") return;
+
+  const startsAt = Date.now();
+  const endsAt = startsAt + MATCH_COUNTDOWN_SECONDS * 1000;
+
+  battle.state.status = "countdown";
+  battle.state.countdownStartedAt = startsAt;
+  battle.state.countdownEndsAt = endsAt;
+  battle.state.countdownSeconds = MATCH_COUNTDOWN_SECONDS;
+
+  broadcast(battle, {
+    type: "match_countdown_started",
+    seconds: MATCH_COUNTDOWN_SECONDS,
+    startsAt,
+    endsAt,
+    serverNow: startsAt,
+    state: battle.state,
+  });
+
+  battle.countdownTimeout = setTimeout(() => {
+    battle.countdownTimeout = null;
+
+    if (!battles.has(battle.state.battleId)) return;
+    if (battle.state.status !== "countdown") return;
+    if (!battle.state.p1.connected || !battle.state.p2.connected) return;
+    if (!battle.state.p1.ready || !battle.state.p2.ready) return;
+
+    battle.state.status = "playing";
+    battle.state.startedAt = Date.now();
+
+    broadcast(battle, {
+      type: "match_started",
+      state: battle.state,
+    });
+  }, MATCH_COUNTDOWN_SECONDS * 1000);
+};
+
+const cancelPendingBattle = (battle, disconnectedSide) => {
+  clearBattleCountdown(battle);
+
+  const opponentSide = getOpponentSide(disconnectedSide);
+
+  send(battle.sockets[opponentSide], {
+    type: "waiting",
+    message: "Waiting for opponent",
+    state: battle.state,
+  });
+
+  battles.delete(battle.state.battleId);
 };
 
 const attachBattleServer = (server) => {
@@ -377,12 +441,7 @@ const attachBattleServer = (server) => {
         player.ready = true;
 
         if (battle.state.p1.ready && battle.state.p2.ready) {
-          battle.state.status = "playing";
-
-          broadcast(battle, {
-            type: "battle_started",
-            state: battle.state,
-          });
+          startBattleCountdown(battle);
         } else {
           sendState(battle);
         }
@@ -495,6 +554,7 @@ const attachBattleServer = (server) => {
       }
 
       if (msg.type === "leave") {
+        clearBattleCountdown(battle);
         finishBattle(battle, side, "leave");
         return;
       }
@@ -522,6 +582,11 @@ const attachBattleServer = (server) => {
       const opponentSide = getOpponentSide(side);
 
       battle.state[side].connected = false;
+
+      if (battle.state.status !== "playing") {
+        cancelPendingBattle(battle, side);
+        return;
+      }
 
       send(battle.sockets[opponentSide], {
         type: "opponent_left",
