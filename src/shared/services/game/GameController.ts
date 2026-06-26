@@ -14,7 +14,7 @@ eventBus.on('game:level', payload => {
 export class GameController {
   model: GameModel
   view: GameView
-  index: number
+  index: number | null
   flipProgress: number[]
   isAnimating: boolean
 
@@ -26,17 +26,21 @@ export class GameController {
     this.isAnimating = false
   }
 
-  handleCardClick(x: number, y: number): void {
+  handleCardClick(x: number, y: number): boolean {
+    const clickStartedAt = performance.now()
+
     if (this.isAnimating) {
-      return
+      return false
     }
+
     this.index = this.getCardIndex(x, y)
+
     if (
       this.index !== null &&
       !this.model.flippedCards.includes(this.index) &&
       !this.model.matchedCards.includes(this.index)
     ) {
-      this.flipCard(this.index)
+      this.flipCard(this.index, clickStartedAt)
       this.model.flipCard(this.index)
 
       if (this.model.flippedCards.length === 2) {
@@ -57,7 +61,15 @@ export class GameController {
           }, FRAME_TIMOUT)
         }
       }
+
+      if (import.meta.env.DEV) {
+        console.info(`[perf] card click handled in ${Math.round(performance.now() - clickStartedAt)}ms`)
+      }
+
+      return true
     }
+
+    return false
   }
 
   getCardIndex(x: number, y: number): number | null {
@@ -70,17 +82,31 @@ export class GameController {
     return null
   }
 
-  flipCard(index: number): void {
+  flipCard(index: number, clickStartedAt?: number): void {
     const duration = FRAME_TIMOUT / 2
     const startTime = performance.now()
+    let frames = 0
+    let isFirstFrame = true
 
     const animate = (time: number) => {
+      frames++
+
+      if (isFirstFrame) {
+        isFirstFrame = false
+
+        if (import.meta.env.DEV && clickStartedAt) {
+          console.info(`[perf] flip animation started in ${Math.round(time - clickStartedAt)}ms`)
+        }
+      }
+
       const progress = Math.min((time - startTime) / duration, 1)
       this.flipProgress[index] = progress
-      this.updateView()
+      this.updateCards([index])
 
       if (progress < 1) {
         requestAnimationFrame(animate)
+      } else if (import.meta.env.DEV) {
+        this.logAnimationFps('flip', frames, performance.now() - startTime)
       }
     }
     requestAnimationFrame(animate)
@@ -89,15 +115,19 @@ export class GameController {
   flipBackCards(first: number, second: number): void {
     const duration = FRAME_TIMOUT / 2
     const startTime = performance.now()
+    let frames = 0
 
     const animate = (time: number) => {
+      frames++
       const progress = Math.min((time - startTime) / duration, 1)
       this.flipProgress[first] = 1 - progress
       this.flipProgress[second] = 1 - progress
-      this.updateView()
+      this.updateCards([first, second])
 
       if (progress < 1) {
         requestAnimationFrame(animate)
+      } else if (import.meta.env.DEV) {
+        this.logAnimationFps('flip-back', frames, performance.now() - startTime)
       }
     }
     requestAnimationFrame(animate)
@@ -110,6 +140,21 @@ export class GameController {
       this.model.matchedCards,
       this.flipProgress
     )
+  }
+
+  updateCards(indexes: number[]): void {
+    this.view.drawCardsByIndex(
+      indexes,
+      this.model.cards,
+      this.model.flippedCards,
+      this.model.matchedCards,
+      this.flipProgress
+    )
+  }
+
+  logAnimationFps(label: string, frames: number, duration: number): void {
+    const fps = duration > 0 ? Math.round((frames / duration) * 1000) : 0
+    console.info(`[perf] ${label} animation ${fps}fps over ${Math.round(duration)}ms`)
   }
 
   handleRestart(): void {

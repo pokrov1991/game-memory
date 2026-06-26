@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react'
+import React, { useEffect, useState, useRef, useCallback } from 'react'
 import { GameModel } from '@/shared/services/game/GameModel'
 import { GameView } from '@/shared/services/game/GameView'
 import { GameController } from '@/shared/services/game/GameController'
@@ -29,6 +29,7 @@ export const GameCanvas: React.FC<GameCanvasProps> = ({
   onVictory,
   onClick
 }) => {
+  const canvasDpr = Math.max(1, Math.min(window.devicePixelRatio || 1, 3))
   const [isWin, setIsWin] = useState(false)
   const [score, setScore] = useState(0)
   const [cardColor, setCardColor] = useState('')
@@ -57,12 +58,10 @@ export const GameCanvas: React.FC<GameCanvasProps> = ({
   }, [score])
 
   useEffect(() => {
-    onColor(cardColor, cardCountFlipped)
-    onClick()
-  }, [cardColor, cardCountFlipped])
-
-  useEffect(() => {
     if (canvasRef.current) {
+      let cancelled = false
+      setImagesLoaded(false)
+      setEffectsCardsParams([])
       const model = new GameModel(
         level.cardValues,
         () => {
@@ -74,49 +73,80 @@ export const GameCanvas: React.FC<GameCanvasProps> = ({
       gameModelRef.current = model
 
       const view = new GameView(canvasRef.current)
-      view.loadImages(level.cardValues, () => {
-        setImagesLoaded(true)
-        gameControllerRef.current?.updateView()
-      })
       gameViewRef.current = view
 
       const controller = new GameController(model, view)
       gameControllerRef.current = controller
 
-      // Задаем параметры по картам (координаты, рамеры) для слоя с эфектами
-      setTimeout(() => {
-        if (gameViewRef.current?.cardsParams) {
-          setEffectsCardsParams(gameViewRef.current.cardsParams)
+    // Задаем параметры по картам (координаты, рамеры) для слоя с эфектами
+      view.loadImages(level.cardValues)
+        .then(() => {
+          if (cancelled) {
+            return
+          }
+
+          setImagesLoaded(true)
+          controller.updateView()
+          setEffectsCardsParams([...view.cardsParams])
+        })
+        .catch(error => {
+          if (import.meta.env.DEV) {
+            console.error(error)
+          }
+        })
+
+      return () => {
+        cancelled = true
+        if (gameViewRef.current === view) {
+          gameViewRef.current = null
         }
-      }, 500)
+        if (gameControllerRef.current === controller) {
+          gameControllerRef.current = null
+        }
+      }
     }
   }, [level])
 
-  const handleCanvasClick = (e: React.MouseEvent<HTMLCanvasElement>) => {
+  const handleCanvasClick = useCallback((e: React.MouseEvent<HTMLCanvasElement>) => {
+    const startedAt = performance.now()
+
     if (isPause) {
       onPlay()
     }
+
     if (gameControllerRef.current && canvasRef.current) {
       const rect = canvasRef.current.getBoundingClientRect()
       const x = e.clientX - rect.left
       const y = e.clientY - rect.top
-      gameControllerRef.current.handleCardClick(x, y)
-    }
+      const isCardClicked = gameControllerRef.current.handleCardClick(x, y)
 
-    // Определяем цвет карты
-    const cardKey = gameControllerRef.current.model.cards[gameControllerRef.current.index] as keyof typeof MAP_CARD_COLORS
-    const cardColor = MAP_CARD_COLORS[cardKey]
-    setCardColor(cardColor)
-    // Количество перевернутых карт (0, 1, 2)
-    setCardCountFlipped(gameControllerRef.current.model.flippedCards.length)
-
-    // Задаем отгаданные карты для слоя с эфектами
-    setTimeout(() => {
-      if (gameModelRef.current?.matchedCards) {
-        setEffectsCardsMatched([...gameModelRef.current?.matchedCards])
+      if (!isCardClicked || gameControllerRef.current.index === null) {
+        return
       }
-    }, 500)
-  }
+
+      onClick?.()
+
+      // Определяем цвет карты
+      const cardKey = gameControllerRef.current.model.cards[gameControllerRef.current.index] as keyof typeof MAP_CARD_COLORS
+      const nextCardColor = MAP_CARD_COLORS[cardKey]
+      const nextCardCountFlipped = gameControllerRef.current.model.flippedCards.length
+
+      setCardColor(nextCardColor)
+      setCardCountFlipped(nextCardCountFlipped)
+      onColor(nextCardColor, nextCardCountFlipped)
+
+      if (import.meta.env.DEV) {
+        console.info(`[perf] canvas click completed in ${Math.round(performance.now() - startedAt)}ms`)
+      }
+
+      // Задаем отгаданные карты для слоя с эфектами
+      window.setTimeout(() => {
+        if (gameModelRef.current?.matchedCards) {
+          setEffectsCardsMatched([...gameModelRef.current.matchedCards])
+        }
+      }, 500)
+    }
+  }, [isPause, onClick, onColor, onPlay])
 
   const handleRestart = () => {
     setIsWin(false)
@@ -145,10 +175,14 @@ export const GameCanvas: React.FC<GameCanvasProps> = ({
       />
       <canvas
         ref={canvasRef}
-        width={level.canvasWidth}
-        height={level.canvasHeight}
+        width={Math.round(level.canvasWidth * canvasDpr)}
+        height={Math.round(level.canvasHeight * canvasDpr)}
         onClick={handleCanvasClick}
-        style={{ display: isImagesLoaded ? 'block' : 'none' }}
+        style={{
+          display: isImagesLoaded ? 'block' : 'none',
+          width: `${level.canvasWidth}px`,
+          height: `${level.canvasHeight}px`
+        }}
       />
       {!isImagesLoaded && (
         <div className={styles['game-canvas__loading']}>

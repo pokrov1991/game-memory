@@ -93,7 +93,7 @@ export const App = () => {
       onError={(error, info) => {
         console.error('React ErrorBoundary:', error, info)
       }}>
-      <Container disableGutters maxWidth={false} onClick={unlockAudio}>
+      <Container disableGutters maxWidth={false} onPointerDownCapture={unlockAudio}>
         
         {!isReady && (
           <LoadingScreen progress={progress} error={error} />

@@ -1,101 +1,114 @@
-type ImageAsset = { type: "image"; src: string; element: HTMLImageElement };
-type AudioAsset = { type: "audio"; src: string; element: HTMLAudioElement };
-type FileAsset = { type: "file"; src: string; blob: Blob };
-type Asset = ImageAsset | AudioAsset | FileAsset;
+type ImageAsset = { type: 'image'; src: string; element: HTMLImageElement }
+type AudioAsset = { type: 'audio'; src: string; element: HTMLAudioElement }
+type FileAsset = { type: 'file'; src: string; blob: Blob }
+type Asset = ImageAsset | AudioAsset | FileAsset
 
 function loadImage(src: string): Promise<ImageAsset> {
   return new Promise((resolve, reject) => {
-    const img = new Image();
-    img.onload = () => resolve({ type: "image", src, element: img });
-    img.onerror = () => reject(new Error(`Не удалось загрузить изображение: ${src}`));
-    img.src = src;
-  });
+    const img = new Image()
+
+    img.onload = async () => {
+      try {
+        await img.decode?.()
+      } catch {}
+
+      resolve({ type: 'image', src, element: img })
+    }
+
+    img.onerror = () => reject(new Error(`Не удалось загрузить изображение: ${src}`))
+    img.src = src
+  })
 }
 
 function loadAudio(src: string): Promise<AudioAsset> {
   return new Promise((resolve, reject) => {
-    const audio = new Audio();
+    const audio = new Audio()
 
     const onReady = () => {
-      cleanup();
-      resolve({ type: "audio", src, element: audio });
-    };
+      cleanup()
+      resolve({ type: 'audio', src, element: audio })
+    }
 
     const onError = () => {
-      cleanup();
-      reject(new Error(`Не удалось загрузить аудио: ${src}`));
-    };
+      cleanup()
+      reject(new Error(`Не удалось загрузить аудио: ${src}`))
+    }
 
     const cleanup = () => {
-      audio.removeEventListener("canplaythrough", onReady);
-      audio.removeEventListener("error", onError);
-    };
+      audio.removeEventListener('canplaythrough', onReady)
+      audio.removeEventListener('error', onError)
+    }
 
-    audio.addEventListener("canplaythrough", onReady, { once: true });
-    audio.addEventListener("error", onError, { once: true });
+    audio.addEventListener('canplaythrough', onReady, { once: true })
+    audio.addEventListener('error', onError, { once: true })
 
-    audio.preload = "auto";
-    audio.src = src;
-    audio.load();
-  });
+    audio.preload = 'auto'
+    audio.src = src
+    audio.load()
+  })
 }
 
 function loadFile(src: string): Promise<Asset> {
-  const fixedSrc = src.startsWith("/")
+  const fixedSrc = src.startsWith('/')
     ? `.${src}`
-    : src;
+    : src
 
-  const lower = fixedSrc.toLowerCase();
+  const lower = fixedSrc.toLowerCase()
 
   if (/\.(png|jpg|jpeg|webp|gif|svg)$/.test(lower)) {
-    return loadImage(fixedSrc);
+    return loadImage(fixedSrc)
   }
 
   if (/\.(mp3|wav|ogg|m4a)$/.test(lower)) {
-    return loadAudio(fixedSrc);
+    return loadAudio(fixedSrc)
   }
 
   return fetch(fixedSrc).then((response) => {
     if (!response.ok) {
-      throw new Error(`Не удалось загрузить файл: ${fixedSrc}`);
+      throw new Error(`Не удалось загрузить файл: ${fixedSrc}`)
     }
 
     return response.blob().then((blob) => ({
-      type: "file",
+      type: 'file',
       src: fixedSrc,
       blob,
-    }));
-  });
+    }))
+  })
 }
 
 export async function preloadAssets(onProgress?: (percent: number) => void): Promise<Map<string, Asset>> {
-  const response = await fetch("./assets-manifest.json");
+  const startedAt = performance.now()
+  const response = await fetch('./assets-manifest.json')
 
   if (!response.ok) {
-    throw new Error("Не удалось загрузить assets-manifest.json");
+    throw new Error('Не удалось загрузить assets-manifest.json')
   }
 
-  const data = await response.json();
-  const assets = data.assets || [];
+  const data = await response.json()
+  const assets = data.assets || []
 
   if (!assets.length) {
-    onProgress?.(100);
-    return new Map();
+    onProgress?.(100)
+    return new Map()
   }
 
-  let loaded = 0;
-  const loadedAssets = new Map<string, Asset>();
+  let loaded = 0
+  const loadedAssets = new Map<string, Asset>()
 
   const tasks = assets.map(async (src: string) => {
-    const asset = await loadFile(src);
-    loadedAssets.set(src, asset);
+    const asset = await loadFile(src)
+    loadedAssets.set(src, asset)
 
-    loaded += 1;
-    const percent = Math.round((loaded / assets.length) * 100);
-    onProgress?.(percent);
-  });
+    loaded += 1
+    const percent = Math.round((loaded / assets.length) * 100)
+    onProgress?.(percent)
+  })
 
-  await Promise.all(tasks);
+  await Promise.all(tasks)
 
-  return loadedAssets;
+  if (import.meta.env.DEV) {
+    console.info(`[perf] preloaded ${assets.length} assets in ${Math.round(performance.now() - startedAt)}ms`)
+  }
+
+  return loadedAssets
 }
