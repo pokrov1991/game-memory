@@ -21,13 +21,23 @@ export const computCardWidth = (col: number, row: number, margin: number) => {
   const canvasMarginLeft = isMobile ? 20 : 300
   const canvasMarginTop = 100
   const windowWidth = window.innerWidth - canvasMarginLeft
-  const windowHeight = window.innerHeight - canvasMarginTop
+
+  // максимум 80% от высоты экрана
+  const maxCanvasHeight = window.innerHeight * 0.8
+
+  // если нужен ещё отступ сверху - учитываем его
+  const windowHeight = Math.min(
+    window.innerHeight - canvasMarginTop,
+    maxCanvasHeight
+  )
 
   let cardWidth = windowWidth / col - margin
   let cardHeight = cardWidth * 1.5
 
-  if (windowHeight - row * (cardHeight + margin) < 0) {
-    cardHeight = windowHeight / row - margin
+  const canvasHeight = cardHeight * row + margin * (row - 1)
+
+  if (canvasHeight > windowHeight) {
+    cardHeight = (windowHeight - margin * (row - 1)) / row
     cardWidth = cardHeight / 1.5
   }
 
