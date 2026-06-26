@@ -133,7 +133,9 @@ export const Navigation = () => {
         {isStartedCampaign && <Item to="/levels" title="Продолжить" />}
         {/* <Item to="/intro" title="Вступление" /> */}
         <Item title="Быстрая игра" onSelect={() => handlePlayerNameRequiredNavigate('/arcade')} />
-        <Item title="PvP игра" sup="Beta" onSelect={() => handlePlayerNameRequiredNavigate('/pvp')} />
+        {isLocalPlatform && (
+          <Item title="PvP игра" sup="Beta" onSelect={() => handlePlayerNameRequiredNavigate('/pvp')} />
+        )}
       </ul>
       <ModalDefault
         title="Введите имя игрока"

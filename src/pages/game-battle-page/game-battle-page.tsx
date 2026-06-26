@@ -254,7 +254,7 @@ export const GameBattlePage = () => {
         setStunEnemy(true)
         enemyRef.current.setHitState()
         // enemyRef.current.setStunState() // можно оставить, но главное isStunEnemy
-        setTimeout(() => setStunEnemy(false), STUN_ANIMATION_DELAY / 1000)
+        setTimeout(() => setStunEnemy(false), STUN_ANIMATION_DELAY)
         soundEnemyStun.play()
       } 
     }
