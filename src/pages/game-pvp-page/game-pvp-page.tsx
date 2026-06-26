@@ -362,7 +362,7 @@ export const GamePvpPage = () => {
 
   const onGameOver = (): void => {
     setOpenModalLose(false)
-    onRestart()
+    navigate('/pvp')
   }
 
   const onExit = (): void => {
@@ -435,7 +435,7 @@ export const GamePvpPage = () => {
 
       if (colorParry === colorEnemyAttack) {
         setStunEnemy(true)
-        setTimeout(() => setStunEnemy(false), STUN_ANIMATION_DELAY / 1000)
+        setTimeout(() => setStunEnemy(false), STUN_ANIMATION_DELAY)
         soundEnemyStun.play()
       } 
     }
