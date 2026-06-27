@@ -1,0 +1,65 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 2147483647;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: linear-gradient(180deg, #00314f 0%, #00081d 100%);
+  font-family: 'Roboto', sans-serif;
+  color: #fff;
+  pointer-events: auto;
+  touch-action: none;
+}
+
+.content {
+  width: min(420px, 100%);
+  text-align: center;
+}
+
+.icon {
+  display: block;
+  width: 92px;
+  height: 92px;
+  margin: 0 auto 28px;
+  filter: drop-shadow(0 0 24px rgba(126, 255, 254, 0.5));
+}
+
+.overlay_portrait {
+  .icon {
+    transform: rotate(90deg) scale(1, -1);
+  }
+}
+
+.title {
+  margin: 0 0 14px;
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 1.1;
+  text-shadow: 2px 2px 2px #000;
+}
+
+.description {
+  margin: 0;
+  color: #d5edf6;
+  font-size: 22px;
+  line-height: 1.3;
+  text-shadow: 1px 1px 1px #000;
+}
+
+@media (max-width: 420px) {
+  .icon {
+    width: 76px;
+    height: 76px;
+    margin-bottom: 22px;
+  }
+
+  .title {
+    font-size: 28px;
+  }
+
+  .description {
+    font-size: 20px;
+  }
+}
