@@ -6,6 +6,7 @@ import { GameLevelStateType, GameLevelStoreType, CardParams} from '@/shared/serv
 import { GameEffectsCards } from './game-effects-cards'
 import { GameTrainingCards } from './game-training-cards'
 import { MAP_CARD_COLORS } from '@/shared/services/game/constants'
+import Mediator from '@/shared/controllers/mediator'
 import styles from './styles.module.css'
 
 type GameCanvasProps = {
@@ -18,6 +19,8 @@ type GameCanvasProps = {
   onVictory: () => void
   onClick?: () => void
 }
+
+const eventBus = new Mediator()
 
 export const GameCanvas: React.FC<GameCanvasProps> = ({
   isPause,
@@ -60,6 +63,7 @@ export const GameCanvas: React.FC<GameCanvasProps> = ({
   useEffect(() => {
     if (canvasRef.current) {
       let cancelled = false
+      eventBus.emit('game:level', level)
       setImagesLoaded(false)
       setEffectsCardsParams([])
       const model = new GameModel(
@@ -105,7 +109,28 @@ export const GameCanvas: React.FC<GameCanvasProps> = ({
         }
       }
     }
-  }, [level])
+  }, [level.id])
+
+  useEffect(() => {
+    const view = gameViewRef.current
+    const controller = gameControllerRef.current
+
+    eventBus.emit('game:level', level)
+
+    if (!view || !controller || !isImagesLoaded) {
+      return
+    }
+
+    view.setupCanvas()
+    controller.updateView()
+    setEffectsCardsParams([...view.cardsParams])
+  }, [
+    isImagesLoaded,
+    level.cardHeight,
+    level.cardWidth,
+    level.canvasHeight,
+    level.canvasWidth,
+  ])
 
   const handleCanvasClick = useCallback((e: React.MouseEvent<HTMLCanvasElement>) => {
     const startedAt = performance.now()
