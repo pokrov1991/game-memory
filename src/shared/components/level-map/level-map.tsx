@@ -147,6 +147,9 @@ export const LevelMap = () => {
           {levelPoints}
 
           <div className={styles.levelMapBg}>
+            <div className={styles.levelMapBgBack}>
+              <LinkText onClick={handleMainPage}>Назад в меню</LinkText>
+            </div>
             <img src={bgMap} onLoad={handleMapLoad} />
           </div>       
         </div>

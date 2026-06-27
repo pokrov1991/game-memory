@@ -99,6 +99,10 @@
 .levelMapInfoBack {
   width: 100%;
   margin-top: auto;
+
+  @media (max-width: 1024px) {
+    display: none;
+  }
 }
 
 .levelMapInfoClose {
@@ -142,6 +146,17 @@
   & > img {
     display: block;
     width: 100%;
+  }
+}
+
+.levelMapBgBack {
+  position: fixed;
+  z-index: 3;
+  bottom: 52px;
+  left: 36px;
+
+  @media (min-width: 1025px) {
+    display: none;
   }
 }
 

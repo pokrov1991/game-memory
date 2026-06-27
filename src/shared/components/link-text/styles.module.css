@@ -6,6 +6,7 @@
   align-items: center;
   position: relative;
   text-decoration: none;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 1);
   cursor: pointer;
   transition: 0.3s;
 
