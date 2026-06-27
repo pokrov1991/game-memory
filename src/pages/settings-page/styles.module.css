@@ -1,0 +1,111 @@
+.settings-page {
+  width: 100%;
+  color: #fff;
+  font-family: 'Roboto', sans-serif;
+
+  button span {
+    font-size: 20px;
+  }
+}
+
+.settings-page__counters {
+  width: 100%;
+  display: flex;
+  gap: 25px;
+  margin-bottom: 50px;
+}
+
+.settings-page__container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 36px 42px 24px;
+}
+
+.settings-page__section {
+  margin-top: 24px;
+  padding-left: 12px;
+}
+
+.settings-page__section h2 {
+  margin: 0 0 12px;
+  font-size: 24px;
+  font-family: 'Alegreya';
+}
+
+.settings-page__counter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.settings-page__counter-name {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Roboto';
+  font-size: 16px;
+}
+
+.settings-page__counter-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  
+  button {
+    width: 40px;
+    height: 28px;
+    background: url('../ui/arrow-active.png') no-repeat center / contain;
+    border: none;
+    cursor: pointer;
+    transform: rotate(-90deg);
+
+    &:last-child {
+      transform: rotate(90deg);
+    }
+
+    &[disabled] {
+      cursor: default;
+      background-image: url('../ui/arrow.png');
+    }
+  }
+  span {
+    font-family: 'Roboto';
+    font-weight: 700;
+    font-size: 18px;
+  }
+}
+
+.settings-page-list {
+  color: #fff;
+  font-family: 'Roboto', sans-serif;
+  font-size: 18px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  padding: 10px 0;
+}
+
+.settings-page-list-item {
+  width: 200px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 15px;
+  border: 1px solid #5698b8;
+  background: rgba(3, 13, 40, 0);
+  transition: 0.3s;
+  cursor: pointer;
+
+  span {
+    font-size: 16px;
+    opacity: 0.8;
+  }
+
+  &:hover {
+    background: rgba(3, 13, 40, 1);
+  }
+}

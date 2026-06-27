@@ -116,6 +116,10 @@ export const Navigation = () => {
     setOpenNewGameModal(true)
   }
 
+  const handleSettings = () => {
+    navigateTo('/settings')
+  }
+
   const handleResetProgress = async () => {
     const defaultProgress = createDefaultGameProgress()
 
@@ -136,6 +140,7 @@ export const Navigation = () => {
         {isLocalPlatform && (
           <Item title="PvP игра" sup="Beta" onSelect={() => handlePlayerNameRequiredNavigate('/pvp')} />
         )}
+        <Item title="Настройки" onSelect={handleSettings} />
       </ul>
       <ModalDefault
         title="Введите имя игрока"

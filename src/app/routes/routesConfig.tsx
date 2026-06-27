@@ -12,6 +12,7 @@ import { ArcadePage } from '@/pages/arcade-page/arcade-page'
 import { PvpPage } from '@/pages/pvp-page/pvp-page'
 import { LeaderBoardPage } from '@/pages/leader-board-page/leader-board-page'
 import { MainPage } from '@/pages/main-page/main-page'
+import { SettingsPage } from '@/pages/settings-page/settings-page'
 import { NotFoundPage } from '@/pages/not-found-page/not-found-page'
 import { RouteObject } from 'react-router-dom'
 
@@ -67,6 +68,10 @@ export const routesConfig: RouteObject[] = [
       {
         path: '/levels',
         Component: ChooseLevelPage,
+      },
+      {
+        path: '/settings',
+        Component: SettingsPage,
       },
       {
         path: '/error',
