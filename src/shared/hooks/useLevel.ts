@@ -1,25 +1,69 @@
 import Mediator from '@/shared/controllers/mediator'
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { GameLevelStateType, GameLevelStoreType } from '@/shared/services/game/types'
-import { LEVELS_STATE, LEVELS_STORE } from '@/shared/services/game/constants'
+import {
+  createLevelsState,
+  createLevelsStore,
+} from '@/shared/services/game/constants'
 
 type UseLevelOutput<T> = [T, (value: number) => void]
 
 const eventBus = new Mediator()
 
+const createLevels = <T extends GameLevelStateType | GameLevelStoreType>(
+  type: 'battle' | 'store'
+): T[] => {
+  return type === 'battle'
+    ? (createLevelsState() as T[])
+    : (createLevelsStore() as T[])
+}
+
+const findLevel = <T extends GameLevelStateType | GameLevelStoreType>(
+  levels: T[],
+  levelId: number
+): T => {
+  return levels.find(level => level.id === levelId) || levels[0]
+}
+
 export const useLevel = <T extends GameLevelStateType | GameLevelStoreType>(
   levelId: number,
   type: 'battle' | 'store'
 ): UseLevelOutput<T> => {
-  const levels = type === 'battle' ? (LEVELS_STATE as GameLevelStateType[]) : (LEVELS_STORE as GameLevelStoreType[])
-  const levelDefault = (levels.find(level => level.id === levelId) || levels[0]) as T
-  const [level, setLevel] = useState<T>(levelDefault)
-  eventBus.emit('game:level', levelDefault)
+  const selectedLevelIdRef = useRef(levelId)
+  const [level, setLevel] = useState<T>(() => {
+    return findLevel(createLevels<T>(type), levelId)
+  })
+
+  useEffect(() => {
+    eventBus.emit('game:level', level)
+  }, [level])
+
+  useEffect(() => {
+    selectedLevelIdRef.current = levelId
+    const nextLevel = findLevel(createLevels<T>(type), levelId)
+
+    setLevel(nextLevel)
+  }, [levelId, type])
+
+  useEffect(() => {
+    const handleResize = () => {
+      const nextLevel = findLevel(createLevels<T>(type), selectedLevelIdRef.current)
+
+      setLevel(nextLevel)
+    }
+
+    window.addEventListener('resize', handleResize)
+    window.addEventListener('orientationchange', handleResize)
+
+    return () => {
+      window.removeEventListener('resize', handleResize)
+      window.removeEventListener('orientationchange', handleResize)
+    }
+  }, [type])
 
   const set = (levelId: number) => {
-    const level = (levels.find(level => level.id === levelId) || levels[0]) as T
-    setLevel(level)
-    eventBus.emit('game:level', level)
+    selectedLevelIdRef.current = levelId
+    setLevel(findLevel(createLevels<T>(type), levelId))
   }
 
   return [level, set]

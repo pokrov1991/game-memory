@@ -17,12 +17,6 @@ import { STUN_ANIMATION_DELAY } from '@/shared/services/game/constants'
 import { LEVELS_USER_CONFIG } from '@/shared'
 import styles from './styles.module.css'
 
-// Вычисляем размер UI элементов относительно высоты экрана
-let scalePercent = window.innerHeight < 1040 ? window.innerHeight / 1040 : 1
-const scaleStyle = {
-  transform: `scale(${scalePercent})`
-}
-
 // Задержка что бы показать все анимации
 const delayGameEffects = 1000
 
@@ -89,6 +83,10 @@ export const GamePvpPage = () => {
   const soundEnemyStun = useMusic({ src: './music/game/enemy-stun.wav', type: 'effect' })
   const soundWin = useMusic({ src: './music/game/win.wav', type: 'effect' })
   const soundLose = useMusic({ src: './music/game/lose.wav', type: 'effect' })
+
+  // Вычисляем размер UI элементов относительно высоты экрана
+  const scalePercent = window.innerHeight < 1040 ? window.innerHeight / 1040 : 1
+  const scaleStyle = { transform: `scale(${scalePercent})` }
 
   const setPlayerSpriteClass = (color: string) => {
     return color ? styles[`game-page__person-img-player-tablet_${color}`] : ''

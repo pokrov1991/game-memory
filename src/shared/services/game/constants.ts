@@ -32,8 +32,8 @@ export const CARD_MARGIN = 10
 export const CARD_SCORE = 2 // Очки за отгаданную пару карт (или урон от атаки)
 export const STUN_ANIMATION_DELAY = 5000 // Задержка анимации оглушения
 
-export const LEVELS_STATE: GameLevelStateType[] = LEVELS_STATE_CONFIG.map(
-  (level: GameLevelStateSimpleType) => {
+export const createLevelsState = (): GameLevelStateType[] => {
+  return LEVELS_STATE_CONFIG.map((level: GameLevelStateSimpleType) => {
     const cardRow = computCardRow(level.cardCount, level.cardCol) // количество строк
     const cardValues = createCardValues(level.cardCount) // массив карточек для запоминания
     const cardWidth = computCardWidth(level.cardCol, cardRow, CARD_MARGIN)
@@ -49,11 +49,11 @@ export const LEVELS_STATE: GameLevelStateType[] = LEVELS_STATE_CONFIG.map(
       canvasWidth,
       canvasHeight,
     }
-  }
-)
+  })
+}
 
-export const LEVELS_STORE: GameLevelStoreType[] = LEVELS_STORE_CONFIG.map(
-  (level: GameLevelStoreSimpleType) => {
+export const createLevelsStore = (): GameLevelStoreType[] => {
+  return LEVELS_STORE_CONFIG.map((level: GameLevelStoreSimpleType) => {
     const cardRow = computCardRow(level.cardCount, level.cardCol)
     const cardValues = createCardValues(level.cardCount)
     const cardWidth = computCardWidth(level.cardCol, cardRow, CARD_MARGIN)
@@ -69,5 +69,9 @@ export const LEVELS_STORE: GameLevelStoreType[] = LEVELS_STORE_CONFIG.map(
       canvasWidth,
       canvasHeight,
     }
-  }
-)
+  })
+}
+
+export const LEVELS_STATE: GameLevelStateType[] = createLevelsState()
+
+export const LEVELS_STORE: GameLevelStoreType[] = createLevelsStore()
