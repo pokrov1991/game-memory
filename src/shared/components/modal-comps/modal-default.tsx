@@ -3,6 +3,7 @@ import { Modal } from '.'
 import { Button, Typography } from '@mui/material'
 import { TModalNonType, TypeModal } from './types'
 import style from './modal-content.module.css'
+import { useI18n } from '@/shared/services/i18n'
 
 export const ModalDefault = ({
   onExit,
@@ -12,11 +13,15 @@ export const ModalDefault = ({
   subtitle,
   isOpened,
   info,
-  buttonSuccess = 'Да',
-  buttonCancel = 'Нет',
+  buttonSuccess,
+  buttonCancel,
   isButtonSuccessDisabled = false,
   isButtonCancel = true
 }: TModalNonType) => {
+  const { t } = useI18n()
+  const successText = buttonSuccess || t('common.yes')
+  const cancelText = buttonCancel || t('common.no')
+
   return (
     <Modal className={className} isOpened={isOpened} type={TypeModal.Exit}>
       <div className={style['exit']}>
@@ -38,7 +43,7 @@ export const ModalDefault = ({
             className={classNames(style['approve'], { [style.disabled]: isButtonSuccessDisabled })}
             disabled={isButtonSuccessDisabled}
             onClick={onContinue}>
-            <span>{buttonSuccess}</span>
+            <span>{successText}</span>
           </Button>
         </div>
         <div className={style['approve-dark-wrapper']}>
@@ -48,7 +53,7 @@ export const ModalDefault = ({
               color="inherit"
               className={style['approve-dark']}
               onClick={onExit}>
-              <span>{buttonCancel}</span>
+              <span>{cancelText}</span>
             </Button>
           )}
         </div>

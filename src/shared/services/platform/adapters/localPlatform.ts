@@ -1,8 +1,10 @@
 import { createDefaultGameProgress } from '../defaults'
 import {
   readLocalGameProgress,
+  readLocalLanguage,
   readOrCreateLocalPlayer,
   writeLocalGameProgress,
+  writeLocalLanguage,
 } from '../platformStorage'
 import {
   GameProgress,
@@ -13,6 +15,7 @@ import {
   PlatformAuthResult,
   PlatformUser,
 } from '../types'
+import { Language } from '@/shared/services/i18n'
 
 const createLocalUser = (): PlatformUser => {
   const player = readOrCreateLocalPlayer()
@@ -153,6 +156,14 @@ export class LocalPlatformApi implements PlatformApi {
         entries: [],
       }
     }
+  }
+
+  async getLanguage(): Promise<Language | null> {
+    return readLocalLanguage()
+  }
+
+  async setLanguage(language: Language): Promise<void> {
+    writeLocalLanguage(language)
   }
 
   async isPlayerNameAvailable(playerName: string): Promise<boolean> {

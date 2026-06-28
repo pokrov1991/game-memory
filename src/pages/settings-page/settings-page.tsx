@@ -1,38 +1,39 @@
-import classNames from 'classnames'
 import { Layout, Navigate, Button } from '@/shared/components'
+import { Language, useI18n } from '@/shared/services/i18n'
 import styles from './styles.module.css'
 
-const routes = [
-  {
-    path: '/',
-    name: 'Назад',
-    sort: 20,
-  },
-  {
-    path: '/settings',
-    name: 'Настройки',
-    sort: 10,
-  },
-]
-
-const LANGUAGE = [
-  { id: 1, name: 'English' },
-  { id: 2, name: '中國人' },
-  { id: 3, name: 'Русский' }
+const LANGUAGES: Array<{ id: Language; labelKey: string }> = [
+  { id: 'ru', labelKey: 'settings.russian' },
+  { id: 'en', labelKey: 'settings.english' },
 ]
 
 export const SettingsPage = () => {
+  const { t, language, setLanguage } = useI18n()
+
+  const routes = [
+    {
+      path: '/',
+      name: t('common.back'),
+      sort: 20,
+    },
+    {
+      path: '/settings',
+      name: t('settings.title'),
+      sort: 10,
+    },
+  ]
+
   const handleSave = () => {
     console.log('Сохранить настройки')
   }
 
-  const selectLang = (id: number) => {
-    console.log('Выбрать язык')
+  const selectLang = (id: Language) => {
+    setLanguage(id)
   }
 
   return (
     <main className={styles['settings-page']}>
-      <Layout title="Настройки">
+      <Layout title={t('settings.title')}>
         <div className={styles['settings-page__container']}>
 
           <div className={styles['settings-page__navigation']}>
@@ -40,26 +41,31 @@ export const SettingsPage = () => {
           </div>
 
           <section className={styles['settings-page__section']}>
-            <h2>Выбрать язык</h2>
+            <h2>{t('settings.languageTitle')}</h2>
 
             <div className={styles['settings-page-list']}>
-              {LANGUAGE.map((lang) => {
+              {LANGUAGES.map((lang) => {
                 return (
-                  <div className={styles['settings-page-list-item']} onClick={() => {
+                  <button
+                    type="button"
+                    className={language === lang.id
+                      ? `${styles['settings-page-list-item']} ${styles['settings-page-list-item_active']}`
+                      : styles['settings-page-list-item']}
+                    onClick={() => {
                     selectLang(lang.id)
                   }} key={lang.id}>
-                    <b>{lang.name}</b>
-                  </div>)
+                    <b>{t(lang.labelKey)}</b>
+                  </button>)
               })}
             </div>
           </section>
 
           <section className={styles['settings-page__section']}>
-            <h2>Громкость</h2>
+            <h2>{t('settings.volume')}</h2>
 
             <div className={styles['settings-page__counters']}>
               <div className={styles['settings-page__counter']}>
-                <div className={styles['settings-page__counter-name']}>Фон</div>
+                <div className={styles['settings-page__counter-name']}>{t('settings.background')}</div>
                 <div className={styles['settings-page__counter-controls']}>
                   <button onClick={() => {}} disabled={true}>-</button>
                   <span>100</span>
@@ -68,7 +74,7 @@ export const SettingsPage = () => {
               </div>
 
               <div className={styles['settings-page__counter']}>
-                <div className={styles['settings-page__counter-name']}>Эффекты</div>
+                <div className={styles['settings-page__counter-name']}>{t('common.effects')}</div>
                 <div className={styles['settings-page__counter-controls']}>
                   <button onClick={() => {}} disabled={true}>-</button>
                   <span>100</span>
@@ -78,7 +84,7 @@ export const SettingsPage = () => {
             </div>
             
             <Button type="button" onClick={handleSave}>
-              Сохранить
+              {t('common.save')}
             </Button>
           </section>
         </div>

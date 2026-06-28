@@ -1,6 +1,8 @@
 import { GameProgress } from './types'
+import { DEFAULT_LANGUAGE } from '@/shared/services/i18n'
 
 export const DEFAULT_GAME_PROGRESS: GameProgress = {
+  language: DEFAULT_LANGUAGE,
   completedLevels: [102],
   selectedLevelArcade: 0,
   selectedLevel: 0,

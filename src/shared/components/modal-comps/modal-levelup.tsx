@@ -3,6 +3,7 @@ import { Button, Typography } from '@mui/material'
 import { MouseEvent } from 'react'
 import { TModalNonType, TypeModal } from './types'
 import style from './modal-content.module.css'
+import { useI18n } from '@/shared/services/i18n'
 
 interface IProps extends TModalNonType {
   onContinue(e?: MouseEvent<HTMLButtonElement>): void,
@@ -14,6 +15,8 @@ export const ModalLevelUp = ({
   level,
   isOpened
 }: IProps) => {
+  const { t } = useI18n()
+
   return (
     <Modal isOpened={isOpened} type={TypeModal.Exit}>
       <div className={style['exit']}>
@@ -34,7 +37,7 @@ export const ModalLevelUp = ({
             color="inherit"
             className={style['approve']}
             onClick={onContinue}>
-            <span>Продолжить</span>
+            <span>{t('common.continue')}</span>
           </Button>
         </div>
       </div>

@@ -3,6 +3,7 @@ import { MouseEvent } from 'react'
 import { Button, Typography } from '@mui/material'
 import { TModalNonType, TypeModal } from './types'
 import style from './modal-content.module.css'
+import { useI18n } from '@/shared/services/i18n'
 
 interface IProps extends TModalNonType {
   type: TypeModal.Win | TypeModal.Lose
@@ -15,6 +16,8 @@ export const ModalResult = ({
   isOpened,
   type,
 }: IProps) => {
+  const { t } = useI18n()
+
   return (
     <Modal isOpened={isOpened} type={type}>
       <div className={style['result']}>
@@ -23,7 +26,7 @@ export const ModalResult = ({
           fontSize="60px"
           variant="h3"
           color="white">
-          {type === TypeModal.Win ? 'Победа!' : 'Поражение!'}
+          {type === TypeModal.Win ? t('modal.win') : t('modal.lose')}
         </Typography>
         <Typography fontSize="24px" marginBottom="60px" color="#BAB8BB">
           {levelName}
@@ -37,7 +40,7 @@ export const ModalResult = ({
             size="large"
             color="inherit"
             onClick={onContinue}>
-            <span>Продолжить</span>
+            <span>{t('common.continue')}</span>
           </Button>
         </div>
       </div>

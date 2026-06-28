@@ -15,12 +15,14 @@ import { TypeModal } from '@/shared/components/modal-comps/types'
 import { GameLevelStateType } from '@/shared/services/game/types'
 import { STUN_ANIMATION_DELAY } from '@/shared/services/game/constants'
 import { LEVELS_USER_CONFIG } from '@/shared'
+import { useI18n } from '@/shared/services/i18n'
 import styles from './styles.module.css'
 
 // Задержка что бы показать все анимации
 const delayGameEffects = 1000
 
 export const GamePvpPage = () => {
+  const { t } = useI18n()
   const navigate = useNavigate()
   const [isOpenModalWin, setOpenModalWin] = useState(false)
   const [isOpenModalLose, setOpenModalLose] = useState(false)
@@ -625,22 +627,22 @@ export const GamePvpPage = () => {
       <ModalDefault
         onContinue={onExit}
         onExit={() => setOpenModalDefault(false)}
-        title="PvP бой"
-        subtitle="Если вы покинете игру, вам будет защитано поражение."
-        info="Вы желаете выйти из игры?"
+        title={t('pvp.battleTitle')}
+        subtitle={t('pvp.exit.subtitle')}
+        info={t('pvp.exit.title')}
         isOpened={isOpenModalDefault}
       />
       <ModalDefault
-        title="Соперник найден"
+        title={t('pvp.countdown.found')}
         info={(
           <div>
-            <div>Бой начнётся через:</div>
+            <div>{t('pvp.countdown.startsIn')}</div>
             <div style={{ fontSize: '72px', lineHeight: 1.1, marginTop: '18px' }}>
               {countdown}
             </div>
           </div>
         )}
-        buttonSuccess="Ожидайте"
+        buttonSuccess={t('pvp.countdown.wait')}
         isButtonSuccessDisabled={true}
         isButtonCancel={false}
         onContinue={() => {}}

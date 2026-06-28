@@ -6,6 +6,7 @@ import { useProgress, useMusic } from '@/shared/hooks'
 import { InputField } from '@/shared/components/input-field'
 import { ModalDefault } from '@/shared/components/modal-comps'
 import { useUser } from '@/shared/contexts/UserContext'
+import { useI18n } from '@/shared/services/i18n'
 import {
   createDefaultGameProgress,
   hasStartedCampaign,
@@ -54,6 +55,7 @@ const Item = ({
 }
 
 export const Navigation = () => {
+  const { t } = useI18n()
   const { progress, setProgress } = useProgress()
   const { setUser, setGame } = useUser()
   const navigate = useNavigate()
@@ -85,7 +87,7 @@ export const Navigation = () => {
 
   const handleSavePlayerName = async () => {
     if (!normalizedPlayerName) {
-      setPlayerNameError('Введите имя')
+      setPlayerNameError(t('navigation.playerName.errorRequired'))
       return
     }
 
@@ -133,20 +135,20 @@ export const Navigation = () => {
   return (
     <>
       <ul className={styles.root}>
-        <Item title="Новая игра" onSelect={handleNewGame} />
-        {isStartedCampaign && <Item to="/levels" title="Продолжить" />}
+        <Item title={t('mainMenu.newGame')} onSelect={handleNewGame} />
+        {isStartedCampaign && <Item to="/levels" title={t('mainMenu.continue')} />}
         {/* <Item to="/intro" title="Вступление" /> */}
-        <Item title="Быстрая игра" onSelect={() => handlePlayerNameRequiredNavigate('/arcade')} />
+        <Item title={t('mainMenu.quickGame')} onSelect={() => handlePlayerNameRequiredNavigate('/arcade')} />
         {isLocalPlatform && (
-          <Item title="PvP игра" sup="Beta" onSelect={() => handlePlayerNameRequiredNavigate('/pvp')} />
+          <Item title={t('mainMenu.pvpGame')} sup="Beta" onSelect={() => handlePlayerNameRequiredNavigate('/pvp')} />
         )}
-        <Item title="Настройки" onSelect={handleSettings} />
+        <Item title={t('mainMenu.settings')} onSelect={handleSettings} />
       </ul>
       <ModalDefault
-        title="Введите имя игрока"
+        title={t('navigation.playerName.title')}
         info={(
           <InputField
-            label="Имя"
+            label={t('navigation.playerName.label')}
             type="text"
             error={playerNameError}
             value={playerName}
@@ -158,23 +160,23 @@ export const Navigation = () => {
             }}
             onBlur={() => {
               if (playerName && !normalizedPlayerName) {
-                setPlayerNameError('Введите имя')
+                setPlayerNameError(t('navigation.playerName.errorRequired'))
               }
             }}
           />
         )}
-        buttonSuccess="Сохранить"
-        buttonCancel="Отмена"
+        buttonSuccess={t('common.save')}
+        buttonCancel={t('common.cancel')}
         isButtonSuccessDisabled={!normalizedPlayerName}
         onContinue={handleSavePlayerName}
         onExit={() => setOpenPlayerNameModal(false)}
         isOpened={isOpenPlayerNameModal}
       />
       <ModalDefault
-        title="Вы желаете начать заново?"
-        subtitle="Тогда текущий прогресс будет утерян."
-        buttonSuccess="Начать заново"
-        buttonCancel="Отмена"
+        title={t('navigation.newGame.title')}
+        subtitle={t('navigation.newGame.subtitle')}
+        buttonSuccess={t('navigation.newGame.confirm')}
+        buttonCancel={t('common.cancel')}
         onContinue={handleResetProgress}
         onExit={() => setOpenNewGameModal(false)}
         isOpened={isOpenNewGameModal}

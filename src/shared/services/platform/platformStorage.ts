@@ -1,5 +1,6 @@
 import { createDefaultGameProgress } from './defaults'
 import { GameProgress } from './types'
+import { DEFAULT_LANGUAGE, isLanguage, LANGUAGE_STORAGE_KEY, Language } from '@/shared/services/i18n'
 
 const STORAGE_KEY = 'orion7:game-progress:v1'
 const LOCAL_PLAYER_KEY = 'orion7:local-player:v1'
@@ -106,4 +107,24 @@ export const writeLocalPlayerName = (name: string): void => {
     ...player,
     name: name.trim(),
   })
+}
+
+export const readLocalLanguage = (): Language => {
+  if (!canUseStorage()) return DEFAULT_LANGUAGE
+
+  const value = window.localStorage.getItem(LANGUAGE_STORAGE_KEY)
+
+  if (isLanguage(value)) {
+    return value
+  }
+
+  writeLocalLanguage(DEFAULT_LANGUAGE)
+
+  return DEFAULT_LANGUAGE
+}
+
+export const writeLocalLanguage = (language: Language): void => {
+  if (!canUseStorage()) return
+
+  window.localStorage.setItem(LANGUAGE_STORAGE_KEY, language)
 }

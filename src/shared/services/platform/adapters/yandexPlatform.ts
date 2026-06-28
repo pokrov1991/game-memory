@@ -9,6 +9,7 @@ import {
   PlatformUser,
 } from '../types'
 import { IPlayer, IYandexSDK } from '@/types'
+import { Language } from '@/shared/services/i18n'
 
 declare global {
   interface Window {
@@ -231,6 +232,21 @@ export class YandexPlatformApi implements PlatformApi {
         },
       })),
     }
+  }
+
+  async getLanguage(): Promise<Language | null> {
+    const gameData = await this.getGameData()
+
+    return gameData.language || null
+  }
+
+  async setLanguage(language: Language): Promise<void> {
+    const gameData = await this.getGameData()
+
+    await this.setGameData({
+      ...gameData,
+      language,
+    })
   }
 
   async isPlayerNameAvailable(): Promise<boolean> {

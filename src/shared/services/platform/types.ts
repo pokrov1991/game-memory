@@ -1,3 +1,5 @@
+import { Language } from '@/shared/services/i18n'
+
 export type PlatformApiKind = 'yandex' | 'local'
 
 export type PlatformUserMode = 'lite' | 'authorized' | 'local' | string
@@ -41,6 +43,7 @@ export type GameProgressOrgan = {
 }
 
 export type GameProgress = {
+  language?: Language
   completedLevels: number[]
   selectedLevelArcade: number
   selectedLevel: number
@@ -105,5 +108,7 @@ export interface PlatformApi {
   getLeaderboard(leaderboardName: string): Promise<LeaderboardDescription | null>
   setLeaderboardScore(leaderboardName: string, score: number, extraData?: string): Promise<void>
   getLeaderboardEntries(leaderboardName: string, options: LeaderboardOptions): Promise<LeaderboardEntries>
+  getLanguage(): Promise<Language | null>
+  setLanguage(language: Language): Promise<void>
   isPlayerNameAvailable?(playerName: string): Promise<boolean>
 }
