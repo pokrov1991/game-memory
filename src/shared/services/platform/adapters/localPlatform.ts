@@ -1,12 +1,10 @@
-import { createDefaultGameProgress } from '../defaults'
 import {
   readLocalGameProgress,
-  readLocalLanguage,
   readOrCreateLocalPlayer,
   writeLocalGameProgress,
-  writeLocalLanguage,
 } from '../platformStorage'
 import {
+  GameSettings,
   GameProgress,
   LeaderboardDescription,
   LeaderboardEntries,
@@ -68,10 +66,7 @@ export class LocalPlatformApi implements PlatformApi {
   }
 
   async setGameData(data: GameProgress): Promise<void> {
-    writeLocalGameProgress({
-      ...createDefaultGameProgress(),
-      ...data,
-    })
+    writeLocalGameProgress(data)
   }
 
   async showAd(): Promise<void> {}
@@ -158,12 +153,32 @@ export class LocalPlatformApi implements PlatformApi {
     }
   }
 
+  async getSettings(): Promise<GameSettings> {
+    const gameData = await this.getGameData()
+
+    return gameData.settings
+  }
+
+  async setSettings(settings: Partial<GameSettings>): Promise<void> {
+    const gameData = await this.getGameData()
+
+    await this.setGameData({
+      ...gameData,
+      settings: {
+        ...gameData.settings,
+        ...settings,
+      },
+    })
+  }
+
   async getLanguage(): Promise<Language | null> {
-    return readLocalLanguage()
+    const gameData = await this.getGameData()
+
+    return gameData.settings.language
   }
 
   async setLanguage(language: Language): Promise<void> {
-    writeLocalLanguage(language)
+    await this.setSettings({ language })
   }
 
   async isPlayerNameAvailable(playerName: string): Promise<boolean> {

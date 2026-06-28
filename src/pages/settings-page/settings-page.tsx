@@ -1,5 +1,8 @@
 import { Layout, Navigate, Button } from '@/shared/components'
 import { Language, useI18n } from '@/shared/services/i18n'
+import { useAudio, useProgress } from '@/shared/hooks'
+import { useUser } from '@/shared/contexts/UserContext'
+import { platformApi } from '@/shared/services/platform'
 import styles from './styles.module.css'
 
 const LANGUAGES: Array<{ id: Language; labelKey: string }> = [
@@ -9,6 +12,14 @@ const LANGUAGES: Array<{ id: Language; labelKey: string }> = [
 
 export const SettingsPage = () => {
   const { t, language, setLanguage } = useI18n()
+  const { game, setGame } = useUser()
+  const { updateSettings } = useProgress()
+  const {
+    musicVolume,
+    effectsVolume,
+    setMusicVolume,
+    setEffectsVolume,
+  } = useAudio()
 
   const routes = [
     {
@@ -23,8 +34,29 @@ export const SettingsPage = () => {
     },
   ]
 
-  const handleSave = () => {
-    console.log('Сохранить настройки')
+  const changeVolume = (volume: number, direction: 1 | -1) => {
+    return Math.min(100, Math.max(0, volume + direction * 10))
+  }
+
+  const handleSave = async () => {
+    const settings = {
+      language,
+      musicVolume,
+      effectsVolume,
+    }
+
+    await platformApi.setSettings(settings)
+    updateSettings(settings)
+
+    if (game) {
+      setGame({
+        ...game,
+        settings: {
+          ...game.settings,
+          ...settings,
+        },
+      })
+    }
   }
 
   const selectLang = (id: Language) => {
@@ -67,18 +99,30 @@ export const SettingsPage = () => {
               <div className={styles['settings-page__counter']}>
                 <div className={styles['settings-page__counter-name']}>{t('settings.background')}</div>
                 <div className={styles['settings-page__counter-controls']}>
-                  <button onClick={() => {}} disabled={true}>-</button>
-                  <span>100</span>
-                  <button onClick={() => {}} disabled={false}>+</button>
+                  <button
+                    onClick={() => setMusicVolume(changeVolume(musicVolume, -1))}
+                    disabled={musicVolume <= 0}
+                  >-</button>
+                  <span>{musicVolume}</span>
+                  <button
+                    onClick={() => setMusicVolume(changeVolume(musicVolume, 1))}
+                    disabled={musicVolume >= 100}
+                  >+</button>
                 </div>
               </div>
 
               <div className={styles['settings-page__counter']}>
                 <div className={styles['settings-page__counter-name']}>{t('common.effects')}</div>
                 <div className={styles['settings-page__counter-controls']}>
-                  <button onClick={() => {}} disabled={true}>-</button>
-                  <span>100</span>
-                  <button onClick={() => {}} disabled={false}>+</button>
+                  <button
+                    onClick={() => setEffectsVolume(changeVolume(effectsVolume, -1))}
+                    disabled={effectsVolume <= 0}
+                  >-</button>
+                  <span>{effectsVolume}</span>
+                  <button
+                    onClick={() => setEffectsVolume(changeVolume(effectsVolume, 1))}
+                    disabled={effectsVolume >= 100}
+                  >+</button>
                 </div>
               </div>
             </div>

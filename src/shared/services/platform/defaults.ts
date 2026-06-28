@@ -1,8 +1,14 @@
-import { GameProgress } from './types'
+import { GameProgress, GameSettings } from './types'
 import { DEFAULT_LANGUAGE } from '@/shared/services/i18n'
 
-export const DEFAULT_GAME_PROGRESS: GameProgress = {
+export const DEFAULT_GAME_SETTINGS: GameSettings = {
   language: DEFAULT_LANGUAGE,
+  musicVolume: 100,
+  effectsVolume: 100,
+}
+
+export const DEFAULT_GAME_PROGRESS: GameProgress = {
+  settings: DEFAULT_GAME_SETTINGS,
   completedLevels: [102],
   selectedLevelArcade: 0,
   selectedLevel: 0,
@@ -58,6 +64,7 @@ export const DEFAULT_GAME_PROGRESS: GameProgress = {
 
 export const createDefaultGameProgress = (): GameProgress => ({
   ...DEFAULT_GAME_PROGRESS,
+  settings: { ...DEFAULT_GAME_PROGRESS.settings },
   completedLevels: [...DEFAULT_GAME_PROGRESS.completedLevels],
   userLevelParams: { ...DEFAULT_GAME_PROGRESS.userLevelParams },
   userParams: { ...DEFAULT_GAME_PROGRESS.userParams },

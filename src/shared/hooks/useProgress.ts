@@ -3,6 +3,7 @@ import { RootState, AppDispatch } from '@/app/store'
 import {
   resetProgress,
   setProgress,
+  updateSettings,
   completeLevel,
   selectLevelArcade,
   selectLevel,
@@ -33,6 +34,7 @@ export const useProgress = () => {
   const userParams = useSelector((state: RootState) => state.progress.userParams)
   const userInventory = useSelector((state: RootState) => state.progress.userInventory)
   const userOrgans = useSelector((state: RootState) => state.progress.userOrgans)
+  const settings = useSelector((state: RootState) => state.progress.settings)
 
   const handleResetProgress = () => {
     dispatch(resetProgress())
@@ -40,6 +42,10 @@ export const useProgress = () => {
 
   const handleSetProgress = (progress: any) => {
     dispatch(setProgress(progress))
+  }
+
+  const handleUpdateSettings = (settings: Parameters<typeof updateSettings>[0]) => {
+    dispatch(updateSettings(settings))
   }
 
   const handleCompleteLevel = (level: number) => {
@@ -104,8 +110,10 @@ export const useProgress = () => {
     userParams,
     userInventory,
     userOrgans,
+    settings,
     resetProgress: handleResetProgress,
     setProgress: handleSetProgress,
+    updateSettings: handleUpdateSettings,
     completeLevel: handleCompleteLevel,
     selectLevelArcade: handleSelectLevelArcade,
     selectLevel: handleSelectLevel,

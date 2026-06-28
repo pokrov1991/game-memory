@@ -1,5 +1,6 @@
 import { createDefaultGameProgress } from '../defaults'
 import {
+  GameSettings,
   GameProgress,
   LeaderboardDescription,
   LeaderboardEntries,
@@ -234,10 +235,28 @@ export class YandexPlatformApi implements PlatformApi {
     }
   }
 
+  async getSettings(): Promise<GameSettings> {
+    const gameData = await this.getGameData()
+
+    return gameData.settings
+  }
+
+  async setSettings(settings: Partial<GameSettings>): Promise<void> {
+    const gameData = await this.getGameData()
+
+    await this.setGameData({
+      ...gameData,
+      settings: {
+        ...gameData.settings,
+        ...settings,
+      },
+    })
+  }
+
   async getLanguage(): Promise<Language | null> {
     const gameData = await this.getGameData()
 
-    return gameData.language || null
+    return gameData.settings.language
   }
 
   async setLanguage(language: Language): Promise<void> {
@@ -245,7 +264,10 @@ export class YandexPlatformApi implements PlatformApi {
 
     await this.setGameData({
       ...gameData,
-      language,
+      settings: {
+        ...gameData.settings,
+        language,
+      },
     })
   }
 

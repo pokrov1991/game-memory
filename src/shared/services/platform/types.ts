@@ -42,8 +42,14 @@ export type GameProgressOrgan = {
   count: number
 }
 
+export type GameSettings = {
+  language: Language
+  musicVolume: number
+  effectsVolume: number
+}
+
 export type GameProgress = {
-  language?: Language
+  settings: GameSettings
   completedLevels: number[]
   selectedLevelArcade: number
   selectedLevel: number
@@ -108,6 +114,8 @@ export interface PlatformApi {
   getLeaderboard(leaderboardName: string): Promise<LeaderboardDescription | null>
   setLeaderboardScore(leaderboardName: string, score: number, extraData?: string): Promise<void>
   getLeaderboardEntries(leaderboardName: string, options: LeaderboardOptions): Promise<LeaderboardEntries>
+  getSettings(): Promise<GameSettings>
+  setSettings(settings: Partial<GameSettings>): Promise<void>
   getLanguage(): Promise<Language | null>
   setLanguage(language: Language): Promise<void>
   isPlayerNameAvailable?(playerName: string): Promise<boolean>

@@ -63,7 +63,7 @@ export const useMusic = ({
   conditional = true,
   type = 'effect',
 }: IMusicProps) => {
-  const { isMuted, audioUnlocked } = useAudio()
+  const { isMuted, audioUnlocked, musicVolume, effectsVolume } = useAudio()
 
   const [isPlaying, setIsPlaying] = useState(false)
   const audioRef = useRef<HTMLAudioElement | null>(null)
@@ -75,6 +75,7 @@ export const useMusic = ({
     if (!audioUnlocked || !conditional || !src) return
 
     themeAudio.muted = isMuted
+    themeAudio.volume = musicVolume / 100
     themeAudio.loop = loop
 
     if (currentThemeSrc !== src) {
@@ -90,7 +91,7 @@ export const useMusic = ({
     } catch {
       setIsPlaying(false)
     }
-  }, [src, loop, conditional, isMuted, audioUnlocked])
+  }, [src, loop, conditional, isMuted, audioUnlocked, musicVolume])
 
   const stopTheme = useCallback(() => {
     themeAudio.pause()
@@ -105,8 +106,11 @@ export const useMusic = ({
 
     if (context && buffer) {
       const source = context.createBufferSource()
+      const gain = context.createGain()
       source.buffer = buffer
-      source.connect(context.destination)
+      gain.gain.value = effectsVolume / 100
+      source.connect(gain)
+      gain.connect(context.destination)
 
       if (context.state === 'suspended') {
         context.resume().catch(() => {})
@@ -127,12 +131,13 @@ export const useMusic = ({
 
     audioPoolIndexRef.current = (audioPoolIndexRef.current + 1) % Math.max(pool.length, 1)
     audio.muted = isMuted
+    audio.volume = effectsVolume / 100
 
     try {
       audio.currentTime = 0
       audio.play().catch(() => {})
     } catch {}
-  }, [src, conditional, isMuted])
+  }, [src, conditional, isMuted, effectsVolume])
 
   useEffect(() => {
     if (type === 'theme') return
@@ -142,6 +147,7 @@ export const useMusic = ({
       const audio = new Audio(src)
       audio.loop = loop
       audio.muted = isMuted
+      audio.volume = effectsVolume / 100
       audio.preload = 'auto'
       audio.load()
       return audio
@@ -166,7 +172,7 @@ export const useMusic = ({
       audioRef.current = null
       bufferRef.current = null
     }
-  }, [src, loop, isMuted, type])
+  }, [src, loop, isMuted, effectsVolume, type])
 
   useEffect(() => {
     if (type !== 'theme') return
@@ -181,16 +187,19 @@ export const useMusic = ({
   useEffect(() => {
     if (type === 'theme') {
       themeAudio.muted = isMuted
+      themeAudio.volume = musicVolume / 100
     }
 
     if (audioRef.current) {
       audioRef.current.muted = isMuted
+      audioRef.current.volume = effectsVolume / 100
     }
 
     audioPoolRef.current.forEach(audio => {
       audio.muted = isMuted
+      audio.volume = effectsVolume / 100
     })
-  }, [isMuted, type])
+  }, [isMuted, musicVolume, effectsVolume, type])
 
   const play = useCallback(() => {
     if (type === 'theme') {

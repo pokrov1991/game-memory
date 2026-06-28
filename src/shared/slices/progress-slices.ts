@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { createDefaultGameProgress } from '@/shared/services/platform/defaults'
-import { GameProgress } from '@/shared/services/platform/types'
+import { GameProgress, GameSettings } from '@/shared/services/platform/types'
 
 export type ProgressState = GameProgress
 
@@ -15,6 +15,12 @@ export const progressSlice = createSlice({
     },
     setProgress: (state, action: PayloadAction<ProgressState>) => {
       return { ...state, ...action.payload }
+    },
+    updateSettings: (state, action: PayloadAction<Partial<GameSettings>>) => {
+      state.settings = {
+        ...state.settings,
+        ...action.payload,
+      }
     },
     completeLevel: (state, action: PayloadAction<number>) => {
       state.completedLevels.push(action.payload)
@@ -67,6 +73,7 @@ export const progressSlice = createSlice({
 export const { 
   resetProgress, 
   setProgress,
+  updateSettings,
   completeLevel,
   selectLevelArcade,
   selectLevel, 

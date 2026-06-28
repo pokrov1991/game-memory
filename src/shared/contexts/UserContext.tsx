@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { useProgress } from '@/shared/hooks/useProgress';
+import { useAudio } from '@/shared/hooks';
 import { GameProgress, PlatformUser, platformApi } from '@/shared/services/platform';
 
 type UserData = PlatformUser
@@ -29,6 +30,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const { setProgress } = useProgress()
+  const { setMusicVolume, setEffectsVolume } = useAudio()
 
   useEffect(() => {
     async function fetchUser() {
@@ -44,6 +46,8 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
         console.log("Данные игры:", gameData);
         setGame(gameData);
         setProgress(gameData);
+        setMusicVolume(gameData.settings.musicVolume)
+        setEffectsVolume(gameData.settings.effectsVolume)
 
         // await platformApi.showAd(); // Показ рекламы
       } catch (err: any) {

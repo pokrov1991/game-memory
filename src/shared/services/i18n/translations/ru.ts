@@ -247,7 +247,7 @@ export const ru = {
     statusWaiting: 'Поиск соперника...',
   },
   settings: {
-    background: 'Фон',
+    background: 'Музыка',
     english: 'English',
     language: 'Язык',
     languageTitle: 'Выбрать язык',

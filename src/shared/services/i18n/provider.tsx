@@ -1,5 +1,6 @@
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import { useUser } from '@/shared/contexts/UserContext'
+import { useProgress } from '@/shared/hooks'
 import { platformApi } from '@/shared/services/platform'
 import {
   DEFAULT_LANGUAGE,
@@ -37,6 +38,7 @@ const getTranslation = (language: Language, key: TranslationKey | string): strin
 
 export const I18nProvider = ({ children }: { children: React.ReactNode }) => {
   const { game, loading, setGame } = useUser()
+  const { updateSettings } = useProgress()
   const [language, setLanguageState] = useState<Language>(DEFAULT_LANGUAGE)
 
   useEffect(() => {
@@ -77,17 +79,21 @@ export const I18nProvider = ({ children }: { children: React.ReactNode }) => {
 
     try {
       await platformApi.setLanguage(normalizedLanguage)
+      updateSettings({ language: normalizedLanguage })
 
       if (game) {
         setGame({
           ...game,
-          language: normalizedLanguage,
+          settings: {
+            ...game.settings,
+            language: normalizedLanguage,
+          },
         })
       }
     } catch {
       setLanguageState(DEFAULT_LANGUAGE)
     }
-  }, [game, setGame])
+  }, [game, setGame, updateSettings])
 
   const t = useCallback<Translate>((key) => {
     return getTranslation(language, key)
