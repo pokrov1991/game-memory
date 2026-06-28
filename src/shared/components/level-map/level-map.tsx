@@ -7,6 +7,7 @@ import styles from './styles.module.css'
 import classNames from 'classnames'
 import CloseIcon from '@mui/icons-material/Close'
 import { GameLevelStateType } from '@/shared/services/game/types'
+import { useI18n } from '@/shared/services/i18n'
 
 const bgMapInfo = './ui/level-map/climb.png'
 const bgMap = './ui/level-map/map.jpg'
@@ -15,6 +16,7 @@ const cloudTwo = './ui/level-map/cloud-2.png'
 const cloudThree = './ui/level-map/cloud-3.png'
 
 export const LevelMap = () => {
+  const { t } = useI18n()
   const scrollRef = useRef(null)
   const navigate = useNavigate()
   const [selectedLevelId, setSelectedLevelId] = useState(LEVELS_STATE[0].id)
@@ -94,12 +96,9 @@ export const LevelMap = () => {
     )
   })
 
-  const selectedLevel = level as {
-    id: number
-    title: string
-    description: string
-    isPassed: boolean
-  }
+  const selectedLevel = level as GameLevelStateType
+  const selectedLevelTitle = t(`levels.battle.${selectedLevel.id}.title`)
+  const selectedLevelDescription = t(`levels.battle.${selectedLevel.id}.description`)
 
   return (
     <div 
@@ -111,25 +110,25 @@ export const LevelMap = () => {
         <div className={styles.levelMapInfoWrap}>
           <div className={styles.levelMapInfoTitle}>
             <div>
-              <h1>{[101, 102].includes(selectedLevel.id) ? 'Локация' : `Уровень ${selectedLevel.id}`}</h1>
-              <h2>{selectedLevel.title}</h2>
+              <h1>{[101, 102].includes(selectedLevel.id) ? t('common.location') : `${t('common.level')} ${selectedLevel.id}`}</h1>
+              <h2>{selectedLevelTitle}</h2>
             </div>
             <div className={styles.levelMapInfoClose} onClick={handleClickClose}>
               <CloseIcon />
             </div>
           </div>
           <div className={styles.levelMapInfoDesc}>
-            <p>{selectedLevel.description}</p>
+            <p>{selectedLevelDescription}</p>
           </div>
 
           {selectedLevel.isPassed && (
             <Button onClick={handleStartGame}>
-              {level.type === 'tavern' || level.type === 'base' ? 'Зайти' : 'Играть'}
+              {level.type === 'tavern' || level.type === 'base' ? t('levels.enter') : t('common.play')}
             </Button>
           )}
 
           <div className={styles.levelMapInfoBack}>
-            <LinkText onClick={handleMainPage}>Назад в меню</LinkText>
+            <LinkText onClick={handleMainPage}>{t('levels.backToMenu')}</LinkText>
           </div>
         </div>
         <div className={styles.levelMapInfoBg}>
@@ -148,7 +147,7 @@ export const LevelMap = () => {
 
           <div className={styles.levelMapBg}>
             <div className={styles.levelMapBgBack}>
-              <LinkText onClick={handleMainPage}>Назад в меню</LinkText>
+              <LinkText onClick={handleMainPage}>{t('levels.backToMenu')}</LinkText>
             </div>
             <img src={bgMap} onLoad={handleMapLoad} />
           </div>       
@@ -158,8 +157,8 @@ export const LevelMap = () => {
       <ModalDefault
         onContinue={() => setOpenModalInfo(false)}
         title="[ + _ + ]"
-        subtitle="Первая глава закончилась"
-        info="Продолжение следует..."
+        subtitle={t('levels.chapterEnd')}
+        info={t('levels.toBeContinued')}
         buttonSuccess='Ok'
         isOpened={isOpenModalInfo}
         isButtonCancel={false}

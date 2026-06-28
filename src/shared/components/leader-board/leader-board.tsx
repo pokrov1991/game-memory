@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { LeaderboardEntries, LeaderboardEntry, platformApi } from '@/shared/services/platform'
 import { Spinner } from '@/shared/components'
+import { useI18n } from '@/shared/services/i18n'
 import { LeaderBoardItem } from './leader-board-item'
 import styles from './styles.module.css'
 
 export const LeaderBoard: React.FC = () => {
+  const { t } = useI18n()
   const [data, setData] = useState<LeaderboardEntries>()
   const [isLoading, setLoading] = useState(true)
 
@@ -31,7 +33,7 @@ export const LeaderBoard: React.FC = () => {
       )}
       {!isLoading && !data.entries.length && (
         <div className={styles['leader-board__empty']}>
-          Таблица лидеров пуста!
+          {t('leaderboard.empty')}
         </div>
       )}
       {!isLoading &&

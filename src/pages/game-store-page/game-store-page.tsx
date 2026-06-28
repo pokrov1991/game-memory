@@ -12,6 +12,7 @@ import { useUser } from '@/shared/contexts/UserContext'
 import { TypeModal } from '@/shared/components/modal-comps/types'
 import { GameLevelStoreType } from '@/shared/services/game/types'
 import { platformApi } from '@/shared/services/platform'
+import { useI18n } from '@/shared/services/i18n'
 import styles from './styles.module.css'
 
 
@@ -26,6 +27,7 @@ const scaleStyle = {
 const delayGameEffects = 1000
 
 export const GameStorePage = () => {
+  const { t } = useI18n()
   const navigate = useNavigate()
   const location = useLocation()
   const [isOpenModalWin, setOpenModalWin] = useState(false)
@@ -100,14 +102,14 @@ export const GameStorePage = () => {
   const handleGameWin = (): void => {
     handlePause()
     setTimeout(() => {
-      setResultText(`Поздравляем! Обыграли «${gameLevel.title}» и получили: ${gameLevel.coins} монет.`)
+      setResultText(`${t('game.results.coinsWinStart')} «${t(`levels.store.${gameLevel.id}.title`)}» ${t('game.results.coinsWinValue')} ${gameLevel.coins} ${t('common.coins')}.`)
       setOpenModalWin(true)
       soundWin.play()
     }, delayGameEffects)
   }
 
   const handleGameOver = (): void => {
-    setResultText(`Вы проиграли! Вас обыграл «${gameLevel.title}» и вы потеряли: ${gameLevel.coins} монет.`)
+    setResultText(`${t('game.results.coinsLoseStart')} «${t(`levels.store.${gameLevel.id}.title`)}» ${t('game.results.coinsLoseValue')} ${gameLevel.coins} ${t('game.results.coinsLoseEnd')}`)
     setOpenModalLose(true)
     soundLose.play()
   }
@@ -165,9 +167,9 @@ export const GameStorePage = () => {
       <ModalDefault
         onContinue={onExit}
         onExit={() => setOpenModalDefault(false)}
-        title={gameLevel.title}
-        subtitle={`При выходе вы потеряете ${gameLevel.coins} монет!`}
-        info="Вы желаете выйти из игры?"
+        title={t(`levels.store.${gameLevel.id}.title`)}
+        subtitle={`${t('game.results.coinsLoseValue')} ${gameLevel.coins} ${t('common.coins')}!`}
+        info={t('pvp.exit.title')}
         isOpened={isOpenModalDefault}
       />
     </main>

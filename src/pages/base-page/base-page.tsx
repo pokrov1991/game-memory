@@ -3,27 +3,29 @@ import { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Button, UserTreasures, ModalDefault } from '@/shared/components'
 import { useProgress, useMusic } from '@/shared/hooks'
+import { useI18n } from '@/shared/services/i18n'
 import styles from './styles.module.css'
 
 type MenuMode = 'main' | 'question1' | 'question2' | 'question3'
-type MenuItem = { to: string; title: string; isActive?: boolean }
+type MenuItem = { to: string; titleKey: string; isActive?: boolean }
 
 const imgBarmanDefault = './base/default.webp'
 const imgBarmanTalk = './base/talk.webp'
 
 const MENU: Array<MenuItem> = [
-  { to: 'question1', title: 'Где я?' },
-  { to: 'question2', title: 'Как вернуться на Землю?' },
-  { to: 'question3', title: 'Этот мир опасен?' },
-  { to: '/levels', title: 'Выход' }
+  { to: 'question1', titleKey: 'base.menu.where' },
+  { to: 'question2', titleKey: 'base.menu.earth' },
+  { to: 'question3', titleKey: 'base.menu.danger' },
+  { to: '/levels', titleKey: 'common.exit' }
 ]
 
 export const BasePage = () => {
+  const { t } = useI18n()
   const navigate = useNavigate()
   const [menu, setMenu] = useState(MENU)
   const [mode, setMode] = useState('main')
   const [talk, setTalk] = useState(false)
-  const [blink, setBlink] = useState('привет')
+  const [blink, setBlink] = useState('(+)     (+)')
   const [isOpenModalInfo, setOpenModalInfo] = useState(false)
   const { selectLevel } = useProgress()
   const scrollRef = useRef(null)
@@ -64,33 +66,33 @@ export const BasePage = () => {
 
   const NavigationItem = ({
     to,
-    title,
+    titleKey,
     isActive = false,
   }: {
     to?: string
-    title: string
+    titleKey: string
     isActive?: boolean
   }) => {
     const ACTIONS: Record<MenuMode, () => void> = {
       question1: () => {
         setMode('question1')
         setMenu([
-          { to: 'question1', title: 'Где я?', isActive: true },
-          { to: 'main', title: 'Назад' }
+          { to: 'question1', titleKey: 'base.menu.where', isActive: true },
+          { to: 'main', titleKey: 'common.back' }
         ])
       },
       question2: () => {
         setMode('question2')
         setMenu([
-          { to: 'question2', title: 'Как вернуться на Землю?', isActive: true },
-          { to: 'main', title: 'Назад' }
+          { to: 'question2', titleKey: 'base.menu.earth', isActive: true },
+          { to: 'main', titleKey: 'common.back' }
         ])
       },
       question3: () => {
         setMode('question3')
         setMenu([
-          { to: 'question3', title: 'Этот мир опасен?', isActive: true },
-          { to: 'main', title: 'Назад' }
+          { to: 'question3', titleKey: 'base.menu.danger', isActive: true },
+          { to: 'main', titleKey: 'common.back' }
         ])
       },
       main: () => {
@@ -112,7 +114,7 @@ export const BasePage = () => {
       <li
         className={classNames('', { [styles.active]: isActive })}
         onClick={onClick}>
-        {title}
+        {t(titleKey)}
       </li>
     )
   }
@@ -121,7 +123,7 @@ export const BasePage = () => {
     return (
       <ul className={styles.navigation}>
         {menu.map((item, index) => (
-          <NavigationItem key={index} to={item.to} title={item.title} isActive={item.isActive} />
+          <NavigationItem key={index} to={item.to} titleKey={item.titleKey} isActive={item.isActive} />
         ))}
       </ul>
     )
@@ -131,41 +133,33 @@ export const BasePage = () => {
     return (
       <div className={styles['base-page__modal-info']}>
         <p>
-          Cущества данной планеты излучают свет через биолюминесценцию. Планшет позволяет выявить спектр свечения существа и отправить обратную фазу света, перегружая его биолюминесцентные органы.
+          {t('base.briefing.paragraphs.one')}
         </p>
         <img src="./training/1.png"/>
         <p>
-          Ваша задача - подобрать спектр свечения существа. Так вы сможете нанести существу урон и защитить себя.
-          На планете представлены 5 пар карт световых фаз. Каждая пара соответствует определенной световой фазе.
-          Подберите пару по цвету, чтобы нанести существу урон.
+          {t('base.briefing.paragraphs.two')}
         </p>
         <img src="./training/2.webp"/>
         <p>
-          Учтите, существа крайне агрессивны. И при визуальном контакте, нападут на вас.
-          Атаки местной фауны как правильно имеют свой паттерн, который характеризуется уникальной цветовой последовательностью свечения.
-          При смене свечения следует энергитический выброс который может нанести вам урон.
+          {t('base.briefing.paragraphs.three')}
         </p>
         <img src="./training/3.webp"/>
         <p>
-          Используйте планшет для анализа свечения существ и выбора правильной пары карт.
-          Если вам удастся подобрать цвет, который соответствует спектру свечения существа, отразите его атаку. При этом, вы оглужите на его на некоторое время.
+          {t('base.briefing.paragraphs.four')}
         </p>
         <img src="./training/4.webp"/>
         <p>
-          Обратите внимание на инструкции по использованию светого щита скафантда.
-          По умолчанию у вас имеется одна энергетическая ячейка. Которая позволяет нейтролизовать полученную радиацию и восстановить часть здоровья.
+          {t('base.briefing.paragraphs.five')}
         </p>
         <img src="./training/5.webp"/>
         <p>
-          Вы можеть увеличить количество энергетических ячеек. Если приобретете противорадиационный кристал.
-          Так же ваш скафандр собирает биолюминесцентную энергию. Которую можно использовать для увеличения характеристик скафандра.
+          {t('base.briefing.paragraphs.six')}
         </p>
         <img src="./training/6.png"/>
         <p>
-          Заметьте, наш комплекс не обладает устройством для улучшения характеристик скафандра.
-          Но у нас имеются записи... на планете имеется разумная жизнь, и технологии способные взаимодействовать с биолюминесцентной энергией.
+          {t('base.briefing.paragraphs.seven')}
         </p>
-        <p>Удачи!</p>
+        <p>{t('base.briefing.goodLuck')}</p>
       </div>
     )
   }
@@ -182,22 +176,18 @@ export const BasePage = () => {
           <button className={styles['base-page__question-up']} onClick={scrollUp}></button>
           <div className={styles['base-page__question-scroll']} ref={scrollRef}>
             <p>
-              Идентификация… неизвестный пользователь...<br />
-              Вы находитесь на планете «Земля-7», объекте «Сектор-3».
-              Данная база выведена из эксплуатации. Персонал эвакуирован согласно протоколу 4 года назад.
+              {t('base.questions.where.one')}
             </p>
             <p>
-              Основной комплекс перенесён в сейсмоактивную зону данной планеты, на значительном удалении от текущих координат.
-              Связь с новым объектом нестабильна или отсутствует.<br />
-              Причина эвакуаци... данные засекречены.
+              {t('base.questions.where.two')}
             </p>
             <p>
-              Рекомендация: пройдите обучение для получения базовых навыков выживания на «Земле-7».
+              {t('base.questions.where.three')}
             </p>
           </div>
           <button className={styles['base-page__question-down']} onClick={scrollDown}></button>
           <Button onClick={() => setOpenModalInfo(true)}>
-            Обучение
+            {t('base.briefing.training')}
           </Button>
         </div> }
 
@@ -205,30 +195,24 @@ export const BasePage = () => {
           <button className={styles['base-page__question-up']} onClick={scrollUp}></button>
           <div className={styles['base-page__question-scroll']} ref={scrollRef}>
             <p>
-              Запрос принят: возвращение на Землю.<br />
-              Прямой маршрут недоступен. Транспортные модули на объекте «Сектор-3» выведены из эксплуатации.
+              {t('base.questions.earth.one')}
             </p>
             <p>
-              Для возврата требуется доступ к действующему космическому комплексу.<br />
-              Ближайший функционирующий объект расположен в сейсмоактивной зоне данной планеты.<br />
-              Расстояние превышает безопасный пеший маршрут.
+              {t('base.questions.earth.two')}
             </p>
             <p>
-              Дополнительная информация: доступна карта местности.<br />
-              Карта содержит основные ориентиры, точки интереса и возможные маршруты передвижения.
+              {t('base.questions.earth.three')}
             </p>
             <p>
-              Обнаружен активный объект: «Таверна».<br />
-              Данный тип сооружения используется для временного укрытия, восстановления и взаимодействия с другими выжившими.
+              {t('base.questions.earth.four')}
             </p>
             <p>
-              Рекомендация: пройдите подготовку по выживанию, изучите карту и направляйтесь к ближайшей «Таверне».<br />
-              Вероятность успешного возвращения… неизвестна.
+              {t('base.questions.earth.five')}
             </p>
           </div>
           <button className={styles['base-page__question-down']} onClick={scrollDown}></button>
           <Button onClick={() => setOpenModalInfo(true)}>
-            Обучение
+            {t('base.briefing.training')}
           </Button>
         </div> }
 
@@ -236,25 +220,18 @@ export const BasePage = () => {
           <button className={styles['base-page__question-up']} onClick={scrollUp}></button>
           <div className={styles['base-page__question-scroll']} ref={scrollRef}>
             <p>
-              Запрос принят: уровень опасности.<br />
-              Планета «Земля-7» классифицирована как условно опасная среда.<br />
-              Уровень кислорода в водухе 10–12%, дыхание рекомендуется с использованием фильтров или в герметичных костюмах.<br />
-              Зафиксированы формы жизни с нестабильным поведенческим паттерном.
+              {t('base.questions.danger.one')}
             </p>
             <p>
-              Все обнаруженные существа обладают кристаллическими структурами различного спектра.<br />
-              Их реакции зависят от взаимодействия с кристаллами других цветов.<br />
-              Прогноз поведения без анализа - невозможен.
+              {t('base.questions.danger.two')}
             </p>
             <p>
-              Для оценки взаимодействий используется портативное устройство: планшет.<br />
-              Рекомендация: пройдите обучение и используйте планшет перед контактом.<br />
-              Игнорирование протокола повышает риск... критически.
+              {t('base.questions.danger.three')}
             </p>
           </div>
           <button className={styles['base-page__question-down']} onClick={scrollDown}></button>
           <Button onClick={() => setOpenModalInfo(true)}>
-            Обучение
+            {t('base.briefing.training')}
           </Button>
         </div> }
 
@@ -288,10 +265,10 @@ export const BasePage = () => {
         className={styles['base-page__modal']}
         onContinue={handleTraining}
         onExit={() => setOpenModalInfo(false)}
-        title="Инструктаж"
-        subtitle="Вам выдан планшет. Это устройство позволяет взаимодействовать с местной фауной."
-        buttonSuccess="Поехали!"
-        buttonCancel="Еще не готов"
+        title={t('base.briefing.title')}
+        subtitle={t('base.briefing.intro')}
+        buttonSuccess={t('base.briefing.start')}
+        buttonCancel={t('base.briefing.cancel')}
         info={modalInfo()}
         isOpened={isOpenModalInfo}
       />

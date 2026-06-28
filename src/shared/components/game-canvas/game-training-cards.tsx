@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import classNames from 'classnames';
 import { CardParams } from '@/shared/services/game/types'
 import { CARD_MARGIN } from '@/shared/services/game/constants'
+import { useI18n } from '@/shared/services/i18n'
 import styles from './styles.module.css'
 
 type Props = {
@@ -15,19 +16,19 @@ type Props = {
 const scenarios = [
   {
     id: 1,
-    text: 'Нажмите на карту, чтобы увидеть ее цвет. Запоминайте расположение карт и найдите все пары. Отрывая пару карт, вы наносите урон противнику.'
+    textKey: 'training.cards.one'
   },
   {
     id: 2,
-    text: 'Когда противник атакует, один из его элементов окрашивается в определенный цвет. Если вы нажмете на карту этого цвета, то отразите атаку и не получите урон.'
+    textKey: 'training.cards.two'
   },
   {
     id: 3,
-    text: 'За каждый урон, нанесенный противнику, вы получаете энергию. Полученная энергия отображается на голубой колбе энергии.'
+    textKey: 'training.cards.three'
   },
   {
     id: 4,
-    text: 'Противник так же атакует и наносит урон. Рядом с колбой энергии есть кнопка "сердечко", нажмите на нее что бы восстановить здоровье. Доведите бой до победного конца!'
+    textKey: 'training.cards.four'
   }
 ]
 
@@ -38,8 +39,9 @@ export const GameTrainingCards = ({
   cardsValues,
   onPause
 }: Props) => {
+  const { t } = useI18n()
   const [step, setStep] = useState<number>(1)
-  const [info, setInfo] = useState<string>(scenarios[0].text)
+  const [infoKey, setInfoKey] = useState<string>(scenarios[0].textKey)
   const [cardsInfo, setCardsInfo] = useState<{index: number, value: string}[]>([])
 
   const handleCardInfo = (value: string) => {
@@ -73,24 +75,24 @@ export const GameTrainingCards = ({
   useEffect(() => {
     if (step === 1) {
       setStep(2)
-      setInfo(scenarios[0].text)
+      setInfoKey(scenarios[0].textKey)
       return
     }
     if (step === 2 && cardsMatched.length > 0 && cardsMatched.length === cardsInfo.length) {
       setStep(3)
-      setInfo(scenarios[1].text)
+      setInfoKey(scenarios[1].textKey)
       handleCardInfo('card-5.png')
       onPause()
     }
     if (step === 3 && cardsMatched.length === 4) {
       setStep(4)
-      setInfo(scenarios[2].text)
+      setInfoKey(scenarios[2].textKey)
       setCardsInfo(cardsValues.map((value, index) => ({ index, value })))
       return
     }
     if (step === 4) {
       setStep(5)
-      setInfo(scenarios[3].text)
+      setInfoKey(scenarios[3].textKey)
       onPause()
     }
   }, [cardsMatched])
@@ -98,7 +100,7 @@ export const GameTrainingCards = ({
   return (
     <div className={styles['game-training-cards']}>
       <div className={styles['game-training-cards-info']}>
-        {info}
+        {t(infoKey)}
       </div>
       { cardsParams.map((data, index) => {
         const cardStyle = {

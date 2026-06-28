@@ -7,6 +7,7 @@ import { LoadingScreen } from '../loading-screen/loading-screen'
 import { MusicTheme } from '../music-theme/music-theme'
 import { preloadAssets } from '../../../utils/preloadAssets'
 import { useMusic, useAudio } from '@/shared/hooks'
+import { useI18n } from '@/shared/services/i18n'
 
 declare global {
   interface Window {
@@ -15,6 +16,7 @@ declare global {
 }
 
 export const App = () => {
+  const { t } = useI18n()
   const [progress, setProgress] = useState(0)
   const [isReady, setIsReady] = useState(false)
   const [error, setError] = useState('')
@@ -75,7 +77,7 @@ export const App = () => {
         console.error('Boot error:', err)
         
         if (!cancelled) {
-          setError(err instanceof Error ? err.message : 'Ошибка загрузки')
+          setError(err instanceof Error ? err.message : t('loading.error'))
         }
       }
     }

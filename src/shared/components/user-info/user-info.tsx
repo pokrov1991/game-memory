@@ -4,24 +4,29 @@ import { TUser } from '@/types'
 import { MouseEventHandler } from 'react'
 import { useUser } from '@/shared/contexts/UserContext'
 import { platformApi } from '@/shared/services/platform';
+import { useI18n } from '@/shared/services/i18n'
 
 const UserName = (user: TUser) => user?.name
 
 const EnterButton = (
-  handleEnter: MouseEventHandler<HTMLAnchorElement> | undefined
-) => (<a onClick={handleEnter} className={styles['user-info_link']}>Войти</a>)
+  handleEnter: MouseEventHandler<HTMLAnchorElement> | undefined,
+  text: string
+) => (<a onClick={handleEnter} className={styles['user-info_link']}>{text}</a>)
 
-const SubTitleAuth = () => ('Продолжай идти вперед, не сдавайся!')
+const SubTitleAuth = (text: string) => text
 
 const SubTitleGuest = (
-  handleEnter: MouseEventHandler<HTMLAnchorElement>
+  handleEnter: MouseEventHandler<HTMLAnchorElement>,
+  prompt: string,
+  progress: string
 ) => (<>
   <a onClick={handleEnter} className={styles['user-info_link']}>
-    Войдите в аккаунт
-  </a> что бы сохранить свой прогресс
+    {prompt}
+  </a> {progress}
 </>)
 
 export const UserInfo = () => {
+  const { t } = useI18n()
   const { user, setUser, setGame  } = useUser();
   const isAuth = user !== null && user.mode !== 'lite';
 
@@ -76,8 +81,8 @@ export const UserInfo = () => {
         <Defs avatar={user?.avatar} />
       </svg>
       <div className={styles['user-info_text']}>
-        <span>{isAuth ? UserName(user) : EnterButton(handleEnter)}</span>
-        <span>{isAuth ? SubTitleAuth() : SubTitleGuest(handleEnter)}</span>
+        <span>{isAuth ? UserName(user) : EnterButton(handleEnter, t('user.login'))}</span>
+        <span>{isAuth ? SubTitleAuth(t('user.subtitle')) : SubTitleGuest(handleEnter, t('user.authPrompt'), t('user.guestProgress'))}</span>
       </div>
     </div>
   )

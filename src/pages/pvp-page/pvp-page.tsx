@@ -3,30 +3,19 @@ import { useNavigate } from 'react-router-dom'
 import { useUser } from '@/shared/contexts/UserContext'
 import { Layout, Navigate, InputField, Button } from '@/shared/components'
 import ContentCopyIcon from '@mui/icons-material/ContentCopy'
+import { useI18n } from '@/shared/services/i18n'
 import styles from './styles.module.css'
 
 type MatchMode = 'idle' | 'waiting' | 'private-created'
 
-const routes = [
-  {
-    path: '/',
-    name: 'Назад',
-    sort: 20,
-  },
-  {
-    path: '/pvp',
-    name: 'PvP игра',
-    sort: 10,
-  },
-]
-
 const LOCATIONS = [
-  { id: 1, title: 'Каньон отражений' },
-  { id: 2, title: 'Белое плато' },
-  { id: 3, title: 'Серый мост' },
+  { id: 1, titleKey: 'levels.battle.1.title' },
+  { id: 2, titleKey: 'levels.battle.2.title' },
+  { id: 3, titleKey: 'levels.battle.3.title' },
 ]
 
 export const PvpPage = () => {
+  const { t } = useI18n()
   const navigate = useNavigate()
   const { user } = useUser()
 
@@ -44,7 +33,19 @@ export const PvpPage = () => {
   const playerId = useMemo(() => {
     return String(user.id || crypto.randomUUID())
   }, [user.id])
-  const normalizedPlayerName = playerName.trim() || 'Игрок'
+  const normalizedPlayerName = playerName.trim() || t('game.player')
+  const routes = [
+    {
+      path: '/',
+      name: t('common.back'),
+      sort: 20,
+    },
+    {
+      path: '/pvp',
+      name: t('mainMenu.pvpGame'),
+      sort: 10,
+    },
+  ]
 
   const connect = () => {
     if (
@@ -80,7 +81,7 @@ export const PvpPage = () => {
       }
 
       if (msg.type === 'error') {
-        setError(msg.message || 'Ошибка подключения')
+        setError(msg.message || t('pvp.statusError'))
       }
     }
 
@@ -132,7 +133,7 @@ export const PvpPage = () => {
     setError('')
 
     if (!roomCode.trim()) {
-      setError('Введите код матча')
+      setError(t('pvp.roomCodeRequired'))
       return
     }
 
@@ -186,7 +187,7 @@ export const PvpPage = () => {
 
   return (
     <main className={styles['pvp-page']}>
-      <Layout title="PvP бой">
+      <Layout title={t('pvp.battleTitle')}>
         <div className={styles['pvp-page__container']}>
 
           <div className={styles['pvp-page__navigation']}>
@@ -207,7 +208,7 @@ export const PvpPage = () => {
           </section> */}
 
           <section className={styles['pvp-page__section']}>
-            <h2>Выбор локации</h2>
+            <h2>{t('pvp.locationSelect')}</h2>
 
             <div className={styles['pvp-page__locations']}>
               {LOCATIONS.map((location) => (
@@ -227,37 +228,37 @@ export const PvpPage = () => {
                       styles[`pvp-page__location-img_${location.id}`],
                     ].join(' ')}
                   />
-                  <span>{location.title}</span>
+                  <span>{t(location.titleKey)}</span>
                 </button>
               ))}
             </div>
           </section>
 
           <section className={styles['pvp-page__section']}>
-            <h2>Случайный матч</h2>
+            <h2>{t('pvp.random')}</h2>
             
             <Button
               type="button"
               onClick={handleFindRandomMatch}
             >
-              Создать матч
+              {t('pvp.startMatch')}
             </Button>
 
             {mode === 'waiting' && (
               <p className={styles['pvp-page__status']}>
-                Поиск соперника...
+                {t('pvp.statusWaiting')}
               </p>
             )}
           </section>
 
           <section className={styles['pvp-page__section']}>
-            <h2>Игра с другом</h2>
+            <h2>{t('pvp.friend')}</h2>
 
             <Button
               type="button"
               onClick={handleCreatePrivateMatch}
             >
-              Создать код
+              {t('pvp.privateCode')}
             </Button>
 
             {createdRoomCode && (
@@ -265,11 +266,11 @@ export const PvpPage = () => {
                 className={styles['pvp-page__code']}
                 onClick={handleCopy}
               >
-                Код матча: <b>{createdRoomCode} <ContentCopyIcon/></b>
+                {t('pvp.matchCode')}: <b>{createdRoomCode} <ContentCopyIcon/></b>
 
                 {copied && (
                   <span className={styles['pvp-page__copied']}>
-                    Скопировано!
+                    {t('pvp.statusCopied')}
                   </span>
                 )}
               </div>
@@ -285,14 +286,14 @@ export const PvpPage = () => {
                 onBlur={() => {}}
                 error={''}
                 icon='ui/icons/spirit.svg'
-                label="Введите код"
+                label={t('pvp.roomCode')}
               />
 
               <Button
                 type="button"
                 onClick={handleJoinPrivateMatch}
               >
-                Войти
+                {t('pvp.join')}
               </Button>
             </div>
           </section>

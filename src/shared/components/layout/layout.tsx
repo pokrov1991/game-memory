@@ -2,6 +2,7 @@ import React from 'react'
 import { Clock, Score } from '@/shared'
 import { useUser } from '@/shared/contexts/UserContext'
 import { TUser } from '@/types'
+import { useI18n } from '@/shared/services/i18n'
 import styles from './styles.module.css'
 
 const LayoutPng = './ui/layout/layout-backgound-min.png'
@@ -15,15 +16,16 @@ interface ILayoutProps {
   title?: string
 }
 
-const Fullname = (user: TUser) => {
+const Fullname = (user: TUser, unauthText: string) => {
   return (
     <>
-      <div className={styles.userName}>{user?.name !== '' ? user.name : 'Авторизуйся'}</div>
+      <div className={styles.userName}>{user?.name !== '' ? user.name : unauthText}</div>
     </>
   )
 }
 
 export const Layout = ({ children, title }: ILayoutProps) => {
+  const { t } = useI18n()
   const { user } = useUser()
 
   return (
@@ -42,7 +44,7 @@ export const Layout = ({ children, title }: ILayoutProps) => {
             <div
               className={styles.user}
               style={{ backgroundImage: `url(${UserBackgroundPng})` }}>
-              {user !== undefined ? Fullname(user) : null}
+              {user !== undefined ? Fullname(user, t('user.unauth')) : null}
             </div>
             <picture>
               <source src={BadgeWebp} type="image/webp" />

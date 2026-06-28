@@ -18,12 +18,14 @@ import { EnemyService } from '@/shared/services/game/EnemyService'
 import { STUN_ANIMATION_DELAY } from '@/shared/services/game/constants'
 import { LEVELS_USER_CONFIG } from '@/shared'
 import { platformApi } from '@/shared/services/platform'
+import { useI18n } from '@/shared/services/i18n'
 import styles from './styles.module.css'
 
 // Задержка что бы показать все анимации
 const delayGameEffects = 1000
 
 export const GameBattlePage = () => {
+  const { t } = useI18n()
   const navigate = useNavigate()
   const [isOpenModalWin, setOpenModalWin] = useState(false)
   const [isOpenModalLose, setOpenModalLose] = useState(false)
@@ -207,7 +209,7 @@ export const GameBattlePage = () => {
     handlePause()
     setTimeout(() => {
       updateOrgan({ organId: gameLevel.enemyId, count: enemyOrgan.count + 1 })
-      setResultText(<>Поздравляем! Вы прошли уровень «{gameLevel.title}» и получили: Энергию - {scoreSession} ед. и {enemyOrgan.name} <i data-icon={`organ-${enemyOrgan.id}`}></i> - 1 шт.</>)
+      setResultText(<>{t('game.results.battleWinStart')} «{t(`levels.battle.${gameLevel.id}.title`)}» {t('game.results.battleWinEnergy')} {scoreSession} {t('common.units')} {t('common.and')} {t(`inventory.organs.${enemyOrgan.id}`)} <i data-icon={`organ-${enemyOrgan.id}`}></i> - 1 {t('common.piece')}</>)
       setOpenModalWin(true)
       soundWin.play()
     }, delayGameEffects + gameLevel.enemyStateDurations.DEAD)
@@ -215,7 +217,7 @@ export const GameBattlePage = () => {
 
   const handleGameOver = (): void => {
     handlePause()
-    setResultText(<>Не унывай! Попробуй еще раз пройти уровень. У тебя получится!</>)
+    setResultText(<>{t('game.results.battleLose')}</>)
     setOpenModalLose(true)
     soundLose.play()
   }
@@ -334,7 +336,7 @@ export const GameBattlePage = () => {
             {isPause ? '▷' : '||'}
           </button>
           <button onClick={onRestart} className={styles['game-page__restart']}>
-            Заново
+            {t('game.restart')}
           </button>
         </div>
         <div className={styles['game-page__info']}>
@@ -385,7 +387,7 @@ export const GameBattlePage = () => {
             </div>
           </div>
           <div className={styles['game-page__person-info']}>
-            <div className={styles['game-page__person-name']}>Игрок</div>
+            <div className={styles['game-page__person-name']}>{t('game.player')}</div>
             <div className={styles['game-page__person-hp']}>
               <div
                 className={styles['game-page__person-hp-bar']}
@@ -408,7 +410,7 @@ export const GameBattlePage = () => {
             )}></div>
           </div>
           <div className={styles['game-page__person-info']}>
-            <div className={styles['game-page__person-name']}>{gameLevel.enemyName}</div>
+            <div className={styles['game-page__person-name']}>{t(`levels.battle.${gameLevel.id}.enemyName`)}</div>
             <div className={styles['game-page__person-hp']}>
               <div
                 className={styles['game-page__person-hp-bar']}
@@ -468,9 +470,9 @@ export const GameBattlePage = () => {
       <ModalDefault
         onContinue={onExit}
         onExit={() => setOpenModalDefault(false)}
-        title={`Уровень ${gameLevel.id}`}
-        subtitle={gameLevel.title}
-        info="Вы желаете выйти из игры?"
+        title={`${t('common.level')} ${gameLevel.id}`}
+        subtitle={t(`levels.battle.${gameLevel.id}.title`)}
+        info={t('pvp.exit.title')}
         isOpened={isOpenModalDefault}
       />
     </main>

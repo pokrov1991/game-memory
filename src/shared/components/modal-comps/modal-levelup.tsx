@@ -21,13 +21,13 @@ export const ModalLevelUp = ({
     <Modal isOpened={isOpened} type={TypeModal.Exit}>
       <div className={style['exit']}>
         <Typography marginBottom="8px" fontSize="22px" color="white">
-          Уровень {level} достигнут!
+          {t('xp.levelTitle')} {level} {t('xp.levelReached')}
         </Typography>
         <Typography marginBottom="40px" fontSize="22px" color="#BAB8BB">
-          Вы собрали сферу энергии. В таверне можно использовать ее для улучшения своих характеристик.
+          {t('xp.upgradeInfo')}
         </Typography>
         <Typography marginBottom="50px" fontSize="22px" color="white">
-          Всего сфер: {level}
+          {t('xp.totalSpheres')}: {level}
         </Typography>
       </div>
       <div className={style['actions']}>

@@ -12,6 +12,7 @@ import { useLevel, useToggle, useProgress, useMusic } from '@/shared/hooks'
 import { TypeModal } from '@/shared/components/modal-comps/types'
 import { GameLevelStoreType } from '@/shared/services/game/types'
 import { platformApi } from '@/shared/services/platform'
+import { useI18n } from '@/shared/services/i18n'
 import styles from './styles.module.css'
 
 
@@ -26,6 +27,7 @@ const scaleStyle = {
 const delayGameEffects = 1000
 
 export const GamePage = () => {
+  const { t } = useI18n()
   const navigate = useNavigate()
   const location = useLocation()
   const [isOpenModalWin, setOpenModalWin] = useState(false)
@@ -121,7 +123,7 @@ export const GamePage = () => {
 
     handlePause()
     setTimeout(() => {
-      setResultText(`Вы прошли уровень «${sessionLevel}» и получили ${scoreSession + seconds} очков: ${scoreSession} за карты и за ${seconds} время. Всего ${totalScore} очков.`)
+      setResultText(`${t('game.results.arcadeWinStart')} «${sessionLevel}» ${t('game.results.coinsWinValue')} ${scoreSession + seconds} ${t('game.results.arcadeWinMiddle')} ${scoreSession} ${t('game.results.cardsScore')} ${seconds} ${t('common.time')}. ${t('game.results.total')} ${totalScore} ${t('game.results.arcadeWinEnd')}`)
       setOpenModalWin(true)
       soundWin.play()
     }, delayGameEffects)
@@ -130,7 +132,7 @@ export const GamePage = () => {
   const handleGameOver = (): void => {
     onSaveResult(score, sessionLevel)
 
-    setResultText(`Поздравляем! Вы набрали ${score} очков.`)
+    setResultText(`${t('game.results.arcadeLose')} ${score} ${t('game.results.arcadeWinEnd')}`)
     setOpenModalLose(true)
     soundLose.play()
   }
@@ -203,9 +205,9 @@ export const GamePage = () => {
       <ModalDefault
         onContinue={onExit}
         onExit={() => setOpenModalDefault(false)}
-        title="Выход"
-        subtitle={`Вы остановились в на уровне ${levelId ?? sessionLevel}.`}
-        info="Вы желаете выйти из игры?"
+        title={t('game.exitTitle')}
+        subtitle={`${t('game.results.total')}: ${t('common.level')} ${levelId ?? sessionLevel}.`}
+        info={t('pvp.exit.title')}
         isOpened={isOpenModalDefault}
       />
     </main>

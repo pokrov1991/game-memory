@@ -53,8 +53,8 @@ export const GamePvpPage = () => {
   const [colorPlayerPreAttack, setColorPlayerPreAttack] = useState('')
   const [colorEnemyAttack, setColorEnemyAttack] = useState('')
   const [resultText, setResultText] = useState(<></>)
-  const [playerName, setPlayerName] = useState('Игрок')
-  const [enemyName, setEnemyName] = useState('Соперник')
+  const [playerName, setPlayerName] = useState(t('game.player'))
+  const [enemyName, setEnemyName] = useState(t('pvp.opponent'))
   const [playerSkinId, setPlayerSkinId] = useState(1)
   const [enemySkinId, setEnemySkinId] = useState(1)
   const [enemyHit, setEnemyHit] = useState(false)
@@ -317,7 +317,7 @@ export const GamePvpPage = () => {
           return
         }
 
-        setResultText(<>Соперник вышел из боя.</>)
+        setResultText(<>{t('game.results.opponentLeft')}</>)
         setOpenModalWin(true)
         soundWin.play()
       }
@@ -387,7 +387,7 @@ export const GamePvpPage = () => {
   const handleGameWin = (): void => {
     handlePause()
     setTimeout(() => {
-      setResultText(<>Поздравляем, вы победили!</>)
+      setResultText(<>{t('game.results.pvpWin')}</>)
       setOpenModalWin(true)
       soundWin.play()
     }, delayGameEffects + 300)
@@ -395,7 +395,7 @@ export const GamePvpPage = () => {
 
   const handleGameOver = (): void => {
     handlePause()
-    setResultText(<>Вы проиграли!</>)
+    setResultText(<>{t('game.results.pvpLose')}</>)
     setOpenModalLose(true)
     soundLose.play()
   }

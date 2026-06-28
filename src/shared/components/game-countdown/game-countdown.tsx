@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useToggle } from '@/shared/hooks'
+import { useI18n } from '@/shared/services/i18n'
 import styles from './styles.module.css'
 
 type GameCountdownProps = {
@@ -17,6 +18,7 @@ export const GameCountdown: React.FC<GameCountdownProps> = ({
   onComplete,
   onSeconds,
 }) => {
+  const { t } = useI18n()
   const [seconds, setSeconds] = useState(initialSeconds)
   const [isComplete, toggleComplete] = useToggle(false)
 
@@ -52,10 +54,10 @@ export const GameCountdown: React.FC<GameCountdownProps> = ({
     <div className={styles['game-countdown']}>
       {seconds > 0 ? (
         <p>
-          Время: <b>{seconds}</b>
+          {t('common.time')}: <b>{seconds}</b>
         </p>
       ) : (
-        <p>Время вышло!</p>
+        <p>{t('game.timeIsOver')}</p>
       )}
     </div>
   )

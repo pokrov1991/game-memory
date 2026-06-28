@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react'
 import { useProgress } from '@/shared/hooks'
 import { Button } from '@/shared/components'
 import { platformApi } from '@/shared/services/platform'
+import { useI18n } from '@/shared/services/i18n'
 import styles from './styles.module.css'
 
 const UNIT_HP = 5
@@ -15,6 +16,7 @@ const USER_PARAMS_DEFAULT = {
 }
 
 export const XpManager = () => {
+  const { t } = useI18n()
   const { progress, userLevel, userLevelParams, userParams, paramsUp, levelParamsUp } = useProgress()
   const [countLevel, setCountLevel] = useState(userLevel - userLevelParams.hp - userLevelParams.guard - userLevelParams.attack)
   const [countHp, setCountHp] = useState(userLevelParams.hp)
@@ -58,11 +60,11 @@ export const XpManager = () => {
   return (
     <div className={styles['xp-manager']}>
       <div className={styles['xp-manager__info']}>
-        <div className={styles['xp-manager__info-level']}>Сферы:<b>{countLevel}</b></div>
+        <div className={styles['xp-manager__info-level']}>{t('xp.spheres')}:<b>{countLevel}</b></div>
         <div className={styles['xp-manager__info-params']}>
-          <span>Здоровье: <b>{hp}</b></span>
-          <span>Защита: <b>{guard}</b></span>
-          <span>Атака: <b>{attack}</b></span>
+          <span>{t('xp.health')}: <b>{hp}</b></span>
+          <span>{t('xp.guard')}: <b>{guard}</b></span>
+          <span>{t('xp.attack')}: <b>{attack}</b></span>
         </div>
         <div className={styles['xp-manager__info-actions']}>
           <Button 
@@ -71,13 +73,13 @@ export const XpManager = () => {
               paramsUp({ hp: hp, guard: guard, attack: attack })
             }} 
             disabled={isDisabled}>
-            Сохранить
+            {t('common.save')}
           </Button>
         </div>
       </div>
       <div className={styles['xp-manager__control']}>
         <div className={classNames(styles['xp-manager__counter'], styles['xp-manager__counter_hp'])}>
-          <div className={styles['xp-manager__counter-name']}>Здоровье</div>
+          <div className={styles['xp-manager__counter-name']}>{t('xp.health')}</div>
           <div className={styles['xp-manager__counter-controls']}>
             <button onClick={() => {
               setCountHp(countHp - 1)
@@ -89,11 +91,11 @@ export const XpManager = () => {
               setCountLevel(countLevel - 1)
             }} disabled={countLevel <= 0}>+</button>
           </div>
-          <div className={styles['xp-manager__counter-units']}>+{UNIT_HP} ед.</div>
+          <div className={styles['xp-manager__counter-units']}>+{UNIT_HP} {t('xp.unitSuffix')}</div>
         </div>
 
         <div className={classNames(styles['xp-manager__counter'], styles['xp-manager__counter_guard'])}>
-          <div className={styles['xp-manager__counter-name']}>Защита</div>
+          <div className={styles['xp-manager__counter-name']}>{t('xp.guard')}</div>
           <div className={styles['xp-manager__counter-controls']}>
             <button onClick={() => {
               setCountGuard(countGuard - 1)
@@ -105,11 +107,11 @@ export const XpManager = () => {
               setCountLevel(countLevel - 1)
             }} disabled={countLevel <= 0}>+</button>
           </div>
-          <div className={styles['xp-manager__counter-units']}>+{UNIT_GUARD} ед.</div>
+          <div className={styles['xp-manager__counter-units']}>+{UNIT_GUARD} {t('xp.unitSuffix')}</div>
         </div>
 
         <div className={classNames(styles['xp-manager__counter'], styles['xp-manager__counter_attack'])}>
-          <div className={styles['xp-manager__counter-name']}>Атака</div>
+          <div className={styles['xp-manager__counter-name']}>{t('xp.attack')}</div>
           <div className={styles['xp-manager__counter-controls']}>
             <button onClick={() => {
               setCountAttack(countAttack - 1)
@@ -121,7 +123,7 @@ export const XpManager = () => {
               setCountLevel(countLevel - 1)
             }} disabled={countLevel <= 0}>+</button>
           </div>
-          <div className={styles['xp-manager__counter-units']}>+{UNIT_ATTACK} ед.</div>
+          <div className={styles['xp-manager__counter-units']}>+{UNIT_ATTACK} {t('xp.unitSuffix')}</div>
         </div>
       </div>
     </div>

@@ -5,22 +5,24 @@ import { LEVELS_STORE, INVENTORY_STORE_CONFIG } from '@/shared'
 import { useProgress, useMusic } from '@/shared/hooks'
 import { Button, UserTreasures, XpManager, ModalDefault } from '@/shared/components'
 import { platformApi } from '@/shared/services/platform'
+import { useI18n } from '@/shared/services/i18n'
 import styles from './styles.module.css'
 
 type MenuMode = 'main' | 'levels' | 'store' | 'xp'
-type MenuItem = { to: string; title: string; isActive?: boolean }
+type MenuItem = { to: string; titleKey: string; isActive?: boolean }
 
 const imgBarmanDefault = './tavern/default.webp'
 const imgBarmanTalk = './tavern/talk.webp'
 
 const MENU: Array<MenuItem> = [
-  { to: 'levels', title: 'Игра на монеты' },
-  { to: 'store', title: 'Купить товары' },
-  { to: 'xp', title: 'Сферы энергии' },
-  { to: '/levels', title: 'Выход' }
+  { to: 'levels', titleKey: 'tavern.menu.coinsGame' },
+  { to: 'store', titleKey: 'tavern.menu.store' },
+  { to: 'xp', titleKey: 'tavern.menu.energySpheres' },
+  { to: '/levels', titleKey: 'common.exit' }
 ]
 
 export const TavernPage = () => {
+  const { t } = useI18n()
   const navigate = useNavigate()
   const [levels, setLevels] = useState(LEVELS_STORE)
   const [level, setLevel] = useState(LEVELS_STORE[0])
@@ -153,6 +155,8 @@ export const TavernPage = () => {
   }
 
   const levelPreviews = levels.map(level => {
+    const levelTitle = t(`levels.store.${level.id}.title`)
+
     return (
       <div 
         className={classNames(
@@ -165,12 +169,12 @@ export const TavernPage = () => {
         }} 
         key={level.id}>
         <b>
-          <span>{level.title}</span>
+          <span>{levelTitle}</span>
           <span>{level.cardCount}</span>
         </b>
         <p>
-          <span>{level.coins} монет</span>
-          <span>{level.gameTimer} секунд</span>
+          <span>{level.coins} {t('common.coins')}</span>
+          <span>{level.gameTimer} {t('common.seconds')}</span>
         </p>
       </div>
     )
@@ -178,33 +182,33 @@ export const TavernPage = () => {
 
   const NavigationItem = ({
     to,
-    title,
+    titleKey,
     isActive = false,
   }: {
     to?: string
-    title: string
+    titleKey: string
     isActive?: boolean
   }) => {
     const ACTIONS: Record<MenuMode, () => void> = {
       levels: () => {
         setMode('levels')
         setMenu([
-          { to: 'levels', title: 'Игра на монеты', isActive: true },
-          { to: 'main', title: 'Назад' }
+          { to: 'levels', titleKey: 'tavern.menu.coinsGame', isActive: true },
+          { to: 'main', titleKey: 'common.back' }
         ])
       },
       store: () => {
         setMode('store')
         setMenu([
-          { to: 'store', title: 'Купить товары', isActive: true },
-          { to: 'main', title: 'Назад' }
+          { to: 'store', titleKey: 'tavern.menu.store', isActive: true },
+          { to: 'main', titleKey: 'common.back' }
         ])
       },
       xp: () => {
         setMode('xp')
         setMenu([
-          { to: 'xp', title: 'Сферы энергии', isActive: true },
-          { to: 'main', title: 'Назад' }
+          { to: 'xp', titleKey: 'tavern.menu.energySpheres', isActive: true },
+          { to: 'main', titleKey: 'common.back' }
         ])
       },
       main: () => {
@@ -226,7 +230,7 @@ export const TavernPage = () => {
       <li
         className={classNames('', { [styles.active]: isActive })}
         onClick={onClick}>
-        {title}
+        {t(titleKey)}
       </li>
     )
   }
@@ -235,7 +239,7 @@ export const TavernPage = () => {
     return (
       <ul className={styles.navigation}>
         {menu.map((item, index) => (
-          <NavigationItem key={index} to={item.to} title={item.title} isActive={item.isActive} />
+          <NavigationItem key={index} to={item.to} titleKey={item.titleKey} isActive={item.isActive} />
         ))}
       </ul>
     )
@@ -278,10 +282,10 @@ export const TavernPage = () => {
           <div className={styles['tavern-page__store-action']}>
             {isButtonPay ? 
             <Button disabled={isButtonPayDisabled} onClick={() => handlePay()}>
-              Купить
+              {t('tavern.buy')}
             </Button> : 
             <Button onClick={() => handleDress()}>
-              Надеть
+              {t('tavern.dress')}
             </Button>}
           </div>
         </div> }
@@ -295,19 +299,19 @@ export const TavernPage = () => {
 
           {mode === 'main' && 
             <div className={styles['tavern-page__barman-text-main']}>
-              <p>Здравствуй путник!<br/>Чего желаешь?</p>
+              <p>{t('tavern.text.main')}<br/>{t('tavern.text.mainQuestion')}</p>
             </div>}
 
           {mode === 'levels' && 
             <div className={styles['tavern-page__barman-text-baloon']}>
-              <p>Выбери соперника, который тебе по зубам. Если победишь - получаешь монетки, если проиграешь - теряешь их. Что скажешь?</p>
+              <p>{t('tavern.text.levels')}</p>
             </div>}
 
           {mode === 'store' && storeInventoryItem && 
             <div className={styles['tavern-page__barman-text-baloon']}>
               <p>
-              <strong>{storeInventoryItem.name}</strong>
-              <span>{storeInventoryItem.desc}</span>
+              <strong>{t(`inventory.items.${storeInventoryItem.id}.name`)}</strong>
+              <span>{t(`inventory.items.${storeInventoryItem.id}.desc`)}</span>
               <b>
                 <i className={classNames(
                   styles['barman-text-item'],
@@ -321,7 +325,7 @@ export const TavernPage = () => {
                     styles['barman-text-item'],
                     styles[`barman-text-item_${item.id}`],
                     {[styles['barman-text-item_disabled']]: userOrgans[item.id]?.count < item.count}
-                  )} key={index} title={item.name}>
+                  )} key={index} title={t(`inventory.organs.${item.id}`)}>
                     {item.count}
                   </i>
                 ))}
@@ -331,7 +335,7 @@ export const TavernPage = () => {
 
           {mode === 'xp' && 
             <div className={styles['tavern-page__barman-text-baloon']}>
-              <p>У тебя есть сферы энергии, которые ты можешь потратить на улучшение своих характеристик. Чем выше уровень, тем больше сфер для распределения. На что хочешь потратить свои сферы?</p>
+              <p>{t('tavern.text.xp')}</p>
             </div>}
         </div>
 
@@ -341,9 +345,9 @@ export const TavernPage = () => {
       <ModalDefault
         onContinue={() => handleClickLevel(level.id)}
         onExit={() => setOpenModalDefault(false)}
-        title={level.title}
-        subtitle={`На кону ${level.coins} монет! В случае победы, вы получите их, а в случае поражения - потеряете.`}
-        info={`Вы желаете сразиться с ${level.title}?`}
+        title={t(`levels.store.${level.id}.title`)}
+        subtitle={`${t('tavern.modal.stakeStart')} ${level.coins} ${t('tavern.modal.stakeEnd')}`}
+        info={`${t('tavern.modal.versus')} ${t(`levels.store.${level.id}.title`)}?`}
         isOpened={isOpenModalDefault}
       />
     </main>

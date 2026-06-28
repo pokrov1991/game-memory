@@ -1,4 +1,5 @@
 import { SVGProps } from 'react'
+import { useI18n } from '@/shared/services/i18n'
 
 type Props = SVGProps<SVGGElement> & {
   value?: number
@@ -17,7 +18,10 @@ export const LevelInfo = ({
   currentScore = 0,
   maxLevel = 100,
   ...props
-}: Props) => (
+}: Props) => {
+  const { t } = useI18n()
+
+  return (
   <g viewBox="0 0 200 200" transform="translate(45,175)" {...props}>
     <rect stroke="#0097D3" width={width} height={height} />
     <rect
@@ -28,7 +32,7 @@ export const LevelInfo = ({
       y={offset / 2}
     />
     <text x="20%" y="-20%" fill="#A0ECEA" fontSize={18} fontFamily="Alegreya">
-      <tspan>Уровень</tspan>
+      <tspan>{t('xp.levelTitle')}</tspan>
     </text>
     <text x="48%" y="3%" fill="#47D0F2" fontSize={24} fontFamily="Alegreya">
       <tspan>EXP</tspan>
@@ -53,4 +57,5 @@ export const LevelInfo = ({
       </tspan>
     </text>
   </g>
-)
+  )
+}

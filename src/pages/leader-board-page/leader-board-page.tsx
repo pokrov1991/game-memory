@@ -1,23 +1,25 @@
 import { Layout, LeaderBoard, Navigate } from '@/shared/components'
+import { useI18n } from '@/shared/services/i18n'
 import styles from './styles.module.css'
 
-const routes = [
-  {
-    path: '/arcade',
-    name: 'Назад',
-    sort: 20,
-  },
-  {
-    path: '/leader-board',
-    name: 'Лидерборд',
-    sort: 10,
-  },
-]
-
 export const LeaderBoardPage = () => {
+  const { t } = useI18n()
+  const routes = [
+    {
+      path: '/arcade',
+      name: t('common.back'),
+      sort: 20,
+    },
+    {
+      path: '/leader-board',
+      name: t('leaderboard.nav'),
+      sort: 10,
+    },
+  ]
+
   return (
     <main className={styles['leader-board-page']}>
-      <Layout title="Таблица лидеров">
+      <Layout title={t('leaderboard.title')}>
         <div className={styles.container}>
           <div className={styles.navigation}>
             <Navigate routes={routes} />

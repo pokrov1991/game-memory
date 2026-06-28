@@ -1,6 +1,7 @@
 import React from 'react'
 import { useProgress } from '@/shared/hooks'
 import { LEVELS_USER_CONFIG } from '@/shared'
+import { useI18n } from '@/shared/services/i18n'
 import styles from './styles.module.css'
 
 type GameScoreProps = {
@@ -9,6 +10,7 @@ type GameScoreProps = {
 }
 
 export const GameScore: React.FC<GameScoreProps> = ({ score, arcadeLevel }) => {
+  const { t } = useI18n()
   const { userLevel } = useProgress()
 
   let level = userLevel
@@ -27,7 +29,7 @@ export const GameScore: React.FC<GameScoreProps> = ({ score, arcadeLevel }) => {
     <div className={styles['game-score']}>
       <div className={styles['game-score__level']}>
         <div className={styles['game-score__level-wrap']}>
-          <b>Ур.</b>
+          <b>{t('common.level')}</b>
           <strong>{level}</strong>
           <i>
             {score}

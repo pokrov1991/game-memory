@@ -4,6 +4,7 @@ import { useNavigate, useLocation } from 'react-router-dom'
 import { Button } from '@/shared/components'
 import { StoryPlayer } from '@/shared/components'
 import { ICONS } from '@/shared/constants/icons'
+import { useI18n } from '@/shared/services/i18n'
 import styles from './styles.module.css'
 import BALLOONS_E1I from './balloons/episode-1/intro.json'
 import BALLOONS_E1C from './balloons/episode-1/cliffhanger.json'
@@ -61,6 +62,7 @@ let slidesMap: Record<number, string> = { ...slidesE1Intro }
 let balloonsMap: Record<string, { id: number, x: number, y: number, text: string }[]> = { ...BALLOONS_E1I }
 
 export const IntroPage = () => {
+  const { t } = useI18n()
   const navigate = useNavigate()
   const location = useLocation()
   const { part } = location.state || {}
@@ -100,28 +102,35 @@ export const IntroPage = () => {
   useEffect(() => {
     setBalloons(balloonsMap[`slide-${step}` as keyof typeof balloonsMap] || [])
   }, [step])
+
+  const getBalloonText = (index: number, text: string) => {
+    const episode = part === 'e1c' ? 'cliffhanger' : 'intro'
+    const key = `intro.balloons.${episode}.slide${step}.${index}`
+    const translatedText = t(key)
+
+    return translatedText === key ? text : translatedText
+  }
     
   return (
     <main className={styles['intro-page']}>
       <div className={styles['intro-page__actions']}>
         <div className={classNames(styles['intro-page__actions-btn'])} onClick={() => navigate('/levels')}>
-          Пропустить
+          {t('intro.skip')}
         </div>
         <div className={classNames(
           styles['intro-page__actions-btn'], 
           { [styles['intro-page__actions-btn_disabled']]: isPrevDisabled })
         } onClick={!isPrevDisabled ? prevStep : null}>
-          Назад
+          {t('intro.back')}
         </div>
-        <Button onClick={nextSlide}>Дальше</Button>
+        <Button onClick={nextSlide}>{t('intro.next')}</Button>
       </div>
 
       {(step === 0 && !part) && (
         <div className={styles['intro-page__start']}>
           <div className={styles['intro-page__start-wrap']} onClick={nextSlide}>
             <span>
-              Разгар космической гонки.<br />
-              Где-то на орбите Земли, вдали от глаз, дрейфует американская станция.
+              {t('intro.start')}
             </span>
           </div>
         </div>
@@ -130,7 +139,7 @@ export const IntroPage = () => {
         <div className={styles['intro-page__start']}>
           <div className={styles['intro-page__start-wrap']}>
             <span>
-              Продолжение следует...
+              {t('intro.cliffhangerEnd')}
             </span>
           </div>
         </div>
@@ -146,7 +155,7 @@ export const IntroPage = () => {
                 style={{ left: `calc(${balloon.x}% - 125px)`, top: `calc(${balloon.y}% - 55px)` }}
               >
                 <div className={styles['intro-page__balloon-wrap']}>
-                  <span>{balloon.text}</span>
+                  <span>{getBalloonText(index, balloon.text)}</span>
                 </div>
               </div>
             ))}
@@ -165,7 +174,7 @@ export const IntroPage = () => {
               <img src={ICONS.VoiceAnimation} />
             </div>}
             <div className={styles['intro-page__info-enemy-text']}>
-              <p>{balloons[1]?.text}</p>
+              <p>{getBalloonText(1, balloons[1]?.text)}</p>
             </div>
           </div>}
           <div className={styles['intro-page__info-player']}>
@@ -173,7 +182,7 @@ export const IntroPage = () => {
               <StoryPlayer isAntogonist={step <= 9 && !part} />
             </div>
             <div className={styles['intro-page__info-player-text']}>
-              <p>{balloons[0]?.text}</p>
+              <p>{getBalloonText(0, balloons[0]?.text)}</p>
             </div>
           </div>
         </div>

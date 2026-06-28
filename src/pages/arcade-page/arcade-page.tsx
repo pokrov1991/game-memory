@@ -6,30 +6,31 @@ import { useUser } from '@/shared/contexts/UserContext'
 import { Button } from '@/shared/components'
 import { LEVELS_STORE_CONFIG } from '@/shared/constants'
 import { platformApi } from '@/shared/services/platform'
+import { useI18n } from '@/shared/services/i18n'
 import styles from './styles.module.css'
 
-const routes = [
-  {
-    path: '/',
-    name: 'Назад',
-    sort: 30,
-  },
-  {
-    path: '/leader-board',
-    name: 'Лидерборд',
-    sort: 20,
-  },
-  {
-    path: '/arcade',
-    name: 'Быстрая игра',
-    sort: 10,
-  },
-]
-
 export const ArcadePage = () => {
+  const { t } = useI18n()
   const navigate = useNavigate()
   const { selectLevelArcade } = useProgress()
   const { user, setUser, setGame } = useUser()
+  const routes = [
+    {
+      path: '/',
+      name: t('common.back'),
+      sort: 30,
+    },
+    {
+      path: '/leader-board',
+      name: t('leaderboard.nav'),
+      sort: 20,
+    },
+    {
+      path: '/arcade',
+      name: t('mainMenu.quickGame'),
+      sort: 10,
+    },
+  ]
 
   const handleClickLevel = () => {
     if (user.isAuthorized) {
@@ -54,22 +55,22 @@ export const ArcadePage = () => {
 
   return (
     <main className={styles['arcade-page']}>
-      <Layout title="Таблица лидеров">
+      <Layout title={t('leaderboard.title')}>
         <div className={styles.container}>
           <div className={styles.navigation}>
             <Navigate routes={routes} />
           </div>
           <div className={styles['arcade-page-content']}>
-            <h1 className={styles['arcade-page-title']}>Режим аркады</h1>
+            <h1 className={styles['arcade-page-title']}>{t('arcade.title')}</h1>
             <p className={styles['arcade-page-info']}>
-              Аркадный режим для настоящих рекордсменов! Проходите уровни с меняющейся сложностью, открывайте карты и зарабатывайте очки за правильные и быстрые решения. Ставьте новые рекорды и поднимайтесь выше в таблице лидеров.
+              {t('arcade.description')}
             </p>
             <Button onClick={handleClickLevel}>
-              Играть
+              {t('common.play')}
             </Button>
-            <h2 className={styles['arcade-page-title']}>Быстрая игра</h2>
+            <h2 className={styles['arcade-page-title']}>{t('arcade.quickTitle')}</h2>
             <p className={styles['arcade-page-info']}>
-              Проходите уровни в удобном для вас темпе. Выбирайте любой уровень, тренируйте свои навыки и улучшайте результаты. Такая тренировка помогает постепенно освоить игру.
+              {t('arcade.quickDescription')}
             </p>
             <div className={styles['arcade-page-list']}>
               {LEVELS_STORE_CONFIG.map((level) => {
@@ -78,8 +79,8 @@ export const ArcadePage = () => {
                   selectLevelArcade(level.id)
                   navigate('/game', { state: {levelId: level.id}})
                 }} key={level.id}>
-                  <b>Карт: {level.cardCount}</b>
-                  <span>Время: {level.gameTimer} сек.</span>
+                  <b>{t('common.cards')}: {level.cardCount}</b>
+                  <span>{t('common.time')}: {level.gameTimer} {t('common.seconds')}.</span>
                 </div>)
               })}
             </div>
