@@ -8,6 +8,8 @@ import styles from './styles.module.css'
 const LANGUAGES: Array<{ id: Language; labelKey: string }> = [
   { id: 'ru', labelKey: 'settings.russian' },
   { id: 'en', labelKey: 'settings.english' },
+  { id: 'zh-CN', labelKey: 'settings.simplifiedChinese' },
+  { id: 'pt-BR', labelKey: 'settings.brazilianPortuguese' },
 ]
 
 export const SettingsPage = () => {

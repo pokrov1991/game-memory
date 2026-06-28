@@ -248,10 +248,12 @@ export const ru = {
   },
   settings: {
     background: 'Музыка',
+    brazilianPortuguese: 'Português (Brasil)',
     english: 'English',
     language: 'Язык',
     languageTitle: 'Выбрать язык',
     russian: 'Русский',
+    simplifiedChinese: '简体中文',
     title: 'Настройки',
     volume: 'Громкость',
   },
