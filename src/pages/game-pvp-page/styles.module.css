@@ -10,6 +10,7 @@
   top: 0;
   left: 0;
   background: url('/game/game-background.jpg') no-repeat center / cover;
+  touch-action: none;
   overflow: hidden;
 
   @media (max-width: 768px) {
