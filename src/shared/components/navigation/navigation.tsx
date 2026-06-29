@@ -66,7 +66,7 @@ export const Navigation = () => {
   const [pendingPath, setPendingPath] = useState<string | null>(null)
 
   const isStartedCampaign = hasStartedCampaign(progress)
-  const isLocalPlatform = platformApi.kind === 'local'
+  const isLocalPlatform = platformApi.kind === 'local' || platformApi.kind === 'desktop'
   const normalizedPlayerName = playerName.trim()
 
   const navigateTo = (path: string) => {

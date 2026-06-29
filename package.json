@@ -1,13 +1,17 @@
 {
   "name": "client",
   "version": "0.0.0",
+  "main": "electron/out/main/main.js",
   "scripts": {
     "dev": "vite",
     "dev:yandex": "VITE_PLATFORM_API=yandex vite",
     "dev:local": "VITE_PLATFORM_API=local vite",
+    "dev:desktop": "VITE_PLATFORM_API=desktop electron-vite dev",
     "build": "vite build",
     "build:yandex": "VITE_PLATFORM_API=yandex vite build",
     "build:local": "VITE_PLATFORM_API=local vite build",
+    "build:desktop": "VITE_PLATFORM_API=desktop electron-vite build",
+    "dist:desktop": "npm run build:desktop && electron-builder",
     "preview": "vite preview",
     "deploy": "npm run build:local && ssh root@orion7.skybug.ru 'mkdir -p /var/www/orion7/dist' && rsync -avz --delete dist/ root@orion7.skybug.ru:/var/www/orion7/dist/",
     "server:deploy": "npm --prefix server run deploy",
@@ -47,6 +51,9 @@
     "@typescript-eslint/parser": "^5.35.1",
     "@vitejs/plugin-basic-ssl": "^1.2.0",
     "@vitejs/plugin-react": "^4.3.4",
+    "electron": "^42.5.0",
+    "electron-builder": "^26.15.3",
+    "electron-vite": "^3.1.0",
     "eslint": "^8.23.0",
     "identity-obj-proxy": "^3.0.0",
     "prettier": "^2.7.1",
@@ -54,5 +61,37 @@
     "vite-plugin-webp-compress": "^1.1.4",
     "whatwg-fetch": "^3.6.20"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "build": {
+    "appId": "com.orion7.game",
+    "productName": "Orion-7",
+    "directories": {
+      "output": "electron/release/desktop",
+      "buildResources": "electron/build"
+    },
+    "files": [
+      "electron/out/**",
+      "package.json"
+    ],
+    "mac": {
+      "target": [
+        "dmg",
+        "zip"
+      ],
+      "category": "public.app-category.games"
+    },
+    "win": {
+      "target": [
+        "nsis",
+        "portable"
+      ]
+    },
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb"
+      ],
+      "category": "Game"
+    }
+  }
 }

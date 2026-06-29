@@ -63,7 +63,7 @@ curl "http://localhost:8080/api/leaderboard/top?leaderboardName=orionBoard&quant
       "extraData": "3",
       "player": {
         "id": "local-player",
-        "name": "Игрок",
+        "name": "Player",
         "avatar": ""
       }
     }
@@ -121,7 +121,7 @@ curl "http://localhost:8080/api/leaderboard/player-name?name=Alex&playerId=local
 {
   "leaderboardName": "orionBoard",
   "playerId": "local-player",
-  "playerName": "Игрок",
+  "playerName": "Player",
   "avatar": "",
   "score": 1200,
   "extraData": "3"
@@ -141,7 +141,7 @@ curl "http://localhost:8080/api/leaderboard/player-name?name=Alex&playerId=local
 ```bash
 curl -X POST http://localhost:8080/api/leaderboard/score \
   -H "Content-Type: application/json" \
-  -d '{"leaderboardName":"orionBoard","playerId":"local-player","playerName":"Игрок","score":1200,"extraData":"3"}'
+  -d '{"leaderboardName":"orionBoard","playerId":"local-player","playerName":"Player","score":1200,"extraData":"3"}'
 ```
 
 Ответ:

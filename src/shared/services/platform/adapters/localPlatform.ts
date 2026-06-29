@@ -10,6 +10,7 @@ import {
   LeaderboardEntries,
   LeaderboardOptions,
   PlatformApi,
+  PlatformApiKind,
   PlatformAuthResult,
   PlatformUser,
 } from '../types'
@@ -44,7 +45,7 @@ const getJson = async <T>(url: string): Promise<T> => {
 }
 
 export class LocalPlatformApi implements PlatformApi {
-  kind = 'local' as const
+  kind: PlatformApiKind = 'local'
 
   async init(): Promise<void> {
     readLocalGameProgress()

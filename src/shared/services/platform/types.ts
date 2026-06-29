@@ -1,6 +1,6 @@
 import { Language } from '@/shared/services/i18n'
 
-export type PlatformApiKind = 'yandex' | 'local'
+export type PlatformApiKind = 'yandex' | 'local' | 'desktop'
 
 export type PlatformUserMode = 'lite' | 'authorized' | 'local' | string
 

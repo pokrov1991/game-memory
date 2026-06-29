@@ -27,7 +27,7 @@ const broadcast = (battle, data) => {
   send(battle.sockets.p2, data);
 };
 
-const createPlayer = (playerId, playerName = "Игрок", skinId = 1) => ({
+const createPlayer = (playerId, playerName = "Player", skinId = 1) => ({
   playerId,
   playerName,
   skinId,
@@ -225,7 +225,7 @@ const attachBattleServer = (server) => {
 
       if (msg.type === "find_match") {
         const playerId = String(msg.playerId || crypto.randomUUID());
-        const playerName = String(msg.playerName || "Игрок").slice(0, 20);
+        const playerName = String(msg.playerName || "Player").slice(0, 20);
         const locationId = Number(msg.locationId || 1);
         const skinId = Number(msg.skinId || 1);
 
@@ -292,7 +292,7 @@ const attachBattleServer = (server) => {
 
       if (msg.type === "create_private_match") {
         const playerId = String(msg.playerId || crypto.randomUUID());
-        const playerName = String(msg.playerName || "Игрок").slice(0, 20);
+        const playerName = String(msg.playerName || "Player").slice(0, 20);
         const locationId = Number(msg.locationId || 1);
         const skinId = Number(msg.skinId || 1);
         const roomCode = createRoomCode();
@@ -319,7 +319,7 @@ const attachBattleServer = (server) => {
 
       if (msg.type === "join_private_match") {
         const playerId = String(msg.playerId || crypto.randomUUID());
-        const playerName = String(msg.playerName || "Игрок").slice(0, 20);
+        const playerName = String(msg.playerName || "Player").slice(0, 20);
         const skinId = Number(msg.skinId || 1);
         const roomCode = String(msg.roomCode || "")
           .toUpperCase()

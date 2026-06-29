@@ -122,7 +122,7 @@ curl "http://localhost:8080/api/leaderboard/top?leaderboardName=orionBoard&quant
 ```bash
 curl -X POST http://localhost:8080/api/leaderboard/score \
   -H "Content-Type: application/json" \
-  -d '{"leaderboardName":"orionBoard","playerId":"local-player","playerName":"Игрок","score":100}'
+  -d '{"leaderboardName":"orionBoard","playerId":"local-player","playerName":"Player","score":100}'
 ```
 
 Проверить WebSocket через `wscat`:

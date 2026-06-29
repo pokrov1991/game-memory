@@ -62,7 +62,7 @@ const submitScore = async (body) => {
   const leaderboardName = sanitizeLeaderboardName(body.leaderboardName);
   const playerId = assertString(body.playerId, "playerId", 128);
   const playerName = assertString(
-    body.playerName || "Игрок",
+    body.playerName || "Player",
     "playerName",
     MAX_PLAYER_NAME_LENGTH
   );
