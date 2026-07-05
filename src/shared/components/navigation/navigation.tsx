@@ -67,6 +67,7 @@ export const Navigation = () => {
 
   const isStartedCampaign = hasStartedCampaign(progress)
   const isLocalPlatform = platformApi.kind === 'local' || platformApi.kind === 'desktop'
+  const isPvpAvailable = isLocalPlatform || platformApi.kind === 'steam'
   const normalizedPlayerName = playerName.trim()
 
   const navigateTo = (path: string) => {
@@ -139,7 +140,7 @@ export const Navigation = () => {
         {isStartedCampaign && <Item to="/levels" title={t('mainMenu.continue')} />}
         {/* <Item to="/intro" title="Вступление" /> */}
         <Item title={t('mainMenu.quickGame')} onSelect={() => handlePlayerNameRequiredNavigate('/arcade')} />
-        {isLocalPlatform && (
+        {isPvpAvailable && (
           <Item title={t('mainMenu.pvpGame')} sup="Beta" onSelect={() => handlePlayerNameRequiredNavigate('/pvp')} />
         )}
         <Item title={t('mainMenu.settings')} onSelect={handleSettings} />
