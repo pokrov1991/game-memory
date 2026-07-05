@@ -1,4 +1,5 @@
 import { createContext, useContext, useState } from 'react'
+import { platformApi } from '@/shared/services/platform'
 
 interface AudioContextValue {
   isMuted: boolean
@@ -13,10 +14,11 @@ interface AudioContextValue {
 
 const AudioContext = createContext<AudioContextValue | null>(null)
 const normalizeVolume = (volume: number) => Math.min(100, Math.max(0, volume))
+const isUnlockAudioImmediately = platformApi.kind === 'desktop' || platformApi.kind === 'steam'
 
 export const AudioProvider = ({ children }: { children: React.ReactNode }) => {
   const [isMuted, setIsMuted] = useState(false)
-  const [audioUnlocked, setAudioUnlocked] = useState(false)
+  const [audioUnlocked, setAudioUnlocked] = useState(isUnlockAudioImmediately)
   const [musicVolume, setMusicVolumeState] = useState(100)
   const [effectsVolume, setEffectsVolumeState] = useState(100)
 
