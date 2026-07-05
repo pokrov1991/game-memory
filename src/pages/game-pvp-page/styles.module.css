@@ -19,6 +19,14 @@
   }
 }
 
+.game-page_pvp {
+  width: 100%;
+}
+
+body:has(main.game-page_pvp) {
+    background-color: #000;
+}
+
 .game-page_0 {
   background: url('/game/location/0.jpg') no-repeat center / cover;
 
