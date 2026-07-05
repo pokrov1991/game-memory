@@ -16,6 +16,7 @@ VITE_PLATFORM_API=steam
 npm run dev:steam
 npm run build:steam
 npm run dist:steam
+npm run deploy:steam
 ```
 
 `build:steam` собирает Electron-приложение через `electron-vite`. Renderer выбирает `SteamPlatformApi`, Yandex SDK не загружается, реклама отключена через no-op `showAd()`.
@@ -27,6 +28,12 @@ electron/release/steam
 ```
 
 Нативные файлы `steamworks.js` распаковываются в `app.asar.unpacked`, чтобы Steamworks `.node` и `steam_api` runtime могли загрузиться из packaged app.
+
+`deploy:steam` выполняет `dist:steam`, затем загружает build через SteamCMD:
+
+```bash
+steamcmd +login pokrov1991 +run_app_build "$(pwd)/steamworks/scripts/app_build_4927190.vdf" +quit
+```
 
 ## Steamworks SDK
 
@@ -133,6 +140,12 @@ electron/release/steam/mac-arm64/Orion-7.app
 ```
 
 Команда upload после подготовки `.vdf`:
+
+```bash
+npm run deploy:steam
+```
+
+Эквивалентная прямая команда SteamCMD:
 
 ```bash
 steamcmd +login pokrov1991 +run_app_build "$(pwd)/steamworks/scripts/app_build_4927190.vdf" +quit

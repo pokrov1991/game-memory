@@ -17,6 +17,7 @@
     "dist:steam": "npm run build:steam && electron-builder --config electron-builder.steam.json",
     "preview": "vite preview",
     "deploy": "npm run build:local && ssh root@orion7.skybug.ru 'mkdir -p /var/www/orion7/dist' && rsync -avz --delete dist/ root@orion7.skybug.ru:/var/www/orion7/dist/",
+    "deploy:steam": "npm run dist:steam && steamcmd +login pokrov1991 +run_app_build \"$(pwd)/steamworks/scripts/app_build_4927190.vdf\" +quit",
     "server:deploy": "npm --prefix server run deploy",
     "server:start": "npm --prefix server start",
     "server:migrate": "npm --prefix server run migrate",

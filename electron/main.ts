@@ -64,10 +64,18 @@ const createWindow = () => {
   })
 
   mainWindow.webContents.on('before-input-event', (event, input) => {
-    if (input.type !== 'keyDown' || input.key !== 'F11') return
+    if (input.type !== 'keyDown') return
 
-    event.preventDefault()
-    mainWindow.setFullScreen(!mainWindow.isFullScreen())
+    if (input.key === 'F11') {
+      event.preventDefault()
+      mainWindow.setFullScreen(!mainWindow.isFullScreen())
+      return
+    }
+
+    if (process.env.VITE_PLATFORM_API === 'steam' && input.key === 'Tab' && input.shift) {
+      event.preventDefault()
+      openOverlay('friends')
+    }
   })
 
   if (isDev && process.env.ELECTRON_RENDERER_URL) {

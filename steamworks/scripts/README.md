@@ -83,6 +83,12 @@ Then replace:
 Upload:
 
 ```bash
+npm run deploy:steam
+```
+
+Equivalent direct SteamCMD command:
+
+```bash
 steamcmd +login pokrov1991 +run_app_build "$(pwd)/steamworks/scripts/app_build_4927190.vdf" +quit
 ```
 
