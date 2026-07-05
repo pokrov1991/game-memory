@@ -1,7 +1,11 @@
 import {
   readLocalGameProgress,
+  readLocalAchievements,
   readOrCreateLocalPlayer,
+  readLocalStats,
+  writeLocalAchievement,
   writeLocalGameProgress,
+  writeLocalStat,
 } from '../platformStorage'
 import {
   GameSettings,
@@ -21,7 +25,7 @@ const createLocalUser = (): PlatformUser => {
 
   return {
     id: player.id,
-    name: player.name || 'Игрок',
+    name: player.name || 'Player',
     avatar: '',
     mode: 'local',
     isAuthorized: true,
@@ -55,6 +59,14 @@ export class LocalPlatformApi implements PlatformApi {
     return createLocalUser()
   }
 
+  async getPlayerId(): Promise<string> {
+    return createLocalUser().id
+  }
+
+  async getPlayerName(): Promise<string> {
+    return createLocalUser().name || 'Player'
+  }
+
   async authUser(): Promise<PlatformAuthResult> {
     return {
       user: createLocalUser(),
@@ -70,7 +82,47 @@ export class LocalPlatformApi implements PlatformApi {
     writeLocalGameProgress(data)
   }
 
+  async saveProgress(progress: GameProgress): Promise<void> {
+    writeLocalGameProgress(progress)
+  }
+
+  async loadProgress(): Promise<GameProgress> {
+    return readLocalGameProgress()
+  }
+
   async showAd(): Promise<void> {}
+
+  async isSteamInitialized(): Promise<boolean> {
+    return false
+  }
+
+  async isOverlayAvailable(): Promise<boolean> {
+    return false
+  }
+
+  async openOverlay(): Promise<void> {}
+
+  async unlockAchievement(id: string): Promise<void> {
+    writeLocalAchievement(id, true)
+  }
+
+  async getAchievement(id: string): Promise<boolean> {
+    return Boolean(readLocalAchievements()[id])
+  }
+
+  async setStat(name: string, value: number): Promise<void> {
+    writeLocalStat(name, value)
+  }
+
+  async getStat(name: string): Promise<number> {
+    return readLocalStats()[name] || 0
+  }
+
+  async incrementStat(name: string, amount = 1): Promise<void> {
+    await this.setStat(name, (await this.getStat(name)) + amount)
+  }
+
+  async storeStats(): Promise<void> {}
 
   async getLeaderboard(
     leaderboardName: string
@@ -200,4 +252,8 @@ export class LocalPlatformApi implements PlatformApi {
       return false
     }
   }
+}
+
+export const createPlatformApiAdapter = (): PlatformApi => {
+  return new LocalPlatformApi()
 }

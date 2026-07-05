@@ -7,6 +7,15 @@ import VitePluginWebpCompress from 'vite-plugin-webp-compress'
 
 dotenv.config()
 
+const platformApi = process.env.VITE_PLATFORM_API || 'local'
+const platformAdapterByApi: Record<string, string> = {
+  desktop: 'desktopPlatform',
+  local: 'localPlatform',
+  steam: 'steamPlatform',
+  yandex: 'yandexPlatform',
+}
+const platformAdapter = platformAdapterByApi[platformApi] || platformAdapterByApi.local
+
 export default defineConfig({
   base: './',
 
@@ -24,6 +33,10 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
+      '@platform-adapter': path.resolve(
+        __dirname,
+        `./src/shared/services/platform/adapters/${platformAdapter}.ts`
+      ),
     },
   },
 

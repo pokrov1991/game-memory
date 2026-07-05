@@ -3,6 +3,15 @@ import react from '@vitejs/plugin-react'
 import path from 'path'
 import VitePluginWebpCompress from 'vite-plugin-webp-compress'
 
+const platformApi = process.env.VITE_PLATFORM_API || 'desktop'
+const platformAdapterByApi: Record<string, string> = {
+  desktop: 'desktopPlatform',
+  local: 'localPlatform',
+  steam: 'steamPlatform',
+  yandex: 'yandexPlatform',
+}
+const platformAdapter = platformAdapterByApi[platformApi] || platformAdapterByApi.desktop
+
 export default defineConfig({
   main: {
     plugins: [externalizeDepsPlugin()],
@@ -32,6 +41,10 @@ export default defineConfig({
     resolve: {
       alias: {
         '@': path.resolve(__dirname, './src'),
+        '@platform-adapter': path.resolve(
+          __dirname,
+          `./src/shared/services/platform/adapters/${platformAdapter}.ts`
+        ),
       },
     },
     server: {

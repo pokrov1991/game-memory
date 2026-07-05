@@ -90,6 +90,14 @@ export class YandexPlatformApi implements PlatformApi {
     }
   }
 
+  async getPlayerId(): Promise<string> {
+    return (await this.getUserData()).id
+  }
+
+  async getPlayerName(): Promise<string> {
+    return (await this.getUserData()).name || 'Player'
+  }
+
   async authUser(): Promise<PlatformAuthResult> {
     this.ensureInitialized()
     await this.ensurePlayer()
@@ -145,6 +153,14 @@ export class YandexPlatformApi implements PlatformApi {
     }
   }
 
+  async saveProgress(progress: GameProgress): Promise<void> {
+    await this.setGameData(progress)
+  }
+
+  async loadProgress(): Promise<GameProgress> {
+    return this.getGameData()
+  }
+
   async showAd(): Promise<void> {
     this.ensureInitialized()
 
@@ -155,6 +171,32 @@ export class YandexPlatformApi implements PlatformApi {
       console.error('Ошибка показа рекламы:', error)
     }
   }
+
+  async isSteamInitialized(): Promise<boolean> {
+    return false
+  }
+
+  async isOverlayAvailable(): Promise<boolean> {
+    return false
+  }
+
+  async openOverlay(): Promise<void> {}
+
+  async unlockAchievement(): Promise<void> {}
+
+  async getAchievement(): Promise<boolean> {
+    return false
+  }
+
+  async setStat(): Promise<void> {}
+
+  async getStat(): Promise<number> {
+    return 0
+  }
+
+  async incrementStat(): Promise<void> {}
+
+  async storeStats(): Promise<void> {}
 
   async getLeaderboard(leaderboardName: string): Promise<LeaderboardDescription | null> {
     this.ensureInitialized()
@@ -286,4 +328,8 @@ export class YandexPlatformApi implements PlatformApi {
       await this.getUserData()
     }
   }
+}
+
+export const createPlatformApiAdapter = (): PlatformApi => {
+  return new YandexPlatformApi()
 }

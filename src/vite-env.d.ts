@@ -1,7 +1,7 @@
 /// <reference types="vite/client" />
 
 interface ImportMetaEnv {
-  readonly VITE_PLATFORM_API?: 'yandex' | 'local' | 'desktop'
+  readonly VITE_PLATFORM_API?: 'yandex' | 'local' | 'desktop' | 'steam'
   readonly VITE_API_BASE_URL?: string
 }
 
@@ -17,5 +17,20 @@ interface Window {
       chrome: string
       node: string
     }
+  }
+  steamApi?: {
+    isAvailable(): Promise<boolean>
+    init(): Promise<boolean>
+    getSteamId(): Promise<string | null>
+    getPersonaName(): Promise<string | null>
+    isOverlayAvailable(): Promise<boolean>
+    openOverlay(type?: string): Promise<void>
+    unlockAchievement(id: string): Promise<void>
+    getAchievement(id: string): Promise<boolean>
+    setStat(name: string, value: number): Promise<void>
+    getStat(name: string): Promise<number>
+    storeStats(): Promise<void>
+    saveCloudFile(name: string, data: string): Promise<void>
+    readCloudFile(name: string): Promise<string | null>
   }
 }

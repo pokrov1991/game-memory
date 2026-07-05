@@ -1,7 +1,39 @@
-import { app, BrowserWindow, shell } from 'electron'
+import { app, BrowserWindow, ipcMain, shell } from 'electron'
 import path from 'path'
+import {
+  getAchievement,
+  getPersonaName,
+  getStat,
+  getSteamId,
+  enableSteamOverlayForElectron,
+  initSteam,
+  isOverlayAvailable,
+  isSteamAvailable,
+  openOverlay,
+  readCloudFile,
+  saveCloudFile,
+  setStat,
+  storeStats,
+  unlockAchievement,
+} from './steam'
 
 const isDev = Boolean(process.env.ELECTRON_RENDERER_URL)
+
+enableSteamOverlayForElectron()
+
+ipcMain.handle('steam:is-available', () => isSteamAvailable())
+ipcMain.handle('steam:init', () => initSteam())
+ipcMain.handle('steam:get-steam-id', () => getSteamId())
+ipcMain.handle('steam:get-persona-name', () => getPersonaName())
+ipcMain.handle('steam:is-overlay-available', () => isOverlayAvailable())
+ipcMain.handle('steam:open-overlay', (_event, type?: string) => openOverlay(type))
+ipcMain.handle('steam:unlock-achievement', (_event, id: string) => unlockAchievement(id))
+ipcMain.handle('steam:get-achievement', (_event, id: string) => getAchievement(id))
+ipcMain.handle('steam:set-stat', (_event, name: string, value: number) => setStat(name, value))
+ipcMain.handle('steam:get-stat', (_event, name: string) => getStat(name))
+ipcMain.handle('steam:store-stats', () => storeStats())
+ipcMain.handle('steam:save-cloud-file', (_event, name: string, data: string) => saveCloudFile(name, data))
+ipcMain.handle('steam:read-cloud-file', (_event, name: string) => readCloudFile(name))
 
 const createWindow = () => {
   const mainWindow = new BrowserWindow({

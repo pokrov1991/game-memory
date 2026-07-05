@@ -1,6 +1,6 @@
 import { Language } from '@/shared/services/i18n'
 
-export type PlatformApiKind = 'yandex' | 'local' | 'desktop'
+export type PlatformApiKind = 'yandex' | 'local' | 'desktop' | 'steam'
 
 export type PlatformUserMode = 'lite' | 'authorized' | 'local' | string
 
@@ -107,10 +107,23 @@ export interface PlatformApi {
   kind: PlatformApiKind
   init(): Promise<void>
   getUserData(): Promise<PlatformUser>
+  getPlayerId(): Promise<string>
+  getPlayerName(): Promise<string>
   authUser(): Promise<PlatformAuthResult>
   getGameData(keys?: unknown): Promise<GameProgress>
   setGameData(data: GameProgress): Promise<void>
+  saveProgress(progress: GameProgress): Promise<void>
+  loadProgress(): Promise<GameProgress>
   showAd(): Promise<void>
+  isSteamInitialized(): Promise<boolean>
+  isOverlayAvailable(): Promise<boolean>
+  openOverlay(type?: string): Promise<void>
+  unlockAchievement(id: string): Promise<void>
+  getAchievement(id: string): Promise<boolean>
+  setStat(name: string, value: number): Promise<void>
+  getStat(name: string): Promise<number>
+  incrementStat(name: string, amount?: number): Promise<void>
+  storeStats(): Promise<void>
   getLeaderboard(leaderboardName: string): Promise<LeaderboardDescription | null>
   setLeaderboardScore(leaderboardName: string, score: number, extraData?: string): Promise<void>
   getLeaderboardEntries(leaderboardName: string, options: LeaderboardOptions): Promise<LeaderboardEntries>

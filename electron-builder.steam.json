@@ -1,0 +1,42 @@
+{
+  "appId": "com.orion7.game",
+  "productName": "Orion-7",
+  "directories": {
+    "output": "electron/release/steam",
+    "buildResources": "electron/build"
+  },
+  "files": [
+    "electron/out/**",
+    "package.json",
+    "node_modules/steamworks.js/**"
+  ],
+  "asarUnpack": [
+    "node_modules/steamworks.js/dist/**"
+  ],
+  "extraResources": [
+    {
+      "from": "node_modules/steamworks.js/dist/win64/steam_api64.dll",
+      "to": "app.asar.unpacked/node_modules/steamworks.js/dist/win64/steam_api64.dll"
+    }
+  ],
+  "mac": {
+    "target": [
+      "dmg",
+      "zip"
+    ],
+    "category": "public.app-category.games"
+  },
+  "win": {
+    "target": [
+      "nsis",
+      "portable"
+    ]
+  },
+  "linux": {
+    "target": [
+      "AppImage",
+      "deb"
+    ],
+    "category": "Game"
+  }
+}

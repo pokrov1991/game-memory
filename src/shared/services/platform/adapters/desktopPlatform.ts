@@ -5,3 +5,7 @@ export class DesktopPlatformApi extends LocalPlatformApi {
 
   async showAd(): Promise<void> {}
 }
+
+export const createPlatformApiAdapter = () => {
+  return new DesktopPlatformApi()
+}

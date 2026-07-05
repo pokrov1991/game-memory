@@ -3,6 +3,8 @@ import { GameProgress } from './types'
 
 const STORAGE_KEY = 'orion7:game-progress:v1'
 const LOCAL_PLAYER_KEY = 'orion7:local-player:v1'
+const LOCAL_ACHIEVEMENTS_KEY = 'orion7:achievements:v1'
+const LOCAL_STATS_KEY = 'orion7:stats:v1'
 
 type LocalPlayer = {
   id: string
@@ -103,4 +105,50 @@ export const writeLocalPlayerName = (name: string): void => {
     ...player,
     name: name.trim(),
   })
+}
+
+export const readLocalAchievements = (): Record<string, boolean> => {
+  if (!canUseStorage()) return {}
+
+  const rawValue = window.localStorage.getItem(LOCAL_ACHIEVEMENTS_KEY)
+
+  if (!rawValue) return {}
+
+  try {
+    return JSON.parse(rawValue)
+  } catch {
+    return {}
+  }
+}
+
+export const writeLocalAchievement = (id: string, value: boolean): void => {
+  if (!canUseStorage()) return
+
+  window.localStorage.setItem(LOCAL_ACHIEVEMENTS_KEY, JSON.stringify({
+    ...readLocalAchievements(),
+    [id]: value,
+  }))
+}
+
+export const readLocalStats = (): Record<string, number> => {
+  if (!canUseStorage()) return {}
+
+  const rawValue = window.localStorage.getItem(LOCAL_STATS_KEY)
+
+  if (!rawValue) return {}
+
+  try {
+    return JSON.parse(rawValue)
+  } catch {
+    return {}
+  }
+}
+
+export const writeLocalStat = (name: string, value: number): void => {
+  if (!canUseStorage()) return
+
+  window.localStorage.setItem(LOCAL_STATS_KEY, JSON.stringify({
+    ...readLocalStats(),
+    [name]: value,
+  }))
 }

@@ -20,6 +20,7 @@
     "jsx": "react-jsx",
     "paths": {
       "@/*": ["./src/*"],
+      "@platform-adapter": ["./src/shared/services/platform/adapters/localPlatform.ts"]
     }
   },
   "include": [

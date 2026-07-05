@@ -1,0 +1,15 @@
+"DepotBuild"
+{
+  "DepotID" "4927191"
+  "ContentRoot" "mac-arm64"
+
+  "FileMapping"
+  {
+    "LocalPath" "Orion-7.app/*"
+    "DepotPath" "Orion-7.app"
+    "recursive" "1"
+  }
+
+  "FileExclusion" "*.dSYM"
+  "FileExclusion" "*.DS_Store"
+}
