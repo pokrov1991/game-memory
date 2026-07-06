@@ -12,6 +12,8 @@ import { useUser } from '@/shared/contexts/UserContext'
 import { TypeModal } from '@/shared/components/modal-comps/types'
 import { GameLevelStoreType } from '@/shared/services/game/types'
 import { platformApi } from '@/shared/services/platform'
+import { STATS } from '@/shared/services/platform/config'
+import { ACHIEVEMENTS } from '@/shared/services/platform/config'
 import { useI18n } from '@/shared/services/i18n'
 import styles from './styles.module.css'
 
@@ -106,16 +108,40 @@ export const GameStorePage = () => {
       setOpenModalWin(true)
       soundWin.play()
     }, delayGameEffects)
+
+    platformApi.incrementStat(STATS.GAMES_PLAYED)
+    platformApi.incrementStat(STATS.WINS)
+    platformApi.incrementStat(STATS.COINS, gameLevel.coins)
+    unlockAchievementFirstWinStore()
+    if (gameLevel.id === 11) {
+      unlockAchievementCompleteStore()
+    }
   }
 
   const handleGameOver = (): void => {
     setResultText(`${t('game.results.coinsLoseStart')} «${t(`levels.store.${gameLevel.id}.title`)}» ${t('game.results.coinsLoseValue')} ${gameLevel.coins} ${t('game.results.coinsLoseEnd')}`)
     setOpenModalLose(true)
     soundLose.play()
+
+    platformApi.incrementStat(STATS.GAMES_PLAYED)
   }
 
   const handleSeconds = (reSeconds: number): void => {
     setSeconds(reSeconds)
+  }
+
+  const unlockAchievementFirstWinStore = async (): Promise<void> => {
+    const isUnlocked = await platformApi.getAchievement(ACHIEVEMENTS.FIRST_WIN_STORE)
+    if (!isUnlocked) {
+      await platformApi.unlockAchievement(ACHIEVEMENTS.FIRST_WIN_STORE)
+    }
+  }
+
+  const unlockAchievementCompleteStore = async (): Promise<void> => {
+    const isUnlocked = await platformApi.getAchievement(ACHIEVEMENTS.COMPLETE_STORE)
+    if (!isUnlocked) {
+      await platformApi.unlockAchievement(ACHIEVEMENTS.COMPLETE_STORE)
+    }
   }
 
   return (

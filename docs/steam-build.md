@@ -91,8 +91,6 @@ await platformApi.unlockAchievement(ACHIEVEMENTS.FIRST_WIN)
 ```ts
 STATS.GAMES_PLAYED
 STATS.WINS
-STATS.PVP_WINS
-STATS.CARDS_MATCHED
 ```
 
 Методы:
@@ -185,15 +183,38 @@ steamcmd +login pokrov1991 +run_app_build "$(pwd)/steamworks/scripts/app_build_4
 3. Achievements
    - создать API names из `src/shared/services/platform/config.ts`:
      - `FIRST_WIN`
-     - `FIRST_PVP_WIN`
+     - `FIRST_WIN_STORE`
+     - `FIRST_WIN_BATTLE`
+     - `FIRST_WIN_PVP`
      - `COMPLETE_TUTORIAL`
+     - `COMPLETE_COMPANY`
+     - `COMPLETE_STORE`
+     - `COMPLETE_INVENTORY`
+     - `CNT_PARRY_BATTLE`
+     - `CNT_PARRY_PVP`
+     - `CNT_ENEMY_DEFEAT_1`
+     - `CNT_ENEMY_DEFEAT_3`
+     - `CNT_ENEMY_DEFEAT_5`
+     - `CNT_COINS`
 
 4. Stats
    - создать stats API names из `src/shared/services/platform/config.ts`:
      - `GAMES_PLAYED`
+     - `GAMES_PLAYED_BATTLE`
+     - `GAMES_PLAYED_PVP`
      - `WINS`
-     - `PVP_WINS`
+     - `WINS_BATTLE`
+     - `WINS_PVP`
      - `CARDS_MATCHED`
+     - `PARRY_BATTLE`
+     - `PARRY_PVP`
+     - `ENEMY_DEFEAT_1`
+     - `ENEMY_DEFEAT_2`
+     - `ENEMY_DEFEAT_3`
+     - `ENEMY_DEFEAT_4`
+     - `ENEMY_DEFEAT_5`
+     - `ENEMY_DEFEAT_6`
+     - `COINS`
 
 5. Steam Cloud
    - включить Steam Cloud для приложения;

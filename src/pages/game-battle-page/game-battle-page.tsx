@@ -15,9 +15,11 @@ import { useUser } from '@/shared/contexts/UserContext'
 import { TypeModal } from '@/shared/components/modal-comps/types'
 import { EnemyState, GameLevelStateType } from '@/shared/services/game/types'
 import { EnemyService } from '@/shared/services/game/EnemyService'
+import { platformApi } from '@/shared/services/platform'
 import { STUN_ANIMATION_DELAY } from '@/shared/services/game/constants'
 import { LEVELS_USER_CONFIG } from '@/shared'
-import { platformApi } from '@/shared/services/platform'
+import { STATS } from '@/shared/services/platform/config'
+import { ACHIEVEMENTS } from '@/shared/services/platform/config'
 import { useI18n } from '@/shared/services/i18n'
 import styles from './styles.module.css'
 
@@ -213,6 +215,15 @@ export const GameBattlePage = () => {
       setOpenModalWin(true)
       soundWin.play()
     }, delayGameEffects + gameLevel.enemyStateDurations.DEAD)
+
+    platformApi.incrementStat(STATS.GAMES_PLAYED_BATTLE)
+    platformApi.incrementStat(STATS.WINS_BATTLE)
+    if (gameLevel.id === 0) {
+      unlockAchievementCompleteTutorial()
+    } else {
+      const enemyDefeatStat = `ENEMY_DEFEAT_${gameLevel.enemyId}`
+      platformApi.incrementStat((STATS as Record<string, string>)[enemyDefeatStat])
+    }
   }
 
   const handleGameOver = (): void => {
@@ -220,6 +231,8 @@ export const GameBattlePage = () => {
     setResultText(<>{t('game.results.battleLose')}</>)
     setOpenModalLose(true)
     soundLose.play()
+
+    platformApi.incrementStat(STATS.GAMES_PLAYED_BATTLE)
   }
 
   const handleScore = (newScore: number, colorParry: string): void => {
@@ -256,10 +269,13 @@ export const GameBattlePage = () => {
         // enemyRef.current.setStunState() // можно оставить, но главное isStunEnemy
         setTimeout(() => setStunEnemy(false), STUN_ANIMATION_DELAY)
         soundEnemyStun.play()
+        platformApi.incrementStat(STATS.PARRY_BATTLE)
       } 
     }
 
     soundCardSuccess.play()
+
+    platformApi.incrementStat(STATS.CARDS_MATCHED)
   }
 
   const handleColor = (color: string, countFlipped: number): void => {
@@ -315,6 +331,13 @@ export const GameBattlePage = () => {
       setHP(hp + hpAmount > hpInitial ? hpInitial : hp + hpAmount)
       setPotions(potions - 1)
       if (hp + hpAmount >= hpAlarm) setAlarmPlayer(false)
+    }
+  }
+
+  const unlockAchievementCompleteTutorial = async (): Promise<void> => {
+    const isUnlocked = await platformApi.getAchievement(ACHIEVEMENTS.COMPLETE_TUTORIAL)
+    if (!isUnlocked) {
+      await platformApi.unlockAchievement(ACHIEVEMENTS.COMPLETE_TUTORIAL)
     }
   }
 

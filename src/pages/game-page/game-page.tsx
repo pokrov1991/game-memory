@@ -12,6 +12,8 @@ import { useLevel, useToggle, useProgress, useMusic } from '@/shared/hooks'
 import { TypeModal } from '@/shared/components/modal-comps/types'
 import { GameLevelStoreType } from '@/shared/services/game/types'
 import { platformApi } from '@/shared/services/platform'
+import { STATS } from '@/shared/services/platform/config'
+import { ACHIEVEMENTS } from '@/shared/services/platform/config'
 import { useI18n } from '@/shared/services/i18n'
 import styles from './styles.module.css'
 
@@ -120,13 +122,16 @@ export const GamePage = () => {
     const nextLevel = sessionLevel + 1
 
     onSaveResult(totalScore, nextLevel)
-
     handlePause()
     setTimeout(() => {
       setResultText(`${t('game.results.arcadeWinStart')} «${sessionLevel}» ${t('game.results.coinsWinValue')} ${scoreSession + seconds} ${t('game.results.arcadeWinMiddle')} ${scoreSession} ${t('game.results.cardsScore')} ${seconds} ${t('common.time')}. ${t('game.results.total')} ${totalScore} ${t('game.results.arcadeWinEnd')}`)
       setOpenModalWin(true)
       soundWin.play()
     }, delayGameEffects)
+
+    platformApi.incrementStat(STATS.GAMES_PLAYED)
+    platformApi.incrementStat(STATS.WINS)
+    unlockAchievementFirstWin()
   }
 
   const handleGameOver = (): void => {
@@ -135,6 +140,8 @@ export const GamePage = () => {
     setResultText(`${t('game.results.arcadeLose')} ${score} ${t('game.results.arcadeWinEnd')}`)
     setOpenModalLose(true)
     soundLose.play()
+
+    platformApi.incrementStat(STATS.GAMES_PLAYED)
   }
 
   const handleScore = (newScore: number): void => {
@@ -145,6 +152,8 @@ export const GamePage = () => {
     setScore(totalScore)
 
     soundCardSuccess.play()
+
+    platformApi.incrementStat(STATS.CARDS_MATCHED)
   }
 
   const handleSeconds = (reSeconds: number): void => {
@@ -153,6 +162,13 @@ export const GamePage = () => {
 
   const handleSetLeader = async (level: number, score: number) => {
     await platformApi.setLeaderboardScore('orionBoard', score, `${level}`)
+  }
+
+  const unlockAchievementFirstWin = async (): Promise<void> => {
+    const isUnlocked = await platformApi.getAchievement(ACHIEVEMENTS.FIRST_WIN)
+    if (!isUnlocked) {
+      await platformApi.unlockAchievement(ACHIEVEMENTS.FIRST_WIN)
+    }
   }
 
   return (

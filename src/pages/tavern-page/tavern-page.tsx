@@ -5,6 +5,7 @@ import { LEVELS_STORE, INVENTORY_STORE_CONFIG } from '@/shared'
 import { useProgress, useMusic } from '@/shared/hooks'
 import { Button, UserTreasures, XpManager, ModalDefault } from '@/shared/components'
 import { platformApi } from '@/shared/services/platform'
+import { ACHIEVEMENTS } from '@/shared/services/platform/config'
 import { useI18n } from '@/shared/services/i18n'
 import styles from './styles.module.css'
 
@@ -110,7 +111,10 @@ export const TavernPage = () => {
           updateOrgan({ organId: item.id, count: userOrgan.count - item.count })
         }
       })
-      updateInventory([...userInventory, { ...storeInventoryItem, isPaid: true }])
+      const nextInventory = [...userInventory, { ...storeInventoryItem, isPaid: true }]
+      updateInventory(nextInventory)
+      
+      unlockAchievementCompleteInventory(nextInventory)
     }
     coinsUp(coins)
   }
@@ -126,6 +130,26 @@ export const TavernPage = () => {
       return item
     })
     updateInventory([...updateStoreInventory])
+  }
+
+  const unlockAchievementCompleteInventory = async (
+    nextInventory: typeof userInventory
+  ): Promise<void> => {
+    const paidInventoryIds = new Set(nextInventory
+      .filter(item => item.isPaid)
+      .map(item => item.id)
+    )
+
+    const isComplete = INVENTORY_STORE_CONFIG
+      .filter(item => item.type !== 'potion')
+      .every(item => paidInventoryIds.has(item.id))
+
+    if (!isComplete) return
+
+    const isUnlocked = await platformApi.getAchievement(ACHIEVEMENTS.COMPLETE_INVENTORY)
+    if (!isUnlocked) {
+      await platformApi.unlockAchievement(ACHIEVEMENTS.COMPLETE_INVENTORY)
+    }
   }
 
   const storeInventoryPreviews = storeInventory.map(item => {

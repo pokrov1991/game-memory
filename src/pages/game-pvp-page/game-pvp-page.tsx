@@ -13,6 +13,9 @@ import { useLevel, useToggle, useProgress, useMusic } from '@/shared/hooks'
 import { useUser } from '@/shared/contexts/UserContext'
 import { TypeModal } from '@/shared/components/modal-comps/types'
 import { GameLevelStateType } from '@/shared/services/game/types'
+import { platformApi } from '@/shared/services/platform'
+import { STATS } from '@/shared/services/platform/config'
+import { ACHIEVEMENTS } from '@/shared/services/platform/config'
 import { STUN_ANIMATION_DELAY } from '@/shared/services/game/constants'
 import { LEVELS_USER_CONFIG } from '@/shared'
 import { useI18n } from '@/shared/services/i18n'
@@ -292,6 +295,7 @@ export const GamePvpPage = () => {
           setStunEnemy(true)
           setTimeout(() => setStunEnemy(false), STUN_ANIMATION_DELAY)
           soundEnemyStun.play()
+          platformApi.incrementStat(STATS.PARRY_PVP)
         } else {
           setStunPlayer(true)
           setTimeout(() => setStunPlayer(false), STUN_ANIMATION_DELAY)
@@ -317,8 +321,7 @@ export const GamePvpPage = () => {
           return
         }
 
-        setResultText(<>{t('game.results.opponentLeft')}</>)
-        setOpenModalWin(true)
+        handleGameWin(t('game.results.opponentLeft'))
         soundWin.play()
       }
     }
@@ -384,13 +387,17 @@ export const GamePvpPage = () => {
     togglePause()
   }
 
-  const handleGameWin = (): void => {
+  const handleGameWin = (textWin?: string): void => {
     handlePause()
     setTimeout(() => {
-      setResultText(<>{t('game.results.pvpWin')}</>)
+      setResultText(<>{textWin || t('game.results.pvpWin')}</>)
       setOpenModalWin(true)
       soundWin.play()
     }, delayGameEffects + 300)
+
+    platformApi.incrementStat(STATS.WINS_PVP)
+    platformApi.incrementStat(STATS.GAMES_PLAYED_PVP)
+    unlockAchievementFirstWinPvp()
   }
 
   const handleGameOver = (): void => {
@@ -398,6 +405,8 @@ export const GamePvpPage = () => {
     setResultText(<>{t('game.results.pvpLose')}</>)
     setOpenModalLose(true)
     soundLose.play()
+
+    platformApi.incrementStat(STATS.GAMES_PLAYED_PVP)
   }
 
   const handleScore = (newScore: number, colorParry: string): void => {
@@ -441,6 +450,8 @@ export const GamePvpPage = () => {
     }
 
     soundCardSuccess.play()
+
+    platformApi.incrementStat(STATS.CARDS_MATCHED)
   }
 
   const handleColor = (color: string, countFlipped: number): void => {
@@ -469,6 +480,13 @@ export const GamePvpPage = () => {
       type: 'use_potion',
       battleId,
     }))
+  }
+
+  const unlockAchievementFirstWinPvp = async (): Promise<void> => {
+    const isUnlocked = await platformApi.getAchievement(ACHIEVEMENTS.FIRST_WIN_PVP)
+    if (!isUnlocked) {
+      await platformApi.unlockAchievement(ACHIEVEMENTS.FIRST_WIN_PVP)
+    }
   }
 
   return (
