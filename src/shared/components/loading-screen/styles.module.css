@@ -1,7 +1,7 @@
 .loading-screen {
   position: fixed;
   inset: 0;
-  background: #0f1117;
+  background: url('/loading/bg.jpg') no-repeat center center / cover;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -17,10 +17,15 @@
   text-align: center;
   color: white;
   font-family: Roboto, Arial, sans-serif;
+
+  img {
+    max-width: 100%;
+    height: auto;
+  }
 }
 
 .loading-title {
-  margin: 0 0 20px;
+  margin: 0 0 -60px;
   font-size: 76px;
 }
 

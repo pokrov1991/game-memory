@@ -476,7 +476,7 @@
   width: 450px;
   margin-bottom: 40px;
   gap: 15px;
-  z-index: 2;
+  z-index: 3;
 
   button {
     width: 200px;

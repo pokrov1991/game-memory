@@ -135,7 +135,7 @@ export const BasePage = () => {
         <p>
           {t('base.briefing.paragraphs.one')}
         </p>
-        <img src="./training/1.png"/>
+        <img src="./training/1.jpg"/>
         <p>
           {t('base.briefing.paragraphs.two')}
         </p>
@@ -155,7 +155,7 @@ export const BasePage = () => {
         <p>
           {t('base.briefing.paragraphs.six')}
         </p>
-        <img src="./training/6.png"/>
+        <img src="./training/6.jpg"/>
         <p>
           {t('base.briefing.paragraphs.seven')}
         </p>

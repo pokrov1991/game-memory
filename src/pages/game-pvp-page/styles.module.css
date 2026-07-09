@@ -24,7 +24,11 @@
 }
 
 body:has(main.game-page_pvp) {
-    background-color: #000;
+  background-color: #000;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 .game-page_0 {

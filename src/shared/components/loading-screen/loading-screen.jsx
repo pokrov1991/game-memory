@@ -7,7 +7,9 @@ export const LoadingScreen = ({ progress, error }) => {
   return (
     <div className={styles['loading-screen']}>
       <div className={styles['loading-box']}>
-        <h1 className={styles['loading-title']}>ORION-7</h1>
+        <div className={styles['loading-title']}>
+          <img src="/loading/logo.png" alt="ORION-7" />
+        </div>
 
         <h2 className={styles['loading-pre-title']}>{t('loading.title')}</h2>
 
