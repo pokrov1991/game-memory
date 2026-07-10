@@ -33,5 +33,8 @@ interface Window {
     storeStats(): Promise<void>
     saveCloudFile(name: string, data: string): Promise<void>
     readCloudFile(name: string): Promise<string | null>
+    getLeaderboard(leaderboardName: string): Promise<import('@/shared/services/platform').LeaderboardDescription | null>
+    setLeaderboardScore(leaderboardName: string, score: number, extraData?: string): Promise<boolean>
+    getLeaderboardEntries(leaderboardName: string, options: import('@/shared/services/platform').LeaderboardOptions): Promise<import('@/shared/services/platform').LeaderboardEntries>
   }
 }

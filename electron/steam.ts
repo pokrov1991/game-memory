@@ -39,6 +39,43 @@ const call = <T>(
   return fallback
 }
 
+const callMaybeAsync = async <T>(
+  target: unknown,
+  keys: string[],
+  fallback: T,
+  ...args: unknown[]
+): Promise<T> => {
+  for (const key of keys) {
+    const member = getMember<(...methodArgs: unknown[]) => T | Promise<T>>(target, key)
+
+    if (typeof member !== 'function') continue
+
+    try {
+      return await member(...args)
+    } catch (error) {
+      console.error(`Steam API method ${key} failed:`, error)
+    }
+  }
+
+  return fallback
+}
+
+const callVariants = async <T>(
+  target: unknown,
+  variants: Array<{ keys: string[]; args: unknown[] }>,
+  fallback: T
+): Promise<T> => {
+  for (const variant of variants) {
+    const result = await callMaybeAsync<T | null>(target, variant.keys, null, ...variant.args)
+
+    if (result !== null) {
+      return result
+    }
+  }
+
+  return fallback
+}
+
 const findSection = (keys: string[]): unknown => {
   for (const key of keys) {
     const section = getMember<unknown>(client, key)
@@ -47,6 +84,10 @@ const findSection = (keys: string[]): unknown => {
   }
 
   return client
+}
+
+const getSteamLeaderboards = (): unknown => {
+  return findSection(['leaderboards', 'leaderboard', 'userStats', 'stats'])
 }
 
 const requireSteamworks = (): SteamworksModule => {
@@ -236,4 +277,213 @@ export const readCloudFile = (name: string): string | null => {
   if (data instanceof Buffer) return data.toString('utf8')
 
   return String(data)
+}
+
+type SteamLeaderboardDescription = {
+  name: string
+  title?: string
+}
+
+type SteamLeaderboardEntry = {
+  extraData?: string
+  rank: number
+  score: number
+  player: {
+    id: string
+    name: string
+    avatar?: string
+  }
+}
+
+type SteamLeaderboardEntries = {
+  leaderboard: SteamLeaderboardDescription | null
+  ranges: Array<{
+    start: number
+    size: number
+  }>
+  userRank: number
+  entries: SteamLeaderboardEntry[]
+}
+
+type SteamLeaderboardOptions = {
+  includeUser?: boolean
+  quantityAround?: number
+  quantityTop?: number
+}
+
+const toStringId = (value: unknown): string => {
+  if (!value) return ''
+  if (typeof value === 'string') return value
+  if (typeof value === 'number') return String(value)
+  if (typeof value === 'bigint') return value.toString()
+
+  if (typeof value === 'object') {
+    const steamId64 = getMember<bigint | string | number>(value, 'steamId64')
+
+    if (steamId64) return toStringId(steamId64)
+  }
+
+  return String(value)
+}
+
+const getRawEntries = (rawData: unknown): unknown[] => {
+  if (Array.isArray(rawData)) return rawData
+  if (!rawData || typeof rawData !== 'object') return []
+
+  return (
+    getMember<unknown[]>(rawData, 'entries') ||
+    getMember<unknown[]>(rawData, 'leaderboardEntries') ||
+    getMember<unknown[]>(rawData, 'scores') ||
+    getMember<unknown[]>(rawData, 'items') ||
+    []
+  )
+}
+
+const getRawEntryValue = (entry: unknown, keys: string[]): unknown => {
+  if (!entry || typeof entry !== 'object') return null
+
+  for (const key of keys) {
+    const value = getMember<unknown>(entry, key)
+
+    if (value !== undefined && value !== null) {
+      return value
+    }
+  }
+
+  return null
+}
+
+const normalizeLeaderboardEntries = (
+  leaderboardName: string,
+  rawData: unknown,
+  options: SteamLeaderboardOptions
+): SteamLeaderboardEntries => {
+  const rawEntries = getRawEntries(rawData)
+  const entries = rawEntries.map((entry, index) => {
+    const rank = Number(getRawEntryValue(entry, ['rank', 'globalRank', 'leaderboardRank'])) || index + 1
+    const score = Number(getRawEntryValue(entry, ['score', 'value'])) || 0
+    const steamId = toStringId(getRawEntryValue(entry, ['steamId', 'steamID', 'user', 'player', 'steamId64']))
+    const name = String(getRawEntryValue(entry, ['name', 'personaName', 'playerName']) || steamId || 'Player')
+    const details = getRawEntryValue(entry, ['details', 'extraData'])
+
+    return {
+      extraData: Array.isArray(details) ? details.join(',') : details ? String(details) : undefined,
+      rank,
+      score,
+      player: {
+        id: steamId || `${leaderboardName}:${rank}`,
+        name,
+      },
+    }
+  })
+
+  const localSteamId = getSteamId()
+  const userEntry = entries.find(entry => entry.player.id === localSteamId)
+
+  return {
+    leaderboard: {
+      name: leaderboardName,
+      title: leaderboardName,
+    },
+    ranges: [
+      {
+        start: 1,
+        size: options.quantityTop || entries.length,
+      },
+    ],
+    userRank: userEntry?.rank || 0,
+    entries,
+  }
+}
+
+const getLeaderboardHandle = async (leaderboardName: string): Promise<unknown> => {
+  const leaderboards = getSteamLeaderboards()
+
+  return callVariants<unknown>(leaderboards, [
+    { keys: ['findLeaderboard', 'getLeaderboard', 'find'], args: [leaderboardName] },
+    { keys: ['findOrCreateLeaderboard', 'createLeaderboard', 'create'], args: [leaderboardName] },
+    { keys: ['findOrCreateLeaderboard'], args: [leaderboardName, 2, 1] },
+    { keys: ['findOrCreateLeaderboard'], args: [leaderboardName, 'Descending', 'Numeric'] },
+  ], null)
+}
+
+export const getLeaderboard = async (
+  leaderboardName: string
+): Promise<SteamLeaderboardDescription | null> => {
+  if (!initSteam()) return null
+
+  const handle = await getLeaderboardHandle(leaderboardName)
+
+  if (!handle) return null
+
+  return {
+    name: leaderboardName,
+    title: leaderboardName,
+  }
+}
+
+export const setLeaderboardScore = async (
+  leaderboardName: string,
+  score: number,
+  extraData?: string
+): Promise<boolean> => {
+  if (!initSteam()) return false
+
+  const leaderboards = getSteamLeaderboards()
+  const handle = await getLeaderboardHandle(leaderboardName)
+
+  if (!handle) return false
+
+  const parsedExtraData = Number(extraData)
+  const details = Number.isFinite(parsedExtraData) ? [parsedExtraData] : []
+
+  const result = await callVariants<unknown>(leaderboards, [
+    { keys: ['uploadScore', 'setScore'], args: [handle, score, details] },
+    { keys: ['uploadLeaderboardScore'], args: [handle, score, details] },
+    { keys: ['uploadLeaderboardScore'], args: [handle, 1, score, details] },
+    { keys: ['setLeaderboardScore'], args: [leaderboardName, score, details] },
+  ], null)
+
+  return result !== null
+}
+
+export const getLeaderboardEntries = async (
+  leaderboardName: string,
+  options: SteamLeaderboardOptions
+): Promise<SteamLeaderboardEntries> => {
+  if (!initSteam()) {
+    return {
+      leaderboard: null,
+      ranges: [],
+      userRank: 0,
+      entries: [],
+    }
+  }
+
+  const leaderboards = getSteamLeaderboards()
+  const handle = await getLeaderboardHandle(leaderboardName)
+
+  if (!handle) {
+    return {
+      leaderboard: null,
+      ranges: [],
+      userRank: 0,
+      entries: [],
+    }
+  }
+
+  const quantityTop = options.quantityTop || 10
+  const quantityAround = options.quantityAround || 0
+  const aroundStart = quantityAround > 0 ? -quantityAround : 1
+  const aroundEnd = quantityAround > 0 ? quantityAround : quantityTop
+
+  const rawData = await callVariants<unknown>(leaderboards, [
+    { keys: ['downloadScores', 'getScores'], args: [handle, 'Global', 1, quantityTop] },
+    { keys: ['downloadLeaderboardEntries', 'getLeaderboardEntries'], args: [handle, 0, 1, quantityTop] },
+    { keys: ['downloadScores', 'getScores'], args: [handle, 'GlobalAroundUser', aroundStart, aroundEnd] },
+    { keys: ['downloadLeaderboardEntries', 'getLeaderboardEntries'], args: [handle, 1, aroundStart, aroundEnd] },
+    { keys: ['getEntries'], args: [leaderboardName, options] },
+  ], null)
+
+  return normalizeLeaderboardEntries(leaderboardName, rawData, options)
 }

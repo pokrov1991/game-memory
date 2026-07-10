@@ -26,6 +26,9 @@ const steamApi = {
   storeStats: () => ipcRenderer.invoke('steam:store-stats') as Promise<void>,
   saveCloudFile: (name: string, data: string) => ipcRenderer.invoke('steam:save-cloud-file', name, data) as Promise<void>,
   readCloudFile: (name: string) => ipcRenderer.invoke('steam:read-cloud-file', name) as Promise<string | null>,
+  getLeaderboard: (leaderboardName: string) => ipcRenderer.invoke('steam:get-leaderboard', leaderboardName),
+  setLeaderboardScore: (leaderboardName: string, score: number, extraData?: string) => ipcRenderer.invoke('steam:set-leaderboard-score', leaderboardName, score, extraData) as Promise<boolean>,
+  getLeaderboardEntries: (leaderboardName: string, options: unknown) => ipcRenderer.invoke('steam:get-leaderboard-entries', leaderboardName, options),
 }
 
 contextBridge.exposeInMainWorld('steamApi', steamApi)

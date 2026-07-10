@@ -2,6 +2,8 @@ import { app, BrowserWindow, ipcMain, shell } from 'electron'
 import path from 'path'
 import {
   getAchievement,
+  getLeaderboard,
+  getLeaderboardEntries,
   getPersonaName,
   getStat,
   getSteamId,
@@ -12,6 +14,7 @@ import {
   openOverlay,
   readCloudFile,
   saveCloudFile,
+  setLeaderboardScore,
   setStat,
   storeStats,
   unlockAchievement,
@@ -34,6 +37,9 @@ ipcMain.handle('steam:get-stat', (_event, name: string) => getStat(name))
 ipcMain.handle('steam:store-stats', () => storeStats())
 ipcMain.handle('steam:save-cloud-file', (_event, name: string, data: string) => saveCloudFile(name, data))
 ipcMain.handle('steam:read-cloud-file', (_event, name: string) => readCloudFile(name))
+ipcMain.handle('steam:get-leaderboard', (_event, leaderboardName: string) => getLeaderboard(leaderboardName))
+ipcMain.handle('steam:set-leaderboard-score', (_event, leaderboardName: string, score: number, extraData?: string) => setLeaderboardScore(leaderboardName, score, extraData))
+ipcMain.handle('steam:get-leaderboard-entries', (_event, leaderboardName: string, options) => getLeaderboardEntries(leaderboardName, options))
 ipcMain.handle('app:quit', () => app.quit())
 
 const createWindow = () => {

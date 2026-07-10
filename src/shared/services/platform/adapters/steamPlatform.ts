@@ -1,7 +1,15 @@
 import { createDefaultGameProgress } from '../defaults'
 import { STEAM_SAVE_FILE } from '../config'
 import { LocalPlatformApi } from './localPlatform'
-import { GameProgress, PlatformApi, PlatformAuthResult, PlatformUser } from '../types'
+import {
+  GameProgress,
+  LeaderboardDescription,
+  LeaderboardEntries,
+  LeaderboardOptions,
+  PlatformApi,
+  PlatformAuthResult,
+  PlatformUser,
+} from '../types'
 
 const getSteamApi = () => {
   return typeof window === 'undefined' ? undefined : window.steamApi
@@ -231,6 +239,76 @@ export class SteamPlatformApi extends LocalPlatformApi {
       await steamApi.storeStats()
     } catch (error) {
       console.error('Steam stats store failed:', error)
+    }
+  }
+
+  async getLeaderboard(
+    leaderboardName: string
+  ): Promise<LeaderboardDescription | null> {
+    const steamApi = getSteamApi()
+
+    try {
+      if (!steamApi || !(await steamApi.isAvailable())) {
+        return super.getLeaderboard(leaderboardName)
+      }
+
+      const leaderboard = await steamApi.getLeaderboard(leaderboardName)
+
+      return leaderboard || super.getLeaderboard(leaderboardName)
+    } catch (error) {
+      console.error('Steam leaderboard read failed:', error)
+      return super.getLeaderboard(leaderboardName)
+    }
+  }
+
+  async setLeaderboardScore(
+    leaderboardName: string,
+    score: number,
+    extraData?: string
+  ): Promise<void> {
+    const steamApi = getSteamApi()
+
+    try {
+      if (!steamApi || !(await steamApi.isAvailable())) {
+        await super.setLeaderboardScore(leaderboardName, score, extraData)
+        return
+      }
+
+      const isUpdated = await steamApi.setLeaderboardScore(leaderboardName, score, extraData)
+
+      if (!isUpdated) {
+        await super.setLeaderboardScore(leaderboardName, score, extraData)
+        return
+      }
+
+      console.log('Steam leaderboard score updated:', leaderboardName, score)
+    } catch (error) {
+      console.error('Steam leaderboard score update failed:', error)
+      await super.setLeaderboardScore(leaderboardName, score, extraData)
+    }
+  }
+
+  async getLeaderboardEntries(
+    leaderboardName: string,
+    options: LeaderboardOptions
+  ): Promise<LeaderboardEntries> {
+    const steamApi = getSteamApi()
+
+    try {
+      if (!steamApi || !(await steamApi.isAvailable())) {
+        return super.getLeaderboardEntries(leaderboardName, options)
+      }
+
+      const data = await steamApi.getLeaderboardEntries(leaderboardName, options)
+
+      if (!data.leaderboard) {
+        return super.getLeaderboardEntries(leaderboardName, options)
+      }
+
+      return data
+    } catch (error) {
+      console.error('Steam leaderboard entries read failed:', error)
+      return super.getLeaderboardEntries(leaderboardName, options)
     }
   }
 }
