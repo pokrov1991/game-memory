@@ -8,6 +8,13 @@ import styles from './styles.module.css'
 const LANGUAGES: Array<{ id: Language; labelKey: string }> = [
   { id: 'ru', labelKey: 'settings.russian' },
   { id: 'en', labelKey: 'settings.english' },
+  { id: 'de', labelKey: 'settings.german' },
+  { id: 'fr', labelKey: 'settings.french' },
+  { id: 'es', labelKey: 'settings.spanish' },
+  { id: 'ja', labelKey: 'settings.japanese' },
+  { id: 'ko', labelKey: 'settings.korean' },
+  { id: 'pl', labelKey: 'settings.polish' },
+  { id: 'tr', labelKey: 'settings.turkish' },
   { id: 'zh-CN', labelKey: 'settings.simplifiedChinese' },
   { id: 'pt-BR', labelKey: 'settings.brazilianPortuguese' },
 ]

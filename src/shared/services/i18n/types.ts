@@ -1,6 +1,6 @@
 import { ru } from './translations/ru'
 
-export type Language = 'ru' | 'en' | 'zh-CN' | 'pt-BR'
+export type Language = 'ru' | 'en' | 'de' | 'fr' | 'es' | 'ja' | 'ko' | 'pl' | 'tr' | 'zh-CN' | 'pt-BR'
 
 export type TranslationDictionary = typeof ru
 
