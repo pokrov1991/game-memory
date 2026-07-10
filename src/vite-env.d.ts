@@ -12,6 +12,7 @@ interface ImportMeta {
 interface Window {
   desktopApi?: {
     platform: 'desktop'
+    quit(): Promise<void>
     versions: {
       electron: string
       chrome: string

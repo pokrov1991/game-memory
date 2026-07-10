@@ -68,6 +68,7 @@ export const Navigation = () => {
   const isStartedCampaign = hasStartedCampaign(progress)
   const isLocalPlatform = platformApi.kind === 'local' || platformApi.kind === 'desktop'
   const isPvpAvailable = isLocalPlatform || platformApi.kind === 'steam'
+  const isExitAvailable = platformApi.kind === 'desktop' || platformApi.kind === 'steam'
   const normalizedPlayerName = playerName.trim()
 
   const navigateTo = (path: string) => {
@@ -123,6 +124,10 @@ export const Navigation = () => {
     navigateTo('/settings')
   }
 
+  const handleExit = () => {
+    window.desktopApi?.quit()
+  }
+
   const handleResetProgress = async () => {
     const defaultProgress = createDefaultGameProgress()
 
@@ -144,6 +149,7 @@ export const Navigation = () => {
           <Item title={t('mainMenu.pvpGame')} sup="Beta" onSelect={() => handlePlayerNameRequiredNavigate('/pvp')} />
         )}
         <Item title={t('mainMenu.settings')} onSelect={handleSettings} />
+        {isExitAvailable && <Item title={t('common.exit')} onSelect={handleExit} />}
       </ul>
       <ModalDefault
         title={t('navigation.playerName.title')}

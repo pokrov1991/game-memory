@@ -34,6 +34,7 @@ ipcMain.handle('steam:get-stat', (_event, name: string) => getStat(name))
 ipcMain.handle('steam:store-stats', () => storeStats())
 ipcMain.handle('steam:save-cloud-file', (_event, name: string, data: string) => saveCloudFile(name, data))
 ipcMain.handle('steam:read-cloud-file', (_event, name: string) => readCloudFile(name))
+ipcMain.handle('app:quit', () => app.quit())
 
 const createWindow = () => {
   const mainWindow = new BrowserWindow({
