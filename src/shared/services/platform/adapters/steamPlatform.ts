@@ -301,7 +301,7 @@ export class SteamPlatformApi extends LocalPlatformApi {
 
       const data = await steamApi.getLeaderboardEntries(leaderboardName, options)
 
-      if (!data.leaderboard) {
+      if (!data.leaderboard || !data.entries.length) {
         return super.getLeaderboardEntries(leaderboardName, options)
       }
 

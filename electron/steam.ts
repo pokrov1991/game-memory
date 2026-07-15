@@ -444,7 +444,7 @@ export const setLeaderboardScore = async (
     { keys: ['setLeaderboardScore'], args: [leaderboardName, score, details] },
   ], null)
 
-  return result !== null
+  return result !== null && result !== false
 }
 
 export const getLeaderboardEntries = async (
