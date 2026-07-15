@@ -1,7 +1,7 @@
 "AppBuild"
 {
   "AppID" "4927190"
-  "Desc" "Orion-7 Steam build"
+  "Desc" "Orion-7 macOS Steam build"
   "BuildOutput" "../../steamworks/output"
   "ContentRoot" "../../electron/release/steam"
   "SetLive" ""

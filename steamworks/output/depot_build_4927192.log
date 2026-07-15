@@ -1,0 +1,109 @@
+[2026-07-15 16:51:17]: Starting build for depot 4927192, content path is "D:\OpenServer\domains\memory-react.local\electron\release\steam\win-unpacked", build flags 0x0
+[2026-07-15 16:51:17]: Building file listing for depot 4927192 ...
+[2026-07-15 16:51:17]: Found 98 files for mapping: D:\OpenServer\domains\memory-react.local\electron\release\steam\win-unpacked * -> .
+[2026-07-15 16:51:17]: Found 98 files (555 MB) for depot 4927192
+[2026-07-15 16:51:18]: Building depot 4927192, no baseline manifest
+[2026-07-15 16:51:23]: Found 595 new chunks ( 0 used previously ) for depot 4927192, took 0 minutes, 5 seconds
+[2026-07-15 16:51:23]: Changes to baseline manifest 0 :
+[2026-07-15 16:51:23]: Added  : "chrome_100_percent.pak" 118 KB 
+[2026-07-15 16:51:23]: Added  : "chrome_200_percent.pak" 193 KB 
+[2026-07-15 16:51:23]: Added  : "d3dcompiler_47.dll" 4631 KB 
+[2026-07-15 16:51:23]: Added  : "dxcompiler.dll" 25034 KB 
+[2026-07-15 16:51:23]: Added  : "dxil.dll" 1475 KB 
+[2026-07-15 16:51:23]: Added  : "ffmpeg.dll" 2986 KB 
+[2026-07-15 16:51:23]: Added  : "icudtl.dat" 10622 KB 
+[2026-07-15 16:51:23]: Added  : "libEGL.dll" 467 KB 
+[2026-07-15 16:51:23]: Added  : "libGLESv2.dll" 7811 KB 
+[2026-07-15 16:51:23]: Added  : "LICENSE.electron.txt" 2 KB 
+[2026-07-15 16:51:23]: Added  : "LICENSES.chromium.html" 19890 KB 
+[2026-07-15 16:51:23]: Added  : "locales" 0 KB ,Flags: 64
+[2026-07-15 16:51:23]: Added  : "locales\af.pak" 606 KB 
+[2026-07-15 16:51:23]: Added  : "locales\am.pak" 984 KB 
+[2026-07-15 16:51:23]: Added  : "locales\ar.pak" 1084 KB 
+[2026-07-15 16:51:23]: Added  : "locales\bg.pak" 1124 KB 
+[2026-07-15 16:51:23]: Added  : "locales\bn.pak" 1446 KB 
+[2026-07-15 16:51:23]: Added  : "locales\ca.pak" 684 KB 
+[2026-07-15 16:51:23]: Added  : "locales\cs.pak" 710 KB 
+[2026-07-15 16:51:23]: Added  : "locales\da.pak" 638 KB 
+[2026-07-15 16:51:23]: Added  : "locales\de.pak" 685 KB 
+[2026-07-15 16:51:23]: Added  : "locales\el.pak" 1236 KB 
+[2026-07-15 16:51:23]: Added  : "locales\en-GB.pak" 553 KB 
+[2026-07-15 16:51:23]: Added  : "locales\en-US.pak" 559 KB 
+[2026-07-15 16:51:23]: Added  : "locales\es-419.pak" 675 KB 
+[2026-07-15 16:51:23]: Added  : "locales\es.pak" 671 KB 
+[2026-07-15 16:51:23]: Added  : "locales\et.pak" 613 KB 
+[2026-07-15 16:51:23]: Added  : "locales\fa.pak" 1014 KB 
+[2026-07-15 16:51:23]: Added  : "locales\fi.pak" 624 KB 
+[2026-07-15 16:51:23]: Added  : "locales\fil.pak" 707 KB 
+[2026-07-15 16:51:23]: Added  : "locales\fr.pak" 729 KB 
+[2026-07-15 16:51:23]: Added  : "locales\gu.pak" 1429 KB 
+[2026-07-15 16:51:23]: Added  : "locales\he.pak" 888 KB 
+[2026-07-15 16:51:23]: Added  : "locales\hi.pak" 1514 KB 
+[2026-07-15 16:51:23]: Added  : "locales\hr.pak" 683 KB 
+[2026-07-15 16:51:23]: Added  : "locales\hu.pak" 730 KB 
+[2026-07-15 16:51:23]: Added  : "locales\id.pak" 604 KB 
+[2026-07-15 16:51:23]: Added  : "locales\it.pak" 661 KB 
+[2026-07-15 16:51:23]: Added  : "locales\ja.pak" 805 KB 
+[2026-07-15 16:51:23]: Added  : "locales\kn.pak" 1642 KB 
+[2026-07-15 16:51:23]: Added  : "locales\ko.pak" 685 KB 
+[2026-07-15 16:51:23]: Added  : "locales\lt.pak" 743 KB 
+[2026-07-15 16:51:23]: Added  : "locales\lv.pak" 740 KB 
+[2026-07-15 16:51:23]: Added  : "locales\ml.pak" 1689 KB 
+[2026-07-15 16:51:23]: Added  : "locales\mr.pak" 1399 KB 
+[2026-07-15 16:51:23]: Added  : "locales\ms.pak" 637 KB 
+[2026-07-15 16:51:23]: Added  : "locales\nb.pak" 609 KB 
+[2026-07-15 16:51:23]: Added  : "locales\nl.pak" 635 KB 
+[2026-07-15 16:51:23]: Added  : "locales\pl.pak" 709 KB 
+[2026-07-15 16:51:23]: Added  : "locales\pt-BR.pak" 665 KB 
+[2026-07-15 16:51:23]: Added  : "locales\pt-PT.pak" 669 KB 
+[2026-07-15 16:51:23]: Added  : "locales\ro.pak" 694 KB 
+[2026-07-15 16:51:23]: Added  : "locales\ru.pak" 1151 KB 
+[2026-07-15 16:51:23]: Added  : "locales\sk.pak" 721 KB 
+[2026-07-15 16:51:23]: Added  : "locales\sl.pak" 691 KB 
+[2026-07-15 16:51:23]: Added  : "locales\sr.pak" 1064 KB 
+[2026-07-15 16:51:23]: Added  : "locales\sv.pak" 616 KB 
+[2026-07-15 16:51:23]: Added  : "locales\sw.pak" 652 KB 
+[2026-07-15 16:51:23]: Added  : "locales\ta.pak" 1680 KB 
+[2026-07-15 16:51:23]: Added  : "locales\te.pak" 1555 KB 
+[2026-07-15 16:51:23]: Added  : "locales\th.pak" 1307 KB 
+[2026-07-15 16:51:23]: Added  : "locales\tr.pak" 664 KB 
+[2026-07-15 16:51:23]: Added  : "locales\uk.pak" 1158 KB 
+[2026-07-15 16:51:23]: Added  : "locales\ur.pak" 998 KB 
+[2026-07-15 16:51:23]: Added  : "locales\vi.pak" 790 KB 
+[2026-07-15 16:51:23]: Added  : "locales\zh-CN.pak" 565 KB 
+[2026-07-15 16:51:23]: Added  : "locales\zh-TW.pak" 557 KB 
+[2026-07-15 16:51:23]: Added  : "Orion-7.exe" 227035 KB 
+[2026-07-15 16:51:23]: Added  : "resources" 0 KB ,Flags: 64
+[2026-07-15 16:51:23]: Added  : "resources.pak" 6716 KB 
+[2026-07-15 16:51:23]: Added  : "resources\app.asar" 187992 KB 
+[2026-07-15 16:51:23]: Added  : "resources\app.asar.unpacked" 0 KB ,Flags: 64
+[2026-07-15 16:51:23]: Added  : "resources\app.asar.unpacked\node_modules" 0 KB ,Flags: 64
+[2026-07-15 16:51:23]: Added  : "resources\app.asar.unpacked\node_modules\@esbuild" 0 KB ,Flags: 64
+[2026-07-15 16:51:23]: Added  : "resources\app.asar.unpacked\node_modules\@esbuild\win32-x64" 0 KB ,Flags: 64
+[2026-07-15 16:51:23]: Added  : "resources\app.asar.unpacked\node_modules\@esbuild\win32-x64\esbuild.exe" 9327 KB 
+[2026-07-15 16:51:23]: Added  : "resources\app.asar.unpacked\node_modules\@esbuild\win32-x64\package.json" 1 KB 
+[2026-07-15 16:51:23]: Added  : "resources\app.asar.unpacked\node_modules\steamworks.js" 0 KB ,Flags: 64
+[2026-07-15 16:51:23]: Added  : "resources\app.asar.unpacked\node_modules\steamworks.js\dist" 0 KB ,Flags: 64
+[2026-07-15 16:51:23]: Added  : "resources\app.asar.unpacked\node_modules\steamworks.js\dist\linux64" 0 KB ,Flags: 64
+[2026-07-15 16:51:23]: Added  : "resources\app.asar.unpacked\node_modules\steamworks.js\dist\linux64\libsteam_api.so" 376 KB 
+[2026-07-15 16:51:23]: Added  : "resources\app.asar.unpacked\node_modules\steamworks.js\dist\linux64\steamworksjs.linux-x64-gnu.node" 1870 KB 
+[2026-07-15 16:51:23]: Added  : "resources\app.asar.unpacked\node_modules\steamworks.js\dist\osx" 0 KB ,Flags: 64
+[2026-07-15 16:51:23]: Added  : "resources\app.asar.unpacked\node_modules\steamworks.js\dist\osx\libsteam_api.dylib" 597 KB 
+[2026-07-15 16:51:23]: Added  : "resources\app.asar.unpacked\node_modules\steamworks.js\dist\osx\steamworksjs.darwin-arm64.node" 1695 KB 
+[2026-07-15 16:51:23]: Added  : "resources\app.asar.unpacked\node_modules\steamworks.js\dist\osx\steamworksjs.darwin-x64.node" 1725 KB 
+[2026-07-15 16:51:23]: Added  : "resources\app.asar.unpacked\node_modules\steamworks.js\dist\win64" 0 KB ,Flags: 64
+[2026-07-15 16:51:23]: Added  : "resources\app.asar.unpacked\node_modules\steamworks.js\dist\win64\steamworksjs.win32-x64-msvc.node" 1713 KB 
+[2026-07-15 16:51:23]: Added  : "resources\app.asar.unpacked\node_modules\steamworks.js\dist\win64\steam_api64.dll" 294 KB 
+[2026-07-15 16:51:23]: Added  : "resources\app.asar.unpacked\node_modules\steamworks.js\dist\win64\steam_api64.lib" 366 KB 
+[2026-07-15 16:51:23]: Added  : "resources\app.asar.unpacked\node_modules\steamworks.js\index.js" 3 KB 
+[2026-07-15 16:51:23]: Added  : "resources\app.asar.unpacked\node_modules\steamworks.js\LICENSE" 2 KB 
+[2026-07-15 16:51:23]: Added  : "resources\app.asar.unpacked\node_modules\steamworks.js\package.json" 1 KB 
+[2026-07-15 16:51:23]: Added  : "snapshot_blob.bin" 339 KB 
+[2026-07-15 16:51:23]: Added  : "v8_context_snapshot.bin" 705 KB 
+[2026-07-15 16:51:23]: Added  : "vk_swiftshader.dll" 5391 KB 
+[2026-07-15 16:51:23]: Added  : "vk_swiftshader_icd.json" 1 KB 
+[2026-07-15 16:51:23]: Added  : "vulkan-1.dll" 904 KB 
+[2026-07-15 16:51:23]: Summary: 98 files added (555.25 MB), 0 files changed (0 bytes), 0 files removed (0 bytes)
+[2026-07-15 16:51:24]: Uploading new manifest to depot-ingest.discovery.steamserver.net (handle 16846535665108134344, 28330 bytes).
+[2026-07-15 16:51:25]: Uploading 595 out of 595 missing chunks.
+[2026-07-15 16:51:57]: Success! New manifestID 531318640288272554 created and 595 new chunks uploaded.

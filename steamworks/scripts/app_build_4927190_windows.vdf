@@ -1,7 +1,7 @@
 "AppBuild"
 {
   "AppID" "4927190"
-  "Desc" "Orion-7 Steam build"
+  "Desc" "Orion-7 Windows Steam build"
   "BuildOutput" "../../steamworks/output"
   "ContentRoot" "../../electron/release/steam"
   "SetLive" ""
@@ -10,6 +10,6 @@
 
   "Depots"
   {
-    "4927191" "depot_build_4927191.vdf"
+    "4927192" "depot_build_4927192.vdf"
   }
 }

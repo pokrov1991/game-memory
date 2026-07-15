@@ -14,6 +14,16 @@ npm run dist:desktop
 - `build:desktop` собирает Electron main/preload и renderer в `electron/out/`.
 - `dist:desktop` сначала выполняет `build:desktop`, затем запускает `electron-builder`.
 
+Для обычной проверки компиляции desktop-кода достаточно `build:desktop`. `dist:desktop` создаёт пакеты для текущей операционной системы: Windows на Windows, macOS на macOS и Linux на Linux.
+
+Windows-артефакты сохраняются в:
+
+```txt
+electron/release/desktop
+```
+
+Для текущей версии Electron рекомендуется Node.js 22.12 или новее.
+
 Web-сборки остаются отдельными:
 
 ```bash

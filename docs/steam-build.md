@@ -3,6 +3,7 @@
 STEAM_LOGIN=pokrov1991
 STEAM_APP_ID=4927190
 MAC_DEPOT_ID=4927191
+WIN_DEPOT_ID=4927192
 
 Steam-сборка использует отдельный режим платформенного слоя:
 
@@ -15,25 +16,49 @@ VITE_PLATFORM_API=steam
 ```bash
 npm run dev:steam
 npm run build:steam
-npm run dist:steam
-npm run deploy:steam
+npm run dist:steam:mac
+npm run dist:steam:windows
+npm run deploy:steam:mac
+npm run deploy:steam:windows
 ```
 
 `build:steam` собирает Electron-приложение через `electron-vite`. Renderer выбирает `SteamPlatformApi`, Yandex SDK не загружается, реклама отключена через no-op `showAd()`.
 
-`dist:steam` дополнительно упаковывает приложение через `electron-builder --config electron-builder.steam.json` в:
+`dist:steam:mac` собирает распакованное macOS-приложение для depot `4927191` в:
 
 ```txt
-electron/release/steam
+electron/release/steam/mac-*/Orion-7.app
 ```
+
+Команда запускается на macOS. Для Windows Steam depot используется отдельная команда:
+
+```bash
+npm run dist:steam:windows
+```
+
+Она явно выбирает Windows и создаёт распакованное приложение в:
+
+```txt
+electron/release/steam/win-unpacked
+```
+
+В Steam загружается содержимое `win-unpacked`, а не NSIS-установщик или portable `.exe`.
 
 Нативные файлы `steamworks.js` распаковываются в `app.asar.unpacked`, чтобы Steamworks `.node` и `steam_api` runtime могли загрузиться из packaged app.
 
-`deploy:steam` выполняет `dist:steam`, затем загружает build через SteamCMD:
+`deploy:steam:mac` выполняет `dist:steam:mac`, затем загружает только macOS depot `4927191` через SteamCMD:
 
 ```bash
-steamcmd +login pokrov1991 +run_app_build "$(pwd)/steamworks/scripts/app_build_4927190.vdf" +quit
+npm run deploy:steam:mac
 ```
+
+Для сборки и загрузки только Windows depot `4927192` используется:
+
+```bash
+npm run deploy:steam:windows
+```
+
+Команда использует `app_build_4927190_windows.vdf`. `SetLive` оставлен пустым: загрузка создаёт SteamPipe build, но не публикует его автоматически в `default` или beta branch.
 
 ## Steamworks SDK
 
@@ -125,11 +150,13 @@ steamworks/scripts
 Текущие upload files:
 
 ```txt
-steamworks/scripts/app_build_4927190.vdf
+steamworks/scripts/app_build_4927190_mac.vdf
 steamworks/scripts/depot_build_4927191.vdf
+steamworks/scripts/app_build_4927190_windows.vdf
+steamworks/scripts/depot_build_4927192.vdf
 ```
 
-Они используют AppID `4927190` и macOS depot `4927191`. `SetLive` оставлен пустым, поэтому после первого upload build нужно назначить на branch вручную в Steamworks.
+`app_build_4927190_mac.vdf` загружает только macOS depot `4927191`, а `app_build_4927190_windows.vdf` — только Windows depot `4927192`. `SetLive` оставлен пустым, поэтому после upload build нужно назначить на branch вручную в Steamworks.
 
 Текущий macOS build content:
 
@@ -137,16 +164,22 @@ steamworks/scripts/depot_build_4927191.vdf
 electron/release/steam/mac-arm64/Orion-7.app
 ```
 
-Команда upload после подготовки `.vdf`:
+Текущий Windows build content:
 
-```bash
-npm run deploy:steam
+```txt
+electron/release/steam/win-unpacked
 ```
 
-Эквивалентная прямая команда SteamCMD:
+Команда загрузки macOS depot:
 
 ```bash
-steamcmd +login pokrov1991 +run_app_build "$(pwd)/steamworks/scripts/app_build_4927190.vdf" +quit
+npm run deploy:steam:mac
+```
+
+Команда загрузки Windows depot:
+
+```bash
+npm run deploy:steam:windows
 ```
 
 Пароль и Steam Guard код вводятся интерактивно в SteamCMD. Не сохранять пароль в npm scripts или `.vdf`.
@@ -167,9 +200,9 @@ steamcmd +login pokrov1991 +run_app_build "$(pwd)/steamworks/scripts/app_build_4
 Перед отправкой build в Steam нужно проверить App Admin:
 
 1. Packages / Depots
-   - создать depot для macOS;
-   - если нужны Windows/Linux, создать отдельные depots и builder scripts для них;
-   - заменить `<MAC_DEPOT_ID>` в `steamworks/scripts/*.template`.
+   - macOS depot: `4927191`;
+   - Windows depot: `4927192`;
+   - для Linux при необходимости создать отдельный depot и builder script.
 
 2. Installation / Launch Options
    - создать launch option для macOS:
@@ -178,7 +211,12 @@ steamcmd +login pokrov1991 +run_app_build "$(pwd)/steamworks/scripts/app_build_4
      - OS: `macOS`
      - Description: `Orion-7`
    - launch option должен быть привязан к macOS depot `4927191`;
-   - для Windows/Linux launch paths добавить после сборки соответствующих платформ.
+   - создать launch option для Windows:
+     - Executable: `Orion-7.exe`
+     - Arguments: оставить пустым
+     - OS: `Windows`
+     - Description: `Orion-7`
+   - Windows launch option должен быть доступен пакету с depot `4927192`.
 
 3. Achievements
    - создать API names из `src/shared/services/platform/config.ts`:
@@ -232,8 +270,8 @@ macOS release note: текущий local package собирается без Dev
 
 Что осталось сделать перед отправкой в Steam:
 
-1. В Steamworks Admin создать depot ID для macOS, а если нужны Windows/Linux, то отдельные depots для них.
-2. Заменить <MAC_DEPOT_ID> в VDF templates внутри steamworks/scripts.
+1. Проверить, что depots `4927191` (macOS) и `4927192` (Windows) добавлены в нужные Steam packages.
+2. Настроить launch options `Orion-7.app` для macOS и `Orion-7.exe` для Windows.
 3. В Steamworks Admin завести achievement API names и stat API names точно как в ACHIEVEMENTS и STATS.
 4. Включить Steam Cloud для приложения и разрешить файл orion7-save.json.
 5. Настроить Launch Options для depots.
