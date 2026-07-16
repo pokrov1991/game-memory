@@ -1,5 +1,19 @@
 import { SCREEN_MOBILE_WIDTH } from '@/shared/constants/device'
 
+const MIN_CANVAS_HEIGHT_COEFFICIENT = 0.2
+const MAX_CANVAS_HEIGHT_COEFFICIENT = 0.8
+const DEFAULT_GAME_FIELD_SIZE = 75
+
+export const getCanvasHeightCoefficient = (
+  gameFieldSize = DEFAULT_GAME_FIELD_SIZE
+): number => {
+  const normalizedSize = Math.min(100, Math.max(0, gameFieldSize))
+
+  return MIN_CANVAS_HEIGHT_COEFFICIENT
+    + (MAX_CANVAS_HEIGHT_COEFFICIENT - MIN_CANVAS_HEIGHT_COEFFICIENT)
+    * normalizedSize / 100
+}
+
 export const createCardValues = (count: number): string[] => {
   if (count % 2 !== 0) {
     throw new Error('Число карт CARD_COUNT должно быть четным')
@@ -16,14 +30,18 @@ export const computCardRow = (count: number, col: number): number => {
   return Math.round(count / col)
 }
 
-export const computCardWidth = (col: number, row: number, margin: number) => {
+export const computCardWidth = (
+  col: number,
+  row: number,
+  margin: number,
+  gameFieldSize = DEFAULT_GAME_FIELD_SIZE
+) => {
   const isMobile = window.innerWidth < SCREEN_MOBILE_WIDTH
   const canvasMarginLeft = isMobile ? 20 : 300
   const canvasMarginTop = 100
   const windowWidth = window.innerWidth - canvasMarginLeft
-
-  // максимум 80% от высоты экрана
-  const maxCanvasHeight = window.innerHeight * 0.8
+  // максимум getCanvasHeightCoefficient % от высоты экрана
+  const maxCanvasHeight = window.innerHeight * getCanvasHeightCoefficient(gameFieldSize)
 
   // если нужен ещё отступ сверху - учитываем его
   const windowHeight = Math.min(

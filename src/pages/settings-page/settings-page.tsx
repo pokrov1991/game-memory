@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { Layout, Navigate, Button } from '@/shared/components'
 import { Language, useI18n } from '@/shared/services/i18n'
 import { useAudio, useProgress } from '@/shared/hooks'
@@ -22,7 +23,8 @@ const LANGUAGES: Array<{ id: Language; labelKey: string }> = [
 export const SettingsPage = () => {
   const { t, language, setLanguage } = useI18n()
   const { game, setGame } = useUser()
-  const { updateSettings } = useProgress()
+  const { settings: savedSettings, updateSettings } = useProgress()
+  const [gameFieldSize, setGameFieldSize] = useState(savedSettings.gameFieldSize ?? 75)
   const {
     musicVolume,
     effectsVolume,
@@ -47,11 +49,16 @@ export const SettingsPage = () => {
     return Math.min(100, Math.max(0, volume + direction * 10))
   }
 
+  const changeGameFieldSize = (direction: 1 | -1) => {
+    setGameFieldSize(size => Math.min(100, Math.max(0, size + direction * 5)))
+  }
+
   const handleSave = async () => {
     const settings = {
       language,
       musicVolume,
       effectsVolume,
+      gameFieldSize,
     }
 
     await platformApi.setSettings(settings)
@@ -135,7 +142,28 @@ export const SettingsPage = () => {
                 </div>
               </div>
             </div>
-            
+          </section>
+
+          <section className={styles['settings-page__section']}>
+            <h2>{t('settings.game')}</h2>
+
+            <div className={styles['settings-page__counter']}>
+              <div className={styles['settings-page__counter-name']}>{t('settings.gameFieldSize')}</div>
+              <div className={styles['settings-page__counter-controls']}>
+                <button
+                  onClick={() => changeGameFieldSize(-1)}
+                  disabled={gameFieldSize <= 0}
+                >-</button>
+                <span>{gameFieldSize}%</span>
+                <button
+                  onClick={() => changeGameFieldSize(1)}
+                  disabled={gameFieldSize >= 100}
+                >+</button>
+              </div>
+            </div>
+          </section>
+
+          <section className={styles['settings-page__section']}>
             <Button type="button" onClick={handleSave}>
               {t('common.save')}
             </Button>

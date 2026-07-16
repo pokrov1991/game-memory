@@ -5,17 +5,19 @@ import {
   createLevelsState,
   createLevelsStore,
 } from '@/shared/services/game/constants'
+import { useProgress } from './useProgress'
 
 type UseLevelOutput<T> = [T, (value: number) => void]
 
 const eventBus = new Mediator()
 
 const createLevels = <T extends GameLevelStateType | GameLevelStoreType>(
-  type: 'battle' | 'store'
+  type: 'battle' | 'store',
+  gameFieldSize?: number
 ): T[] => {
   return type === 'battle'
-    ? (createLevelsState() as T[])
-    : (createLevelsStore() as T[])
+    ? (createLevelsState(gameFieldSize) as T[])
+    : (createLevelsStore(gameFieldSize) as T[])
 }
 
 const findLevel = <T extends GameLevelStateType | GameLevelStoreType>(
@@ -29,9 +31,11 @@ export const useLevel = <T extends GameLevelStateType | GameLevelStoreType>(
   levelId: number,
   type: 'battle' | 'store'
 ): UseLevelOutput<T> => {
+  const { settings } = useProgress()
+  const gameFieldSize = settings.gameFieldSize
   const selectedLevelIdRef = useRef(levelId)
   const [level, setLevel] = useState<T>(() => {
-    return findLevel(createLevels<T>(type), levelId)
+    return findLevel(createLevels<T>(type, gameFieldSize), levelId)
   })
 
   useEffect(() => {
@@ -40,14 +44,14 @@ export const useLevel = <T extends GameLevelStateType | GameLevelStoreType>(
 
   useEffect(() => {
     selectedLevelIdRef.current = levelId
-    const nextLevel = findLevel(createLevels<T>(type), levelId)
+    const nextLevel = findLevel(createLevels<T>(type, gameFieldSize), levelId)
 
     setLevel(nextLevel)
-  }, [levelId, type])
+  }, [gameFieldSize, levelId, type])
 
   useEffect(() => {
     const handleResize = () => {
-      const nextLevel = findLevel(createLevels<T>(type), selectedLevelIdRef.current)
+      const nextLevel = findLevel(createLevels<T>(type, gameFieldSize), selectedLevelIdRef.current)
 
       setLevel(nextLevel)
     }
@@ -59,11 +63,11 @@ export const useLevel = <T extends GameLevelStateType | GameLevelStoreType>(
       window.removeEventListener('resize', handleResize)
       window.removeEventListener('orientationchange', handleResize)
     }
-  }, [type])
+  }, [gameFieldSize, type])
 
   const set = (levelId: number) => {
     selectedLevelIdRef.current = levelId
-    setLevel(findLevel(createLevels<T>(type), levelId))
+    setLevel(findLevel(createLevels<T>(type, gameFieldSize), levelId))
   }
 
   return [level, set]

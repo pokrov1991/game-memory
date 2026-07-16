@@ -5,6 +5,7 @@ export const DEFAULT_GAME_SETTINGS: GameSettings = {
   language: DEFAULT_LANGUAGE,
   musicVolume: 100,
   effectsVolume: 100,
+  gameFieldSize: 75,
 }
 
 export const DEFAULT_GAME_PROGRESS: GameProgress = {

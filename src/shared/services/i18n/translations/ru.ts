@@ -122,7 +122,7 @@ export const ru = {
       cliffhanger: {
         slide1: { 0: '...' },
         slide2: { 0: '...', 1: 'Очередной Орион... Соскучился по дому?' },
-        slide3: { 0: 'Кто ты?!', 1: 'Ты не этого не помнишь, ты уже был здесь... Как и я...' },
+        slide3: { 0: 'Кто ты?!', 1: 'Ты этого не помнишь, ты уже был здесь... Как и я...' },
         slide4: { 0: 'Что ты хочешь?!', 1: 'Ты не уйдёшь отсюда... Ты не уйдёшь от меня...' },
         slide5: { 0: 'Нет. Нет, нееет!', 1: 'Прощай, Орион...' },
         slide6: { 0: '...' },
@@ -251,7 +251,9 @@ export const ru = {
     brazilianPortuguese: 'Português (Brasil)',
     english: 'English',
     french: 'Français',
+    game: 'Игра',
     german: 'Deutsch',
+    gameFieldSize: 'Размер игрового поля',
     japanese: '日本語',
     korean: '한국어',
     language: 'Язык',

@@ -46,6 +46,7 @@ export type GameSettings = {
   language: Language
   musicVolume: number
   effectsVolume: number
+  gameFieldSize: number
 }
 
 export type GameProgress = {
