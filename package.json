@@ -18,7 +18,7 @@
     "dist:steam:windows": "npm run build:steam && electron-builder --win --dir --config electron-builder.steam.json",
     "preview": "vite preview",
     "deploy": "npm run build:local && ssh root@orion7.skybug.ru 'mkdir -p /var/www/orion7/dist' && rsync -avz --delete dist/ root@orion7.skybug.ru:/var/www/orion7/dist/",
-    "deploy:steam:mac": "npm run dist:steam:mac && steamcmd +login pokrov1991 +run_app_build steamworks/scripts/app_build_4927190_mac.vdf +quit",
+    "deploy:steam:mac": "npm run dist:steam:mac && steamcmd +login pokrov1991 +run_app_build \"$PWD/steamworks/scripts/app_build_4927190_mac.vdf\" +quit",
     "deploy:steam:windows": "npm run dist:steam:windows && \"D:\\Games\\steamcmd\\steamcmd.exe\" +login pokrov1991 +run_app_build \"%CD%\\steamworks\\scripts\\app_build_4927190_windows.vdf\" +quit",
     "server:deploy": "npm --prefix server run deploy",
     "server:start": "npm --prefix server start",

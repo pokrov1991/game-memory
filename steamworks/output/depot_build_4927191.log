@@ -1,13 +1,14 @@
-[2026-07-10 19:09:17]: Starting build for depot 4927191, content path is "/Users/alexeypokrovsky/Documents/Work/Development/Games/memory/electron/release/steam/mac-arm64", build flags 0x0
-[2026-07-10 19:09:17]: Building file listing for depot 4927191 ...
-[2026-07-10 19:09:17]: Found 618 files for mapping: /Users/alexeypokrovsky/Documents/Work/Development/Games/memory/electron/release/steam/mac-arm64/Orion-7.app * -> Orion-7.app
-[2026-07-10 19:09:17]: Found 618 files (485 MB) for depot 4927191
-[2026-07-10 19:09:19]: Building depot 4927191, baseline manifest 5625315247456099564 (618 files)
-[2026-07-10 19:09:19]: Found 544 new chunks ( 551 used previously ) for depot 4927191, took 0 minutes, 0 seconds
-[2026-07-10 19:09:19]: Changes to baseline manifest 5625315247456099564 :
-[2026-07-10 19:09:19]: Changed: "Orion-7.app\Contents\Info.plist" 4 KB size, 4 KB changed 
-[2026-07-10 19:09:19]: Changed: "Orion-7.app\Contents\Resources\app.asar" 187879 KB size, 19670 KB changed 
-[2026-07-10 19:09:19]: Summary: 0 files added (0 bytes), 2 files changed (19.21 MB), 0 files removed (0 bytes)
-[2026-07-10 19:09:19]: Uploading new manifest to depot-ingest.discovery.steamserver.net (handle 17431407745325964684, 118522 bytes).
-[2026-07-10 19:09:21]: Uploading 23 out of 23 missing chunks.
-[2026-07-10 19:09:37]: Success! New manifestID 3036798290618801049 created and 23 new chunks uploaded.
+[2026-07-16 21:10:06]: Starting build for depot 4927191, content path is "/Users/alexeypokrovsky/Documents/Work/Development/Games/memory/electron/release/steam/mac-arm64", build flags 0x0
+[2026-07-16 21:10:06]: Building file listing for depot 4927191 ...
+[2026-07-16 21:10:06]: Found 617 files for mapping: /Users/alexeypokrovsky/Documents/Work/Development/Games/memory/electron/release/steam/mac-arm64/Orion-7.app * -> Orion-7.app
+[2026-07-16 21:10:06]: Found 617 files (485 MB) for depot 4927191
+[2026-07-16 21:10:07]: Building depot 4927191, baseline manifest 3036798290618801049 (618 files)
+[2026-07-16 21:10:08]: Found 543 new chunks ( 544 used previously ) for depot 4927191, took 0 minutes, 0 seconds
+[2026-07-16 21:10:08]: Changes to baseline manifest 3036798290618801049 :
+[2026-07-16 21:10:08]: Changed: "Orion-7.app\Contents\Info.plist" 4 KB size, 4 KB changed 
+[2026-07-16 21:10:08]: Changed: "Orion-7.app\Contents\Resources\app.asar" 187878 KB size, 5989 KB changed 
+[2026-07-16 21:10:08]: Removed: Orion-7.app\Contents\Resources\app-update.yml (1 KB)
+[2026-07-16 21:10:08]: Summary: 0 files added (0 bytes), 2 files changed (5.85 MB), 1 files removed (89 bytes)
+[2026-07-16 21:10:08]: Uploading new manifest to depot-ingest.discovery.steamserver.net (handle 14705097747254861324, 118454 bytes).
+[2026-07-16 21:10:10]: Uploading 8 out of 8 missing chunks.
+[2026-07-16 21:10:15]: Success! New manifestID 1697962142177929967 created and 8 new chunks uploaded.
