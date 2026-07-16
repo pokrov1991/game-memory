@@ -27,13 +27,21 @@ const isTabletUserAgent = (): boolean => {
   return /iPad|Tablet|PlayBook|Silk/i.test(navigator.userAgent)
 }
 
+const isIPadOS = (): boolean => {
+  if (typeof navigator === 'undefined') {
+    return false
+  }
+
+  return navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1
+}
+
 export const getDeviceClass = (): DeviceClass => {
   if (typeof window === 'undefined') {
     return 'desktop'
   }
 
   const hasMobileUserAgent = isMobileUserAgent()
-  const hasTabletUserAgent = isTabletUserAgent()
+  const hasTabletUserAgent = isTabletUserAgent() || isIPadOS()
 
   if (!hasMobileLikeInput() && !hasMobileUserAgent && !hasTabletUserAgent) {
     return 'desktop'
