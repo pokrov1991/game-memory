@@ -1,4 +1,4 @@
-import { ErrorBoundary, OrientationOverlay } from '@/shared/components'
+import { ErrorBoundary } from '@/shared/components'
 import { CssBaseline, ThemeProvider } from '@mui/material'
 import { theme } from '@/app/styles'
 import { StoreProvider } from './store-provider'
@@ -10,7 +10,6 @@ export const Providers = ({ children }: { children: JSX.Element }) => (
       <AudioProvider>
         <ThemeProvider theme={theme}>
           <CssBaseline />
-          <OrientationOverlay />
           {children}
         </ThemeProvider>
       </AudioProvider>
