@@ -62,18 +62,18 @@ export const TavernPage = () => {
 
   useEffect(() => {
     // Оновляем выбранный айтем в магазине при изменении инвентаря
-    handleClickStore(storeInventoryItem.id)
+    updateSelectedStoreItem(storeInventoryItem.id)
     // Синхронизируем прогресс с сервером при изменении инвентаря
     syncProgress()
   }, [storeInventory])
 
   useEffect(() => {
     // Оновляем выбранный айтем в магазине при изменении кол-ва зелий
-    handleClickStore(storeInventoryItem.id)
+    updateSelectedStoreItem(storeInventoryItem.id)
     syncProgress()
   }, [userPotions])
 
-  const handleClickStore = (inventoryId: number) => {
+  const updateSelectedStoreItem = (inventoryId: number) => {
     const inventory = storeInventory.find(item => item.id === inventoryId)
     setStoreInventoryItem(inventory)
 
@@ -92,7 +92,10 @@ export const TavernPage = () => {
     if (inventory.isPaid) {
       setIsButtonPay(false)
     }
+  }
 
+  const handleClickStore = (inventoryId: number) => {
+    updateSelectedStoreItem(inventoryId)
     setTalk(true)
     setTimeout(() => setTalk(false), 1000)
     soundPigTalk.play()
