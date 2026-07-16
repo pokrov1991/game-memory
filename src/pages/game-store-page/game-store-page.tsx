@@ -17,14 +17,6 @@ import { ACHIEVEMENTS } from '@/shared/services/platform/config'
 import { useI18n } from '@/shared/services/i18n'
 import styles from './styles.module.css'
 
-
-// Вычисляем размер UI эдементов относительно высоты экрана
-let scalePercent = window.innerHeight < 1040 ? window.innerHeight / 1040 : 1
-
-const scaleStyle = {
-  transform: `scale(${scalePercent})`
-}
-
 // Задержка что бы показать все анимации
 const delayGameEffects = 1000
 
@@ -55,6 +47,10 @@ export const GameStorePage = () => {
   const soundCardSuccess = useMusic({ src: './music/game/card-success.wav', type: 'effect' })
   const soundWin = useMusic({ src: './music/game/win.wav', type: 'effect' })
   const soundLose = useMusic({ src: './music/game/lose.wav', type: 'effect' })
+
+  // Вычисляем размер UI элементов относительно высоты экрана
+  const scalePercent = window.innerHeight < 1040 ? window.innerHeight / 1040 : 1
+  const scaleStyle = { transform: `scale(${scalePercent})` }
 
   const setGameDataWin = async () => {
     const currentCoins = cCoins + gameLevel.coins
