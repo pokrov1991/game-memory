@@ -8,6 +8,7 @@ import classNames from 'classnames'
 import CloseIcon from '@mui/icons-material/Close'
 import { GameLevelStateType } from '@/shared/services/game/types'
 import { useI18n } from '@/shared/services/i18n'
+import { platformApi } from '@/shared/services/platform'
 
 const bgMapInfo = './ui/level-map/climb.png'
 const bgMap = './ui/level-map/map.jpg'
@@ -22,6 +23,7 @@ export const LevelMap = () => {
   const [selectedLevelId, setSelectedLevelId] = useState(LEVELS_STATE[0].id)
   const [isSelect, setSelect] = useState(false)
   const [isOpenModalInfo, setOpenModalInfo] = useState(false)
+  const [isPurchasing, setPurchasing] = useState(false)
   const { completedLevels, selectLevel } = useProgress()
 
   const currentLevelId = completedLevels[completedLevels.length - 1]
@@ -63,7 +65,7 @@ export const LevelMap = () => {
     setSelect(false)
   }
 
-  const handleStartGame = () => {
+  const startLevel = () => {
     if (level.id > 6 && level.id !==101 && level.id !==102) {
       navigate('/intro', { state: {part: 'e1c'}})
       // setOpenModalInfo(true)
@@ -80,6 +82,23 @@ export const LevelMap = () => {
       navigate('/base', {})
     }
     soundClick.play()
+  }
+
+  const handleStartGame = async () => {
+    if (level.id >= 3 && level.id < 100) {
+      setPurchasing(true)
+
+      try {
+        const hasAccess = await platformApi.hasCampaignAccess()
+        const accessGranted = hasAccess || await platformApi.purchaseCampaignAccess()
+
+        if (!accessGranted) return
+      } finally {
+        setPurchasing(false)
+      }
+    }
+
+    startLevel()
   }
 
   const levelPoints = levels.map(level => {
@@ -122,7 +141,7 @@ export const LevelMap = () => {
           </div>
 
           {selectedLevel.isPassed && (
-            <Button onClick={handleStartGame}>
+            <Button onClick={handleStartGame} disabled={isPurchasing}>
               {level.type === 'tavern' || level.type === 'base' ? t('levels.enter') : t('common.play')}
             </Button>
           )}

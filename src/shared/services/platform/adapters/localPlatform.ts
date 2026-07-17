@@ -92,6 +92,14 @@ export class LocalPlatformApi implements PlatformApi {
 
   async showAd(): Promise<void> {}
 
+  async hasCampaignAccess(): Promise<boolean> {
+    return true
+  }
+
+  async purchaseCampaignAccess(): Promise<boolean> {
+    return true
+  }
+
   async isSteamInitialized(): Promise<boolean> {
     return false
   }

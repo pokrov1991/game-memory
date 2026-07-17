@@ -116,6 +116,8 @@ export interface PlatformApi {
   saveProgress(progress: GameProgress): Promise<void>
   loadProgress(): Promise<GameProgress>
   showAd(): Promise<void>
+  hasCampaignAccess(): Promise<boolean>
+  purchaseCampaignAccess(): Promise<boolean>
   isSteamInitialized(): Promise<boolean>
   isOverlayAvailable(): Promise<boolean>
   openOverlay(type?: string): Promise<void>

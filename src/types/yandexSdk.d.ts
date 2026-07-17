@@ -1,4 +1,8 @@
 export interface IYandexSDK {
+  payments: {
+    purchase: (data: { id: string; developerPayload?: string }) => Promise<IPurchase>;
+    getPurchases: () => Promise<IPurchase[]>;
+  },
   leaderboards: {
     getDescription: (leaderboardName: string) => Promise<ILeaderboardDescription>;
     setScore: (leaderboardName: string, score: number, extraData?: string) => Promise<void>;
@@ -18,7 +22,13 @@ export interface IYandexSDK {
   },
   getPlayer: () => Promise<IPlayer>;
 }
-  
+
+export interface IPurchase {
+  productID: string;
+  purchaseToken: string;
+  developerPayload: string;
+}
+
 export interface IPlayer {
   getUniqueID: () => string;
   getName: () => string;
@@ -67,4 +77,3 @@ export interface ILeaderboardEntry {
     getAvatarSrcSet: (size?: 'small' | 'medium' | 'large') => string;
   }
 }
-  

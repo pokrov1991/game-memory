@@ -21,6 +21,7 @@ declare global {
 }
 
 const YANDEX_SDK_SRC = 'https://yandex.ru/games/sdk/v2'
+const CAMPAIGN_PRODUCT_ID = 'unlock_campaign'
 
 const loadYandexSdkScript = (): Promise<void> => {
   if (typeof window === 'undefined' || window.YaGames) {
@@ -169,6 +170,36 @@ export class YandexPlatformApi implements PlatformApi {
       console.log('Реклама успешно показана')
     } catch (error) {
       console.error('Ошибка показа рекламы:', error)
+    }
+  }
+
+  async hasCampaignAccess(): Promise<boolean> {
+    this.ensureInitialized()
+
+    try {
+      const purchases = await this.ysdk.payments.getPurchases()
+
+      return purchases.some(purchase => purchase.productID === CAMPAIGN_PRODUCT_ID)
+    } catch (error) {
+      console.error('Ошибка проверки доступа к кампании:', error)
+      return false
+    }
+  }
+
+  async purchaseCampaignAccess(): Promise<boolean> {
+    this.ensureInitialized()
+
+    if (await this.hasCampaignAccess()) {
+      return true
+    }
+
+    try {
+      const purchase = await this.ysdk.payments.purchase({ id: CAMPAIGN_PRODUCT_ID })
+
+      return purchase.productID === CAMPAIGN_PRODUCT_ID
+    } catch (error) {
+      console.error('Покупка доступа к кампании не завершена:', error)
+      return false
     }
   }
 
