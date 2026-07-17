@@ -11,7 +11,9 @@ import { tr } from './translations/tr'
 import { zhCN } from './translations/zh-CN'
 import { Language, TranslationDictionary } from './types'
 
-export const DEFAULT_LANGUAGE: Language = 'en'
+export const DEFAULT_LANGUAGE: Language = import.meta.env.VITE_PLATFORM_API === 'yandex'
+  ? 'ru'
+  : 'en'
 
 export const SUPPORTED_LANGUAGES: Language[] = [
   'ru',
