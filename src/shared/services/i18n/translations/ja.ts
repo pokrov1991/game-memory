@@ -31,6 +31,31 @@ export const ja: TranslationDictionary = {
     quickTitle: 'クイックゲーム',
     title: 'アーケードモード',
   },
+  demo: {
+    badge: 'Orion-7 デモ',
+    completed: {
+      features: {
+        achievements: '実績',
+        arcade: '完全版アーケードモード',
+        campaign: '完全版ストーリーキャンペーン',
+        enemies: 'すべての敵',
+        equipment: '装備のアップグレード',
+        pvp: 'オンラインPvP',
+      },
+      featuresTitle: '完全版に含まれる内容：',
+      steamPrompt: 'Steamでウィッシュリストに追加 / 購入：',
+      subtitle: 'Orion-7をプレイしていただきありがとうございます！',
+      text: 'オープニングチャプターをクリアしました。',
+      title: 'Orion-7 デモクリア',
+    },
+    fullVersion: {
+      button: 'Steamページを開く',
+      close: '閉じる',
+      info: 'Steamで完全版キャンペーンとすべてのゲームモードをアンロックできます。',
+      subtitle: 'Orion-7の旅を続けよう',
+      title: '完全版で利用可能',
+    },
+  },
   game: {
     ...en.game,
     exitTitle: '終了',

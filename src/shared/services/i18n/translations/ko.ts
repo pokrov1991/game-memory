@@ -31,6 +31,31 @@ export const ko: TranslationDictionary = {
     quickTitle: '빠른 게임',
     title: '아케이드 모드',
   },
+  demo: {
+    badge: 'Orion-7 데모',
+    completed: {
+      features: {
+        achievements: '도전 과제',
+        arcade: '전체 아케이드 모드',
+        campaign: '전체 스토리 캠페인',
+        enemies: '모든 적',
+        equipment: '장비 업그레이드',
+        pvp: '온라인 PvP',
+      },
+      featuresTitle: '정식 버전 포함 콘텐츠:',
+      steamPrompt: 'Steam 찜 목록에 추가 / 구매:',
+      subtitle: 'Orion-7을 플레이해 주셔서 감사합니다!',
+      text: '오프닝 챕터를 완료했습니다.',
+      title: 'Orion-7 데모 완료',
+    },
+    fullVersion: {
+      button: 'Steam 페이지 열기',
+      close: '닫기',
+      info: 'Steam에서 전체 캠페인과 모든 게임 모드를 잠금 해제하세요.',
+      subtitle: 'Orion-7에서 여정을 계속하세요',
+      title: '정식 버전에서 이용 가능',
+    },
+  },
   game: {
     ...en.game,
     exitTitle: '나가기',

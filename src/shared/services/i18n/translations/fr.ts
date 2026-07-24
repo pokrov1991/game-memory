@@ -31,6 +31,31 @@ export const fr: TranslationDictionary = {
     quickTitle: 'Partie rapide',
     title: 'Mode arcade',
   },
+  demo: {
+    badge: 'Démo Orion-7',
+    completed: {
+      features: {
+        achievements: 'Succès',
+        arcade: 'Mode arcade complet',
+        campaign: 'Campagne complète',
+        enemies: 'Tous les ennemis',
+        equipment: 'Améliorations de l’équipement',
+        pvp: 'JcJ en ligne',
+      },
+      featuresTitle: 'La version complète comprend :',
+      steamPrompt: 'Ajouter à la liste de souhaits / acheter sur Steam :',
+      subtitle: 'Merci d’avoir joué à Orion-7 !',
+      text: 'Vous avez terminé le chapitre d’ouverture.',
+      title: 'Démo Orion-7 terminée',
+    },
+    fullVersion: {
+      button: 'Ouvrir la page Steam',
+      close: 'Fermer',
+      info: 'Débloquez la campagne complète et tous les modes de jeu sur Steam.',
+      subtitle: 'Poursuivez votre voyage dans Orion-7',
+      title: 'Disponible dans la version complète',
+    },
+  },
   game: {
     ...en.game,
     exitTitle: 'Quitter',

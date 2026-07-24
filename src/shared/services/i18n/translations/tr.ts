@@ -31,6 +31,31 @@ export const tr: TranslationDictionary = {
     quickTitle: 'Hızlı Oyun',
     title: 'Arcade Modu',
   },
+  demo: {
+    badge: 'Orion-7 Demo',
+    completed: {
+      features: {
+        achievements: 'Başarımlar',
+        arcade: 'Tam arcade modu',
+        campaign: 'Tam hikâye senaryosu',
+        enemies: 'Tüm düşmanlar',
+        equipment: 'Ekipman geliştirmeleri',
+        pvp: 'Çevrimiçi PvP',
+      },
+      featuresTitle: 'Tam sürüm şunları içerir:',
+      steamPrompt: 'İstek listesine ekle / Steam’den satın al:',
+      subtitle: 'Orion-7 oynadığınız için teşekkürler!',
+      text: 'Açılış bölümünü tamamladınız.',
+      title: 'Orion-7 Demo tamamlandı',
+    },
+    fullVersion: {
+      button: 'Steam sayfasını aç',
+      close: 'Kapat',
+      info: 'Tam senaryoyu ve tüm oyun modlarını Steam’de açın.',
+      subtitle: 'Orion-7 yolculuğunuza devam edin',
+      title: 'Tam sürümde mevcut',
+    },
+  },
   game: {
     ...en.game,
     exitTitle: 'Çıkış',
