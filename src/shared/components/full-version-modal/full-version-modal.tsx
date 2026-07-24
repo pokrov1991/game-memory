@@ -1,5 +1,6 @@
 import { ModalDefault } from '@/shared/components/modal-comps'
 import { STEAM_STORE_URL } from '@/shared/config'
+import { useI18n } from '@/shared/services/i18n'
 
 type FullVersionModalProps = {
   isOpened: boolean
@@ -14,13 +15,15 @@ export const FullVersionModal = ({
   isOpened,
   onClose,
 }: FullVersionModalProps) => {
+  const { t } = useI18n()
+
   return (
     <ModalDefault
-      title="Available in the full version"
-      subtitle="Continue your journey in Orion-7"
-      info="Unlock the complete campaign and all game modes on Steam."
-      buttonSuccess="Open Steam Page"
-      buttonCancel="Close"
+      title={t('demo.fullVersion.title')}
+      subtitle={t('demo.fullVersion.subtitle')}
+      info={t('demo.fullVersion.info')}
+      buttonSuccess={t('demo.fullVersion.button')}
+      buttonCancel={t('demo.fullVersion.close')}
       onContinue={openSteamPage}
       onExit={onClose}
       isOpened={isOpened}

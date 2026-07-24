@@ -27,6 +27,31 @@ export const ru = {
     quickTitle: 'Быстрая игра',
     title: 'Режим аркады',
   },
+  demo: {
+    badge: 'Демо Orion-7',
+    completed: {
+      features: {
+        achievements: 'Достижения',
+        arcade: 'Полный аркадный режим',
+        campaign: 'Полная сюжетная кампания',
+        enemies: 'Все противники',
+        equipment: 'Улучшения экипировки',
+        pvp: 'Онлайн PvP',
+      },
+      featuresTitle: 'В полную версию входят:',
+      steamPrompt: 'Добавить в желаемое / купить в Steam:',
+      subtitle: 'Спасибо, что сыграли в Orion-7!',
+      text: 'Вы завершили вступительную главу.',
+      title: 'Демо Orion-7 завершено',
+    },
+    fullVersion: {
+      button: 'Открыть страницу Steam',
+      close: 'Закрыть',
+      info: 'Откройте полную кампанию и все игровые режимы в Steam.',
+      subtitle: 'Продолжите своё путешествие в Orion-7',
+      title: 'Доступно в полной версии',
+    },
+  },
   base: {
     briefing: {
       cancel: 'Еще не готов',

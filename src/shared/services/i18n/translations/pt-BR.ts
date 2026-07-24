@@ -27,6 +27,31 @@ export const ptBR = {
     quickTitle: 'Jogo rápido',
     title: 'Modo arcade',
   },
+  demo: {
+    badge: 'Demo de Orion-7',
+    completed: {
+      features: {
+        achievements: 'Conquistas',
+        arcade: 'Modo arcade completo',
+        campaign: 'Campanha completa',
+        enemies: 'Todos os inimigos',
+        equipment: 'Melhorias de equipamento',
+        pvp: 'PvP online',
+      },
+      featuresTitle: 'A versão completa inclui:',
+      steamPrompt: 'Adicione à lista de desejos / compre no Steam:',
+      subtitle: 'Obrigado por jogar Orion-7!',
+      text: 'Você concluiu o capítulo inicial.',
+      title: 'Demo de Orion-7 concluída',
+    },
+    fullVersion: {
+      button: 'Abrir página do Steam',
+      close: 'Fechar',
+      info: 'Desbloqueie a campanha completa e todos os modos de jogo no Steam.',
+      subtitle: 'Continue sua jornada em Orion-7',
+      title: 'Disponível na versão completa',
+    },
+  },
   base: {
     briefing: {
       cancel: 'Ainda não estou pronto',

@@ -27,6 +27,31 @@ export const zhCN = {
     quickTitle: '快速游戏',
     title: '街机模式',
   },
+  demo: {
+    badge: 'Orion-7 演示版',
+    completed: {
+      features: {
+        achievements: '成就',
+        arcade: '完整街机模式',
+        campaign: '完整剧情战役',
+        enemies: '所有敌人',
+        equipment: '装备升级',
+        pvp: '在线 PvP',
+      },
+      featuresTitle: '完整版包括：',
+      steamPrompt: '在 Steam 上加入愿望单 / 购买：',
+      subtitle: '感谢游玩 Orion-7！',
+      text: '你已完成序章。',
+      title: 'Orion-7 演示版已完成',
+    },
+    fullVersion: {
+      button: '打开 Steam 页面',
+      close: '关闭',
+      info: '在 Steam 上解锁完整战役和所有游戏模式。',
+      subtitle: '继续你的 Orion-7 旅程',
+      title: '完整版中可用',
+    },
+  },
   base: {
     briefing: {
       cancel: '还没准备好',
