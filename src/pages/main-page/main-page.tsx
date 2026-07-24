@@ -3,6 +3,7 @@ import { UserInfo } from '@/shared/components/user-info/user-info'
 import { Experience } from '@/shared/components/experience/experience'
 import { Navigation } from '@/shared/components/navigation/navigation'
 import { useUser } from '@/shared/contexts/UserContext'
+import { gameFeatures } from '@/shared/config'
 
 const bgBefore = './main/bg-before.jpg'
 const bgAfter = './main/bg-after.png'
@@ -28,6 +29,9 @@ export const MainPage = () => {
   return (
     <div className={styles['main-page']}>
       <div className={styles['main-page__menu']}>
+        {gameFeatures.edition === 'demo' && (
+          <div className={styles['main-page__demo']}>Orion-7 · Demo Version</div>
+        )}
         <Navigation />
       </div>
       <div className={styles['main-page__info']}>

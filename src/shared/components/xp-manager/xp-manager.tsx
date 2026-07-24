@@ -1,10 +1,11 @@
 import classNames from 'classnames'
 import { useState, useEffect } from 'react'
 import { useProgress } from '@/shared/hooks'
-import { Button } from '@/shared/components'
+import { Button, FullVersionModal } from '@/shared/components'
 import { platformApi } from '@/shared/services/platform'
 import { useI18n } from '@/shared/services/i18n'
 import styles from './styles.module.css'
+import { gameFeatures } from '@/shared/config'
 
 const UNIT_HP = 5
 const UNIT_GUARD = 0.5
@@ -26,6 +27,20 @@ export const XpManager = () => {
   const [guard, setGuard] = useState(userParams.guard)
   const [attack, setAttack] = useState(userParams.attack)
   const [isDisabled, setDisabled] = useState(true)
+  const [isOpenFullVersionModal, setOpenFullVersionModal] = useState(false)
+
+  const increaseParam = (
+    value: number,
+    setValue: (value: number) => void
+  ) => {
+    if (value >= gameFeatures.maxSkillTier) {
+      setOpenFullVersionModal(true)
+      return
+    }
+
+    setValue(value + 1)
+    setCountLevel(countLevel - 1)
+  }
 
   const syncProgress = async () => {
     await platformApi.setGameData({...progress, userParams, userLevelParams})
@@ -87,8 +102,7 @@ export const XpManager = () => {
             }} disabled={countHp <= 0}>-</button>
             <span>{countHp}</span>
             <button onClick={() => {
-              setCountHp(countHp + 1)
-              setCountLevel(countLevel - 1)
+              increaseParam(countHp, setCountHp)
             }} disabled={countLevel <= 0}>+</button>
           </div>
           <div className={styles['xp-manager__counter-units']}>+{UNIT_HP} {t('xp.unitSuffix')}</div>
@@ -103,8 +117,7 @@ export const XpManager = () => {
             }} disabled={countGuard <= 0}>-</button>
             <span>{countGuard}</span>
             <button onClick={() => {
-              setCountGuard(countGuard + 1)
-              setCountLevel(countLevel - 1)
+              increaseParam(countGuard, setCountGuard)
             }} disabled={countLevel <= 0}>+</button>
           </div>
           <div className={styles['xp-manager__counter-units']}>+{UNIT_GUARD} {t('xp.unitSuffix')}</div>
@@ -119,13 +132,16 @@ export const XpManager = () => {
             }} disabled={countAttack <= 0}>-</button>
             <span>{countAttack}</span>
             <button onClick={() => {
-              setCountAttack(countAttack + 1)
-              setCountLevel(countLevel - 1)
+              increaseParam(countAttack, setCountAttack)
             }} disabled={countLevel <= 0}>+</button>
           </div>
           <div className={styles['xp-manager__counter-units']}>+{UNIT_ATTACK} {t('xp.unitSuffix')}</div>
         </div>
       </div>
+      <FullVersionModal
+        isOpened={isOpenFullVersionModal}
+        onClose={() => setOpenFullVersionModal(false)}
+      />
     </div>
   )
 }

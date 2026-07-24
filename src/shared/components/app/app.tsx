@@ -24,7 +24,7 @@ export const App = () => {
   const { unlockAudio } = useAudio()
   const location = useLocation()
   const pagesMainTheme = ['/', '/levels', '/arcade', '/leader-board', '/pvp', '/settings']
-  const pagesIntroTheme = ['/intro']
+  const pagesIntroTheme = ['/intro', '/demo-completed']
   const pagesBattleTheme = ['/game-battle', '/game-pvp']
   const pagesArcadeTheme = ['/game-store', '/game']
   const pagesBaseTheme = ['/base']

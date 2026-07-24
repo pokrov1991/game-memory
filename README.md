@@ -6,10 +6,12 @@
 | --- | --- | --- |
 | `npm run dev:yandex` | Запускает web-версию с адаптером Яндекс Игр | Vite dev server |
 | `npm run dev:local` | Запускает локальную web-версию без платформенного SDK | Vite dev server |
+| `npm run dev:demo` | Запускает ограниченную HTML5 demo-версию для itch.io | Vite dev server |
 | `npm run dev:desktop` | Запускает desktop-версию в Electron для разработки | Окно Electron и Vite dev server |
 | `npm run dev:steam` | Запускает Electron со Steam-адаптером | Окно Electron со Steam API или локальным fallback |
 | `npm run build:yandex` | Собирает web-версию для Яндекс Игр | `dist/` |
 | `npm run build:local` | Собирает локальную web-версию | `dist/` |
+| `npm run build:demo` | Собирает независимую HTML5 demo-версию | `dist-demo/` |
 | `npm run build:desktop` | Компилирует Electron main, preload и renderer без создания установщика | `electron/out/` |
 | `npm run dist:desktop` | Собирает desktop-пакеты для текущей операционной системы | `electron/release/desktop/` |
 | `npm run build:steam` | Компилирует Electron-версию со Steam-адаптером без упаковки | `electron/out/` |
@@ -27,3 +29,4 @@
 - [Desktop- и Windows-сборка](docs/desktop-build.md)
 - [Steam-сборка](docs/steam-build.md)
 - [Деплой web-версии](docs/deploy.md)
+- [Demo-сборка для itch.io](docs/demo-build.md)

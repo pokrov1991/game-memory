@@ -1,5 +1,5 @@
-import { useEffect } from 'react'
-import { Layout, Navigate } from '@/shared/components'
+import { useEffect, useState } from 'react'
+import { Layout, Navigate, FullVersionModal } from '@/shared/components'
 import { useNavigate } from 'react-router-dom'
 import { useProgress } from '@/shared/hooks'
 import { useUser } from '@/shared/contexts/UserContext'
@@ -8,12 +8,14 @@ import { LEVELS_STORE_CONFIG } from '@/shared/constants'
 import { platformApi } from '@/shared/services/platform'
 import { useI18n } from '@/shared/services/i18n'
 import styles from './styles.module.css'
+import { gameFeatures } from '@/shared/config'
 
 export const ArcadePage = () => {
   const { t } = useI18n()
   const navigate = useNavigate()
   const { selectLevelArcade } = useProgress()
   const { user, setUser, setGame } = useUser()
+  const [isOpenFullVersionModal, setOpenFullVersionModal] = useState(false)
   const routes = [
     {
       path: '/',
@@ -33,6 +35,11 @@ export const ArcadePage = () => {
   ]
 
   const handleClickLevel = () => {
+    if (!gameFeatures.arcadeEnabled) {
+      setOpenFullVersionModal(true)
+      return
+    }
+
     if (user.isAuthorized) {
       selectLevelArcade(1)
       navigate('/game')
@@ -76,6 +83,10 @@ export const ArcadePage = () => {
               {LEVELS_STORE_CONFIG.map((level) => {
                 return (
                 <div className={styles['arcade-page-list-item']} onClick={() => {
+                  if (level.id > gameFeatures.maxArcadeLevel) {
+                    setOpenFullVersionModal(true)
+                    return
+                  }
                   selectLevelArcade(level.id)
                   navigate('/game', { state: {levelId: level.id}})
                 }} key={level.id}>
@@ -87,6 +98,10 @@ export const ArcadePage = () => {
           </div>
         </div>
       </Layout>
+      <FullVersionModal
+        isOpened={isOpenFullVersionModal}
+        onClose={() => setOpenFullVersionModal(false)}
+      />
     </main>
   )
 }

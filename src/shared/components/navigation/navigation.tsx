@@ -14,6 +14,8 @@ import {
   readLocalPlayerName,
   writeLocalPlayerName,
 } from '@/shared/services/platform'
+import { FullVersionModal } from '@/shared/components/full-version-modal'
+import { gameFeatures } from '@/shared/config'
 
 const Item = ({
   to,
@@ -64,9 +66,10 @@ export const Navigation = () => {
   const [playerName, setPlayerName] = useState('')
   const [playerNameError, setPlayerNameError] = useState<string | null>(null)
   const [pendingPath, setPendingPath] = useState<string | null>(null)
+  const [isOpenFullVersionModal, setOpenFullVersionModal] = useState(false)
 
   const isStartedCampaign = hasStartedCampaign(progress)
-  const isLocalPlatform = platformApi.kind === 'local' || platformApi.kind === 'desktop'
+  const isLocalPlatform = platformApi.kind === 'local' || platformApi.kind === 'desktop' || platformApi.kind === 'demo'
   const isPvpAvailable = isLocalPlatform || platformApi.kind === 'steam'
   const isExitAvailable = platformApi.kind === 'desktop' || platformApi.kind === 'steam'
   const normalizedPlayerName = playerName.trim()
@@ -146,7 +149,13 @@ export const Navigation = () => {
         {/* <Item to="/intro" title="Вступление" /> */}
         <Item title={t('mainMenu.quickGame')} onSelect={() => handlePlayerNameRequiredNavigate('/arcade')} />
         {isPvpAvailable && (
-          <Item title={t('mainMenu.pvpGame')} sup="Beta" onSelect={() => handlePlayerNameRequiredNavigate('/pvp')} />
+          <Item
+            title={t('mainMenu.pvpGame')}
+            sup="Beta"
+            onSelect={() => gameFeatures.pvpEnabled
+              ? handlePlayerNameRequiredNavigate('/pvp')
+              : setOpenFullVersionModal(true)}
+          />
         )}
         <Item title={t('mainMenu.settings')} onSelect={handleSettings} />
         {isExitAvailable && <Item title={t('common.exit')} onSelect={handleExit} />}
@@ -187,6 +196,10 @@ export const Navigation = () => {
         onContinue={handleResetProgress}
         onExit={() => setOpenNewGameModal(false)}
         isOpened={isOpenNewGameModal}
+      />
+      <FullVersionModal
+        isOpened={isOpenFullVersionModal}
+        onClose={() => setOpenFullVersionModal(false)}
       />
     </>
   )

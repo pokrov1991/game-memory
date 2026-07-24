@@ -33,6 +33,15 @@
     }  
   }
 
+  .main-page__demo {
+    margin-bottom: 18px;
+    color: #7cd3ff;
+    font-size: 18px;
+    letter-spacing: 0.12em;
+    text-align: right;
+    text-transform: uppercase;
+  }
+
   .main-page__info {
     position: absolute;
     left: 0;

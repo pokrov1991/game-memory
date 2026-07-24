@@ -3,11 +3,12 @@ import { useEffect, useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { LEVELS_STORE, INVENTORY_STORE_CONFIG } from '@/shared'
 import { useProgress, useMusic } from '@/shared/hooks'
-import { Button, UserTreasures, XpManager, ModalDefault } from '@/shared/components'
+import { Button, UserTreasures, XpManager, ModalDefault, FullVersionModal } from '@/shared/components'
 import { platformApi } from '@/shared/services/platform'
 import { ACHIEVEMENTS } from '@/shared/services/platform/config'
 import { useI18n } from '@/shared/services/i18n'
 import styles from './styles.module.css'
+import { gameFeatures } from '@/shared/config'
 
 type MenuMode = 'main' | 'levels' | 'store' | 'xp'
 type MenuItem = { to: string; titleKey: string; isActive?: boolean }
@@ -30,6 +31,7 @@ export const TavernPage = () => {
   const [storeInventory, setStoreInventory] = useState(INVENTORY_STORE_CONFIG)
   const [storeInventoryItem, setStoreInventoryItem] = useState(storeInventory[0])
   const [isOpenModalDefault, setOpenModalDefault] = useState(false)
+  const [isOpenFullVersionModal, setOpenFullVersionModal] = useState(false)
   const [isButtonPay, setIsButtonPay] = useState(true)
   const [isButtonPayDisabled, setIsButtonPayDisabled] = useState(true)
   const [menu, setMenu] = useState(MENU)
@@ -191,6 +193,10 @@ export const TavernPage = () => {
           {[styles['tavern-page__levels-item_disabled']]: userCoins < level.coins}
         )}
         onClick={() => {
+          if (level.id > gameFeatures.maxTavernLevel) {
+            setOpenFullVersionModal(true)
+            return
+          }
           setLevel(level)
           setOpenModalDefault(true)
         }} 
@@ -376,6 +382,10 @@ export const TavernPage = () => {
         subtitle={`${t('tavern.modal.stakeStart')} ${level.coins} ${t('tavern.modal.stakeEnd')}`}
         info={`${t('tavern.modal.versus')} ${t(`levels.store.${level.id}.title`)}?`}
         isOpened={isOpenModalDefault}
+      />
+      <FullVersionModal
+        isOpened={isOpenFullVersionModal}
+        onClose={() => setOpenFullVersionModal(false)}
       />
     </main>
   )

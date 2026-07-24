@@ -1,0 +1,41 @@
+.page {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 32px;
+  color: white;
+  background:
+    linear-gradient(rgba(4, 9, 18, 0.78), rgba(4, 9, 18, 0.92)),
+    url('/main/bg-before.jpg') center / cover;
+}
+
+.content {
+  width: min(640px, 100%);
+  padding: 40px;
+  border: 1px solid rgba(124, 211, 255, 0.45);
+  background: rgba(5, 15, 29, 0.9);
+  box-shadow: 0 0 40px rgba(41, 151, 255, 0.2);
+  font-family: Roboto;
+}
+
+.content h1 {
+  margin: 8px 0 16px;
+  font-size: clamp(32px, 6vw, 40px);
+  font-family: Alegreya;
+}
+
+.content h2 {
+  color: #7cd3ff;
+  font-family: Alegreya;
+}
+
+.content li {
+  margin: 8px 0;
+  font-family: Roboto;
+}
+
+.badge {
+  color: #7cd3ff;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+}

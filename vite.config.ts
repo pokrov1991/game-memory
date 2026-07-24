@@ -10,6 +10,7 @@ dotenv.config()
 const platformApi = process.env.VITE_PLATFORM_API || 'local'
 const platformAdapterByApi: Record<string, string> = {
   desktop: 'desktopPlatform',
+  demo: 'demoPlatform',
   local: 'localPlatform',
   steam: 'steamPlatform',
   yandex: 'yandexPlatform',

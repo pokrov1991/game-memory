@@ -21,6 +21,7 @@ import { LEVELS_USER_CONFIG } from '@/shared'
 import { STATS } from '@/shared/services/platform/config'
 import { ACHIEVEMENTS } from '@/shared/services/platform/config'
 import { useI18n } from '@/shared/services/i18n'
+import { gameFeatures } from '@/shared/config'
 import styles from './styles.module.css'
 
 // Задержка что бы показать все анимации
@@ -167,17 +168,23 @@ export const GameBattlePage = () => {
 
   const onContinue = async () => {
     const nextLevel = gameLevel.id + 1
+    const isDemoCompleted =
+      gameFeatures.edition === 'demo' &&
+      gameLevel.id === gameFeatures.maxStoryMission
 
     if (!completedLevels.find((item) => item === 101)) {
       completeLevel(101)
     }
-    completeLevel(nextLevel)
-    selectLevel(nextLevel)
-    
-    setGameDataWin(nextLevel)
+
+    if (!isDemoCompleted) {
+      completeLevel(nextLevel)
+      selectLevel(nextLevel)
+    }
+
+    setGameDataWin(isDemoCompleted ? gameLevel.id : nextLevel)
 
     setOpenModalWin(false)
-    navigate('/levels')
+    navigate(isDemoCompleted ? '/demo-completed' : '/levels')
   }
 
   const onGameOver = (): void => {

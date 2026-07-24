@@ -1,7 +1,7 @@
 /// <reference types="vite/client" />
 
 interface ImportMetaEnv {
-  readonly VITE_PLATFORM_API?: 'yandex' | 'local' | 'desktop' | 'steam'
+  readonly VITE_PLATFORM_API?: 'yandex' | 'local' | 'desktop' | 'steam' | 'demo'
   readonly VITE_API_BASE_URL?: string
 }
 

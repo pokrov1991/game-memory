@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Item } from './item'
-import { Button, ModalDefault, LinkText, LEVELS_STATE } from '@/shared'
+import { Button, ModalDefault, LinkText, LEVELS_STATE, FullVersionModal } from '@/shared'
 import { useProgress, useMusic } from '@/shared/hooks'
 import styles from './styles.module.css'
 import classNames from 'classnames'
@@ -9,6 +9,7 @@ import CloseIcon from '@mui/icons-material/Close'
 import { GameLevelStateType } from '@/shared/services/game/types'
 import { useI18n } from '@/shared/services/i18n'
 import { platformApi } from '@/shared/services/platform'
+import { gameFeatures } from '@/shared/config'
 
 const bgMapInfo = './ui/level-map/climb.png'
 const bgMap = './ui/level-map/map.jpg'
@@ -24,6 +25,7 @@ export const LevelMap = () => {
   const [isSelect, setSelect] = useState(false)
   const [isOpenModalInfo, setOpenModalInfo] = useState(false)
   const [isPurchasing, setPurchasing] = useState(false)
+  const [isOpenFullVersionModal, setOpenFullVersionModal] = useState(false)
   const { completedLevels, selectLevel } = useProgress()
 
   const currentLevelId = completedLevels[completedLevels.length - 1]
@@ -85,6 +87,11 @@ export const LevelMap = () => {
   }
 
   const handleStartGame = async () => {
+    if (level.id < 100 && level.id > gameFeatures.maxStoryMission) {
+      setOpenFullVersionModal(true)
+      return
+    }
+
     if (level.id >= 3 && level.id < 100) {
       setPurchasing(true)
 
@@ -181,6 +188,10 @@ export const LevelMap = () => {
         buttonSuccess='Ok'
         isOpened={isOpenModalInfo}
         isButtonCancel={false}
+      />
+      <FullVersionModal
+        isOpened={isOpenFullVersionModal}
+        onClose={() => setOpenFullVersionModal(false)}
       />
     </div>
   )

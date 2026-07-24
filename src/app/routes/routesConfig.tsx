@@ -14,6 +14,7 @@ import { LeaderBoardPage } from '@/pages/leader-board-page/leader-board-page'
 import { MainPage } from '@/pages/main-page/main-page'
 import { SettingsPage } from '@/pages/settings-page/settings-page'
 import { NotFoundPage } from '@/pages/not-found-page/not-found-page'
+import { DemoCompletedPage } from '@/pages/demo-completed-page'
 import { RouteObject } from 'react-router-dom'
 
 export const routesConfig: RouteObject[] = [
@@ -68,6 +69,10 @@ export const routesConfig: RouteObject[] = [
       {
         path: '/levels',
         Component: ChooseLevelPage,
+      },
+      {
+        path: '/demo-completed',
+        Component: DemoCompletedPage,
       },
       {
         path: '/settings',

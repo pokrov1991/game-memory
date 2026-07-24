@@ -1,10 +1,11 @@
 import { useMemo, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useUser } from '@/shared/contexts/UserContext'
-import { Layout, Navigate, InputField, Button } from '@/shared/components'
+import { Layout, Navigate, InputField, Button, FullVersionModal } from '@/shared/components'
 import ContentCopyIcon from '@mui/icons-material/ContentCopy'
 import { useI18n } from '@/shared/services/i18n'
 import styles from './styles.module.css'
+import { gameFeatures } from '@/shared/config'
 
 type MatchMode = 'idle' | 'waiting' | 'private-created'
 
@@ -46,6 +47,15 @@ export const PvpPage = () => {
       sort: 10,
     },
   ]
+
+  if (!gameFeatures.pvpEnabled) {
+    return (
+      <FullVersionModal
+        isOpened
+        onClose={() => navigate('/')}
+      />
+    )
+  }
 
   const connect = () => {
     if (
